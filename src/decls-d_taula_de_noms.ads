@@ -1,0 +1,61 @@
+-- ------------------------------------------------
+--  Paquet de declaracions de la taula de noms
+-- ------------------------------------------------
+--  Versió			:	0.1
+--  Autors			:	José Ruiz Bravo
+--						Biel Moyà Alcover
+--						Álvaro Medina Ballester
+-- ------------------------------------------------
+--		Aquí una petita descripció.
+--
+-- ------------------------------------------------
+
+with decls.dgenerals; 
+use decls.dgenerals;
+with Ada.Text_IO;
+use Ada.Text_IO;
+
+package decls.d_taula_de_noms is
+
+	--pragma(pure);
+	
+	type taula_de_noms is  private;
+	
+	procedure tbuida(tn : out taula_de_noms);
+	procedure posa(tn : in out taula_de_noms;  idn : out id_nom ; nom : in string );
+	--function cons(tn : in taula_de_noms; idn : in id_nom ) return string;
+	--procedure posa(tn : in out taula_de_noms; s : in string; ids : out string);
+	--function cons(tn : in taula_de_noms; ids : in  string) return string;
+	
+	private
+		
+		long_paraula :constant integer := 40;
+		num_dispersio : constant integer := 110;
+		
+		type rang_dispersio is new natural range 0..num_dispersio;--numero primo
+		type rang_tcaracters is  new natural range 0..(long_paraula*max_id)-1 ;--longitut d'una paraula * nombre paraules
+		
+		dispersio_nul :  rang_dispersio := 0;
+		
+		type t_identificador is record 
+			pos_tcaracters: rang_tcaracters;
+			seguent : id_nom;
+			long_paraula : id_nom;
+			
+		end record;
+		
+		type taula_dispersio is array (rang_dispersio) of  id_nom;
+		type taula_identificadors is array (id_nom) of t_identificador  ;
+		type taula_caracters is array (rang_tcaracters) of character ; 
+		
+		
+		type taula_de_noms is record
+				td : taula_dispersio;
+				tid : taula_identificadors;
+				tc : taula_caracters;
+				nid :  id_nom;
+				ncar : rang_tcaracters;
+		end record;
+			
+end decls.d_taula_de_noms;
+		

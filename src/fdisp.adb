@@ -1,16 +1,17 @@
 -- ------------------------------------------------
---  Función de hash de Pearson
+--  Funció de hash de Pearson
 -- ------------------------------------------------
---  Versión			:	0.1
---  Autores			:	José Ruiz Bravo
+--  Versió			:	0.1
+--  Autors			:	José Ruiz Bravo
 --						Biel Moyà Alcover
 --						Álvaro Medina Ballester
 -- ------------------------------------------------
---		El hash de Pearson es una función muy
---	simple que se ejecuta rápidamente. Se utiliza
---	un array de 256 posiciones rellenado con
---	números aleatorios de 0 a 255. En el algoritmo
---	no se utilizan ni instrucciones SHIFT ó XOR.
+--		El hash de Pearson és una funció molt
+--	simple que s'executa ràpidament. S'utilitza
+--	un array de 256 posicions emplenat amb
+--	nombres aleatoris de 0 a 255. En aquest 
+--	algoritme no s'empren ni instruccions SHIFT 
+--  ni XOR.
 --
 -- ------------------------------------------------
 
@@ -19,8 +20,8 @@ use Ada.Integer_text_io;
 
 function fdisp (nom: in string) return integer is
 	
-	-- Vector generado de forma aleatoria para
-	-- ejecutar la función de hash.	
+	-- Vector generat de forma aleatòria per
+	-- executar la funció de hash.	
 	type vector is array (0..255) of integer;
 	v: constant vector := (240,208,16,192,129,5
 							,2,0,184,9,10,11,4,13
@@ -68,10 +69,10 @@ function fdisp (nom: in string) return integer is
 							,249,250,251,126,253
 							,254,255);
 							
-	-- Variable con la clave hash a devolver
+	-- Variable amb la clau de hash que hem de retornar
 	hash: integer := 0;
 	
-	-- Variable para recoger el valor del caràcter
+	-- Variable per recollir el valor del caràcter
 	val: integer := 0;
 	
 begin
