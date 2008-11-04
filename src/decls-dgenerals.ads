@@ -12,9 +12,9 @@
 
 package decls.dgenerals is
 
-	max_id : constant integer := 1000;
+	max_id : constant integer := 1001;
 	
-	type id_nom is new  natural range 0 .. max_id-1;
-	id_nul : constant id_nom := 0;
+	type id_nom is new integer range -1 .. max_id-1;
+	id_nul : constant id_nom := -1;
 
 end decls.dgenerals;

@@ -82,6 +82,7 @@ begin
 		hash := v(hash);
 	end loop;
 	
+	-- CORREGIR ESTO!
 	hash := hash mod 111;
 	
 	return hash;
