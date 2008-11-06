@@ -9,7 +9,7 @@
 --  *  Copyright (c) 2008 __MyCompanyName__.
 --  *  All rights reserved.
 --  *    or (keep only one line or write your own)
---  *  GNAT modified GNU General Public License
+--  *  GNAT modified GNU General Public License áéé
 --  *
 --------------------------------------------------------------------------------
 with Ada.Text_IO;use Ada.Text_IO;
