@@ -43,4 +43,9 @@ begin
 	Put_line("__________________");
 	Put("Taula de caracters:  ");imprimir_tcar(tn,4);
 	
+	New_line;
+	New_line;
+	Put_Line(cons(tn, 0));
+	Put_Line(cons(tn, 1));
+	
 end compilemon;
