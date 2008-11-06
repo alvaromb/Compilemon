@@ -21,7 +21,7 @@ package body decls.d_taula_de_noms is
 		end loop;
 		
 		for i in tn.tid'range loop
-			tn.tid(i).pos_tcaracters := 0;
+			tn.tid(i).pos_tcar := 0;
 			tn.tid(i).seguent := id_nul; 
 			tn.tid(i).long_paraula := 0;
 		end loop;
@@ -40,8 +40,8 @@ package body decls.d_taula_de_noms is
 		
 		p_tid : rang_dispersio := 0;-- apuntador que ens retorna la funcio de dispersio a la taula de identificadors
 		idx : id_nom ; -- index per  recorrer la taula d'identificadors;
-		jdx : rang_tcaracters; -- index per recorrer la taula de caracters;
-		p_car : rang_tcaracters := 0;
+		jdx : rang_tcar; -- index per recorrer la taula de caracters;
+		p_car : rang_tcar := 0;
 		rec : Natural:= 1;
 		iguals : boolean := false;
 	begin
@@ -62,7 +62,7 @@ package body decls.d_taula_de_noms is
 				--bucle de comparacio entre paraula nova
 				if tn.tid(idx).long_paraula = nom'Length then
 				
-					p_car := tn.tid(idx).pos_tcaracters;
+					p_car := tn.tid(idx).pos_tcar;
 					
 					 
 					while  rec < tn.tid(idx).long_paraula  and tn.tc(p_car) = nom(rec) loop
@@ -97,7 +97,7 @@ package body decls.d_taula_de_noms is
 			
 			--aqui omplim la taula d'identificadors
 			
-			tn.tid(idn).pos_tcaracters := tn.ncar; --apuntam a la primera posicio buida de la taula de caracters
+			tn.tid(idn).pos_tcar := tn.ncar; --apuntam a la primera posicio buida de la taula de caracters
 			tn.tid(idn).long_paraula := nom'LENGTH;
 			
 			-- omplim la taula de caracters, desde la primera posicio lliure ncar.
@@ -117,11 +117,24 @@ package body decls.d_taula_de_noms is
 	end posa;
 	
 	
+	
+	function cons(tn : in taula_de_noms; idn : in id_nom) return string is
+		
+	begin
+	
+		return String(tn.tc(tn.tid(idn).pos_tcar .. tn.tid(idn).pos_tcar+rang_tcar(tn.tid(idn).long_paraula)-1));
+		
+	end cons;
+	
+	
+	
+	
+	
 	procedure imprimir_tcar(tn : in taula_de_noms; nparaules : integer) is
 		
 		begin
 			for i in 0.. (nparaules*10)loop
-				Put(tn.tc(rang_tcaracters(i)));
+				Put(tn.tc(rang_tcar(i)));
 			end loop;
 			
 	end imprimir_tcar;
