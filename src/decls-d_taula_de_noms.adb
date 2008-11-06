@@ -36,7 +36,7 @@ package body decls.d_taula_de_noms is
 	end tbuida;
 
 
-	procedure posa(tn : in out taula_de_noms;  idn : out id_nom ; nom : in string ) is
+	procedure posa (tn : in out taula_de_noms;  idn : out id_nom ; nom : in string ) is
 		
 		p_tid : rang_dispersio := 0;-- apuntador que ens retorna la funcio de dispersio a la taula de identificadors
 		idx : id_nom ; -- index per  recorrer la taula d'identificadors;
@@ -48,10 +48,11 @@ package body decls.d_taula_de_noms is
 		
 		p_tid :=  fdisp(nom);
 		
-		
-		if tn.td(p_tid) = id_nul then -- Si es la primera vegada que la funcio de dispersio ens dona aquest valor
+		-- Si es la primera vegada que la funcio de dispersio ens dona aquest valor
+		if tn.td(p_tid) = id_nul then 
 			
-			tn.td(p_tid):=tn.nid; -- asignam a aquesta posicio el darrer lloc de la taula d'identificadors.
+			-- asignam a aquesta posicio el darrer lloc de la taula d'identificadors.
+			tn.td(p_tid):=tn.nid; 
 			idx:=tn.nid;
 		else
 			idx := tn.td(p_tid); 
@@ -89,15 +90,18 @@ package body decls.d_taula_de_noms is
 		
 		if not iguals then
 			
-				
-			tn.tid(idx).seguent := tn.nid;
-		
+			-- ESTO ESTABA MAL PUESTO, EL INCREMENTO IBA DESPUÉS Y
+			-- EL SIGUIENTE SIEMPRE APUNTABA A SÍ MISMO
 			idn := tn.nid;
-			tn.nid := tn.nid + 1 ; --actualitzacio de la darrera posicio de taula de identificadors fer comprovacions d'errors
+			tn.nid := tn.nid + 1;
+			tn.tid(idx).seguent := tn.nid;		
+			
+			--actualitzacio de la darrera posicio de taula de identificadors fer comprovacions d'errors
 			
 			--aqui omplim la taula d'identificadors
 			
-			tn.tid(idn).pos_tcar := tn.ncar; --apuntam a la primera posicio buida de la taula de caracters
+			--apuntam a la primera posicio buida de la taula de caracters
+			tn.tid(idn).pos_tcar := tn.ncar; 
 			tn.tid(idn).long_paraula := nom'LENGTH;
 			
 			-- omplim la taula de caracters, desde la primera posicio lliure ncar.
@@ -118,7 +122,40 @@ package body decls.d_taula_de_noms is
 	
 	
 	
-	function cons(tn : in taula_de_noms; idn : in id_nom) return string is
+	procedure posa (tn : in out taula_de_noms; s : in string; ids : out rang_tcar) is
+	
+		pos : id_nom := tn.nid;
+		
+	begin
+	
+		-- QUITAR ESTOS COMENTARIOS:
+		-- Comprobamos que tengamos espacio libre en "taula_identificadors"
+		if pos /= id_nul then
+			
+			-- Comprobamos que quepa en "taula_caracters"
+			if s'Length <= (rang_tcar'Last - tn.ncar + 1) then
+			
+				tn.tid(pos).pos_tcar := tn.ncar;
+				
+				tn.nid := tn.nid + 1;
+				tn.tid(pos).seguent := tn.nid;
+				
+				tn.tid(pos).long_paraula := s'Length;
+				
+				-- Copiamos la palabra y actualizamos tn.ncar
+				tn.tc(tn.ncar .. (tn.ncar + s'Length - 1));
+				tn.ncar := tn.ncar + s'Length;
+				
+			end if; -- Falta devolver un error cuando no quepa nada más en "taula_caracters"
+			
+		end if; -- Falta devolver un error cuando no quepa nada más en "taula_identificadors"
+		
+	
+	end posa;
+	
+	
+	
+	function cons (tn : in taula_de_noms; idn : in id_nom) return string is
 		
 	begin
 	
@@ -131,13 +168,23 @@ package body decls.d_taula_de_noms is
 	
 	
 	procedure imprimir_tcar(tn : in taula_de_noms; nparaules : integer) is
+		iter: id_nom := 0;
+	begin
+		for i in 0..(nparaules*10) loop
+			Put(tn.tc(rang_tcar(i)));
+		end loop;
 		
-		begin
-			for i in 0.. (nparaules*10)loop
-				Put(tn.tc(rang_tcar(i)));
-			end loop;
+		Put(Integer(tn.ncar));
+		
+		while iter/=tn.nid loop
+			New_line;
+			Put(Integer(tn.tid(iter).seguent));			
+			iter := iter + 1;
+		end loop;
 			
 	end imprimir_tcar;
+				
+				
 				
 
 	function fdisp (nom: in string) return rang_dispersio is
