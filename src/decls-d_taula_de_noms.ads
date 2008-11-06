@@ -23,7 +23,7 @@ package decls.d_taula_de_noms is
 	
 	procedure tbuida(tn : out taula_de_noms);
 	procedure posa(tn : in out taula_de_noms;  idn : out id_nom ; nom : in string);
-	procedure posa(tn : in out taula_de_noms; s : in string; ids : out string);	
+	--procedure posa(tn : in out taula_de_noms; s : in string; ids : out string);	
 	procedure imprimir_tcar(tn : in taula_de_noms; nparaules : integer);
 	function cons(tn : in taula_de_noms; idn : in id_nom) return string;
 	
