@@ -36,7 +36,7 @@ package body decls.d_taula_de_noms is
 	end tbuida;
 
 
-	procedure posa (tn : in out taula_de_noms;  idn : out id_nom ; nom : in string ) is
+	procedure posa_id (tn : in out taula_de_noms;  idn : out id_nom ; nom : in string ) is
 		
 		p_tid : rang_dispersio := 0;-- apuntador que ens retorna la funcio de dispersio a la taula de identificadors
 		idx : id_nom ; -- index per  recorrer la taula d'identificadors;
@@ -44,6 +44,8 @@ package body decls.d_taula_de_noms is
 		p_car : rang_tcar := 0;
 		rec : Natural:= 1;
 		iguals : boolean := false;
+		seguent : boolean := true;
+		
 	begin
 		
 		p_tid :=  fdisp(nom);
@@ -56,34 +58,43 @@ package body decls.d_taula_de_noms is
 			idx:=tn.nid;
 		else
 			idx := tn.td(p_tid); 
-			
 			-- cercam la primera posicio buida a través del camp seguent
-			while tn.tid(idx).seguent /= id_nul and not iguals loop 
 			
+			while seguent and not iguals loop 
 				--bucle de comparacio entre paraula nova
+			
+				
 				if tn.tid(idx).long_paraula = nom'Length then
 				
 					p_car := tn.tid(idx).pos_tcar;
 					
 					 
-					while  rec < tn.tid(idx).long_paraula  and tn.tc(p_car) = nom(rec) loop
+				while  rec < tn.tid(idx).long_paraula  and tn.tc(p_car) = nom(rec) loop
 						
-
 						p_car := p_car+1;
 						rec := rec+1;
 					end loop;
 					
 					if tn.tc(p_car) = nom(rec) then
-						Put_Line("Son iguals les putes paraules");
+					--	Put_Line("Son iguals les putes paraules");
 						idn := idx;
 						iguals := true;
 					end if;
 				end if;
 				
-				if not iguals then
-					idx := tn.tid(idx).seguent;
-				end if;
-			
+						
+				 if not iguals and tn.tid(idx).seguent = id_nul then
+				
+					seguent := false;
+					tn.tid(idx).seguent := tn.nid;
+					idx := tn.nid;
+					
+				 elsif not iguals  and tn.tid(idx).seguent /= id_nul then
+				 
+					 idx := tn.tid(idx).seguent ;
+				 
+				 end if;
+							
 			end loop;
 			
 		end if;
@@ -94,7 +105,7 @@ package body decls.d_taula_de_noms is
 			-- EL SIGUIENTE SIEMPRE APUNTABA A SÍ MISMO
 			idn := tn.nid;
 			tn.nid := tn.nid + 1;
-			tn.tid(idx).seguent := tn.nid;		
+					
 			
 			--actualitzacio de la darrera posicio de taula de identificadors fer comprovacions d'errors
 			
@@ -118,41 +129,44 @@ package body decls.d_taula_de_noms is
 		
 		end if;
 		
-	end posa;
+	end posa_id;
 	
 	
 	
-	procedure posa (tn : in out taula_de_noms; s : in string; ids : out rang_tcar) is
 	
-		pos : id_nom := tn.nid;
+	
+	
+	
+	
+	procedure posa_str	 (tn : in out taula_de_noms ; idn : out id_nom ; s : in string) is
+	
+		jdx : rang_tcar; -- index per recorrer la taula de caracters;
 		
 	begin
-	
-		-- QUITAR ESTOS COMENTARIOS:
-		-- Comprobamos que tengamos espacio libre en "taula_identificadors"
-		if pos /= id_nul then
-			
-			-- Comprobamos que quepa en "taula_caracters"
-			if s'Length <= (rang_tcar'Last - tn.ncar + 1) then
-			
-				tn.tid(pos).pos_tcar := tn.ncar;
-				
-				tn.nid := tn.nid + 1;
-				tn.tid(pos).seguent := tn.nid;
-				
-				tn.tid(pos).long_paraula := s'Length;
-				
-				-- Copiamos la palabra y actualizamos tn.ncar
-				tn.tc(tn.ncar .. (tn.ncar + s'Length - 1));
-				tn.ncar := tn.ncar + s'Length;
-				
-			end if; -- Falta devolver un error cuando no quepa nada más en "taula_caracters"
-			
-		end if; -- Falta devolver un error cuando no quepa nada más en "taula_identificadors"
+		-- ens situam a la primera posicio buida de la taula de identificadors
+		idn := tn.nid;
 		
-	
-	end posa;
-	
+		tn.nid := tn.nid+1; --falta control d'errors
+		
+		--actualitzam la posicio de la taula d'identificadors
+		tn.tid(idn).long_paraula := s'Length;
+		tn.tid(idn).pos_tcar := tn.ncar;
+		
+		
+		-- omplim la taula de caracters, desde la primera posicio lliure ncar.
+		jdx := tn.ncar;
+		for i in 1..s'LENGTH loop
+				
+			tn.tc(jdx) := s(i);
+			jdx := jdx + 1;
+				
+		end loop;
+		
+		--apuntam a la primera posicio lliure de la taula de caracters mirar si fa falta comprovacio d'errors
+		tn.ncar := jdx+1; 
+
+		
+	end posa_str;
 	
 	
 	function cons (tn : in taula_de_noms; idn : in id_nom) return string is
@@ -249,6 +263,7 @@ package body decls.d_taula_de_noms is
 		end loop;
 		
 		--QUITAR
+		hash := hash mod 1;
 		Put_Line("Valor Hash: "&hash'img);
 		
 		return hash;
@@ -257,6 +272,4 @@ package body decls.d_taula_de_noms is
 
 
 end decls.d_taula_de_noms;
-
-
 

@@ -23,29 +23,34 @@ begin
 	
 	New_Line(3);
 	tbuida(tn);
-	posa(tn,id,"nili");
+	posa_id(tn,id,"nili");
 	Put_line("Resultado nili: "&id'img);
 	Put_line("__________________");
-	posa(tn,id,"bili");
+	posa_id(tn,id,"bili");
 	Put_line("Resultado bili: "&id'img);
 	Put_line("__________________");
-	posa(tn,id,"pepua");
+	posa_id(tn,id,"pepua");
 	Put_line("Resultado pepua : "&id'img);
 	Put_line("__________________");
-	posa(tn,id,"nili");
-	Put_line("Resultado nili : "&id'img);
+	posa_str(tn,id,"mikpoya lalalal lala");
+	Put_line("Resultado mikpop: "&id'img);
 	Put_line("__________________");
-	posa(tn,id,"alvaro");
-	Put_line("Resultado alvaro : "&id'img);
-	Put_line("__________________");
-	posa(tn,id,"bili");
+	posa_id(tn,id,"bili");
 	Put_line("Resultado bili: "&id'img);
 	Put_line("__________________");
-	Put("Taula de caracters:  ");imprimir_tcar(tn,4);
+	posa_id(tn,id,"nili");
+	Put_line("Resultado nili: "&id'img);
+	Put_line("__________________");
+	posa_str(tn,id,"dome subnornal");
+	Put_line("Resultado dome sub: "&id'img);
+	
+	Put_line("__________________");
+	Put("Taula de caracters:  ");imprimir_tcar(tn,7);
 	
 	New_line;
 	New_line;
 	Put_Line(cons(tn, 0));
 	Put_Line(cons(tn, 1));
+	Put_Line(cons(tn, 3));
 	
 end compilemon;
