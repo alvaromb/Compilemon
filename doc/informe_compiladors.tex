@@ -1,0 +1,351 @@
+\documentclass[10pt]{article}
+\usepackage{ifpdf}
+\usepackage[utf8]{inputenc}
+\usepackage[catalan]{babel}
+\usepackage{makeidx}
+\usepackage{lgrind}
+\title{Compiladors, primera entrega}
+\author{José Ruiz Bravo, Biel Moyà Alcover, Álvaro Medina Ballester}
+\date{21/11/08}
+\ifpdf
+\pdfinfo {
+	/Author (José Ruiz Bravo, Biel Moyà Alcover, Álvaro Medina Ballester)
+	/Title (Compiladors, primera entrega)
+	/Subject (Compiladors, primera entrega)
+	/Keywords (compiladors, primera entrega, gramàtica, léxic)
+	/CreationDate (D:20081120195650)
+}
+\fi
+\makeindex
+\begin{document}
+	\maketitle
+	\index{Introducció}
+	\section{Introducció}
+		La pràctica de l'assignatura \textit{1470 - Processadors del Llenguatge} consisteix en
+		desenvolupar un compilador basat en el llenguatge Ada. Nosaltres hem decidit 
+		utilitzar un subconjunt d'instruccions d'Ada traduïdes al català, per crear
+		un llenguatge simple, senzill i fàcilment entendible.
+		\\
+		\\
+		En aquest document trobarem el codi font necessari per definir i utilitzar la
+		taula de noms, el codi font del lèxic del llenguatge i l'especificació de la
+		gramàtica del nostre llenguatge. Aquests documents es corresponen amb les primeres
+		etapes del desenvolupament d'un compilador: l'anàlisi lèxica i l'anàlisi 			sintàctica\footnote{L'anàlisi sintàctica es completarà en posteriors versions de la 			pràctica.}.
+	\newpage
+	\section{Anàlisi Lèxica}
+		El nostre llenguatge el definirem a partir d'una gramàtica incontextual. Mitjançant l'eina \textit{aflex}, generam el codi necessari per representar el lèxic que hem definit. Els \textit{tokens} que composen l'apartat lèxic del compilador son els següents (fitxer \textit{compilemon.l}):
+		\\
+	
+	\begin{lgrind}
+		% Remember to use the lgrind style
+
+		\Head{}
+		\File{compilemon.l}{2008}{11}{21}{13:24}{4875}
+		\L{\LB{\C{}\-\-_Macros\CE{}}}
+		\L{\LB{}}
+		\L{\LB{\V{lletra}_[\V{A}\-\V{Za}\-\V{z}]}}
+		\L{\LB{}}
+		\L{\LB{\V{digit}_[\N{0}\-\N{9}]}}
+		\L{\LB{}}
+		\L{\LB{\V{separadors}_[\2\V{n}\2\V{b}\2\V{t}\2\V{f}]}}
+		\L{\LB{}}
+		\L{\LB{\V{caracter}_\2\S{}{'}[\5\2{'}\SE{}\2\V{n}\2\V{t}]\2\S{}{'}}}
+		\L{\LB{}}
+		\L{\LB{}}
+		\L{\LB{}}
+		\L{\LB{\%\%}}
+		\L{\LB{}}
+		\L{\LB{}}
+		\L{\LB{}}
+		\L{\LB{\-\-_Paraules_clau}}
+		\L{\LB{}}
+		\L{\LB{}}
+		\L{\LB{}}
+		\L{\LB{procediment}\Tab{24}{\{mt\_pclau(tok\_begin\_line,_tok\_begin\_col,_yylval);_}}
+		\L{\LB{}\Tab{24}{return_pc\_procediment;\}_}}
+		\L{\LB{}}
+		\L{\LB{}}
+		\L{\LB{inici}\Tab{24}{\{mt\_pclau(tok\_begin\_line,_tok\_begin\_col,_yylval);_}}
+		\L{\LB{}\Tab{24}{return_pc\_inici;\}}}
+		\L{\LB{}}
+		\L{\LB{}}
+		\L{\LB{mentre}\Tab{24}{\{mt\_pclau(tok\_begin\_line,_tok\_begin\_col,_yylval);_}}
+		\L{\LB{}\Tab{24}{return_pc\_mentre;\}}}
+		\L{\LB{}}
+		\L{\LB{}}
+		\L{\LB{per}\Tab{24}{\{mt\_pclau(tok\_begin\_line,_tok\_begin\_col,_yylval);_}}
+		\L{\LB{}\Tab{24}{return_pc\_per;\}}}
+		\L{\LB{}}
+		\L{\LB{}}
+		\L{\LB{entre}\Tab{24}{\{mt\_pclau(tok\_begin\_line,_tok\_begin\_col,_yylval);_}}
+		\L{\LB{}\Tab{24}{return_pc\_entre;\}}}
+		\L{\LB{}}
+		\L{\LB{}}
+		\L{\LB{si}\Tab{24}{\{mt\_pclau(tok\_begin\_line,_tok\_begin\_col,_yylval);_}}
+		\L{\LB{}\Tab{24}{return_pc\_si;\}}}
+		\L{\LB{}}
+		\L{\LB{}}
+		\L{\LB{sino}\Tab{24}{\{mt\_pclau(tok\_begin\_line,_tok\_begin\_col,_yylval);_}}
+		\L{\LB{}\Tab{24}{return_pc\_sino;\}}}
+		\L{\LB{}}
+		\L{\LB{}}
+		\L{\LB{fi}\Tab{24}{\{mt\_pclau(tok\_begin\_line,_tok\_begin\_col,_yylval);_}}
+		\L{\LB{}\Tab{24}{return_pc\_fi;\}}}
+		\L{\LB{}}
+		\L{\LB{}}
+		\L{\LB{fer}\Tab{24}{\{mt\_pclau(tok\_begin\_line,_tok\_begin\_col,_yylval);_}}
+		\L{\LB{}\Tab{24}{return_pc\_fer;\}}}
+		\L{\LB{}}
+		\L{\LB{}}
+		\L{\LB{const}\Tab{24}{\{mt\_pclau(tok\_begin\_line,_tok\_begin\_col,_yylval);_}}
+		\L{\LB{}\Tab{24}{return_pc\_constant;\}}}
+		\L{\LB{}}
+		\L{\LB{}}
+		\L{\LB{tipus}\Tab{24}{\{mt\_pclau(tok\_begin\_line,_tok\_begin\_col,_yylval);_}}
+		\L{\LB{}\Tab{24}{return_pc\_tipus;\}}}
+		\L{\LB{}}
+		\L{\LB{}}
+		\L{\LB{coleccio}\Tab{24}{\{mt\_pclau(tok\_begin\_line,_tok\_begin\_col,_yylval);_}}
+		\L{\LB{}\Tab{24}{return_pc\_coleccio;\}}}
+		\L{\LB{}}
+		\L{\LB{}}
+		\L{\LB{registre}\Tab{24}{\{mt\_pclau(tok\_begin\_line,_tok\_begin\_col,_yylval);_}}
+		\L{\LB{}\Tab{24}{return_pc\_registre;\}}}
+		\L{\LB{}}
+		\L{\LB{}}
+		\L{\LB{es}\Tab{24}{\{mt\_pclau(tok\_begin\_line,_tok\_begin\_col,_yylval);_}}
+		\L{\LB{}\Tab{24}{return_pc\_es;\}}}
+		\L{\LB{}}
+		\L{\LB{}}
+		\L{\LB{}}
+		\L{\LB{llavors}\Tab{24}{\{mt\_pclau(tok\_begin\_line,_tok\_begin\_col,_yylval);_}}
+		\L{\LB{}\Tab{24}{return_pc\_llavors;\}}}
+		\L{\LB{}}
+		\L{\LB{}}
+		\L{\LB{no}\Tab{24}{\{mt\_pclau(tok\_begin\_line,_tok\_begin\_col,_yylval);_}}
+		\L{\LB{}\Tab{24}{return_pc\_no;\}}}
+		\L{\LB{}}
+		\L{\LB{}}
+		\L{\LB{opcio}\Tab{24}{\{mt\_pclau(tok\_begin\_line,_tok\_begin\_col,_yylval);_}}
+		\L{\LB{}\Tab{24}{return_pc\_opcio;\}}}
+		\L{\LB{}}
+		\L{\LB{}}
+		\L{\LB{casos}\Tab{24}{\{mt\_pclau(tok\_begin\_line,_tok\_begin\_col,_yylval);_}}
+		\L{\LB{}\Tab{24}{return_pc\_casos;\}}}
+		\L{\LB{}}
+		\L{\LB{}}
+		\L{\LB{entra}\Tab{24}{\{mt\_pclau(tok\_begin\_line,_tok\_begin\_col,_yylval);_}}
+		\L{\LB{}\Tab{24}{return_pc\_entra;\}}}
+		\L{\LB{}}
+		\L{\LB{}}
+		\L{\LB{surt}\Tab{24}{\{mt\_pclau(tok\_begin\_line,_tok\_begin\_col,_yylval);_}}
+		\L{\LB{}\Tab{24}{return_pc\_surt;\}}}
+		\L{\LB{}}
+		\L{\LB{}}
+		\L{\LB{nou}\Tab{24}{\{mt\_pclau(tok\_begin\_line,_tok\_begin\_col,_yylval);_}}
+		\L{\LB{}\Tab{24}{return_pc\_nou;\}}}
+		\L{\LB{}}
+		\L{\LB{}}
+		\L{\LB{nul}\Tab{24}{\{mt\_pclau(tok\_begin\_line,_tok\_begin\_col,_yylval);_}}
+		\L{\LB{}\Tab{24}{return_pc\_nul;\}}}
+		\L{\LB{}}
+		\L{\LB{}}
+		\L{\LB{de}\Tab{24}{\{mt\_pclau(tok\_begin\_line,_tok\_begin\_col,_yylval);_}}
+		\L{\LB{}\Tab{24}{return_pc\_de;\}}}
+		\L{\LB{}}
+		\L{\LB{}}
+		\L{\LB{modul}\Tab{24}{\{mt\_pclau(tok\_begin\_line,_tok\_begin\_col,_yylval);_}}
+		\L{\LB{}\Tab{24}{return_pc\_modul;\}}}
+		\L{\LB{}}
+		\L{\LB{}}
+		\L{\LB{rang}\Tab{24}{\{mt\_pclau(tok\_begin\_line,_tok\_begin\_col,_yylval);_}}
+		\L{\LB{}\Tab{24}{return_pc\_rang;\}}}
+		\L{\LB{}}
+		\L{\LB{}}
+		\L{\LB{\3\|\,\|\3}\Tab{24}{\{mt\_pclau(tok\_begin\_line,_tok\_begin\_col,_yylval);_}}
+		\L{\LB{}\Tab{24}{return_pc\_or;\}}}
+		\L{\LB{}}
+		\L{\LB{}}
+		\L{\LB{\3\&\&\3}\Tab{24}{\{mt\_pclau(tok\_begin\_line,_tok\_begin\_col,_yylval);_}}
+		\L{\LB{}\Tab{24}{return_pc\_and;\}}}
+		\L{\LB{}}
+		\L{\LB{}}
+		\L{\LB{}}
+		\L{\LB{\-\-SUBTIPUS}}
+		\L{\LB{}}
+		\L{\LB{\-\-Simbols_}}
+		\L{\LB{}}
+		\L{\LB{\3:=\3}\Tab{24}{\{mt\_simbol(tok\_begin\_line,_tok\_begin\_col,_asignacio,_yylval);_}}
+		\L{\LB{}\Tab{24}{return_s\_asignacio;\}}}
+		\L{\LB{}}
+		\L{\LB{}}
+		\L{\LB{\3:\3}\Tab{24}{\{mt\_simbol(tok\_begin\_line,_tok\_begin\_col,_dospunts,_yylval);_}}
+		\L{\LB{}\Tab{24}{return_s\_dospunts;\}}}
+		\L{\LB{}}
+		\L{\LB{}}
+		\L{\LB{\3;\3}\Tab{24}{\{mt\_simbol(tok\_begin\_line,_tok\_begin\_col,_final,_yylval);_}}
+		\L{\LB{}\Tab{24}{return_s\_final;\}}}
+		\L{\LB{}}
+		\L{\LB{}}
+		\L{\LB{\3,\3}\Tab{24}{\{mt\_simbol(tok\_begin\_line,_tok\_begin\_col,_coma,_yylval);_}}
+		\L{\LB{}\Tab{24}{return_s\_coma;\}}}
+		\L{\LB{}}
+		\L{\LB{}}
+		\L{\LB{\3(\3}\Tab{24}{\{mt\_simbol(tok\_begin\_line,_tok\_begin\_col,_parentesiobert,_yylval);}}
+		\L{\LB{}\Tab{24}{return_s\_parentesiobert;\}}}
+		\L{\LB{}}
+		\L{\LB{}}
+		\L{\LB{\3)\3}\Tab{24}{\{mt\_simbol(tok\_begin\_line,_tok\_begin\_col,_parentesitancat,_yylval);}}
+		\L{\LB{}\Tab{24}{return_s\_parentesitancat;\}}}
+		\L{\LB{}}
+		\L{\LB{}}
+		\L{\LB{}}
+		\L{\LB{\3.\,.\3}\Tab{24}{\{mt\_simbol(tok\_begin\_line,_tok\_begin\_col,_puntsrang,_yylval);_}}
+		\L{\LB{}\Tab{24}{return_s\_puntsrang;\}}}
+		\L{\LB{}}
+		\L{\LB{}}
+		\L{\LB{}}
+		\L{\LB{}}
+		\L{\LB{}}
+		\L{\LB{\-\-Operadors}}
+		\L{\LB{}}
+		\L{\LB{}}
+		\L{\LB{}}
+		\L{\LB{\3\<\3}\Tab{16}{\{mt\_operador(tok\_begin\_line,_tok\_begin\_col,_menor,_yylval);_}}
+		\L{\LB{}\Tab{16}{return_op\_menor;\}}}
+		\L{\LB{}}
+		\L{\LB{}}
+		\L{\LB{\3\<=\3}\Tab{16}{\{mt\_operador(tok\_begin\_line,_tok\_begin\_col,_menor\_igual,_yylval);}}
+		\L{\LB{}\Tab{16}{return_op\_menorigual;\}}}
+		\L{\LB{}}
+		\L{\LB{}}
+		\L{\LB{\3\>=\3}\Tab{16}{\{mt\_operador(tok\_begin\_line,_tok\_begin\_col,_major\_igual,_yylval);}}
+		\L{\LB{}\Tab{16}{return_op\_majorigual;\}}}
+		\L{\LB{}}
+		\L{\LB{}}
+		\L{\LB{\3\>\3}\Tab{16}{\{mt\_operador(tok\_begin\_line,_tok\_begin\_col,_major,_yylval);_}}
+		\L{\LB{}\Tab{16}{return_op\_major;\}}}
+		\L{\LB{}}
+		\L{\LB{}}
+		\L{\LB{\3=\3}\Tab{16}{\{mt\_operador(tok\_begin\_line,_tok\_begin\_col,_igual,_yylval);_}}
+		\L{\LB{}\Tab{16}{return_op\_igual;\}}}
+		\L{\LB{}}
+		\L{\LB{}}
+		\L{\LB{\3/=\3}\Tab{16}{\{mt\_operador(tok\_begin\_line,_tok\_begin\_col,_diferent,_yylval);_}}
+		\L{\LB{}\Tab{16}{return_op\_distint;\}}}
+		\L{\LB{}}
+		\L{\LB{}}
+		\L{\LB{\3+\3}\Tab{16}{\{mt\_operador(tok\_begin\_line,_tok\_begin\_col,_suma,_yylval);_}}
+		\L{\LB{}\Tab{16}{return_op\_suma;\}}}
+		\L{\LB{}}
+		\L{\LB{}}
+		\L{\LB{\3\-\3}\Tab{16}{\{mt\_operador(tok\_begin\_line,_tok\_begin\_col,_resta,_yylval);_}}
+		\L{\LB{}\Tab{16}{return_op\_resta;\}}}
+		\L{\LB{}}
+		\L{\LB{}}
+		\L{\LB{\3*\3}\Tab{16}{\{mt\_operador(tok\_begin\_line,_tok\_begin\_col,_multiplicacio,_yylval);}}
+		\L{\LB{}\Tab{16}{return_op\_multiplicacio;\}}}
+		\L{\LB{}}
+		\L{\LB{}}
+		\L{\LB{\3/\3}\Tab{16}{\{mt\_operador(tok\_begin\_line,_tok\_begin\_col,_divisio,_yylval);_}}
+		\L{\LB{}\Tab{16}{return_op\_divisio;\}}}
+		\L{\LB{}}
+		\L{\LB{}}
+		\L{\LB{}}
+		\L{\LB{}}
+		\L{\LB{\-\-EXPRESSIONS_REGULARS}}
+		\L{\LB{}}
+		\L{\LB{\-\-Digit}}
+		\L{\LB{}}
+		\L{\LB{\{digit\}+}\Tab{24}{\{mt\_numero(tok\_begin\_line,_tok\_begin\_col,yytext,_yylval);}}
+		\L{\LB{}\Tab{24}{return_const;\}}}
+		\L{\LB{}}
+		\L{\LB{}}
+		\L{\LB{}}
+		\L{\LB{\-\-Lletra}}
+		\L{\LB{}}
+		\L{\LB{\{caracter\}}\Tab{24}{\{mt\_caracter(tok\_begin\_line,_tok\_begin\_col,yytext,_yylval);_}}
+		\L{\LB{}\Tab{24}{return_const;\}}}
+		\L{\LB{}}
+		\L{\LB{}}
+		\L{\LB{}}
+		\L{\LB{\-\-Identificador}}
+		\L{\LB{}}
+		\L{\LB{\{lletra\}(\{digit\}\|\{lletra\})*}\Tab{24}{\{mt\_identificador(tok\_begin\_line,_tok\_begin\_col,}}
+		\L{\LB{}\Tab{56}{yytext,_yylval);_return_id;\}}}
+		\L{\LB{}}
+		\L{\LB{}}
+		\L{\LB{}}
+		\L{\LB{\-\-String}}
+		\L{\LB{}}
+		\L{\LB{\2\3[\5\2\3\2n\2t]*\2\3}\Tab{16}{\{mt\_string(tok\_begin\_line,_tok\_begin\_col,_yytext,_yylval);}}
+		\L{\LB{}\Tab{24}{return_cadena;\}}}
+		\L{\LB{}}
+		\L{\LB{}}
+		\L{\LB{}}
+		\L{\LB{\-\-Comentaris}}
+		\L{\LB{}}
+		\L{\LB{\3\-\3\3\-\3[\5\2n]*}\Tab{24}{\{null;\}}}
+		\L{\LB{}}
+		\L{\LB{}}
+		\L{\LB{}}
+		\L{\LB{\-\-Separadors}}
+		\L{\LB{}}
+		\L{\LB{\3_\3}\Tab{24}{\{null;\}}}
+		\L{\LB{}}
+		\L{\LB{}}
+		\L{\LB{\{separadors\}}\Tab{24}{\{null;\}}}
+		\L{\LB{}}
+		\L{\LB{}}
+		\L{\LB{}}
+		\L{\LB{\-\-Error}}
+		\L{\LB{}}
+		\L{\LB{.}\Tab{24}{\{return_error;\}}}
+		\L{\LB{}}
+		\L{\LB{}}
+		\L{\LB{}}
+		\L{\LB{\%\%}}
+		\L{\LB{}}
+		\L{\LB{}}
+		\L{\LB{}}
+		\L{\LB{with}\Tab{8}{decls.d\_taula\_de\_noms,}}
+		\L{\LB{}\Tab{16}{d\_atribut,}}
+		\L{\LB{}\Tab{16}{d\_token;}}
+		\L{\LB{}\Tab{16}{}}
+		\L{\LB{}}
+		\L{\LB{use}\Tab{16}{decls.d\_taula\_de\_noms,}}
+		\L{\LB{}\Tab{16}{d\_atribut,}}
+		\L{\LB{}\Tab{16}{d\_token;}}
+		\L{\LB{}}
+		\L{\LB{}}
+		\L{\LB{package_u\_lexica_is}}
+		\L{\LB{}}
+		\L{\LB{}\Tab{8}{yylval_:_atribut;}}
+		\L{\LB{}}
+		\L{\LB{}\Tab{8}{tn_:_taula\_de\_noms;}}
+		\L{\LB{}}
+		\L{\LB{}\Tab{8}{function_YYLex_return_token;}}
+		\L{\LB{}\Tab{8}{}}
+		\L{\LB{end_u\_lexica;}}
+		\L{\LB{}}
+		\L{\LB{}}
+		\L{\LB{}}
+		\L{\LB{package_body_u\_lexica_is}}
+		\L{\LB{}}
+		\L{\LB{\#\#}}
+		\L{\LB{}}
+		\L{\LB{begin}}
+		\L{\LB{}}
+		\L{\LB{}\Tab{8}{tbuida(tn);}}
+		\L{\LB{}}
+		\L{\LB{end_u\_lexica;}}
+	\end{lgrind}
+	
+	\newpage
+	\section{Estructura de dades}
+		Hem definit una estructura de dades per emmagatzemar els identificadors i el strings. Aquesta estructura de dades es coneix com a \textit{taula de noms} i es similar a la que vàrem definir a classe.
+		\\
+		
+		
+\end{document}
+
