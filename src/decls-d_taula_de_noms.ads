@@ -2,66 +2,65 @@
 --  Paquet de declaracions de la taula de noms
 -- ------------------------------------------------
 --  Versio	:	0.1
---  Autors	:	Jose Ruiz Bravo
---				Biel Moya Alcover
---				Alvaro Medina Ballester
+--  Autors	:	José Ruiz Bravo
+--				Biel Moyà Alcover
+--				Álvaro Medina Ballester
 -- ------------------------------------------------
---	Aqui una petita descripcio.
+--	Especificació de l'estructura necessaria
+-- per el maneig de la taula de noms i dels mètodes
+-- per tractar-la.
 --
 -- ------------------------------------------------
 
-with decls.dgenerals; 
-use decls.dgenerals;
-with Ada.Text_IO;
-use Ada.Text_IO;
-with Ada.Integer_text_IO;
-use Ada.Integer_text_IO;
+with 	decls.dgenerals,
+		decls.d_hash; 
+		
+use 	decls.dgenerals,
+		decls.d_hash;
+
 
 package decls.d_taula_de_noms is
 
-	--pragma(pure);
+	pragma pure;
 	
-	type taula_de_noms is  private;
+	-- Excepcions
+	E_Tids_Plena: exception;
+	E_Tcar_Plena: exception;
+	
+	type taula_de_noms is limited private;
 	
 	procedure tbuida	(tn : out taula_de_noms);
 	
-	procedure posa_id		(tn : in out taula_de_noms;  
+	procedure posa_id 	(tn : in out taula_de_noms;  
 						idn : out id_nom; 
 						nom : in string);
+	
+	procedure posa_str	(tn : in out taula_de_noms;
+						idn : out id_nom;
+						  s : in string );
 						
 	function cons		(tn : in taula_de_noms; 
 						idn : in id_nom) return string;
-	
-	procedure posa_str		(tn : in out taula_de_noms;
-						idn : out id_nom;
-						s : in string );
-						
-	
-	-- Funcio de prova
-	procedure imprimir_tcar(tn : in taula_de_noms; nparaules : integer);
-	
+								
 	
 	private
 		
-		longitut :constant integer := 40;
-		num_dispersio : constant integer := 255;
+		longitut : constant integer := 40;
 		
-		type rang_dispersio is new integer range -1 .. num_dispersio;
-		--longitut d'una paraula * nombre paraules
+		-- La longitud és el nombre de paraules * la longitud de cadascuna
 		type rang_tcar is new integer range 0 .. (longitut*max_id)-1;
-		
-		dispersio_nul :  rang_dispersio := -1;
 		
 		type t_identificador is record 
 				pos_tcar : rang_tcar;
 				 seguent : id_nom;
-			long_paraula : Natural;
-			--aixo es logic, a mes es un apany, 
-			--ja que al recorrer, el string es molt mes senzill!
+		  long_paraula : Natural;
 		end record;
 		
+		-- 'rang_dispersio' està definit a 'decls.d_hash'
 		type taula_dispersio is array (rang_dispersio) of  id_nom;
+		
 		type taula_identificadors is array (id_nom) of t_identificador;
+		
 		type taula_caracters is array (rang_tcar) of character; 
 		
 		type taula_de_noms is record
@@ -71,7 +70,6 @@ package decls.d_taula_de_noms is
 			 nid : id_nom;
 			ncar : rang_tcar;
 		end record;
-		
-		function fdisp (nom: in string) return rang_dispersio;
+					
 			
 end decls.d_taula_de_noms;		
