@@ -24,8 +24,8 @@ package decls.d_taula_de_noms is
 	pragma pure;
 	
 	-- Excepcions
-	E_Tids_Plena: exception;
-	E_Tcar_Plena: exception;
+	E_Tids_Plena : exception;
+	E_Tcar_Plena : exception;
 	
 	type taula_de_noms is limited private;
 	
@@ -53,11 +53,8 @@ package decls.d_taula_de_noms is
 		type t_identificador is record 
 				pos_tcar : rang_tcar;
 				 seguent : id_nom;
-		  long_paraula : Natural;
+		  	long_paraula : Natural;
 		end record;
-		
-		-- 'rang_dispersio' està definit a 'decls.d_hash'
-		type taula_dispersio is array (rang_dispersio) of  id_nom;
 		
 		type taula_identificadors is array (id_nom) of t_identificador;
 		
@@ -70,6 +67,10 @@ package decls.d_taula_de_noms is
 			 nid : id_nom;
 			ncar : rang_tcar;
 		end record;
+		
+		
+		-- Funció de comparació de dues paraules
+		function par_iguals (par1, par2 : in string) return boolean;		
 					
 			
 end decls.d_taula_de_noms;		

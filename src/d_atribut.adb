@@ -1,10 +1,10 @@
 -- ------------------------------------------------
 --  Paquet de procediments dels atributs
 -- ------------------------------------------------
---  Versió		:	0.1
---  Autors		:	José Ruiz Bravo
---					Biel Moyà Alcover
---					Álvaro Medina Ballester
+--  Versió	:	0.1
+--  Autors	:	José Ruiz Bravo
+--				Biel Moyà Alcover
+--				Álvaro Medina Ballester
 -- ------------------------------------------------
 --		En aquest fitxer tenim implementats les 
 --	assignacions de cada tipus de token al tipus
@@ -14,44 +14,29 @@
 --
 -- ------------------------------------------------
 
-with 	u_lexica;
+with 	u_lexica,
+		decls.tn;
 
-use  	u_lexica;
-
-package body d_atribut is
-
+use  	u_lexica,
+		decls.tn;
 		
-	procedure mt_operador (l, c: in natural; op: tipus_operacio; a: out atribut) is
-	
-	begin	
-	
-        a := (a_operacio, l, c, op);
-        
-	end mt_operador;
+
+package body d_atribut is	
 	
 	
-	
-	procedure mt_simbol (l, c: in natural; simbol: tipus_simbol; a: out atribut) is
-	
-	begin	
-	
-		a := (a_simbol, l, c,simbol);
-		
-	end mt_simbol;
-	
-	
-	
-	procedure mt_pclau (l, c: in natural; a: out atribut) is
+	procedure mt_atom (l, c : in natural; a : out atribut) is
 	
 	begin
 	
 		a := (atom, l, c);
 		
-	end mt_pclau;
+	end mt_atom;
 	
 	
 	
-	procedure mt_identificador (l, c: in natural; s: in string; a: out atribut) is
+	procedure mt_identificador (l, c : in natural; 
+									s : in string; 
+									a : out atribut) is
 	
 		id : id_nom := id_nul;
 		
@@ -64,7 +49,9 @@ package body d_atribut is
 	
 	
 	
-	procedure mt_string (l, c: in natural; s: in string; a: out atribut) is
+	procedure mt_string (l, c : in natural; 
+							 s : in string; 
+							 a : out atribut) is
 	
 		id : id_nom := id_nul;
 		
@@ -77,7 +64,9 @@ package body d_atribut is
 	
 	
 
-	procedure mt_caracter (l, c: in natural; car: in string; a: out atribut) is
+	procedure mt_caracter (l, c : in natural; 
+							 car : in string; 
+							   a : out atribut) is
 	
 	begin
 	
@@ -87,7 +76,9 @@ package body d_atribut is
 		
 		
 		
-	procedure mt_numero (l, c: in natural; i: in string; a: out atribut) is
+	procedure mt_numero (l, c : in natural; 
+							 i : in string; 
+							 a : out atribut) is
 	
 	begin
 	

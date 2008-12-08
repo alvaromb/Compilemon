@@ -1,10 +1,10 @@
 -- ------------------------------------------------
 --  Programa de prova
 -- ------------------------------------------------
---  Versió		:	0.1
---  Autors		:	José Ruiz Bravo
---					Biel Moyà Alcover
---					Álvaro Medina Ballester
+--  Versió	:	0.1
+--  Autors	:	José Ruiz Bravo
+--				Biel Moyà Alcover
+--				Álvaro Medina Ballester
 -- ------------------------------------------------
 --		Programa per comprovar les funcionalitats
 --	del lèxic i la taula de noms.
@@ -14,6 +14,7 @@
 with	Ada.Text_IO,
 		Ada.Command_Line,
 		decls.d_taula_de_noms,
+		decls.tn,
 		decls.dgenerals,
 		d_token,
 		compilemon_io,
@@ -22,6 +23,7 @@ with	Ada.Text_IO,
 use		Ada.Text_IO,
 		Ada.Command_Line,
 		decls.d_taula_de_noms,
+		decls.tn,
 		decls.dgenerals,
 		d_token,
 		compilemon_io,
@@ -34,12 +36,14 @@ procedure compilemon is
 	
 begin
 
+	tbuida(tn);--NECESARIO?!
+
 	Open_Input(Argument(1));
 	Tk := Yylex;
 	
 	while tk /= end_of_input loop
 		Put_Line(Token'Image(Tk));
-		Tk:= Yylex;
+		Tk := Yylex;
 	end loop;
    
    Close_Input;

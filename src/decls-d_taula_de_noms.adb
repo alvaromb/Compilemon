@@ -1,10 +1,10 @@
 -- ------------------------------------------------
 --  Paquet de declaracions de la taula de noms
 -- ------------------------------------------------
---  Versió		:	0.1
---  Autors		:	José Ruiz Bravo
---					Biel Moyà Alcover
---					Álvaro Medina Ballester
+--  Versió	:	0.2
+--  Autors	:	José Ruiz Bravo
+--				Biel Moyà Alcover
+--				Álvaro Medina Ballester
 -- ------------------------------------------------
 --		Implementació dels procediments per al
 --	tractament de la taula de noms:
@@ -15,6 +15,11 @@
 --			- Consulta
 --
 -- ------------------------------------------------
+
+--PRUEBA
+--with Ada.Text_IO;
+--use Ada.Text_IO;
+
 
 package body decls.d_taula_de_noms is
 
@@ -28,42 +33,69 @@ package body decls.d_taula_de_noms is
 			tn.td(i) := id_nul;
 		end loop;
 		
-		for i in tn.tid'range loop
-			tn.tid(i).pos_tcar := 0;
-			tn.tid(i).seguent := id_nul; 
-			tn.tid(i).long_paraula 	:= 0;
-		end loop;
-		
-		for i in tn.tc'range loop
-			tn.tc(i) := '$';
-		end loop;
-		
 		tn.nid := 0;
 		tn.ncar := 0;
 		
+		tn.tid(0).seguent := id_nul;
+		
 	end tbuida;
 	
+	
+	
+	function par_iguals (par1, par2 : in string) return boolean is
+	
+		it_p1 : integer;
+		it_p2 : integer;
+		
+	begin
+			
+		if par1'Length = par2'Length then
+			
+			it_p1 := par1'First;
+			it_p2 := par2'First;
+						
+			while it_p1 < par2'Length and par2(it_p2) = par1(it_p1) loop
+				it_p1 := it_p1 + 1;
+				it_p2 := it_p2 + 1;
+			end loop;
+	
+			if par1(it_p1) = par2(it_p2) then
+				return true;
+			end if;
+			
+		end if;
+		
+		return false;
+	
+	end par_iguals;
+		
 
 
-	procedure posa_id (tn : in out taula_de_noms;  idn : out id_nom; nom : in string) is
+	procedure posa_id 	(tn : in out taula_de_noms; 
+					   	idn : out id_nom; 
+					   	nom : in string) is
 		
 		-- Variable per el valor de la funció de dispersió.
-		p_tid : rang_dispersio := 0;
+		p_tid : rang_dispersio;
 		
-		-- Índex per recorrer la taula d'identificadors.
-		idx : id_nom ; 
+		-- Índexos per recorrer la taula d'identificadors.
+		idx : id_nom;
+		idx_ant: id_nom; 
 		
 		-- Índex per recorrer la taula de caracters.
 		jdx : rang_tcar; 
 		
-		p_car : rang_tcar := 0;
-		rec : Natural:= 1;
-		
-		iguals : boolean := false;
-		seguent : boolean := true;
+		p : taula_identificadors renames tn.tid;
 		
 	begin
 	
+		p_tid := fdisp_tn(nom);
+		
+		--prueba
+--		New_Line;
+--		Put_Line("Fhash : "&p_tid'img);
+		
+		-- Control d'errors
 		if tn.nid = id_nul then
 			raise E_Tids_Plena;
 		end if;
@@ -71,94 +103,78 @@ package body decls.d_taula_de_noms is
 		if (tn.ncar + nom'Length) > rang_tcar'Last then
 			raise E_Tcar_Plena;
 		end if;
-	
-		p_tid :=  fdisp_tn(nom);
-		
-		-- Si es la primera vegada que la funcio de dispersió
-		-- ens dona aquest valor, asignam a aquesta posició el
-		-- darrer lloc de la taula d'identificadors.
-		if tn.td(p_tid) = id_nul then 
-		
-			tn.td(p_tid):=tn.nid; 
-			idx:=tn.nid;
-			
-		-- Sino, cercam la primera posicio buida a través 
-		-- del camp seguent.
-		else
-		
-			idx := tn.td(p_tid);
-			
-			while seguent and not iguals loop
-				
-				if tn.tid(idx).long_paraula = nom'Length then
-				
-					p_car := tn.tid(idx).pos_tcar;
-						
-					while  rec < tn.tid(idx).long_paraula  and tn.tc(p_car) = nom(rec) loop
-						p_car := p_car+1;
-						rec := rec+1;
-					end loop;
-					
-					if tn.tc(p_car) = nom(rec) then
-						idn := idx;
-						iguals := true;
-					end if;
-					
-				end if;
-				
-				if not iguals and tn.tid(idx).seguent = id_nul then
-					
-					seguent := false;
-					tn.tid(idx).seguent := tn.nid;
-					idx := tn.nid;
-					
-				elsif not iguals  and tn.tid(idx).seguent /= id_nul then
-				 
-					 idx := tn.tid(idx).seguent ;
-				 
-				end if;
-							
-			end loop;
-			
+
+		if tn.td(p_tid) = id_nul then
+			tn.td(p_tid) := tn.nid;
 		end if;
 		
+		idx := tn.td(p_tid);
 		
-		if not iguals then
+		--PRUEBA
+--		Put_Line("cons "&cons(tn, idx)&" idx "&idx'Img);
+
+		while idx /= id_nul and then not par_iguals(nom, cons(tn, idx)) loop
+			 
+			 if p(idx).seguent = id_nul then
+				idx_ant := idx;
+			 end if;
+			 
+			 idx := p(idx).seguent;	 
 			
+		end loop;
+		
+		if idx = id_nul then
+
 			idn := tn.nid;
+			tn.tid(idx_ant).seguent := idn;
 			
-			if tn.nid = id_nom'Last then
-				tn.nid := id_nul;
-			else 
+			-- Comprovació errors TITO LLEMO PROBLEM ?
+--			if tn.nid = id_nom'Last then
+--				tn.nid := id_nul;
+--			else 
 				tn.nid := tn.nid + 1;
-			end if;
+--			end if;
 			
 			-- Apuntam a la primera posicio buida de la taula de caracters
 			tn.tid(idn).pos_tcar := tn.ncar; 
 			tn.tid(idn).long_paraula := nom'Length;
+			tn.tid(idn).seguent := id_nul;
 			
 			-- Omplim la taula de caracters, desde la primera 
 			-- posicio lliure 'ncar'.
 			jdx := tn.ncar;
 			
 			for i in 1..nom'Length loop
-				
 				tn.tc(jdx) := nom(i);
 				jdx := jdx + 1;
-				
 			end loop;
+			
+			jdx := jdx + 1;
+			tn.tc(jdx) := '$';
 			
 			-- Apuntam a la primera posicio lliure de la taula 
 			-- de caracters.
 			tn.ncar := jdx+1; 
-		
+			
+		else
+			idn := idx;
+			
 		end if;
+		
+--		-- PRUEBA
+--		Put_Line("idn = "&idn'Img);
+--		for i in 0..50 loop
+--			put(tn.tc(rang_tcar(i)));
+--		end loop;
+--		--PRUEBA
 		
 	end posa_id;
 	
 	
 	
-	procedure posa_str (tn : in out taula_de_noms; idn : out id_nom; s : in string) is
+	procedure posa_str 	(tn : in out taula_de_noms; 
+							idn : out id_nom; 
+							  s : in string) is
 	
 		-- Índex per recorrer la taula de caracters.
 		jdx : rang_tcar; 
@@ -198,12 +214,11 @@ package body decls.d_taula_de_noms is
 	
 	
 	
-	
 	function cons (tn : in taula_de_noms; idn : in id_nom) return string is
 		
 	begin
 	
-		return String(tn.tc(tn.tid(idn).pos_tcar .. tn.tid(idn).pos_tcar+rang_tcar(tn.tid(idn).long_paraula)-1));
+		return string(tn.tc(tn.tid(idn).pos_tcar .. tn.tid(idn).pos_tcar+rang_tcar(tn.tid(idn).long_paraula)-1));
 		
 	end cons;				
 				

@@ -1,10 +1,10 @@
 -- ------------------------------------------------
 --  Paquet de declaracions dels tokens
 -- ------------------------------------------------
---  Versió		:	0.1
---  Autors		:	José Ruiz Bravo
---					Biel Moyà Alcover
---					Álvaro Medina Ballester
+--  Versió	:	0.1
+--  Autors	:	José Ruiz Bravo
+--				Biel Moyà Alcover
+--				Álvaro Medina Ballester
 -- ------------------------------------------------
 --		Definició del tipus token.
 --
