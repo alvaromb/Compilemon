@@ -4,6 +4,47 @@
 \usepackage[catalan]{babel}
 \usepackage{makeidx}
 \usepackage{lgrind}
+\usepackage{color}
+\definecolor{gray97}{gray}{.97}
+\definecolor{gray75}{gray}{.75}
+\definecolor{gray45}{gray}{.45}
+
+\usepackage{listings}
+\lstset{ frame=Ltb,
+     framerule=0pt,
+     aboveskip=0.5cm,
+     framextopmargin=3pt,
+     framexbottommargin=3pt,
+     framexleftmargin=0.4cm,
+     framesep=0pt,
+     rulesep=.4pt,
+     backgroundcolor=\color{gray97},
+     rulesepcolor=\color{black},
+     stringstyle=\ttfamily,
+     showstringspaces = false,
+     basicstyle=\small\ttfamily,
+     commentstyle=\color{gray45},
+     keywordstyle=\color{blue},
+     numbers=left,
+     numbersep=15pt,
+     numberstyle=\tiny,
+     numberfirstline = false,
+     breaklines=true,
+   }
+ 
+% minimizar fragmentado de listados
+\lstnewenvironment{listing}[1][]
+   {\lstset{#1}\pagebreak[0]}{\pagebreak[0]}
+ 
+\lstdefinestyle{consola}
+   {basicstyle=\scriptsize\bf\ttfamily,
+    backgroundcolor=\color{gray75},
+   }
+ 
+\lstdefinestyle{Ada}
+   {language=Ada,
+   }
+
 \title{Compiladors, primera entrega}
 \author{José Ruiz Bravo, Biel Moyà Alcover, Álvaro Medina Ballester}
 \date{21/11/08}
@@ -36,315 +77,93 @@
 		El nostre llenguatge el definirem a partir d'una gramàtica incontextual. Mitjançant l'eina \textit{aflex}, generam el codi necessari per representar el lèxic que hem definit. Els \textit{tokens} que composen l'apartat lèxic del compilador son els següents (fitxer \textit{compilemon.l}):
 		\\
 	
-	\begin{lgrind}
-		% Remember to use the lgrind style
-
-		\Head{}
-		\File{compilemon.l}{2008}{11}{21}{13:24}{4875}
-		\L{\LB{\C{}\-\-_Macros\CE{}}}
-		\L{\LB{}}
-		\L{\LB{\V{lletra}_[\V{A}\-\V{Za}\-\V{z}]}}
-		\L{\LB{}}
-		\L{\LB{\V{digit}_[\N{0}\-\N{9}]}}
-		\L{\LB{}}
-		\L{\LB{\V{separadors}_[\2\V{n}\2\V{b}\2\V{t}\2\V{f}]}}
-		\L{\LB{}}
-		\L{\LB{\V{caracter}_\2\S{}{'}[\5\2{'}\SE{}\2\V{n}\2\V{t}]\2\S{}{'}}}
-		\L{\LB{}}
-		\L{\LB{}}
-		\L{\LB{}}
-		\L{\LB{\%\%}}
-		\L{\LB{}}
-		\L{\LB{}}
-		\L{\LB{}}
-		\L{\LB{\-\-_Paraules_clau}}
-		\L{\LB{}}
-		\L{\LB{}}
-		\L{\LB{}}
-		\L{\LB{procediment}\Tab{24}{\{mt\_pclau(tok\_begin\_line,_tok\_begin\_col,_yylval);_}}
-		\L{\LB{}\Tab{24}{return_pc\_procediment;\}_}}
-		\L{\LB{}}
-		\L{\LB{}}
-		\L{\LB{inici}\Tab{24}{\{mt\_pclau(tok\_begin\_line,_tok\_begin\_col,_yylval);_}}
-		\L{\LB{}\Tab{24}{return_pc\_inici;\}}}
-		\L{\LB{}}
-		\L{\LB{}}
-		\L{\LB{mentre}\Tab{24}{\{mt\_pclau(tok\_begin\_line,_tok\_begin\_col,_yylval);_}}
-		\L{\LB{}\Tab{24}{return_pc\_mentre;\}}}
-		\L{\LB{}}
-		\L{\LB{}}
-		\L{\LB{per}\Tab{24}{\{mt\_pclau(tok\_begin\_line,_tok\_begin\_col,_yylval);_}}
-		\L{\LB{}\Tab{24}{return_pc\_per;\}}}
-		\L{\LB{}}
-		\L{\LB{}}
-		\L{\LB{entre}\Tab{24}{\{mt\_pclau(tok\_begin\_line,_tok\_begin\_col,_yylval);_}}
-		\L{\LB{}\Tab{24}{return_pc\_entre;\}}}
-		\L{\LB{}}
-		\L{\LB{}}
-		\L{\LB{si}\Tab{24}{\{mt\_pclau(tok\_begin\_line,_tok\_begin\_col,_yylval);_}}
-		\L{\LB{}\Tab{24}{return_pc\_si;\}}}
-		\L{\LB{}}
-		\L{\LB{}}
-		\L{\LB{sino}\Tab{24}{\{mt\_pclau(tok\_begin\_line,_tok\_begin\_col,_yylval);_}}
-		\L{\LB{}\Tab{24}{return_pc\_sino;\}}}
-		\L{\LB{}}
-		\L{\LB{}}
-		\L{\LB{fi}\Tab{24}{\{mt\_pclau(tok\_begin\_line,_tok\_begin\_col,_yylval);_}}
-		\L{\LB{}\Tab{24}{return_pc\_fi;\}}}
-		\L{\LB{}}
-		\L{\LB{}}
-		\L{\LB{fer}\Tab{24}{\{mt\_pclau(tok\_begin\_line,_tok\_begin\_col,_yylval);_}}
-		\L{\LB{}\Tab{24}{return_pc\_fer;\}}}
-		\L{\LB{}}
-		\L{\LB{}}
-		\L{\LB{const}\Tab{24}{\{mt\_pclau(tok\_begin\_line,_tok\_begin\_col,_yylval);_}}
-		\L{\LB{}\Tab{24}{return_pc\_constant;\}}}
-		\L{\LB{}}
-		\L{\LB{}}
-		\L{\LB{tipus}\Tab{24}{\{mt\_pclau(tok\_begin\_line,_tok\_begin\_col,_yylval);_}}
-		\L{\LB{}\Tab{24}{return_pc\_tipus;\}}}
-		\L{\LB{}}
-		\L{\LB{}}
-		\L{\LB{coleccio}\Tab{24}{\{mt\_pclau(tok\_begin\_line,_tok\_begin\_col,_yylval);_}}
-		\L{\LB{}\Tab{24}{return_pc\_coleccio;\}}}
-		\L{\LB{}}
-		\L{\LB{}}
-		\L{\LB{registre}\Tab{24}{\{mt\_pclau(tok\_begin\_line,_tok\_begin\_col,_yylval);_}}
-		\L{\LB{}\Tab{24}{return_pc\_registre;\}}}
-		\L{\LB{}}
-		\L{\LB{}}
-		\L{\LB{es}\Tab{24}{\{mt\_pclau(tok\_begin\_line,_tok\_begin\_col,_yylval);_}}
-		\L{\LB{}\Tab{24}{return_pc\_es;\}}}
-		\L{\LB{}}
-		\L{\LB{}}
-		\L{\LB{}}
-		\L{\LB{llavors}\Tab{24}{\{mt\_pclau(tok\_begin\_line,_tok\_begin\_col,_yylval);_}}
-		\L{\LB{}\Tab{24}{return_pc\_llavors;\}}}
-		\L{\LB{}}
-		\L{\LB{}}
-		\L{\LB{no}\Tab{24}{\{mt\_pclau(tok\_begin\_line,_tok\_begin\_col,_yylval);_}}
-		\L{\LB{}\Tab{24}{return_pc\_no;\}}}
-		\L{\LB{}}
-		\L{\LB{}}
-		\L{\LB{opcio}\Tab{24}{\{mt\_pclau(tok\_begin\_line,_tok\_begin\_col,_yylval);_}}
-		\L{\LB{}\Tab{24}{return_pc\_opcio;\}}}
-		\L{\LB{}}
-		\L{\LB{}}
-		\L{\LB{casos}\Tab{24}{\{mt\_pclau(tok\_begin\_line,_tok\_begin\_col,_yylval);_}}
-		\L{\LB{}\Tab{24}{return_pc\_casos;\}}}
-		\L{\LB{}}
-		\L{\LB{}}
-		\L{\LB{entra}\Tab{24}{\{mt\_pclau(tok\_begin\_line,_tok\_begin\_col,_yylval);_}}
-		\L{\LB{}\Tab{24}{return_pc\_entra;\}}}
-		\L{\LB{}}
-		\L{\LB{}}
-		\L{\LB{surt}\Tab{24}{\{mt\_pclau(tok\_begin\_line,_tok\_begin\_col,_yylval);_}}
-		\L{\LB{}\Tab{24}{return_pc\_surt;\}}}
-		\L{\LB{}}
-		\L{\LB{}}
-		\L{\LB{nou}\Tab{24}{\{mt\_pclau(tok\_begin\_line,_tok\_begin\_col,_yylval);_}}
-		\L{\LB{}\Tab{24}{return_pc\_nou;\}}}
-		\L{\LB{}}
-		\L{\LB{}}
-		\L{\LB{nul}\Tab{24}{\{mt\_pclau(tok\_begin\_line,_tok\_begin\_col,_yylval);_}}
-		\L{\LB{}\Tab{24}{return_pc\_nul;\}}}
-		\L{\LB{}}
-		\L{\LB{}}
-		\L{\LB{de}\Tab{24}{\{mt\_pclau(tok\_begin\_line,_tok\_begin\_col,_yylval);_}}
-		\L{\LB{}\Tab{24}{return_pc\_de;\}}}
-		\L{\LB{}}
-		\L{\LB{}}
-		\L{\LB{modul}\Tab{24}{\{mt\_pclau(tok\_begin\_line,_tok\_begin\_col,_yylval);_}}
-		\L{\LB{}\Tab{24}{return_pc\_modul;\}}}
-		\L{\LB{}}
-		\L{\LB{}}
-		\L{\LB{rang}\Tab{24}{\{mt\_pclau(tok\_begin\_line,_tok\_begin\_col,_yylval);_}}
-		\L{\LB{}\Tab{24}{return_pc\_rang;\}}}
-		\L{\LB{}}
-		\L{\LB{}}
-		\L{\LB{\3\|\,\|\3}\Tab{24}{\{mt\_pclau(tok\_begin\_line,_tok\_begin\_col,_yylval);_}}
-		\L{\LB{}\Tab{24}{return_pc\_or;\}}}
-		\L{\LB{}}
-		\L{\LB{}}
-		\L{\LB{\3\&\&\3}\Tab{24}{\{mt\_pclau(tok\_begin\_line,_tok\_begin\_col,_yylval);_}}
-		\L{\LB{}\Tab{24}{return_pc\_and;\}}}
-		\L{\LB{}}
-		\L{\LB{}}
-		\L{\LB{}}
-		\L{\LB{\-\-SUBTIPUS}}
-		\L{\LB{}}
-		\L{\LB{\-\-Simbols_}}
-		\L{\LB{}}
-		\L{\LB{\3:=\3}\Tab{24}{\{mt\_simbol(tok\_begin\_line,_tok\_begin\_col,_asignacio,_yylval);_}}
-		\L{\LB{}\Tab{24}{return_s\_asignacio;\}}}
-		\L{\LB{}}
-		\L{\LB{}}
-		\L{\LB{\3:\3}\Tab{24}{\{mt\_simbol(tok\_begin\_line,_tok\_begin\_col,_dospunts,_yylval);_}}
-		\L{\LB{}\Tab{24}{return_s\_dospunts;\}}}
-		\L{\LB{}}
-		\L{\LB{}}
-		\L{\LB{\3;\3}\Tab{24}{\{mt\_simbol(tok\_begin\_line,_tok\_begin\_col,_final,_yylval);_}}
-		\L{\LB{}\Tab{24}{return_s\_final;\}}}
-		\L{\LB{}}
-		\L{\LB{}}
-		\L{\LB{\3,\3}\Tab{24}{\{mt\_simbol(tok\_begin\_line,_tok\_begin\_col,_coma,_yylval);_}}
-		\L{\LB{}\Tab{24}{return_s\_coma;\}}}
-		\L{\LB{}}
-		\L{\LB{}}
-		\L{\LB{\3(\3}\Tab{24}{\{mt\_simbol(tok\_begin\_line,_tok\_begin\_col,_parentesiobert,_yylval);}}
-		\L{\LB{}\Tab{24}{return_s\_parentesiobert;\}}}
-		\L{\LB{}}
-		\L{\LB{}}
-		\L{\LB{\3)\3}\Tab{24}{\{mt\_simbol(tok\_begin\_line,_tok\_begin\_col,_parentesitancat,_yylval);}}
-		\L{\LB{}\Tab{24}{return_s\_parentesitancat;\}}}
-		\L{\LB{}}
-		\L{\LB{}}
-		\L{\LB{}}
-		\L{\LB{\3.\,.\3}\Tab{24}{\{mt\_simbol(tok\_begin\_line,_tok\_begin\_col,_puntsrang,_yylval);_}}
-		\L{\LB{}\Tab{24}{return_s\_puntsrang;\}}}
-		\L{\LB{}}
-		\L{\LB{}}
-		\L{\LB{}}
-		\L{\LB{}}
-		\L{\LB{}}
-		\L{\LB{\-\-Operadors}}
-		\L{\LB{}}
-		\L{\LB{}}
-		\L{\LB{}}
-		\L{\LB{\3\<\3}\Tab{16}{\{mt\_operador(tok\_begin\_line,_tok\_begin\_col,_menor,_yylval);_}}
-		\L{\LB{}\Tab{16}{return_op\_menor;\}}}
-		\L{\LB{}}
-		\L{\LB{}}
-		\L{\LB{\3\<=\3}\Tab{16}{\{mt\_operador(tok\_begin\_line,_tok\_begin\_col,_menor\_igual,_yylval);}}
-		\L{\LB{}\Tab{16}{return_op\_menorigual;\}}}
-		\L{\LB{}}
-		\L{\LB{}}
-		\L{\LB{\3\>=\3}\Tab{16}{\{mt\_operador(tok\_begin\_line,_tok\_begin\_col,_major\_igual,_yylval);}}
-		\L{\LB{}\Tab{16}{return_op\_majorigual;\}}}
-		\L{\LB{}}
-		\L{\LB{}}
-		\L{\LB{\3\>\3}\Tab{16}{\{mt\_operador(tok\_begin\_line,_tok\_begin\_col,_major,_yylval);_}}
-		\L{\LB{}\Tab{16}{return_op\_major;\}}}
-		\L{\LB{}}
-		\L{\LB{}}
-		\L{\LB{\3=\3}\Tab{16}{\{mt\_operador(tok\_begin\_line,_tok\_begin\_col,_igual,_yylval);_}}
-		\L{\LB{}\Tab{16}{return_op\_igual;\}}}
-		\L{\LB{}}
-		\L{\LB{}}
-		\L{\LB{\3/=\3}\Tab{16}{\{mt\_operador(tok\_begin\_line,_tok\_begin\_col,_diferent,_yylval);_}}
-		\L{\LB{}\Tab{16}{return_op\_distint;\}}}
-		\L{\LB{}}
-		\L{\LB{}}
-		\L{\LB{\3+\3}\Tab{16}{\{mt\_operador(tok\_begin\_line,_tok\_begin\_col,_suma,_yylval);_}}
-		\L{\LB{}\Tab{16}{return_op\_suma;\}}}
-		\L{\LB{}}
-		\L{\LB{}}
-		\L{\LB{\3\-\3}\Tab{16}{\{mt\_operador(tok\_begin\_line,_tok\_begin\_col,_resta,_yylval);_}}
-		\L{\LB{}\Tab{16}{return_op\_resta;\}}}
-		\L{\LB{}}
-		\L{\LB{}}
-		\L{\LB{\3*\3}\Tab{16}{\{mt\_operador(tok\_begin\_line,_tok\_begin\_col,_multiplicacio,_yylval);}}
-		\L{\LB{}\Tab{16}{return_op\_multiplicacio;\}}}
-		\L{\LB{}}
-		\L{\LB{}}
-		\L{\LB{\3/\3}\Tab{16}{\{mt\_operador(tok\_begin\_line,_tok\_begin\_col,_divisio,_yylval);_}}
-		\L{\LB{}\Tab{16}{return_op\_divisio;\}}}
-		\L{\LB{}}
-		\L{\LB{}}
-		\L{\LB{}}
-		\L{\LB{}}
-		\L{\LB{\-\-EXPRESSIONS_REGULARS}}
-		\L{\LB{}}
-		\L{\LB{\-\-Digit}}
-		\L{\LB{}}
-		\L{\LB{\{digit\}+}\Tab{24}{\{mt\_numero(tok\_begin\_line,_tok\_begin\_col,yytext,_yylval);}}
-		\L{\LB{}\Tab{24}{return_const;\}}}
-		\L{\LB{}}
-		\L{\LB{}}
-		\L{\LB{}}
-		\L{\LB{\-\-Lletra}}
-		\L{\LB{}}
-		\L{\LB{\{caracter\}}\Tab{24}{\{mt\_caracter(tok\_begin\_line,_tok\_begin\_col,yytext,_yylval);_}}
-		\L{\LB{}\Tab{24}{return_const;\}}}
-		\L{\LB{}}
-		\L{\LB{}}
-		\L{\LB{}}
-		\L{\LB{\-\-Identificador}}
-		\L{\LB{}}
-		\L{\LB{\{lletra\}(\{digit\}\|\{lletra\})*}\Tab{24}{\{mt\_identificador(tok\_begin\_line,_tok\_begin\_col,}}
-		\L{\LB{}\Tab{56}{yytext,_yylval);_return_id;\}}}
-		\L{\LB{}}
-		\L{\LB{}}
-		\L{\LB{}}
-		\L{\LB{\-\-String}}
-		\L{\LB{}}
-		\L{\LB{\2\3[\5\2\3\2n\2t]*\2\3}\Tab{16}{\{mt\_string(tok\_begin\_line,_tok\_begin\_col,_yytext,_yylval);}}
-		\L{\LB{}\Tab{24}{return_cadena;\}}}
-		\L{\LB{}}
-		\L{\LB{}}
-		\L{\LB{}}
-		\L{\LB{\-\-Comentaris}}
-		\L{\LB{}}
-		\L{\LB{\3\-\3\3\-\3[\5\2n]*}\Tab{24}{\{null;\}}}
-		\L{\LB{}}
-		\L{\LB{}}
-		\L{\LB{}}
-		\L{\LB{\-\-Separadors}}
-		\L{\LB{}}
-		\L{\LB{\3_\3}\Tab{24}{\{null;\}}}
-		\L{\LB{}}
-		\L{\LB{}}
-		\L{\LB{\{separadors\}}\Tab{24}{\{null;\}}}
-		\L{\LB{}}
-		\L{\LB{}}
-		\L{\LB{}}
-		\L{\LB{\-\-Error}}
-		\L{\LB{}}
-		\L{\LB{.}\Tab{24}{\{return_error;\}}}
-		\L{\LB{}}
-		\L{\LB{}}
-		\L{\LB{}}
-		\L{\LB{\%\%}}
-		\L{\LB{}}
-		\L{\LB{}}
-		\L{\LB{}}
-		\L{\LB{with}\Tab{8}{decls.d\_taula\_de\_noms,}}
-		\L{\LB{}\Tab{16}{d\_atribut,}}
-		\L{\LB{}\Tab{16}{d\_token;}}
-		\L{\LB{}\Tab{16}{}}
-		\L{\LB{}}
-		\L{\LB{use}\Tab{16}{decls.d\_taula\_de\_noms,}}
-		\L{\LB{}\Tab{16}{d\_atribut,}}
-		\L{\LB{}\Tab{16}{d\_token;}}
-		\L{\LB{}}
-		\L{\LB{}}
-		\L{\LB{package_u\_lexica_is}}
-		\L{\LB{}}
-		\L{\LB{}\Tab{8}{yylval_:_atribut;}}
-		\L{\LB{}}
-		\L{\LB{}\Tab{8}{tn_:_taula\_de\_noms;}}
-		\L{\LB{}}
-		\L{\LB{}\Tab{8}{function_YYLex_return_token;}}
-		\L{\LB{}\Tab{8}{}}
-		\L{\LB{end_u\_lexica;}}
-		\L{\LB{}}
-		\L{\LB{}}
-		\L{\LB{}}
-		\L{\LB{package_body_u\_lexica_is}}
-		\L{\LB{}}
-		\L{\LB{\#\#}}
-		\L{\LB{}}
-		\L{\LB{begin}}
-		\L{\LB{}}
-		\L{\LB{}\Tab{8}{tbuida(tn);}}
-		\L{\LB{}}
-		\L{\LB{end_u\_lexica;}}
-	\end{lgrind}
+	% Codigo del análisis léxico
+	\lgrindfile{compilemon.l.tex}
 	
 	\newpage
 	\section{Estructura de dades}
 		Hem definit una estructura de dades per emmagatzemar els identificadors i el strings. Aquesta estructura de dades es coneix com a \textit{taula de noms} i es similar a la que vàrem definir a classe.
 		\\
+		
+	% Código de decls-d_taula_de_noms.ads
+	\begin{lstlisting}[style=Ada]
+-- ------------------------------------------------
+--  Paquet de declaracions de la taula de noms
+-- ------------------------------------------------
+--  Versio	:	0.1
+--  Autors	:	Jose Ruiz Bravo
+--			Biel Moya Alcover
+--			Alvaro Medina Ballester
+-- ------------------------------------------------
+--	Especificacio de l'estructura necessaria
+-- per el maneig de la taula de noms i dels metodes
+-- per tractar-la.
+--
+-- ------------------------------------------------
+
+with 	decls.dgenerals,
+	decls.d_hash; 
+	
+use 	decls.dgenerals,
+	decls.d_hash;
+
+
+package decls.d_taula_de_noms is
+
+	pragma pure;
+
+	-- Excepcions
+	E_Tids_Plena : exception;
+	E_Tcar_Plena : exception;
+
+	type taula_de_noms is limited private;
+
+	procedure tbuida	(tn : out taula_de_noms);
+
+	procedure posa_id 	(tn : in out taula_de_noms;  
+				idn : out id_nom; 
+				nom : in string);
+
+	procedure posa_str	(tn : in out taula_de_noms;
+				idn : out id_nom;
+				  s : in string );
+					
+	function cons		(tn : in taula_de_noms; 
+				idn : in id_nom) return string;
+							
+
+	private
+	
+		longitut : constant integer := 40;
+	
+		-- La longitud es el nombre de paraules * la longitud de cadascuna
+		type rang_tcar is new integer range 0 .. (longitut*max_id)-1;
+	
+		type t_identificador is record 
+			pos_tcar : rang_tcar;
+			 seguent : id_nom;	  	
+                    long_paraula : Natural;
+		end record;
+	
+		type taula_identificadors is array (id_nom) of t_identificador;
+	
+		type taula_caracters is array (rang_tcar) of character; 
+	
+		type taula_de_noms is record
+			  td : taula_dispersio;
+			 tid : taula_identificadors;
+			  tc : taula_caracters;
+			 nid : id_nom;
+			ncar : rang_tcar;
+		end record;
+	
+	
+		-- Funcio de comparacio de dues paraules
+		function par_iguals (par1, par2 : in string) return boolean;		
+				
+		
+end decls.d_taula_de_noms;		
+	\end{lstlisting}
 		
 		
 \end{document}
