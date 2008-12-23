@@ -18,11 +18,12 @@ package decls.dgenerals is
 	
 	type id_nom is new integer range -1 .. max_id-1;
 	
+	
 	-- Valor nul per al tipus id_nom
 	id_nul : constant id_nom := -1;
 	
 	-- Tipus per la taula de dispersió de la taula de noms:
-	tam_dispersio : constant integer := 5519;
+	tam_dispersio : constant integer := 101; -- Modificado el nº de dispersion no puede ser tan grande
 	type rang_dispersio is new integer range -1 .. tam_dispersio;
 	
 	-- Valor nul per el rang dispersió.

@@ -36,11 +36,15 @@ package decls.d_taula_de_noms is
 						nom : in string);
 	
 	procedure posa_str	(tn : in out taula_de_noms;
-						idn : out id_nom;
+						ids : out id_string;
 						  s : in string );
 						
-	function cons		(tn : in taula_de_noms; 
+	function cons_nom	(tn : in taula_de_noms; 
 						idn : in id_nom) return string;
+						
+	
+	function cons_str	(tn : in taula_de_noms; 
+						ids : in id_string) return string;
 								
 	
 	private
@@ -55,6 +59,8 @@ package decls.d_taula_de_noms is
 				 seguent : id_nom;
 		  	long_paraula : Natural;
 		end record;
+		
+		type id_string is new integer range rang_tcar;
 		
 		type taula_identificadors is array (id_nom) of t_identificador;
 		

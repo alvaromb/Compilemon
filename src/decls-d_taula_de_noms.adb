@@ -173,33 +173,23 @@ package body decls.d_taula_de_noms is
 	
 	
 	procedure posa_str 	(tn : in out taula_de_noms; 
-							idn : out id_nom; 
+							ids : out id_string; 
 							  s : in string) is
 	
-		-- Índex per recorrer la taula de caracters.
+		-- Index per recorrer la taula de caracters.
 		jdx : rang_tcar; 
 		
 	begin
-		
-		if tn.nid = id_nul then
-			raise E_Tids_Plena;
-		end if;
-		
+
+		-- Excepcio per a controlar tc plena
 		if (tn.ncar + s'Length) > rang_tcar'Last then
 			raise E_Tcar_Plena;
 		end if;
 	
-		-- Primera posició buida de la taula d'identificadors.
-		idn := tn.nid;
-		
-		tn.nid := tn.nid+1; 
-		tn.tid(idn).long_paraula := s'Length;
-		tn.tid(idn).pos_tcar := tn.ncar;
-		
-		
 		-- Omplim la taula de caracters, desde la primera 
 		-- posicio lliure 'ncar'.
 		jdx := tn.ncar;
+		ids := tn.ncar;
 		
 		for i in 1..s'Length loop
 				
@@ -209,18 +199,39 @@ package body decls.d_taula_de_noms is
 		end loop;
 		
 		tn.ncar := jdx+1;
-		
+		tn.tc(jdx) := '$';
+
+	
 	end posa_str;
 	
 	
 	
-	function cons (tn : in taula_de_noms; idn : in id_nom) return string is
+	function cons_nom (tn : in taula_de_noms; idn : in id_nom) return string is
 		
 	begin
 	
 		return string(tn.tc(tn.tid(idn).pos_tcar .. tn.tid(idn).pos_tcar+rang_tcar(tn.tid(idn).long_paraula)-1));
 		
-	end cons;				
+	end cons_nom;	
+	
+	
+	
+	function cons_str	(tn : in taula_de_noms; ids : in id_string) return string is
+	
+		idx : integer;
+		
+	begin
+		
+		idx := ids;
+	
+		while (tn.tc(idx) != '$') loop
+			
+			idx := idx+1;
+		end loop;
+		
+		return tn.tc(ids..idx-1);
+		
+	end cons_str;
 				
 
 end decls.d_taula_de_noms;
