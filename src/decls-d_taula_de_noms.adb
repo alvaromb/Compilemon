@@ -113,7 +113,7 @@ package body decls.d_taula_de_noms is
 		--PRUEBA
 --		Put_Line("cons "&cons(tn, idx)&" idx "&idx'Img);
 
-		while idx /= id_nul and then not par_iguals(nom, cons(tn, idx)) loop
+		while idx /= id_nul and then not par_iguals(nom, cons_nom(tn, idx)) loop
 			 
 			 if p(idx).seguent = id_nul then
 				idx_ant := idx;
@@ -173,7 +173,7 @@ package body decls.d_taula_de_noms is
 	
 	
 	procedure posa_str 	(tn : in out taula_de_noms; 
-							ids : out id_string; 
+							ids : out rang_tcar; 
 							  s : in string) is
 	
 		-- Index per recorrer la taula de caracters.
@@ -216,20 +216,20 @@ package body decls.d_taula_de_noms is
 	
 	
 	
-	function cons_str	(tn : in taula_de_noms; ids : in id_string) return string is
+	function cons_str	(tn : in taula_de_noms; ids : in rang_tcar) return string is
 	
-		idx : integer;
+		idx : rang_tcar;
 		
 	begin
 		
 		idx := ids;
 	
-		while (tn.tc(idx) != '$') loop
+		while (tn.tc(idx) /= '$') loop
 			
 			idx := idx+1;
 		end loop;
 		
-		return tn.tc(ids..idx-1);
+		return string(tn.tc(ids..idx-1));
 		
 	end cons_str;
 				

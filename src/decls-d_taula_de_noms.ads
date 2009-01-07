@@ -36,23 +36,17 @@ package decls.d_taula_de_noms is
 						nom : in string);
 	
 	procedure posa_str	(tn : in out taula_de_noms;
-						ids : out id_string;
-						  s : in string );
+						ids : out rang_tcar;
+						  s : in string);
 						
 	function cons_nom	(tn : in taula_de_noms; 
 						idn : in id_nom) return string;
-						
 	
 	function cons_str	(tn : in taula_de_noms; 
-						ids : in id_string) return string;
+						ids : in rang_tcar) return string;
 								
 	
 	private
-		
-		longitut : constant integer := 40;
-		
-		-- La longitud és el nombre de paraules * la longitud de cadascuna
-		type rang_tcar is new integer range 0 .. (longitut*max_id)-1;
 		
 		type t_identificador is record 
 				pos_tcar : rang_tcar;
@@ -60,7 +54,7 @@ package decls.d_taula_de_noms is
 		  	long_paraula : Natural;
 		end record;
 		
-		type id_string is new integer range rang_tcar;
+--		type id_string is new integer range 0 .. rang_tcar'Last;
 		
 		type taula_identificadors is array (id_nom) of t_identificador;
 		

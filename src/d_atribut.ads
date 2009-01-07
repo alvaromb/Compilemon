@@ -45,7 +45,7 @@ package d_atribut is
 			
 			when a_lit_car 		=> val : character;	
 			
-			when a_lit_string	=> ids : id_nom;
+			when a_lit_string	=> ids : rang_tcar;
 			
 		end case;
 				

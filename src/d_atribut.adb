@@ -53,7 +53,7 @@ package body d_atribut is
 							 s : in string; 
 							 a : out atribut) is
 	
-		id : id_nom := id_nul;
+		id : rang_tcar;
 		
 	begin
 	

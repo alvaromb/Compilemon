@@ -45,7 +45,7 @@ package body decls.d_hash is
 			r(k+n+1) := r(k+n+1) + c;
 		end loop;
 		
-		c := (r(n+1) * base + r(n)) mod (max_id-1);
+		c := (r(n+1) * base + r(n)) mod (tam_dispersio);
 		
 		return rang_dispersio(c);
 		
