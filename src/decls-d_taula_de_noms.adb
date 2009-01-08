@@ -17,8 +17,8 @@
 -- ------------------------------------------------
 
 --PRUEBA
---with Ada.Text_IO;
---use Ada.Text_IO;
+with Ada.Text_IO;
+use Ada.Text_IO;
 
 
 package body decls.d_taula_de_noms is
@@ -136,6 +136,7 @@ package body decls.d_taula_de_noms is
 --			end if;
 			
 			-- Apuntam a la primera posicio buida de la taula de caracters
+			put("*ID_NOM: "&tn.nid'img);
 			tn.tid(idn).pos_tcar := tn.ncar; 
 			tn.tid(idn).long_paraula := nom'Length;
 			tn.tid(idn).seguent := id_nul;

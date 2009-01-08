@@ -80,5 +80,29 @@ package decls.dtsimbols is
 	procedure actualitza (ts: in out tsimbols;
 						   id: in id_nom;
 						    d: in descrip);
+    
+    private
+    
+    type tipus_descrip is record
+    	np : nivell_prof;
+    	 d : descrip;
+    end record;
+    
+    type tipus_despl is record
+		np : nivell_prof;
+    	 d : descrip;
+     	id : id_nom;
+	end record;
+     
+	type taula_blocs is array (1 .. max_prof) of rang_despl;
+	type taula_despl is array (1 .. max_despl) of tipus_despl;
+	type taula_descrip is array (id_nom) of tipus_descrip;
+    	
+	type tsimbols is record
+    	tdesc : taula_descrip;
+       tdespl : taula_despl;
+    	tbloc : taula_blocs;
+    	nprof : nivell_prof;
+    end record;
 
 end decls.dtsimbols;
