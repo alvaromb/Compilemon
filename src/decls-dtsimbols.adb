@@ -83,5 +83,16 @@ package body decls.dtsimbols is
 	
 	end cons;
 	
+	
+	-- VERSIO 2: Normal, llenguatge amb blocs estil Pascal.
+	procedure entrabloc (ts: in out tsimbols) is
+	
+	begin
+	
+		ts.nprof := ts.nprof + 1;
+		ts.tbloc(ts.nprof) := ts.tbloc(ts.nprof - 1);
+	
+	end entrabloc;
+	
 
 end decls.dtsimbols;
