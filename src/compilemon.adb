@@ -16,6 +16,8 @@ with	Ada.Text_IO,
 		decls.d_taula_de_noms,
 		decls.tn,
 		decls.dgenerals,
+		decls.dtsimbols,
+		decls.dtdesc,
 		d_token,
 		compilemon_io,
 		u_lexica;
@@ -25,6 +27,8 @@ use		Ada.Text_IO,
 		decls.d_taula_de_noms,
 		decls.tn,
 		decls.dgenerals,
+		decls.dtsimbols,
+		decls.dtdesc,
 		d_token,
 		compilemon_io,
 		u_lexica;
@@ -33,18 +37,28 @@ use		Ada.Text_IO,
 procedure compilemon is
 
 	Tk : token;
+	id1 : id_nom;
+	id2 : id_nom;
+	id3 : id_nom;
+	
+	ts : tsimbols;
 	
 begin
 
 	tbuida(tn);--NECESARIO?!
 
 	Open_Input(Argument(1));
-	Tk := Yylex;
-	
-	while tk /= end_of_input loop
-		Put_Line(Token'Image(Tk));
-		Tk := Yylex;
-	end loop;
+--	Tk := Yylex;
+--	
+--	while tk /= end_of_input loop
+--		Put_Line(Token'Image(Tk));
+--		Tk := Yylex;
+--	end loop;
+
+ 	posa_id (tn, id1, "pepe");
+ 	posa_id (tn, id2, "alvaro");
+ 	posa_id (tn, id3, "txebs");
+ 	
    
    Close_Input;
    

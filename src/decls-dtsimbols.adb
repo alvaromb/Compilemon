@@ -40,7 +40,7 @@ package body decls.dtsimbols is
 		ts.nprof := 1;
 		ts.tbloc(ts.nprof) := 0;
 		
-		for i in id_nom'Range loop
+		for i in 1 .. id_nom'Last loop
 			ts.tdesc(i).np := 0;
 			ts.tdesc(i).d := dnula;
 		end loop;
@@ -63,12 +63,9 @@ package body decls.dtsimbols is
 			ts.tbloc(ts.nprof) := ts.tbloc(ts.nprof) + 1;
 			idespl := ts.tbloc(ts.nprof);
 			
-			ts.tdespl(idespl).np := id;
-			ts.tdespl(idespl).d := ts.tdesc(id).np;
-			ts.tdespl(idespl).id := ts.tdesc(id).d;
+			ts.tdespl(idespl) := (id, ts.tdesc(id).np, ts.tdesc(id).d);
 			
-			ts.tdesc(id).np := ts.nprof;
-			ts.tdesc(id).d := d;
+			ts.tdesc(id) := (ts.nprof, d);
 		end if;
 	
 	end posa;
@@ -84,6 +81,7 @@ package body decls.dtsimbols is
 	end cons;
 	
 	
+	
 	-- VERSIO 2: Normal, llenguatge amb blocs estil Pascal.
 	procedure entrabloc (ts: in out tsimbols) is
 	
@@ -93,6 +91,103 @@ package body decls.dtsimbols is
 		ts.tbloc(ts.nprof) := ts.tbloc(ts.nprof - 1);
 	
 	end entrabloc;
+	
+	
+	procedure surtbloc (ts: in out tsimbols) is
+	
+		idespl1 : rang_despl;
+		idespl2 : rang_despl;
+		id : id_nom;
+		
+	begin
+	
+		idespl1 := ts.tbloc(ts.nprof);
+		ts.nprof := ts.nprof - 1;
+		idespl2 := ts.tbloc(ts.nprof) + 1;
+		
+		-- PRUEBA: Si peta mirar aquí
+		for idespl in reverse idespl1 .. idespl2 loop
+			if ts.tdespl(idespl).np >= 0 then
+				id := ts.tdespl(idespl).id;
+				ts.tdesc(id).d := ts.tdespl(idespl).d;
+				ts.tdesc(id).np := ts.tdespl(idespl).np;
+				ts.tdesc(id).s := ts.tdespl(idespl).s;
+			end if;
+		end loop;
+	
+	end surtbloc;
+	
+	
+	
+	-- VERSIO 3: Blocs més records.
+	procedure posacamp (ts: in out tsimbols;
+						idr: in id_nom;
+						idc: in id_nom;
+						  d: in descrip
+						  e: out boolean) is
+						  
+		 d : descrip;
+		td : tdescrip;
+		 p : rang_despl;
+		itdespl : rang_despl;
+	
+	begin
+	
+		d := ts.tdesc(idr).d;
+		if d.td /= dtipus then e := TRUE end if;
+		
+		td := d.td;
+		if td.tt /= tsrec then e := TRUE end if;
+		
+		p := ts.tdesc(idr).s;
+		while p /= 0 and then ts.tdespl(p).id /= idc loop
+			p := ts.tdespl(p).s;
+		end loop;
+		
+		e := (p /= 0);
+		if not e then
+			ts.tbloc(ts.nprof) := ts.tamb(ts.nprof) + 1;
+			itdespl := ts.tbloc(ts.nprof);
+			-- ALERTA AMB EL -1 !!!!!
+			ts.tdespl(itdespl) := (idc, -1, d, ts.tdesc(idr).s);
+		end if;
+		
+	end posacamp;
+	
+	
+	function conscamp (ts: in tsimbols;
+					   idr: in id_nom;
+					   idc: in id_camp) return descrip is
+					   
+		 d : descrip;
+		td : tdescrip;
+		 p : rang_despl;
+					   
+	begin
+	
+		d := ts.tdesc(idr).d;
+--		if d.td /= dtipus then e := TRUE end if;
+		
+		td := d.td;
+--		if td.tt /= tsrec then e := TRUE end if;
+		
+		p := ts.tdesc(idr).s;
+		while p /= 0 and then ts.tdespl(p).id /= idc loop
+			p := ts.tdespl(p).s;
+		end loop;
+		
+		if p = 0 then
+			return dnula;
+		else
+			return ts.tdespl(p).d;
+		end if;
+	
+	end conscamp;
+	
+	
+	
+	-- VERSIO 4: Arrays.
+	
 	
 
 end decls.dtsimbols;

@@ -18,7 +18,7 @@ use		decls.d_taula_de_noms;
 
 package decls.tn is
 
-	pragma pure;
+--	pragma pure;
 
 	tn : taula_de_noms;
 

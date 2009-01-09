@@ -17,8 +17,8 @@
 -- ------------------------------------------------
 
 --PRUEBA
-with Ada.Text_IO;
-use Ada.Text_IO;
+--with Ada.Text_IO;
+--use Ada.Text_IO;
 
 
 package body decls.d_taula_de_noms is
@@ -33,10 +33,10 @@ package body decls.d_taula_de_noms is
 			tn.td(i) := id_nul;
 		end loop;
 		
-		tn.nid := 0;
+		tn.nid := 1;
 		tn.ncar := 0;
 		
-		tn.tid(0).seguent := id_nul;
+		tn.tid(1).seguent := id_nul;
 		
 	end tbuida;
 	
@@ -132,15 +132,15 @@ package body decls.d_taula_de_noms is
 --			if tn.nid = id_nom'Last then
 --				tn.nid := id_nul;
 --			else 
-				tn.nid := tn.nid + 1;
+				
 --			end if;
 			
 			-- Apuntam a la primera posicio buida de la taula de caracters
-			put("*ID_NOM: "&tn.nid'img);
+--			put("*ID_NOM: "&tn.nid'img);
 			tn.tid(idn).pos_tcar := tn.ncar; 
 			tn.tid(idn).long_paraula := nom'Length;
 			tn.tid(idn).seguent := id_nul;
-			
+			tn.nid := tn.nid + 1;
 			-- Omplim la taula de caracters, desde la primera 
 			-- posicio lliure 'ncar'.
 			jdx := tn.ncar;
@@ -155,7 +155,7 @@ package body decls.d_taula_de_noms is
 			
 			-- Apuntam a la primera posicio lliure de la taula 
 			-- de caracters.
-			tn.ncar := jdx+1; 
+			tn.ncar := jdx + 1; 
 			
 		else
 			idn := idx;
@@ -199,7 +199,7 @@ package body decls.d_taula_de_noms is
 				
 		end loop;
 		
-		tn.ncar := jdx+1;
+		tn.ncar := jdx + 1;
 		tn.tc(jdx) := '$';
 
 	

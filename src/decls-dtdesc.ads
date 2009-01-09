@@ -1,5 +1,11 @@
+with	decls.dgenerals;
+
+use		decls.dgenerals;
+
 
 package decls.dtdesc is
+
+	pragma pure;
 
 	type tdescrip is (dnula,
 					   dconst,
@@ -15,9 +21,9 @@ package decls.dtdesc is
 	
 	type descriptipus (tt: tipusdetipus) is
 		record
-			ocup: despl;
+			ocup : despl;
 			case tt is
---				when tsbool	=>
+				when tsbool	=> null; -- PROVISIONAL!!!
 --				when tscar 	=>
 --				when tsent	=>
 --				when tsrec	=>

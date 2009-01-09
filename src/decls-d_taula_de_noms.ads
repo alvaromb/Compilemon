@@ -56,9 +56,9 @@ package decls.d_taula_de_noms is
 		
 --		type id_string is new integer range 0 .. rang_tcar'Last;
 		
-		type taula_identificadors is array (id_nom) of t_identificador;
+		type taula_identificadors is array (1 .. id_nom'Last) of t_identificador;
 		
-		type taula_caracters is array (rang_tcar) of character; 
+		type taula_caracters is array (rang_tcar) of character;
 		
 		type taula_de_noms is record
 			  td : taula_dispersio;
@@ -67,7 +67,6 @@ package decls.d_taula_de_noms is
 			 nid : id_nom;
 			ncar : rang_tcar;
 		end record;
-		
 		
 		-- Funció de comparació de dues paraules
 		function par_iguals (par1, par2 : in string) return boolean;		

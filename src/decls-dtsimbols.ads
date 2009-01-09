@@ -7,6 +7,8 @@ use		decls.dtdesc,
 
 package decls.dtsimbols is
 
+	pragma pure;
+
 	type tsimbols is limited private;
 	type cursor_idx is private;
 	type cursor_arg is private;
@@ -35,11 +37,12 @@ package decls.dtsimbols is
 	procedure posacamp (ts: in out tsimbols;
 						idr: in id_nom;
 						idc: in id_nom;
-						  d: in descrip);
+						  d: in descrip;
+						  e: out boolean);
 						
 	function conscamp (ts: in tsimbols;
 					   idr: in id_nom;
-					   idc: in id_camp) return descrip;
+					   idc: in id_nom) return descrip;
 					   
 					   
 	-- VERSIO 4: Arrays.
@@ -63,17 +66,17 @@ package decls.dtsimbols is
 	procedure posa_arg (ts: in tsimbols;
 						idp: in id_nom;
 						ida: in id_nom;
-						  d: in descripcio;
+						  d: in descrip;
 						  e: out boolean);
 						  
-	function primer_arg () return cursor_arg; --OMPLIR
+--	function primer_arg () return cursor_arg; --OMPLIR
+--	
+--	function succ_arg () return cursor_arg; --OMPLIR
+--	
+--	function arg_valid () return boolean; --OMPLIR
 	
-	function succ_arg () return cursor_arg; --OMPLIR
-	
-	function arg_valid () return boolean; --OMPLIR
-	
-	procedure cons_arg (ts: in tsimbols,
-						 ca: in cursor_arg,
+	procedure cons_arg (ts: in tsimbols;
+						 ca: in cursor_arg;
 						ida: out id_nom;
 						 dn: out descrip);
 						 
@@ -83,26 +86,28 @@ package decls.dtsimbols is
     
     private
     
-    type tipus_descrip is record
-    	np : nivell_prof;
-    	 d : descrip;
-    end record;
-    
-    type tipus_despl is record
-		np : nivell_prof;
-    	 d : descrip;
-     	id : id_nom;
-	end record;
-     
-	type taula_blocs is array (1 .. max_prof) of rang_despl;
-	type taula_despl is array (1 .. max_despl) of tipus_despl;
-	type taula_descrip is array (id_nom) of tipus_descrip;
-    	
-	type tsimbols is record
-    	tdesc : taula_descrip;
-       tdespl : taula_despl;
-    	tbloc : taula_blocs;
-    	nprof : nivell_prof;
-    end record;
+		type tipus_descrip is record
+			np : nivell_prof;
+			 d : descrip;
+			 s : rang_despl;
+		end record;
+		
+		type tipus_despl is record
+			np : nivell_prof;
+			 d : descrip;
+		 	id : id_nom;
+		 	 s : rang_despl; --afegit per tal d'implementar els records
+		end record;
+		 
+		type taula_blocs is array (1 .. max_prof) of rang_despl;
+		type taula_despl is array (1 .. max_despl) of tipus_despl;
+		type taula_descrip is array (1 .. id_nom'Last) of tipus_descrip;
+			
+		type tsimbols is record
+			tdesc : taula_descrip;
+		   tdespl : taula_despl;
+			tbloc : taula_blocs; -- A LO MILLOR EL NOM S'HA DE CAMBIAR PER TAMB
+			nprof : nivell_prof;
+		end record;
 
 end decls.dtsimbols;

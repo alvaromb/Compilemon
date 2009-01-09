@@ -15,17 +15,15 @@ package decls.dgenerals is
 	pragma pure;
 
 	-- TAULA DE NOMS
-	max_id : constant integer := 1001;
-	
-	type id_nom is new integer range -1 .. max_id-1;
-	
-	longitut : constant integer := 40;
-		
-	-- La longitud és el nombre de paraules * la longitud de cadascuna
-	type rang_tcar is new integer range 0 .. (longitut*max_id)-1;
+	max_id : constant integer := 1000;
+	type id_nom is new integer range 0 .. max_id;
 	
 	-- Valor nul per al tipus id_nom
-	id_nul : constant id_nom := -1;
+	id_nul : constant id_nom := 0;
+		
+	-- La longitud és el nombre de paraules * la longitud de cadascuna
+	longitut : constant integer := 40;
+	type rang_tcar is new integer range 0 .. (longitut*max_id);
 	
 	-- Taula de dispersió:
 	-- Tipus per la taula de dispersió de la taula de noms:
@@ -40,7 +38,9 @@ package decls.dgenerals is
 	
 	
 	-- TAULA DE SIMBOLS
-	max_prof : constant integer := 40;
+	type despl is new integer;
+	
+	max_prof : constant integer := 20;
 	type nivell_prof is new integer range 0 .. max_prof;
 	
 	max_despl : constant integer := max_prof*max_id;
