@@ -1,4 +1,4 @@
-\documentclass[10pt]{article}
+\documentclass[10pt]{report}
 \usepackage{ifpdf}
 \usepackage[utf8]{inputenc}
 \usepackage[catalan]{babel}
@@ -10,7 +10,7 @@
 \definecolor{gray45}{gray}{.45}
 
 \usepackage{listings}
-\lstset{ frame=Ltb,
+\lstset{frame=Ltb,
      framerule=0pt,
      aboveskip=0.5cm,
      framextopmargin=3pt,
@@ -45,126 +45,1218 @@
    {language=Ada,
    }
 
-\title{Compiladors, primera entrega}
-\author{José Ruiz Bravo, Biel Moyà Alcover, Álvaro Medina Ballester}
-\date{21/11/08}
+\title{Compiladors, segona entrega}
+\author{Jose Ruiz Bravo, Biel Moya Alcover, alvaro Medina Ballester}
+\date{16/01/2009}
 \ifpdf
 \pdfinfo {
-	/Author (José Ruiz Bravo, Biel Moyà Alcover, Álvaro Medina Ballester)
-	/Title (Compiladors, primera entrega)
-	/Subject (Compiladors, primera entrega)
-	/Keywords (compiladors, primera entrega, gramàtica, léxic)
-	/CreationDate (D:20081120195650)
+    /Author (Jose Ruiz Bravo, Biel Moya Alcover, alvaro Medina Ballester)
+    /Title (Compiladors, primera entrega)
+    /Subject (Compiladors, primera entrega)
+    /Keywords (compiladors, primera entrega, gramatica, lexic)
+    /CreationDate (D:20081120195650)
 }
 \fi
 \makeindex
 \begin{document}
-	\maketitle
-	\index{Introducció}
-	\section{Introducció}
-		La pràctica de l'assignatura \textit{1470 - Processadors del Llenguatge} consisteix en
-		desenvolupar un compilador basat en el llenguatge Ada. Nosaltres hem decidit 
-		utilitzar un subconjunt d'instruccions d'Ada traduïdes al català, per crear
-		un llenguatge simple, senzill i fàcilment entendible.
-		\\
-		\\
-		En aquest document trobarem el codi font necessari per definir i utilitzar la
-		taula de noms, el codi font del lèxic del llenguatge i l'especificació de la
-		gramàtica del nostre llenguatge. Aquests documents es corresponen amb les primeres
-		etapes del desenvolupament d'un compilador: l'anàlisi lèxica i l'anàlisi 			sintàctica\footnote{L'anàlisi sintàctica es completarà en posteriors versions de la 			pràctica.}.
-	\newpage
-	\section{Anàlisi Lèxica}
-		El nostre llenguatge el definirem a partir d'una gramàtica incontextual. Mitjançant l'eina \textit{aflex}, generam el codi necessari per representar el lèxic que hem definit. Els \textit{tokens} que composen l'apartat lèxic del compilador son els següents (fitxer \textit{compilemon.l}):
-		\\
-	
-	% Codigo del análisis léxico
-	\lgrindfile{compilemon.l.tex}
-	
-	\newpage
-	\section{Estructura de dades}
-		Hem definit una estructura de dades per emmagatzemar els identificadors i el strings. Aquesta estructura de dades es coneix com a \textit{taula de noms} i es similar a la que vàrem definir a classe.
-		\\
-		
-	% Código de decls-d_taula_de_noms.ads
-	\begin{lstlisting}[style=Ada]
+    \maketitle
+    \index{Introduccio}
+    \chapter{Introduccio}
+        La practica de l'assignatura \textit{1470 - Processadors del Llenguatge} consisteix en
+        desenvolupar un compilador basat en el llenguatge Ada. Nosaltres hem decidit 
+        utilitzar un subconjunt d'instruccions d'Ada traduïdes al catala, per crear
+        un llenguatge simple, senzill i facilment comprensible.
+        \\
+        \\
+        En aquest document trobarem el codi font necessari per definir i utilitzar la
+        taula de noms, el codi font del lèxic del llenguatge i l'especificacio de la
+        gramatica del nostre llenguatge. Aquests documents es corresponen amb les primeres
+        etapes del desenvolupament d'un compilador: l'analisi lèxica i l'analisi sintactica\footnote{L'analisi sintactica es completara en posteriors versions de la practica.}.
+    \newpage
+    \chapter{Analisi Lèxica}
+        El nostre llenguatge el definirem a partir d'una gramatica incontextual. Mitjançant l'eina \textit{aflex}, generam el codi necessari per representar el lèxic que hem definit. Els \textit{tokens} que composen l'apartat lèxic del compilador son els següents (fitxer \textit{compilemon.l}):
+        \\
+    
+    % Codigo del analisis lexico
+    \section{Anàlisi Lèxica: compilemon.l}
+    \begin{lstlisting}[style=Ada]
+-- Macros
+
+lletra [A-Za-z]
+
+digit [0-9]
+
+separadors [\n\b\t\f]
+
+caracter \'[^\'\n\t]\'
+
+
+
+%%
+
+
+
+-- Paraules clau
+
+procediment {mt_atom(tok_begin_line, tok_begin_col, yylval); 
+            return pc_procediment;} 
+
+inici       {mt_atom(tok_begin_line, tok_begin_col, yylval); 
+            return pc_inici;}
+
+mentre      {mt_atom(tok_begin_line, tok_begin_col, yylval); 
+            return pc_mentre;}
+
+per         {mt_atom(tok_begin_line, tok_begin_col, yylval); 
+            return pc_per;}
+
+entre       {mt_atom(tok_begin_line, tok_begin_col, yylval); 
+            return pc_entre;}
+
+si          {mt_atom(tok_begin_line, tok_begin_col, yylval); 
+            return pc_si;}
+
+sino        {mt_atom(tok_begin_line, tok_begin_col, yylval); 
+            return pc_sino;}
+
+fi          {mt_atom(tok_begin_line, tok_begin_col, yylval); 
+            return pc_fi;}
+
+fer         {mt_atom(tok_begin_line, tok_begin_col, yylval); 
+            return pc_fer;}
+
+const       {mt_atom(tok_begin_line, tok_begin_col, yylval); 
+            return pc_constant;}
+
+tipus       {mt_atom(tok_begin_line, tok_begin_col, yylval); 
+            return pc_tipus;}
+
+coleccio    {mt_atom(tok_begin_line, tok_begin_col, yylval); 
+            return pc_coleccio;}
+
+registre    {mt_atom(tok_begin_line, tok_begin_col, yylval); 
+            return pc_registre;}
+
+es          {mt_atom(tok_begin_line, tok_begin_col, yylval); 
+            return pc_es;}
+
+llavors     {mt_atom(tok_begin_line, tok_begin_col, yylval); 
+            return pc_llavors;}
+
+no          {mt_atom(tok_begin_line, tok_begin_col, yylval); 
+            return pc_no;}
+
+opcio       {mt_atom(tok_begin_line, tok_begin_col, yylval); 
+            return pc_opcio;}
+
+casos       {mt_atom(tok_begin_line, tok_begin_col, yylval); 
+            return pc_casos;}
+
+entra       {mt_atom(tok_begin_line, tok_begin_col, yylval); 
+            return pc_entra;}
+
+surt        {mt_atom(tok_begin_line, tok_begin_col, yylval); 
+            return pc_surt;}
+
+nou         {mt_atom(tok_begin_line, tok_begin_col, yylval); 
+            return pc_nou;}
+
+nul         {mt_atom(tok_begin_line, tok_begin_col, yylval); 
+            return pc_nul;}
+
+de          {mt_atom(tok_begin_line, tok_begin_col, yylval); 
+            return pc_de;}
+
+modul       {mt_atom(tok_begin_line, tok_begin_col, yylval); 
+            return pc_modul;}
+
+rang        {mt_atom(tok_begin_line, tok_begin_col, yylval); 
+            return pc_rang;}
+
+"||"        {mt_atom(tok_begin_line, tok_begin_col, yylval); 
+            return pc_or;}
+
+"&&"        {mt_atom(tok_begin_line, tok_begin_col, yylval); 
+            return pc_and;}
+
+
+--SUBTIPUS
+
+--Simbols 
+
+":="        {mt_atom(tok_begin_line, tok_begin_col, yylval); 
+            return s_asignacio;}
+
+":"         {mt_atom(tok_begin_line, tok_begin_col, yylval); 
+            return s_dospunts;}
+
+";"         {mt_atom(tok_begin_line, tok_begin_col, yylval); 
+            return s_final;}
+
+","         {mt_atom(tok_begin_line, tok_begin_col, yylval); 
+            return s_coma;}
+
+"("         {mt_atom(tok_begin_line, tok_begin_col, yylval);
+            return s_parentesiobert;}
+
+")"         {mt_atom(tok_begin_line, tok_begin_col, yylval);
+            return s_parentesitancat;}
+
+".."        {mt_atom(tok_begin_line, tok_begin_col, yylval); 
+            return s_puntsrang;}
+
+
+--Operadors
+
+"<"         {mt_atom(tok_begin_line, tok_begin_col, yylval); 
+            return op_menor;}
+
+"<="        {mt_atom(tok_begin_line, tok_begin_col, yylval);
+            return op_menorigual;}
+
+">="        {mt_atom(tok_begin_line, tok_begin_col, yylval);
+            return op_majorigual;}
+
+">"         {mt_atom(tok_begin_line, tok_begin_col, yylval); 
+            return op_major;}
+
+"="         {mt_atom(tok_begin_line, tok_begin_col, yylval); 
+            return op_igual;}
+
+"/="        {mt_atom(tok_begin_line, tok_begin_col, yylval); 
+            return op_distint;}
+
+"+"         {mt_atom(tok_begin_line, tok_begin_col, yylval); 
+            return op_suma;}
+
+"-"         {mt_atom(tok_begin_line, tok_begin_col, yylval); 
+            return op_resta;}
+
+"*"         {mt_atom(tok_begin_line, tok_begin_col, yylval);
+            return op_multiplicacio;}
+
+"/"         {mt_atom(tok_begin_line, tok_begin_col, yylval); 
+            return op_divisio;}
+
+
+
+--EXPRESSIONS REGULARS
+
+--Digit
+
+{digit}+    {mt_numero(tok_begin_line, tok_begin_col,yytext, yylval); return const;}
+            
+            
+--Lletra
+
+{caracter}  {mt_caracter(tok_begin_line, tok_begin_col,yytext, yylval); return const;}
+            
+
+--Identificador
+
+{lletra}({digit}|{lletra})* {mt_identificador(tok_begin_line, tok_begin_col, yytext, yylval); return id;}
+
+
+--String
+
+\"[^\"\n\t]*\"  {mt_string(tok_begin_line, tok_begin_col, yytext, yylval); return cadena;}
+
+
+--Comentaris
+
+"-""-"[^\n]*    {null;}
+
+
+--Separadors
+
+" "             {null;}
+
+{separadors}    {null;}
+
+
+--Error
+
+.               {return error;}
+
+
+
+%%
+
+
+
+with    decls.d_taula_de_noms,
+        d_atribut,
+        d_token;
+        
+
+use     decls.d_taula_de_noms,
+        d_atribut,
+        d_token;
+
+
+package u_lexica is
+
+    yylval : atribut;
+
+    function YYLex return token;
+    
+end u_lexica;
+
+
+
+package body u_lexica is
+
+##
+
+end u_lexica;
+
+    \end{lstlisting}
+    
+    \newpage
+    \chapter{Estructura de dades}
+        Hem definit una estructura de dades per emmagatzemar els identificadors i el strings. Aquesta estructura de dades es coneix com a \textit{taula de noms} i es similar a la que varem definir a classe.
+        
+    
+    % Codigo de decls-d_taula_de_noms.ads
+    \section{decls-d\_taula\_de\_noms.ads}
+    \begin{lstlisting}[style=Ada]
 -- ------------------------------------------------
 --  Paquet de declaracions de la taula de noms
 -- ------------------------------------------------
---  Versio	:	0.1
---  Autors	:	Jose Ruiz Bravo
---			Biel Moya Alcover
---			Alvaro Medina Ballester
+--  Versio  :   0.1
+--  Autors  :   Jose Ruiz Bravo
+--              Biel Moya Alcover
+--              Alvaro Medina Ballester
 -- ------------------------------------------------
---	Especificacio de l'estructura necessaria
+--    Especificacio de l'estructura necessaria
 -- per el maneig de la taula de noms i dels metodes
 -- per tractar-la.
 --
 -- ------------------------------------------------
 
-with 	decls.dgenerals,
-	decls.d_hash; 
-	
-use 	decls.dgenerals,
-	decls.d_hash;
+with    decls.dgenerals,
+        decls.d_hash; 
+        
+use     decls.dgenerals,
+        decls.d_hash;
 
 
 package decls.d_taula_de_noms is
 
-	pragma pure;
+    pragma pure;
+    
+    -- Excepcions
+    E_Tids_Plena : exception;
+    E_Tcar_Plena : exception;
+    
+    type taula_de_noms is limited private;
+    
+    procedure tbuida    (tn : out taula_de_noms);
+    
+    procedure posa_id   (tn : in out taula_de_noms;  
+                        idn : out id_nom; 
+                        nom : in string);
+    
+    procedure posa_str  (tn : in out taula_de_noms;
+                        ids : out rang_tcar;
+                          s : in string);
+                        
+    function cons_nom   (tn : in taula_de_noms; 
+                        idn : in id_nom) return string;
+    
+    function cons_str   (tn : in taula_de_noms; 
+                        ids : in rang_tcar) return string;   
+    
+    private
+        
+        type t_identificador is record 
+                pos_tcar : rang_tcar;
+                 seguent : id_nom;
+            long_paraula : Natural;
+        end record;
+        
+        type taula_identificadors is array (1 .. id_nom'Last) of t_identificador;
+        
+        type taula_caracters is array (rang_tcar) of character;
+        
+        type taula_de_noms is record
+              td : taula_dispersio;
+             tid : taula_identificadors;
+              tc : taula_caracters;
+             nid : id_nom;
+            ncar : rang_tcar;
+        end record;
+        
+        -- Funcio de comparacio de dues paraules
+        function par_iguals (par1, par2 : in string) return boolean;        
+                    
+end decls.d_taula_de_noms;        
+    \end{lstlisting}
+    
+    \newpage
+    \section{decls-d\_taula\_de\_noms.adb}
+    \begin{lstlisting}[style=Ada]
+-- ------------------------------------------------
+--  Paquet de declaracions de la taula de noms
+-- ------------------------------------------------
+--  Versio  :   0.2
+--  Autors  :   Jose Ruiz Bravo
+--              Biel Moya Alcover
+--              Alvaro Medina Ballester
+-- ------------------------------------------------
+--        Implementacio dels procediments per al
+--    tractament de la taula de noms:
+--
+--            - Buidat de la taula
+--            - Insercio
+--            - Insercio d'strings
+--            - Consulta
+--
+-- ------------------------------------------------
 
-	-- Excepcions
-	E_Tids_Plena : exception;
-	E_Tcar_Plena : exception;
+package body decls.d_taula_de_noms is
 
-	type taula_de_noms is limited private;
+    -- Donam els valors per defecte de cada camp, sempre 
+    -- que un camp no sigui utilitzat valdra 0.
+    procedure tbuida (tn : out taula_de_noms) is
+    
+    begin 
+    
+        for i in tn.td'range loop
+            tn.td(i) := id_nul;
+        end loop;
+        
+        tn.nid := 1;
+        tn.ncar := 0;
+        
+        tn.tid(1).seguent := id_nul;
+        
+    end tbuida;
+    
+    
+    
+    function par_iguals (par1, par2 : in string) return boolean is
+    
+        it_p1 : integer;
+        it_p2 : integer;
+        
+    begin
+            
+        if par1'Length = par2'Length then
+            
+            it_p1 := par1'First;
+            it_p2 := par2'First;
+                        
+            while it_p1 < par2'Length and par2(it_p2) = par1(it_p1) loop
+                it_p1 := it_p1 + 1;
+                it_p2 := it_p2 + 1;
+            end loop;
+    
+            if par1(it_p1) = par2(it_p2) then
+                return true;
+            end if;
+            
+        end if;
+        
+        return false;
+    
+    end par_iguals;
+        
 
-	procedure tbuida	(tn : out taula_de_noms);
 
-	procedure posa_id 	(tn : in out taula_de_noms;  
-				idn : out id_nom; 
-				nom : in string);
+    procedure posa_id     (tn : in out taula_de_noms; 
+                          idn : out id_nom; 
+                          nom : in string) is
+        
+        -- Variable per el valor de la funcio de dispersio.
+        p_tid : rang_dispersio;
+        
+        -- indexos per recorrer la taula d'identificadors.
+        idx : id_nom;
+        idx_ant : id_nom; 
+        
+        -- index per recorrer la taula de caracters.
+        jdx : rang_tcar; 
+        
+        p : taula_identificadors renames tn.tid;
+        
+    begin
+    
+        p_tid := fdisp_tn(nom);
+        
+        -- Control d'errors
+        if tn.nid = id_nul then
+            raise E_Tids_Plena;
+        end if;
+        
+        if (tn.ncar + nom'Length) > rang_tcar'Last then
+            raise E_Tcar_Plena;
+        end if;
 
-	procedure posa_str	(tn : in out taula_de_noms;
-				idn : out id_nom;
-				  s : in string );
-					
-	function cons		(tn : in taula_de_noms; 
-				idn : in id_nom) return string;
-							
+        if tn.td(p_tid) = id_nul then
+            tn.td(p_tid) := tn.nid;
+        end if;
+        
+        idx := tn.td(p_tid);
 
-	private
-	
-		longitut : constant integer := 40;
-	
-		-- La longitud es el nombre de paraules * la longitud de cadascuna
-		type rang_tcar is new integer range 0 .. (longitut*max_id)-1;
-	
-		type t_identificador is record 
-			pos_tcar : rang_tcar;
-			 seguent : id_nom;	  	
-                    long_paraula : Natural;
-		end record;
-	
-		type taula_identificadors is array (id_nom) of t_identificador;
-	
-		type taula_caracters is array (rang_tcar) of character; 
-	
-		type taula_de_noms is record
-			  td : taula_dispersio;
-			 tid : taula_identificadors;
-			  tc : taula_caracters;
-			 nid : id_nom;
-			ncar : rang_tcar;
-		end record;
-	
-	
-		-- Funcio de comparacio de dues paraules
-		function par_iguals (par1, par2 : in string) return boolean;		
-				
-		
-end decls.d_taula_de_noms;		
-	\end{lstlisting}
-		
-		
+        while idx /= id_nul and then not par_iguals(nom, cons_nom(tn, idx)) loop
+             
+             if p(idx).seguent = id_nul then
+                idx_ant := idx;
+             end if;
+             
+             idx := p(idx).seguent;     
+            
+        end loop;
+        
+        if idx = id_nul then
+
+            idn := tn.nid;
+            tn.tid(idx_ant).seguent := idn;
+            
+            -- Apuntam a la primera posicio buida de la taula de caracters
+            tn.tid(idn).pos_tcar := tn.ncar; 
+            tn.tid(idn).long_paraula := nom'Length;
+            tn.tid(idn).seguent := id_nul;
+            tn.nid := tn.nid + 1;
+            
+            -- Omplim la taula de caracters, desde la primera 
+            -- posicio lliure 'ncar'.
+            jdx := tn.ncar;
+            
+            for i in 1..nom'Length loop
+                tn.tc(jdx) := nom(i);
+                jdx := jdx + 1;
+            end loop;
+            
+            jdx := jdx + 1;
+            tn.tc(jdx) := '$';
+            
+            -- Apuntam a la primera posicio lliure de la taula 
+            -- de caracters.
+            tn.ncar := jdx + 1; 
+            
+        else
+            idn := idx;
+            
+        end if;
+        
+    end posa_id;
+    
+    
+    
+    procedure posa_str     (tn : in out taula_de_noms; 
+                           ids : out rang_tcar; 
+                             s : in string) is
+    
+        -- Index per recorrer la taula de caracters.
+        jdx : rang_tcar; 
+        
+    begin
+
+        -- Excepcio per a controlar tc plena
+        if (tn.ncar + s'Length) > rang_tcar'Last then
+            raise E_Tcar_Plena;
+        end if;
+    
+        -- Omplim la taula de caracters, desde la primera 
+        -- posicio lliure 'ncar'.
+        jdx := tn.ncar;
+        ids := tn.ncar;
+        
+        for i in 1..s'Length loop
+                
+            tn.tc(jdx) := s(i);
+            jdx := jdx + 1;
+                
+        end loop;
+        
+        tn.ncar := jdx + 1;
+        tn.tc(jdx) := '$';
+
+    
+    end posa_str;
+    
+    
+    
+    function cons_nom (tn : in taula_de_noms; 
+                      idn : in id_nom) return string is
+        
+    begin
+    
+        return string(tn.tc(tn.tid(idn).pos_tcar .. tn.tid(idn).pos_tcar+rang_tcar(tn.tid(idn).long_paraula)-1));
+        
+    end cons_nom;    
+    
+    
+    
+    function cons_str (tn : in taula_de_noms; 
+                      ids : in rang_tcar) return string is
+    
+        idx : rang_tcar;
+        
+    begin
+        
+        idx := ids;
+    
+        while (tn.tc(idx) /= '$') loop
+            idx := idx+1;
+        end loop;
+        
+        return string(tn.tc(ids..idx-1));
+        
+    end cons_str;
+                
+
+end decls.d_taula_de_noms;
+    \end{lstlisting}
+    
+    \newpage
+    \chapter{Declaracions i altres paquets}
+        Per mantenir una organització del codi i dels paquets que anirem creant, hem definit un paquet anomenat \textit{decls} del qual penjen les declaracions. Com hem vist, la taula de noms penja d'aquest paquet, i a la vegada penjen els paquets \textit{d\_hash} i \textit{dgenerals} que son necessaris per la implementació de la taula de noms.
+    \\
+    \\
+        Cal destacar que la funció de hash que empram per la taula de noms s'anomena Hash Quadràtic\footnote{http://es.wikipedia.org/wiki/Tabla\_hash\#Direccionamiento\_abierto} vista a l'assignatura \textit{Estructures de la Informació}.
+    \newpage
+    \section{decls.ads}
+    \begin{lstlisting}[style=Ada]
+-- ------------------------------------------------
+--  Paquet de Declaracions
+-- ------------------------------------------------
+--  Versio  :   0.1
+--  Autors  :   Jose Ruiz Bravo
+--              Biel Moya Alcover
+--              Alvaro Medina Ballester
+-- ------------------------------------------------
+--      Paquet de declaracions pare.
+--
+-- ------------------------------------------------
+
+package decls is
+
+    pragma pure;
+
+
+end decls;
+    \end{lstlisting}
+    
+    \newpage
+    \section{decls-dgenerals.ads}
+    \begin{lstlisting}[style=Ada]
+-- ------------------------------------------------
+--  Paquet de declaracions generals
+-- ------------------------------------------------
+--  Versio    :    0.2
+--  Autors    :    Jose Ruiz Bravo
+--                 Biel Moya Alcover
+--                 Alvaro Medina Ballester
+-- ------------------------------------------------
+--        Declaracions generals.
+--
+-- ------------------------------------------------
+
+package decls.dgenerals is
+
+    pragma pure;
+
+    -- TAULA DE NOMS
+    max_id : constant integer := 1000;
+    type id_nom is new integer range 0 .. max_id;
+    
+    -- Valor nul per al tipus id_nom
+    id_nul : constant id_nom := 0;
+        
+    -- La longitud es el nombre de paraules * la longitud de cadascuna
+    longitut : constant integer := 40;
+    type rang_tcar is new integer range 0 .. (longitut*max_id);
+    
+    -- Taula de dispersio:
+    -- Tipus per la taula de dispersio de la taula de noms:
+    tam_dispersio : constant integer := 101;
+    type rang_dispersio is new integer range -1 .. tam_dispersio;
+    
+    -- Valor nul per el rang dispersio.
+    dispersio_nul : constant rang_dispersio := -1;
+    
+    -- Declaracio de la taula de dispersio
+    type taula_dispersio is array (rang_dispersio) of id_nom;
+    
+    
+    -- TAULA DE SIMBOLS
+    type despl is new integer;
+    
+    max_prof : constant integer := 20;
+    type nivell_prof is new integer range 0 .. max_prof;
+    
+    max_despl : constant integer := max_prof*max_id;
+    type rang_despl is new integer range 0 .. max_despl;
+    
+
+end decls.dgenerals;
+    \end{lstlisting}
+    \newpage
+        
+    \section{decls-d\_hash.ads}
+    \begin{lstlisting}[style=Ada]
+-- ------------------------------------------------
+--  Paquet de declaracions de les funcions hash
+-- ------------------------------------------------
+--  Versio    :    0.2
+--  Autors    :    Jose Ruiz Bravo
+--                 Biel Moya Alcover
+--                 Alvaro Medina Ballester
+-- ------------------------------------------------
+--        Especificacio de les funcions de hash:
+--            - Hashing Quadratic.
+--
+-- ------------------------------------------------
+
+with    decls.dgenerals;
+
+use     decls.dgenerals;
+
+
+package decls.d_hash is
+
+    pragma pure;
+
+    function fdisp_tn (nom : in string) return rang_dispersio;
+    
+    
+end decls.d_hash;
+    \end{lstlisting}
+    \newpage
+    
+    
+    \section{decls-d\_hash.adb}
+    \begin{lstlisting}[style=Ada]
+-- ------------------------------------------------
+--  Paquet de procediments de les funcions hash
+-- ------------------------------------------------
+--  Versio    :    0.2
+--  Autors    :    Jose Ruiz Bravo
+--                 Biel Moya Alcover
+--                 Alvaro Medina Ballester
+-- ------------------------------------------------
+--        Procediments de les funcions de hash:
+--            - Hashing quadratic
+--
+-- ------------------------------------------------
+
+package body decls.d_hash is
+
+    function fdisp_tn (nom : in string) return rang_dispersio is
+        
+        a : array (nom'Range) of integer;
+        r : array (1..2*nom'Last) of integer;
+        
+        k, c, m, n : integer;
+        
+        base : constant integer := character'pos(character'Last)+1;
+        
+    begin
+        
+        n := nom'Last;
+        m := nom'Length;
+    
+        for i in 1..n loop
+            a(i) := character'Pos(nom(i));
+        end loop;
+        
+        for i in 1..2*n loop
+            r(i) := 0;
+        end loop;
+        
+        for i in 1..n loop
+            c := 0; k := i - 1;
+            for j in 1..n loop
+                c := c + r(k+j) + a(i) + a(j);
+                r(k+j) := c mod base;
+                c := c/base;
+            end loop;
+            r(k+n+1) := r(k+n+1) + c;
+        end loop;
+        
+        c := (r(n+1) * base + r(n)) mod (tam_dispersio);
+        
+        return rang_dispersio(c);
+        
+    end fdisp_tn;
+    
+    
+end decls.d_hash;
+    \end{lstlisting}
+    \newpage
+    
+    
+    \chapter{Declaracions del tipus token i atribut}
+        Hem definit el tipus token al paquet \textit{d\_token} i el tipus atribut (amb els procediments corresponents per crear atributs i la definició d'atribut) al paquet \textit{d\_atribut}.
+    \section{d\_token.ads}
+    \begin{lstlisting}[style=Ada]
+-- ------------------------------------------------
+--  Paquet de declaracions dels tokens
+-- ------------------------------------------------
+--  Versio    :    0.1
+--  Autors    :    Jose Ruiz Bravo
+--                 Biel Moya Alcover
+--                 Alvaro Medina Ballester
+-- ------------------------------------------------
+--        Definicio del tipus token.
+--
+-- ------------------------------------------------
+
+package d_token is
+
+    type token is  (pc_procediment,
+                    pc_inici,
+                    pc_mentre,
+                    pc_per,
+                    pc_entre,
+                    pc_si,
+                    pc_sino,
+                    pc_fi,
+                    pc_fer,
+                    pc_constant,
+                    pc_tipus,
+                    pc_coleccio,
+                    pc_registre,
+                    pc_es,
+                    pc_llavors,
+                    pc_no,
+                    pc_opcio,
+                    pc_casos,
+                    pc_entra,
+                    pc_surt,
+                    pc_nou,
+                    pc_nul,
+                    pc_de,
+                    pc_modul,
+                    pc_inclou,
+                    pc_usa,
+                    pc_rang,
+                    s_asignacio,
+                    s_dospunts,
+                    s_final,
+                    s_coma,
+                    s_parentesiobert,
+                    s_parentesitancat,
+                    s_puntsrang,
+                    pc_or,
+                    pc_and,
+                    op_menor,
+                    op_menorigual,
+                    op_majorigual,
+                    op_major,
+                    op_igual,
+                    op_distint,
+                    op_suma,
+                    op_resta,
+                    op_multiplicacio,
+                    op_divisio,
+                    id,
+                    cadena,
+                    const,
+                    Error,
+                    End_of_Input);
+            
+                    
+end d_token;
+    \end{lstlisting}
+    \newpage
+    
+    
+    \section{d\_atribut.ads}
+    \begin{lstlisting}[style=Ada]
+-- ------------------------------------------------
+--  Paquet de procediments dels atributs
+-- ------------------------------------------------
+--  Versio    :    0.1
+--  Autors    :    Jose Ruiz Bravo
+--                 Biel Moya Alcover
+--                 Alvaro Medina Ballester
+-- ------------------------------------------------
+--        En aquest fitxer tenim implementats les 
+--    assignacions de cada tipus de token al tipus
+--    atribut que li correspon. Cal destacar 
+--    l'utilitzacio de la taula de noms en els
+--    casos d'identificadors i strings.
+--
+-- ------------------------------------------------
+
+with    decls.dgenerals,
+        decls.d_taula_de_noms;
+        
+use     decls.dgenerals,
+        decls.d_taula_de_noms;
+
+
+package d_atribut is
+
+
+    type tipus_atribut is (atom,
+                           a_ident,
+                           a_lit_num,
+                           a_lit_car,
+                           a_lit_string);
+                            
+                            
+    type atribut (t : tipus_atribut := atom) is record
+        
+        lin, col : natural;
+        
+        case t is
+        
+            when atom            => null;
+            
+            when a_ident         => idn : id_nom;
+            
+            when a_lit_num       => int : integer;
+            
+            when a_lit_car       => val : character;    
+            
+            when a_lit_string    => ids : rang_tcar;
+            
+        end case;
+                
+    end record;
+    
+    
+    procedure mt_atom  (l, c : in natural; a : out atribut);
+    
+    procedure mt_identificador  (l, c : in natural; 
+                                    s : in string; 
+                                    a : out atribut);
+    
+    procedure mt_string    (l, c : in natural; 
+                               s : in string; 
+                               a : out atribut);
+    
+    procedure mt_caracter  (l, c : in natural; 
+                             car : in string; 
+                               a : out atribut);
+    
+    procedure mt_numero    (l, c : in natural; 
+                               i : in string; 
+                               a : out atribut);
+        
+    
+end d_atribut;
+    \end{lstlisting}
+    \newpage
+    
+    
+    \section{d\_atribut.adb}
+    \begin{lstlisting}[style=Ada]
+-- ------------------------------------------------
+--  Paquet de procediments dels atributs
+-- ------------------------------------------------
+--  Versio    :    0.1
+--  Autors    :    Jose Ruiz Bravo
+--                 Biel Moya Alcover
+--                 Alvaro Medina Ballester
+-- ------------------------------------------------
+--        En aquest fitxer tenim implementats les 
+--    assignacions de cada tipus de token al tipus
+--    atribut que li correspon. Cal destacar 
+--    l'utilitzacio de la taula de noms en els
+--    casos d'identificadors i strings.
+--
+-- ------------------------------------------------
+
+with    u_lexica,
+        decls.tn;
+
+use     u_lexica,
+        decls.tn;
+        
+
+package body d_atribut is    
+    
+    
+    procedure mt_atom (l, c : in natural; 
+                          a : out atribut) is
+    
+    begin
+    
+        a := (atom, l, c);
+        
+    end mt_atom;
+    
+    
+    
+    procedure mt_identificador (l, c : in natural; 
+                                   s : in string; 
+                                   a : out atribut) is
+    
+        id : id_nom := id_nul;
+        
+    begin
+    
+        posa_id(tn, id, s);
+        a := (a_ident, l, c, id);
+        
+    end mt_identificador;
+    
+    
+    
+    procedure mt_string (l, c : in natural; 
+                            s : in string; 
+                            a : out atribut) is
+    
+        id : rang_tcar;
+        
+    begin
+    
+        posa_str(tn, id, s);
+        a := (a_lit_string, l, c, id);
+        
+    end mt_string;
+    
+    
+
+    procedure mt_caracter (l, c : in natural; 
+                            car : in string; 
+                              a : out atribut) is
+    
+    begin
+    
+       a := (a_lit_car, l, c, car(car'First+1));
+       
+    end mt_caracter;
+        
+        
+        
+    procedure mt_numero (l, c : in natural; 
+                            i : in string; 
+                            a : out atribut) is
+    
+    begin
+    
+        a := (a_lit_num, l, c, Integer'value(i));
+        
+    end mt_numero;
+    
+
+end d_atribut;
+    \end{lstlisting}
+    \newpage
+    
+    
+    \chapter{Programa principal}
+        Al programa principal podem trobar un petit programa de prova.
+    \\
+        
+    \section{compilemon.adb}
+    \begin{lstlisting}[style=Ada]
+-- ------------------------------------------------
+--  Programa de prova
+-- ------------------------------------------------
+--  Versio    :    0.1
+--  Autors    :    Jose Ruiz Bravo
+--                 Biel Moya Alcover
+--                 Alvaro Medina Ballester
+-- ------------------------------------------------
+--        Programa per comprovar les funcionalitats
+--    del lexic i la taula de noms.
+--
+-- ------------------------------------------------
+
+with    Ada.Text_IO,
+        Ada.Command_Line,
+        decls.d_taula_de_noms,
+        decls.tn,
+        decls.dgenerals,
+        decls.dtsimbols,
+        decls.dtdesc,
+        d_token,
+        compilemon_io,
+        u_lexica;
+        
+use     Ada.Text_IO,
+        Ada.Command_Line,
+        decls.d_taula_de_noms,
+        decls.tn,
+        decls.dgenerals,
+        decls.dtsimbols,
+        decls.dtdesc,
+        d_token,
+        compilemon_io,
+        u_lexica;
+        
+
+procedure compilemon is
+
+     Tk : token;
+    id1 : id_nom;
+    id2 : id_nom;
+    id3 : id_nom;
+    
+     ts : tsimbols;
+    
+begin
+
+    tbuida(tn);--NECESARIO?!
+
+    Open_Input(Argument(1));
+--    Tk := Yylex;
+--    
+--    while tk /= end_of_input loop
+--        Put_Line(Token'Image(Tk));
+--        Tk := Yylex;
+--    end loop;
+
+     posa_id (tn, id1, "pepe");
+     posa_id (tn, id2, "alvaro");
+     posa_id (tn, id3, "txebs");
+     
+   
+   Close_Input;
+   
+   exception
+      when E_Tids_Plena => 
+         Put_Line("ERROR: La taula d'identificadors es plena.");
+         
+      when E_Tcar_Plena =>
+          Put_Line("ERROR: La taula de caracters es plena.");
+
+end compilemon;
+    \end{lstlisting}
+    \newpage
+    
+    
+    \chapter{Gramàtica}
+        Aquí hem definit la gramàtica del nostre llenguatge.
+    \\
+    \\
+    
+    PENDIENTE PRODUCCION VALOR
+    REPASAR PUNTOS Y COMAS EN REAL Y MANUAL USUARIO
+    AÑADIR EL SIMBOLO '.' AL ALEX Y AYACC
+    \begin{tabbing}
+    \hspace*{2.0cm} \= \hspace*{0.5cm} \= \hspace*{0.8cm} \= \kill
+        \textit{programa} \> $\rightarrow $ \> \textit{procediment} \\
+        \\
+        \textit{procediment} \> $ \rightarrow $ \> \textbf{PC\_PROCEDIMENT} \textit{encap} \textbf{PC\_ES} \\
+        \> \> \> \textit{declaracions} \\
+        \> \> \textbf{PC\_INICI} \\
+        \> \> \> \textit{bloc} \\
+        \> \> \textbf{PC\_FI} identificador; \\
+        \\
+        \textit{encap} \> $ \rightarrow $ \> identificador \textit{args} \\
+        \\
+        \textit{args} \> $\rightarrow$ \> (\textit{lparam}) \\
+        \> $ \mid $ \> $ \lambda $ \\
+        \\
+        \textit{lparam} \> $\rightarrow$ \> \textit{lparam} ; \textit{param} \\
+        \> $\mid$ \> \textit{param} \\
+        \\
+        \textit{param} \> $\rightarrow$ \> identificador : \textit{mode} identificador \\
+        \\
+        \textit{mode} \> $\rightarrow$ \> \textbf{PC\_ENTRA} \\
+        \> $\mid$ \> \textbf{PC\_SURT} \\
+        \> $\mid$ \> \textbf{PC\_ENTRA PC\_SURT} \\
+        \\
+        \textit{declaracions} \> $\rightarrow$ \> \textit{declaracions} \textit{declaracio} \\
+        \> $\mid$ \> $\lambda$ \\
+        \\
+        \textit{declaracio} \> $\rightarrow$ \> \textit{dec\_var} \\
+        \> $\mid$ \> \textit{dec\_constant} \\
+        \> $\mid$ \> \textit{dec\_tipus} \\
+        \> $\mid$ \> \textit{programa} \\
+        \\
+        \underline{-- Manual d'usuari variables} \\
+        \textit{dec\_var} \> $\rightarrow$ \> \textit{lid} : identificador; \\
+        \\
+        \textit{lid} \> $\rightarrow$ \> \textit{lid}, identificador \\
+        \> $\mid$ \> identificador \\
+        \\
+        \underline{-- Manual d'usuari constant} \\
+        \textit{dec\_constant} \> $\rightarrow$ \> identificador : \textbf{PC\_CONSTANT} identificador := \textit{lit};  DUDA CON EL LIT\\
+        \\
+        \textit{lit} \> $\rightarrow$ \> lit\_num \\
+        \> $\mid$ \> lit\_car \\
+        \> $\mid$ \> lit\_string \\
+        \\
+        \underline{-- Manual d'usuari tipus} \\
+        \textit{dec\_tipus} \> $\rightarrow$ \> \textit{dec\_subrang}  \\
+        \> $\mid$ \> \textit{dec\_registre} \\
+        \> $\mid$ \> \textit{dec\_coleccio} \\
+        \\
+        \textit{dec\_subrang} \> $\rightarrow$ \> \textbf{PC\_TIPUS} identificador \textbf{PC\_ES PC\_NOU} identificador \textbf{PC\_RANG} \textit{valor} .. \textit{valor} \\
+        \\
+        \textit{dec\_registre} \> $\rightarrow$ \> \textbf{PC\_TIPUS} identificador \textbf{PC\_ES PC\_REGISTRE} \\
+        \> \> \> \textit{ldc} \\
+        \> \> \textbf{PC\_FI PC\_REGISTRE}; \\
+        \\
+        \textit{ldc} \> $\rightarrow$ \> \textit{ldc dc} \\
+        \> $\mid$ \> \textit{dc} \\
+        \\
+        \textit{dc} \> $\rightarrow$ \> identificador : identificador; \\
+        \\
+        \textit{dec\_coleccio} \> $\rightarrow$ \> \textbf{PC\_TIPUS} identificador \textbf{PC\_ES PC\_COLECCIO} ( \textit{lid} ) \textbf{PC\_DE} identificador; \\
+        \\
+        \textit{lid} \> $\rightarrow$ \> \textit{lid}, identificador \\
+        \> $\mid$ \> identificador \\
+        \\
+        
+        
+        \underline{-- Bloc d'instruccions} \\
+        \textit{bloc} \> $\rightarrow$ \> \textit{bloc sent} \\
+        \> $\mid$ \> \textit{sent} \\
+        \\
+        \textit{sent} \> $\rightarrow$ \> \textit{sassig} \\
+        \> $\mid$ \> \textit{scond} \\
+        \> $\mid$ \> \textit{srep} \\
+        \> $\mid$ \> \textit{crida\_proc} \\
+        \\
+        
+        \textit{sassig} \> $\rightarrow$ \> \textit{referencia} := \textit{expressio}; \\
+        \\
+        
+        \textit{scond} \> $\rightarrow$ \> \textbf{PC\_SI} \textit{expressio} \textbf{PC\_LLAVORS} \\
+        \> \> \>  \textit{bloc} \\
+        \> \> \textbf{PC\_FI PC\_SI} \\
+        \> $\mid$ \> \textbf{PC\_SI} \textit{expressio} \textbf{PC\_LLAVORS} \\
+        \> \> \> \textit{bloc} \\
+        \> \> \textbf{PC\_SINO} \\
+        \> \> \> \textit{bloc} \\
+        \> \> \textbf{PC\_FI PC\_SI}\\
+        \\
+        
+        \textit{srep} \> $\rightarrow$ \> \textbf{PC\_MENTRE} \textit{expressio} \textbf{PC\_FER} \\
+        \> \> \> \textit{bloc} \\
+        \> \> \textbf{PC\_FI PC\_MENTRE}; \\
+        \\
+        
+        \textit{crida\_proc} \> $\rightarrow$ \> \textit{referencia}; \\
+        \\
+        \textit{referencia} \> $\rightarrow$ \> identificador \\
+        \> $\mid$ \> \textit{referencia}.identificador \\
+        \> $\mid$ \> \textit{referencia} (\textit{prparam}) \\
+        \\
+        \textit{prparam} \> $\rightarrow$ \> \textit{expressio} \\
+        \> $\mid$ \> \textit{expressio, prparam} \\
+        \\
+        
+        \textit{expressio} \> $\rightarrow$ \> \textit{expressio} $ + $ \textit{expressio} \\
+        \> $\mid$ \> \textit{expressio} $ - $ \textit{expressio} \\
+        \> $\mid$ \> \textit{expressio} $ * $ \textit{expressio} \\
+        \> $\mid$ \> \textit{expressio} $ / $ \textit{expressio} \\
+        \> $\mid$ \> \textit{expressio} \textbf{PC\_MOD} \textit{expressio} \\
+        \> $\mid$ \> \textit{expressio} $ > $ \textit{expressio} \\
+        \> $\mid$ \> \textit{expressio} $ < $ \textit{expressio} \\
+        \> $\mid$ \> \textit{expressio} $ \geq $ \textit{expressio} \\
+        \> $\mid$ \> \textit{expressio} $ \leq $ \textit{expressio} \\
+        \> $\mid$ \> \textit{expressio} $ \neq $ \textit{expressio} \\
+        \> $\mid$ \> \textit{expressio} $ = $ \textit{expressio} \\
+        \> $\mid$ \> $-$ \textit{expressio} \\
+        \> $\mid$ \> \textit{expressio} \&\& \textit{expressio} \\
+        \> $\mid$ \> \textit{expressio} $\mid\mid$ \textit{expressio} \\
+        \> $\mid$ \> \textbf{PC\_NO} \textit{expressio} \\
+        \> $\mid$ \> (\textit{expressio}) \\
+        \> $\mid$ \> \textit{referencia} \\
+        \> $\mid$ \> \textit{lit} \\
+    \end{tabbing}
+    
 \end{document}
 
