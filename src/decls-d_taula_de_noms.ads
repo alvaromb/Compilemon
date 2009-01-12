@@ -54,8 +54,6 @@ package decls.d_taula_de_noms is
 		  	long_paraula : Natural;
 		end record;
 		
---		type id_string is new integer range 0 .. rang_tcar'Last;
-		
 		type taula_identificadors is array (1 .. id_nom'Last) of t_identificador;
 		
 		type taula_caracters is array (rang_tcar) of character;

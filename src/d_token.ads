@@ -39,7 +39,7 @@ package d_token is
 					pc_inclou,
 					pc_usa,
 					pc_rang,
-					s_asignacio,
+					s_assignacio,
 					s_dospunts,
 					s_final,
 					s_coma,
