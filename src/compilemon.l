@@ -103,7 +103,7 @@ rang			{mt_atom(tok_begin_line, tok_begin_col, yylval);
 --Simbols 
 
 ":="		{mt_atom(tok_begin_line, tok_begin_col, yylval); 
-			return s_asignacio;}
+			return s_assignacio;}
 
 ":"			{mt_atom(tok_begin_line, tok_begin_col, yylval); 
 			return s_dospunts;}
@@ -122,6 +122,9 @@ rang			{mt_atom(tok_begin_line, tok_begin_col, yylval);
 
 ".."		{mt_atom(tok_begin_line, tok_begin_col, yylval); 
 			return s_puntsrang;}
+			
+"."         {mt_atom(tok_begin_line, tok_begin_col, yylval); 
+			return s_puntrec;}
 
 
 --Operadors
@@ -170,18 +173,19 @@ rang			{mt_atom(tok_begin_line, tok_begin_col, yylval);
 
 {caracter}	{mt_caracter(tok_begin_line, tok_begin_col,yytext, yylval); 
 			return const;}
-			
+
+
+--String
+
+\"[^\"\n\t]*\"	{mt_string(tok_begin_line, tok_begin_col, yytext, yylval);
+				return const;}
+
 
 --Identificador
 
 {lletra}({digit}|{lletra})*	{mt_identificador(tok_begin_line, tok_begin_col,
 							yytext, yylval); return id;}
 
-
---String
-
-\"[^\"\n\t]*\"	{mt_string(tok_begin_line, tok_begin_col, yytext, yylval);
-				return cadena;}
 
 
 --Comentaris
@@ -193,7 +197,7 @@ rang			{mt_atom(tok_begin_line, tok_begin_col, yylval);
 
 " "				{null;}
 
-{separadors}	{null;}
+{separadors}*	{null;}
 
 
 --Error

@@ -166,10 +166,7 @@ package body decls.dtsimbols is
 	begin
 	
 		d := ts.tdesc(idr).d;
---		if d.td /= dtipus then e := TRUE end if;
-		
 		td := d.td;
---		if td.tt /= tsrec then e := TRUE end if;
 		
 		p := ts.tdesc(idr).s;
 		while p /= 0 and then ts.tdespl(p).id /= idc loop

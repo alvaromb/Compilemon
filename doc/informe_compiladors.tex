@@ -46,11 +46,11 @@
    }
 
 \title{Compiladors, segona entrega}
-\author{Jose Ruiz Bravo, Biel Moya Alcover, alvaro Medina Ballester}
+\author{José Ruiz Bravo, Biel Moyà Alcover, Álvaro Medina Ballester}
 \date{16/01/2009}
 \ifpdf
 \pdfinfo {
-    /Author (Jose Ruiz Bravo, Biel Moya Alcover, alvaro Medina Ballester)
+    /Author (José Ruiz Bravo, Biel Moyà Alcover, Álvaro Medina Ballester)
     /Title (Compiladors, primera entrega)
     /Subject (Compiladors, primera entrega)
     /Keywords (compiladors, primera entrega, gramatica, lexic)
@@ -60,21 +60,21 @@
 \makeindex
 \begin{document}
     \maketitle
-    \index{Introduccio}
-    \chapter{Introduccio}
-        La practica de l'assignatura \textit{1470 - Processadors del Llenguatge} consisteix en
+    \index{Introducció}
+    \chapter{Introducció}
+        La pràctica de l'assignatura \textit{1470 - Processadors del Llenguatge} consisteix en
         desenvolupar un compilador basat en el llenguatge Ada. Nosaltres hem decidit 
-        utilitzar un subconjunt d'instruccions d'Ada traduïdes al catala, per crear
+        utilitzar un subconjunt d'instruccions d'Ada traduïdes al català, per crear
         un llenguatge simple, senzill i facilment comprensible.
         \\
         \\
         En aquest document trobarem el codi font necessari per definir i utilitzar la
-        taula de noms, el codi font del lèxic del llenguatge i l'especificacio de la
-        gramatica del nostre llenguatge. Aquests documents es corresponen amb les primeres
-        etapes del desenvolupament d'un compilador: l'analisi lèxica i l'analisi sintactica\footnote{L'analisi sintactica es completara en posteriors versions de la practica.}.
+        taula de noms, el codi font del lèxic del llenguatge i l'especificació de la
+        gramàtica del nostre llenguatge. Aquests documents es corresponen amb les primeres
+        etapes del desenvolupament d'un compilador: l'anàlisi lèxica i l'anàlisi sintàctica\footnote{L'anàlisi sintàctica es completarà en posteriors versions de la pràctica.}.
     \newpage
     \chapter{Analisi Lèxica}
-        El nostre llenguatge el definirem a partir d'una gramatica incontextual. Mitjançant l'eina \textit{aflex}, generam el codi necessari per representar el lèxic que hem definit. Els \textit{tokens} que composen l'apartat lèxic del compilador son els següents (fitxer \textit{compilemon.l}):
+        El nostre llenguatge el definirem a partir d'una gramàtica incontextual. Mitjançant l'eina \textit{aflex}, generam el codi necessari per representar el lèxic que hem definit. Els \textit{tokens} que composen l'apartat lèxic del compilador son els següents (fitxer \textit{compilemon.l}):
         \\
     
     % Codigo del analisis lexico
@@ -204,6 +204,9 @@ rang        {mt_atom(tok_begin_line, tok_begin_col, yylval);
 
 ".."        {mt_atom(tok_begin_line, tok_begin_col, yylval); 
             return s_puntsrang;}
+            
+"."         {mt_atom(tok_begin_line, tok_begin_col, yylval); 
+            return s_puntrec;}
 
 
 --Operadors
@@ -616,7 +619,7 @@ end decls.d_taula_de_noms;
         Per mantenir una organització del codi i dels paquets que anirem creant, hem definit un paquet anomenat \textit{decls} del qual penjen les declaracions. Com hem vist, la taula de noms penja d'aquest paquet, i a la vegada penjen els paquets \textit{d\_hash} i \textit{dgenerals} que son necessaris per la implementació de la taula de noms.
     \\
     \\
-        Cal destacar que la funció de hash que empram per la taula de noms s'anomena Hash Quadràtic\footnote{http://es.wikipedia.org/wiki/Tabla\_hash\#Direccionamiento\_abierto} vista a l'assignatura \textit{Estructures de la Informació}.
+        Cal destacar que la funció de hash que empram per la taula de noms s'anomena Hash Quadràtic\footnote{http://es.wikipedia.org/wiki/Tabla\_hash\#Direccionamiento\_abierto} vista a l'assignatura \textit{1671 - Estructures de la Informació}.
     \newpage
     \section{decls.ads}
     \begin{lstlisting}[style=Ada]
@@ -834,13 +837,14 @@ package d_token is
                     pc_inclou,
                     pc_usa,
                     pc_rang,
-                    s_asignacio,
+                    s_assignacio,
                     s_dospunts,
                     s_final,
                     s_coma,
                     s_parentesiobert,
                     s_parentesitancat,
                     s_puntsrang,
+                    s_puntrec,
                     pc_or,
                     pc_and,
                     op_menor,
@@ -1043,7 +1047,7 @@ end d_atribut;
     
     
     \chapter{Programa principal}
-        Al programa principal podem trobar un petit programa de prova.
+        Al programa principal podem trobar un petit procediment de prova.
     \\
         
     \section{compilemon.adb}
@@ -1130,8 +1134,6 @@ end compilemon;
     \\
     
     PENDIENTE PRODUCCION VALOR
-    REPASAR PUNTOS Y COMAS EN REAL Y MANUAL USUARIO
-    AÑADIR EL SIMBOLO '.' AL ALEX Y AYACC
     \begin{tabbing}
     \hspace*{2.0cm} \= \hspace*{0.5cm} \= \hspace*{0.8cm} \= \kill
         \textit{programa} \> $\rightarrow $ \> \textit{procediment} \\
@@ -1164,25 +1166,31 @@ end compilemon;
         \> $\mid$ \> \textit{dec\_tipus} \\
         \> $\mid$ \> \textit{programa} \\
         \\
+        
         \underline{-- Manual d'usuari variables} \\
         \textit{dec\_var} \> $\rightarrow$ \> \textit{lid} : identificador; \\
         \\
         \textit{lid} \> $\rightarrow$ \> \textit{lid}, identificador \\
         \> $\mid$ \> identificador \\
         \\
+        
         \underline{-- Manual d'usuari constant} \\
-        \textit{dec\_constant} \> $\rightarrow$ \> identificador : \textbf{PC\_CONSTANT} identificador := \textit{lit};  DUDA CON EL LIT\\
+        \textit{dec\_constant} \> $\rightarrow$ \> identificador : \textbf{PC\_CONSTANT} identificador := \textit{valor};  \\
+        \\
+        \textit{valor} \> $\rightarrow$ \> \textit{lit} \\
+        \> $\mid$ \> $-$ \textit{lit} \\
         \\
         \textit{lit} \> $\rightarrow$ \> lit\_num \\
         \> $\mid$ \> lit\_car \\
         \> $\mid$ \> lit\_string \\
         \\
+        
         \underline{-- Manual d'usuari tipus} \\
         \textit{dec\_tipus} \> $\rightarrow$ \> \textit{dec\_subrang}  \\
         \> $\mid$ \> \textit{dec\_registre} \\
         \> $\mid$ \> \textit{dec\_coleccio} \\
         \\
-        \textit{dec\_subrang} \> $\rightarrow$ \> \textbf{PC\_TIPUS} identificador \textbf{PC\_ES PC\_NOU} identificador \textbf{PC\_RANG} \textit{valor} .. \textit{valor} \\
+        \textit{dec\_subrang} \> $\rightarrow$ \> \textbf{PC\_TIPUS} identificador \textbf{PC\_ES PC\_NOU} identificador \textbf{PC\_RANG} \textit{valor} .. \textit{valor}; \\
         \\
         \textit{dec\_registre} \> $\rightarrow$ \> \textbf{PC\_TIPUS} identificador \textbf{PC\_ES PC\_REGISTRE} \\
         \> \> \> \textit{ldc} \\
@@ -1193,7 +1201,9 @@ end compilemon;
         \\
         \textit{dc} \> $\rightarrow$ \> identificador : identificador; \\
         \\
-        \textit{dec\_coleccio} \> $\rightarrow$ \> \textbf{PC\_TIPUS} identificador \textbf{PC\_ES PC\_COLECCIO} ( \textit{lid} ) \textbf{PC\_DE} identificador; \\
+        
+        \underline{-- Tipus colecció (\textit{array})} \\
+        \textit{dec\_coleccio} \> $\rightarrow$ \> \textbf{PC\_TIPUS} identificador \textbf{PC\_ES PC\_COLECCIO} (\textit{lid}) \textbf{PC\_DE} identificador; \\
         \\
         \textit{lid} \> $\rightarrow$ \> \textit{lid}, identificador \\
         \> $\mid$ \> identificador \\
@@ -1215,12 +1225,12 @@ end compilemon;
         
         \textit{scond} \> $\rightarrow$ \> \textbf{PC\_SI} \textit{expressio} \textbf{PC\_LLAVORS} \\
         \> \> \>  \textit{bloc} \\
-        \> \> \textbf{PC\_FI PC\_SI} \\
+        \> \> \textbf{PC\_FI PC\_SI}; \\
         \> $\mid$ \> \textbf{PC\_SI} \textit{expressio} \textbf{PC\_LLAVORS} \\
         \> \> \> \textit{bloc} \\
         \> \> \textbf{PC\_SINO} \\
         \> \> \> \textit{bloc} \\
-        \> \> \textbf{PC\_FI PC\_SI}\\
+        \> \> \textbf{PC\_FI PC\_SI}; \\
         \\
         
         \textit{srep} \> $\rightarrow$ \> \textbf{PC\_MENTRE} \textit{expressio} \textbf{PC\_FER} \\

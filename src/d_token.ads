@@ -46,6 +46,7 @@ package d_token is
 					s_parentesiobert,
 					s_parentesitancat,
 					s_puntsrang,
+					s_puntrec,
 					pc_or,
 					pc_and,
 					op_menor,

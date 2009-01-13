@@ -1,4 +1,4 @@
-﻿--Tokens
+﻿-- Tokens
 %token pc_procediment
 %token pc_inici
 %token pc_mentre
@@ -24,7 +24,7 @@
 %token pc_rang
 %token pc_or
 %token pc_and
-%token s_assignacio --PONERLE UNA S MAS
+%token s_assignacio
 %token s_dospunts 
 %token s_final
 %token s_coma
@@ -42,20 +42,19 @@
 %token op_multiplicacio
 %token op_divisio
 %token id
-%token cadena ------
 %token const ---- Sirve para la declaracion de constantes
 
 
 --Precedència
---%left pc_or
---%left pc_and
---%left pc_not
---%nonassoc op_menor op_menorigual op_majorigual op_major op_igual op_distint
---%left op_suma
---%left op_resta
---%left op_multiplicacio
---%left op_divisio
---%left menys_unitari
+%left pc_or
+%left pc_and
+%left pc_not
+%nonassoc op_menor op_menorigual op_majorigual op_major op_igual op_distint
+%left op_suma
+%left op_resta
+%left op_multiplicacio
+%left op_divisio
+%left menys_unitari
 
 
 --Definició del tipus atribut
@@ -70,22 +69,22 @@
 
 --Produccions de la gramàtica del llenguatge
 programa:
-	M1 declaracio_procediment
+	M1 dec_procediment
   ;
   
 M1: 
   ;
 
-declaracio_procediment:
+dec_procediment:
 	pc_procediment encap pc_es
 		declaracions
 	pc_inici
 		bloc
-	pc_fi identificador s_final 
+	pc_fi id s_final 
   ;
 	
 encap:
-	identificador
+	id
   |
     pencap s_parentesitancat
   ;
@@ -93,11 +92,11 @@ encap:
 p_encap:
 	pencap s_final param
   |
-	identificador s_parentesiobert param
+	id s_parentesiobert param
   ;
   
 param:
-	identificador s_dospunts mode identificador
+	id s_dospunts mode id
   ;
 	
 mode:
@@ -124,17 +123,17 @@ declaracio:
   ;
   
 dec_var:
-	identificador c_decl_var
+	id c_decl_var
   ;
   
 c_decl_var:
-	s_dospunts identificador s_final
+	s_dospunts id s_final
   |
-    s_coma identificador c_decl_var
+    s_coma id c_decl_var
   ;
 
 dec_constant:
-	identificador s_dospunts pc_constant identificador s_assignacio const s_final ---PONEMOS const O valor
+	id s_dospunts pc_constant id s_assignacio const s_final
   ;
   
 dec_tipus:
@@ -147,36 +146,38 @@ dec_tipus:
   
 -- TIPUS SUBRANG
 decl_subrang:
-	pc_tipus identificador pc_es pc_nou identificador pc_rang --DISCUTIR s_dospunts ------ s_final
+	pc_tipus id pc_es pc_nou id pc_rang limit s_dospunts limit s_final
   ;
+  
+limit:
+    const
+  | 
+    id
+  ;
+    
   
 -- TIPUS REGISTRE
 decl_registre:
 	p_dregistre pc_fi pc_registre
   ;
   
-p_dregistre: --LA DE JUANMA ES DISTINTA
-	p_dregistre identificador s_dospunts identificador s_final
+p_dregistre: 
+	p_dregistre id s_dospunts id s_final
   | 
-    pc_tipus identificador pc_es pc_registre identificador s_dospunts identificador s_final
+    pc_tipus id pc_es pc_registre id s_dospunts id s_final
   ;
 
 -- TIPUS COLECCIO
 decl_coleccio:
-	p_dcoleccio s_parentesitancat pc_de identificador s_final
+	p_dcoleccio s_parentesitancat pc_de id s_final
   ;
   
 p_dcoleccio:
-	p_dcoleccio s_coma identificador
+	p_dcoleccio s_coma id
   |
-	pc_tipus identificador pc_es pc_coleccio s_parentesiobert identificador
+	pc_tipus id pc_es pc_coleccio s_parentesiobert id
   ;
 
-
-
-dec_procediment: --CAMBIAR EL NOMBRE O QUITARLA
-	declaracio_procediment
-  ;
   
 bloc:
 	bloc sentencia
@@ -209,28 +210,6 @@ scond:
 		bloc
 	pc_fi pc_si
   ;
------------------------------  
---VERSION JUANMA
-estr_if:
-	encap_else
-	instrucciones
-	pc_end pc_if s_puntoycoma
-  |
-	encap_if
-		instrucciones
-	pc_end pc_if s_puntoycoma
-  ;
-  
-encap_else:
-	encap_if
-	instrucciones
-	pc_else
-  ;
-  
-encap_if:
-	pc_if expresion pc_then
-  ;
-------------------------------------  
   
 srep:
 	pc_mentre expressio pc_fer
@@ -238,31 +217,14 @@ srep:
 	pc_fi pc_fer
   ;
 
---------------------------------------------  
---VERSION JUANMA
-estr_while:
-	eloop
-		instrucciones
-	pc_end pc_loop s_puntoycoma
-  ;
-  
-eloop:
-	encap_loop expresion pc_loop
-  ;
-  
-encap_loop:
-	pc_while
-  ;
---------------------------------------------
-
 crida_proc:
 	referencia s_final
   ;
 
 referencia:
-	identificador
+	id
   |
-	referencia s_punto identificador --TENEMOS QUE INCLUIR EL S_PUNTO
+	referencia s_puntrec id
   |
 	pri s_parentesitancat
   ;
@@ -302,41 +264,60 @@ expressio:
   |
 	expressio pc_modul expressio
   |
-	op_resta expressio   %prec menys_unitari-------------
+	op_resta expressio   %prec menys_unitari
   |
 	s_parentesiobert expressio s_parentesitancat
   |
 	referencia
   |
-    constant -- JUANMA
+    const
   ;
 
 
   
   
 %%
+
+
 package pk_usintactica is
+
 	procedure yyparse;
-end pk_sintactico;
+	
+	
+end pk_usintactica;
 
-with text_io, Semantica.Atributo, Decls.Datributo, Pk_Lexico, pk_sintactico_tokens, pk_sintactico_goto, pk_sintactico_shift_reduce,semantica;
 
-use text_io, Semantica.Atributo, Decls.Datributo, Pk_Lexico, pk_sintactico_tokens, pk_sintactico_goto, pk_sintactico_shift_reduce,semantica;
 
-package body pk_sintactico is
-	procedure YYError (txt: in String; tk: in token; atr:in Decls.Datributo.atributo) is
-begin
+with    pk_usintactica_token,
+        pk_usintactica_shift_reduce,
+        pk_usintactica_goto,
+		compilemon_io,
+		u_lexica;
+        
 
-	text_io.new_line(2);
-	text_io.put_line(txt & ".");
-	text_io.put_line("Ultimo token: " & tk'img);
-	text_io.Put("Atributos: ");
-	Imprime(Atr);
-	text_io.new_line(2);
-end YYError;
+use     pk_usintactica_token,
+        pk_usintactica_shift_reduce,
+        pk_usintactica_goto,
+		compilemon_io,
+		u_lexica;
+		
+
+package body pk_usintactica is
 
 ##
-end pk_sintactico;
+
+-- AQUI PODEMOS AÑADIR EL CONTROL DE ERRORES
+--procedure YYError (txt: in String; tk: in token; atr:in Decls.Datributo.atributo) is
+--begin
+--	text_io.new_line(2);
+--	text_io.put_line(txt & ".");
+--	text_io.put_line("Ultimo token: " & tk'img);
+--	text_io.Put("Atributos: ");
+--	Imprime(Atr);
+--	text_io.new_line(2);
+--end YYError;
+
+end pk_usintactica;
   
 
 
