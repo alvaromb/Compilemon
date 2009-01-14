@@ -48,7 +48,8 @@ package decls.dtsimbols is
 	-- VERSIO 4: Arrays.
 	procedure posa_idx (ts: in tsimbols;
 						ida: in id_nom;
-						idi: in id_nom);
+						idi: in id_nom;
+						  e: out boolean);
 						
 	function primer_idx (ts: in tsimbols;
 						 ida: in id_nom) return cursor_idx;

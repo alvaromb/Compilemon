@@ -184,7 +184,42 @@ package body decls.dtsimbols is
 	
 	
 	-- VERSIO 4: Arrays.
+	procedure posa_idx (ts: in tsimbols;
+						ida: in id_nom;
+						idi: in id_nom;
+						  e: out boolean) is
+						
+	     d : descrip;
+	    dt : descriptipus;
+	     p : rang_despl;
+	    pp : rang_despl;
+	    idespl : rang_despl;
+						
+	begin
 	
+	    d := ts.tdesc(ida).d;
+	    if d.td /= dtipus then e := TRUE end if; -- Introduir control d'errors
+	    
+        dt := d.dt;
+        if dt.tt /= ts then e := TRUE end if; -- Introduir control d'errors
+        
+        p := ts.tdesc(ida).s;
+        while p /= 0 loop -- Comprovar el 0
+            pp := p;
+            p := ts.tdespl(p).s;
+        end loop;
+        
+        ts.tbloc(ts.nprof) := ts.tbloc(ts.nprof) + 1;
+        idespl := ts.tbloc(ts.nprof);
+        ts.tesdpl(idespl) := (idi, -1, dnula, 0);
+        
+        if pp = 0 then
+            ts.tdesc(ida).s := idespl;
+        else
+            ts.tdespl(pp).s := idespl;
+        end if;        
+	
+	end posa_idx;
 	
 
 end decls.dtsimbols;

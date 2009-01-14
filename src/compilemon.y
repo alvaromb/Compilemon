@@ -1,4 +1,3 @@
-﻿-- Tokens
 %token pc_procediment
 %token pc_inici
 %token pc_mentre
@@ -31,6 +30,7 @@
 %token s_parentesiobert
 %token s_parentesitancat
 %token s_puntsrang
+%token s_puntrec
 %token op_menor
 %token op_menorigual
 %token op_majorigual
@@ -48,13 +48,13 @@
 --Precedència
 %left pc_or
 %left pc_and
-%left pc_not
 %nonassoc op_menor op_menorigual op_majorigual op_major op_igual op_distint
 %left op_suma
 %left op_resta
-%left op_multiplicacio
-%left op_divisio
+%left op_multiplicacio op_divisio pc_modul
+%left pc_no
 %left menys_unitari
+
 
 
 --Definició del tipus atribut
@@ -82,14 +82,14 @@ dec_procediment:
 		bloc
 	pc_fi id s_final 
   ;
-	
+
 encap:
 	id
   |
     pencap s_parentesitancat
   ;
   
-p_encap:
+pencap:
 	pencap s_final param
   |
 	id s_parentesiobert param
@@ -98,7 +98,7 @@ p_encap:
 param:
 	id s_dospunts mode id
   ;
-	
+
 mode:
 	pc_entra
   |
@@ -230,9 +230,9 @@ referencia:
   ;
   
 pri:
-	pri s_coma expressio
+	referencia s_parentesiobert expressio
   |
-    referencia s_parentesiobert expressio
+    pri s_coma expressio
   ;
   
 expressio:
@@ -240,7 +240,7 @@ expressio:
   |
 	expressio pc_and expressio
   |
-	pc_no expressio
+	pc_no expressio     %prec pc_no
   |
 	expressio op_menor expressio
   |
@@ -262,7 +262,7 @@ expressio:
   |
 	expressio op_divisio expressio
   |
-	expressio pc_modul expressio
+    expressio pc_modul expressio
   |
 	op_resta expressio   %prec menys_unitari
   |
@@ -283,7 +283,7 @@ package pk_usintactica is
 
 	procedure yyparse;
 	
-	
+
 end pk_usintactica;
 
 
@@ -319,10 +319,4 @@ package body pk_usintactica is
 
 end pk_usintactica;
   
-
-
-
-
-
-
 
