@@ -42,13 +42,21 @@ package decls.dgenerals is
 	
 	max_prof : constant integer := 20;
 	type nivell_prof is new integer range 0 .. max_prof;
+	nul_nprof : constant nivell_prof := 0;
 	
 	max_despl : constant integer := max_prof*max_id;
 	type rang_despl is new integer range 0 .. max_despl;
+	nul_despl : constant rang_despl := 0;
 	
-	type valor is new integer range 0 .. integer'LAST;
+	-- Nombre de variables
+	max_var : constant integer := 1000;
+	type num_var is new integer range 0 .. max_var;
 	
+	-- Nombre de procediments
+	max_proc : constant integer := 100;
+	type num_proc is new integer range 0 .. max_proc;
 	
-	
+	-- Tipus constant
+	type valor is new integer range 0 .. integer'Last;
 
 end decls.dgenerals;

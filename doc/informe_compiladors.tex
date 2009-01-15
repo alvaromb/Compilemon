@@ -20,7 +20,7 @@
      rulesep=.4pt,
      backgroundcolor=\color{gray97},
      rulesepcolor=\color{black},
-     stringstyle=\ttfamily,
+     stringstyle=\ttfamily\color{red},
      showstringspaces = false,
      basicstyle=\small\ttfamily,
      commentstyle=\color{gray45},
@@ -58,9 +58,12 @@
 }
 \fi
 \makeindex
+
 \begin{document}
     \maketitle
-    \index{Introducció}
+    %\printindex
+    \tableofcontents
+    \index{Introducció@\textbf{Introducció}}
     \chapter{Introducció}
         La pràctica de l'assignatura \textit{1470 - Processadors del Llenguatge} consisteix en
         desenvolupar un compilador basat en el llenguatge Ada. Nosaltres hem decidit 
@@ -73,13 +76,15 @@
         gramàtica del nostre llenguatge. Aquests documents es corresponen amb les primeres
         etapes del desenvolupament d'un compilador: l'anàlisi lèxica i l'anàlisi sintàctica\footnote{L'anàlisi sintàctica es completarà en posteriors versions de la pràctica.}.
     \newpage
+    
+    \index{Anàlisi Lèxica@\textbf{Anàlisi Lèxica}}
     \chapter{Analisi Lèxica}
         El nostre llenguatge el definirem a partir d'una gramàtica incontextual. Mitjançant l'eina \textit{aflex}, generam el codi necessari per representar el lèxic que hem definit. Els \textit{tokens} que composen l'apartat lèxic del compilador son els següents (fitxer \textit{compilemon.l}):
         \\
     
     % Codigo del analisis lexico
-    \section{Anàlisi Lèxica: compilemon.l}
-    \begin{lstlisting}[style=Ada]
+    \section{Descripció del lèxic: \textit{compilemon.l}}
+    \begin{lstlisting}
 -- Macros
 
 lletra [A-Za-z]
@@ -316,12 +321,12 @@ end u_lexica;
     \end{lstlisting}
     
     \newpage
-    \chapter{Estructura de dades}
+    \section{Taula de noms}
         Hem definit una estructura de dades per emmagatzemar els identificadors i el strings. Aquesta estructura de dades es coneix com a \textit{taula de noms} i es similar a la que varem definir a classe.
         
     
     % Codigo de decls-d_taula_de_noms.ads
-    \section{decls-d\_taula\_de\_noms.ads}
+    \subsection{decls-d\_taula\_de\_noms.ads}
     \begin{lstlisting}[style=Ada]
 -- ------------------------------------------------
 --  Paquet de declaracions de la taula de noms
@@ -397,7 +402,7 @@ end decls.d_taula_de_noms;
     \end{lstlisting}
     
     \newpage
-    \section{decls-d\_taula\_de\_noms.adb}
+    \subsection{decls-d\_taula\_de\_noms.adb}
     \begin{lstlisting}[style=Ada]
 -- ------------------------------------------------
 --  Paquet de declaracions de la taula de noms
@@ -613,188 +618,12 @@ package body decls.d_taula_de_noms is
 
 end decls.d_taula_de_noms;
     \end{lstlisting}
-    
-    \newpage
-    \chapter{Declaracions i altres paquets}
-        Per mantenir una organització del codi i dels paquets que anirem creant, hem definit un paquet anomenat \textit{decls} del qual penjen les declaracions. Com hem vist, la taula de noms penja d'aquest paquet, i a la vegada penjen els paquets \textit{d\_hash} i \textit{dgenerals} que son necessaris per la implementació de la taula de noms.
-    \\
-    \\
-        Cal destacar que la funció de hash que empram per la taula de noms s'anomena Hash Quadràtic\footnote{http://es.wikipedia.org/wiki/Tabla\_hash\#Direccionamiento\_abierto} vista a l'assignatura \textit{1671 - Estructures de la Informació}.
-    \newpage
-    \section{decls.ads}
-    \begin{lstlisting}[style=Ada]
--- ------------------------------------------------
---  Paquet de Declaracions
--- ------------------------------------------------
---  Versio  :   0.1
---  Autors  :   Jose Ruiz Bravo
---              Biel Moya Alcover
---              Alvaro Medina Ballester
--- ------------------------------------------------
---      Paquet de declaracions pare.
---
--- ------------------------------------------------
-
-package decls is
-
-    pragma pure;
-
-
-end decls;
-    \end{lstlisting}
-    
-    \newpage
-    \section{decls-dgenerals.ads}
-    \begin{lstlisting}[style=Ada]
--- ------------------------------------------------
---  Paquet de declaracions generals
--- ------------------------------------------------
---  Versio    :    0.2
---  Autors    :    Jose Ruiz Bravo
---                 Biel Moya Alcover
---                 Alvaro Medina Ballester
--- ------------------------------------------------
---        Declaracions generals.
---
--- ------------------------------------------------
-
-package decls.dgenerals is
-
-    pragma pure;
-
-    -- TAULA DE NOMS
-    max_id : constant integer := 1000;
-    type id_nom is new integer range 0 .. max_id;
-    
-    -- Valor nul per al tipus id_nom
-    id_nul : constant id_nom := 0;
-        
-    -- La longitud es el nombre de paraules * la longitud de cadascuna
-    longitut : constant integer := 40;
-    type rang_tcar is new integer range 0 .. (longitut*max_id);
-    
-    -- Taula de dispersio:
-    -- Tipus per la taula de dispersio de la taula de noms:
-    tam_dispersio : constant integer := 101;
-    type rang_dispersio is new integer range -1 .. tam_dispersio;
-    
-    -- Valor nul per el rang dispersio.
-    dispersio_nul : constant rang_dispersio := -1;
-    
-    -- Declaracio de la taula de dispersio
-    type taula_dispersio is array (rang_dispersio) of id_nom;
-    
-    
-    -- TAULA DE SIMBOLS
-    type despl is new integer;
-    
-    max_prof : constant integer := 20;
-    type nivell_prof is new integer range 0 .. max_prof;
-    
-    max_despl : constant integer := max_prof*max_id;
-    type rang_despl is new integer range 0 .. max_despl;
-    
-
-end decls.dgenerals;
-    \end{lstlisting}
-    \newpage
-        
-    \section{decls-d\_hash.ads}
-    \begin{lstlisting}[style=Ada]
--- ------------------------------------------------
---  Paquet de declaracions de les funcions hash
--- ------------------------------------------------
---  Versio    :    0.2
---  Autors    :    Jose Ruiz Bravo
---                 Biel Moya Alcover
---                 Alvaro Medina Ballester
--- ------------------------------------------------
---        Especificacio de les funcions de hash:
---            - Hashing Quadratic.
---
--- ------------------------------------------------
-
-with    decls.dgenerals;
-
-use     decls.dgenerals;
-
-
-package decls.d_hash is
-
-    pragma pure;
-
-    function fdisp_tn (nom : in string) return rang_dispersio;
-    
-    
-end decls.d_hash;
-    \end{lstlisting}
     \newpage
     
     
-    \section{decls-d\_hash.adb}
-    \begin{lstlisting}[style=Ada]
--- ------------------------------------------------
---  Paquet de procediments de les funcions hash
--- ------------------------------------------------
---  Versio    :    0.2
---  Autors    :    Jose Ruiz Bravo
---                 Biel Moya Alcover
---                 Alvaro Medina Ballester
--- ------------------------------------------------
---        Procediments de les funcions de hash:
---            - Hashing quadratic
---
--- ------------------------------------------------
-
-package body decls.d_hash is
-
-    function fdisp_tn (nom : in string) return rang_dispersio is
-        
-        a : array (nom'Range) of integer;
-        r : array (1..2*nom'Last) of integer;
-        
-        k, c, m, n : integer;
-        
-        base : constant integer := character'pos(character'Last)+1;
-        
-    begin
-        
-        n := nom'Last;
-        m := nom'Length;
-    
-        for i in 1..n loop
-            a(i) := character'Pos(nom(i));
-        end loop;
-        
-        for i in 1..2*n loop
-            r(i) := 0;
-        end loop;
-        
-        for i in 1..n loop
-            c := 0; k := i - 1;
-            for j in 1..n loop
-                c := c + r(k+j) + a(i) + a(j);
-                r(k+j) := c mod base;
-                c := c/base;
-            end loop;
-            r(k+n+1) := r(k+n+1) + c;
-        end loop;
-        
-        c := (r(n+1) * base + r(n)) mod (tam_dispersio);
-        
-        return rang_dispersio(c);
-        
-    end fdisp_tn;
-    
-    
-end decls.d_hash;
-    \end{lstlisting}
-    \newpage
-    
-    
-    \chapter{Declaracions del tipus token i atribut}
-        Hem definit el tipus token al paquet \textit{d\_token} i el tipus atribut (amb els procediments corresponents per crear atributs i la definició d'atribut) al paquet \textit{d\_atribut}.
-    \section{d\_token.ads}
+    \section{Tokens i atributs}
+    Hem definit el tipus token al paquet \textit{d\_token} i el tipus atribut (amb els procediments corresponents per crear atributs i la definició d'atribut) al paquet \textit{d\_atribut}.
+    \subsection{d\_token.ads}
     \begin{lstlisting}[style=Ada]
 -- ------------------------------------------------
 --  Paquet de declaracions dels tokens
@@ -868,8 +697,7 @@ end d_token;
     \end{lstlisting}
     \newpage
     
-    
-    \section{d\_atribut.ads}
+    \subsection{d\_atribut.ads}
     \begin{lstlisting}[style=Ada]
 -- ------------------------------------------------
 --  Paquet de procediments dels atributs
@@ -948,8 +776,7 @@ end d_atribut;
     \end{lstlisting}
     \newpage
     
-    
-    \section{d\_atribut.adb}
+    \subsection{d\_atribut.adb}
     \begin{lstlisting}[style=Ada]
 -- ------------------------------------------------
 --  Paquet de procediments dels atributs
@@ -1046,94 +873,10 @@ end d_atribut;
     \newpage
     
     
-    \chapter{Programa principal}
-        Al programa principal podem trobar un petit procediment de prova.
-    \\
-        
-    \section{compilemon.adb}
-    \begin{lstlisting}[style=Ada]
--- ------------------------------------------------
---  Programa de prova
--- ------------------------------------------------
---  Versio    :    0.1
---  Autors    :    Jose Ruiz Bravo
---                 Biel Moya Alcover
---                 Alvaro Medina Ballester
--- ------------------------------------------------
---        Programa per comprovar les funcionalitats
---    del lexic i la taula de noms.
---
--- ------------------------------------------------
-
-with    Ada.Text_IO,
-        Ada.Command_Line,
-        decls.d_taula_de_noms,
-        decls.tn,
-        decls.dgenerals,
-        decls.dtsimbols,
-        decls.dtdesc,
-        d_token,
-        compilemon_io,
-        u_lexica;
-        
-use     Ada.Text_IO,
-        Ada.Command_Line,
-        decls.d_taula_de_noms,
-        decls.tn,
-        decls.dgenerals,
-        decls.dtsimbols,
-        decls.dtdesc,
-        d_token,
-        compilemon_io,
-        u_lexica;
-        
-
-procedure compilemon is
-
-     Tk : token;
-    id1 : id_nom;
-    id2 : id_nom;
-    id3 : id_nom;
+    \chapter{Anàlisi Sintàctica}
+    A l'Anàlisi Sintàctica podem trobar la gramàtica del nostre llenguatge i el fitxer \textit{compilemon.y}. Aquest fitxer és que utilitzam juntament amb l'eina \textbf{ayacc}.
     
-     ts : tsimbols;
-    
-begin
-
-    tbuida(tn);--NECESARIO?!
-
-    Open_Input(Argument(1));
---    Tk := Yylex;
---    
---    while tk /= end_of_input loop
---        Put_Line(Token'Image(Tk));
---        Tk := Yylex;
---    end loop;
-
-     posa_id (tn, id1, "pepe");
-     posa_id (tn, id2, "alvaro");
-     posa_id (tn, id3, "txebs");
-     
-   
-   Close_Input;
-   
-   exception
-      when E_Tids_Plena => 
-         Put_Line("ERROR: La taula d'identificadors es plena.");
-         
-      when E_Tcar_Plena =>
-          Put_Line("ERROR: La taula de caracters es plena.");
-
-end compilemon;
-    \end{lstlisting}
-    \newpage
-    
-    
-    \chapter{Gramàtica}
-        Aquí hem definit la gramàtica del nostre llenguatge.
-    \\
-    \\
-    
-    PENDIENTE PRODUCCION VALOR
+    \section{Gramàtica}
     \begin{tabbing}
     \hspace*{2.0cm} \= \hspace*{0.5cm} \= \hspace*{0.8cm} \= \kill
         \textit{programa} \> $\rightarrow $ \> \textit{procediment} \\
@@ -1267,6 +1010,1089 @@ end compilemon;
         \> $\mid$ \> \textit{referencia} \\
         \> $\mid$ \> \textit{lit} \\
     \end{tabbing}
+    \newpage
+    
+    \section{Especificació: \textit{compilemon.y}}
+    \begin{lstlisting}[style=Ada]
+-- Tokens
+%token pc_procediment
+%token pc_inici
+%token pc_mentre
+%token pc_per
+%token pc_entre
+%token pc_si
+%token pc_sino
+%token pc_fi
+%token pc_fer
+%token pc_constant
+%token pc_tipus
+%token pc_coleccio
+%token pc_registre
+%token pc_es
+%token pc_llavors
+%token pc_no
+%token pc_entra
+%token pc_surt
+%token pc_nou
+%token pc_nul
+%token pc_de
+%token pc_modul
+%token pc_rang
+%token pc_or
+%token pc_and
+%token s_assignacio
+%token s_dospunts 
+%token s_final
+%token s_coma
+%token s_parentesiobert
+%token s_parentesitancat
+%token s_puntsrang
+%token s_puntrec
+%token op_menor
+%token op_menorigual
+%token op_majorigual
+%token op_major
+%token op_igual
+%token op_distint
+%token op_suma
+%token op_resta
+%token op_multiplicacio
+%token op_divisio
+%token id
+%token const -- Per declarar constants
+
+
+--Precedencia
+%left pc_or
+%left pc_and
+%nonassoc op_menor op_menorigual op_majorigual op_major op_igual op_distint
+%left op_suma
+%left op_resta
+%left op_multiplicacio op_divisio pc_modul
+%left pc_no
+%left menys_unitari
+
+
+
+--Definicio del tipus atribut
+%with d_atribut
+{
+    subtype yystype is d_atribut.atribut;
+}
+
+
+%%
+
+
+--Produccions de la gramatica del llenguatge
+programa:
+    M1 dec_procediment
+  ;
+  
+M1: 
+  ;
+
+dec_procediment:
+    pc_procediment encap pc_es
+        declaracions
+    pc_inici
+        bloc
+    pc_fi id s_final 
+  ;
+
+encap:
+    id
+  |
+    pencap s_parentesitancat
+  ;
+  
+pencap:
+    pencap s_final param
+  |
+    id s_parentesiobert param
+  ;
+  
+param:
+    id s_dospunts mode id
+  ;
+
+mode:
+    pc_entra
+  |
+    pc_surt
+  |
+    pc_entra pc_surt
+  ;
+  
+declaracions:
+    declaracions declaracio
+  |
+  ;
+
+-- DECLARACIONS
+declaracio:
+    dec_var
+  |
+    dec_constant
+  |
+    dec_tipus
+  |
+    dec_procediment
+  ;
+  
+dec_var:
+    id c_decl_var
+  ;
+  
+c_decl_var:
+    s_dospunts id s_final
+  |
+    s_coma id c_decl_var
+  ;
+
+dec_constant:
+    id s_dospunts pc_constant id s_assignacio const s_final
+  ;
+
+-- TIPUS
+dec_tipus:
+    decl_coleccio
+  |
+    decl_registre
+  | 
+    decl_subrang
+  ;
+  
+-- TIPUS SUBRANG
+decl_subrang:
+    pc_tipus id pc_es pc_nou id pc_rang limit s_dospunts limit s_final
+  ;
+  
+limit:
+    const
+  | 
+    id
+  ;
+    
+  
+-- TIPUS REGISTRE
+decl_registre:
+    p_dregistre pc_fi pc_registre
+  ;
+  
+p_dregistre: 
+    p_dregistre id s_dospunts id s_final
+  | 
+    pc_tipus id pc_es pc_registre id s_dospunts id s_final
+  ;
+
+-- TIPUS COLECCIO
+decl_coleccio:
+    p_dcoleccio s_parentesitancat pc_de id s_final
+  ;
+  
+p_dcoleccio:
+    p_dcoleccio s_coma id
+  |
+    pc_tipus id pc_es pc_coleccio s_parentesiobert id
+  ;
+
+  
+-- BLOC D'INSTRUCCIO
+bloc:
+    bloc sentencia
+  | 
+    sentencia
+  ;
+  
+-- SENTENCIES D'INSTRUCCIONS
+sentencia: 
+    sassig
+  |
+    scond
+  |
+    srep
+  | 
+    crida_proc
+  ;
+
+-- Sentencia assignacio
+sassig:
+    referencia s_assignacio expressio s_final
+  ;
+
+-- Sentencia condicional
+scond:
+    pc_si expressio pc_llavors 
+        bloc 
+    pc_fi pc_si
+  |
+    pc_si expressio pc_llavors 
+        bloc 
+    pc_sino
+        bloc
+    pc_fi pc_si
+  ;
+
+-- Sentencia bucle
+srep:
+    pc_mentre expressio pc_fer
+        bloc
+    pc_fi pc_fer
+  ;
+
+-- Sentencia crida a procediment
+crida_proc:
+    referencia s_final
+  ;
+
+referencia:
+    id
+  |
+    referencia s_puntrec id
+  |
+    pri s_parentesitancat
+  ;
+  
+pri:
+    referencia s_parentesiobert expressio
+  |
+    pri s_coma expressio
+  ;
+  
+-- Expressions
+expressio:
+    expressio pc_or expressio
+  |
+    expressio pc_and expressio
+  |
+    pc_no expressio     %prec pc_no
+  |
+    expressio op_menor expressio
+  |
+    expressio op_menorigual expressio
+  |
+    expressio op_majorigual expressio
+  |
+    expressio op_major expressio
+  |
+    expressio op_igual expressio    
+  |
+    expressio op_distint expressio
+  |
+    expressio op_suma expressio
+  |
+    expressio op_resta expressio
+  |
+    expressio op_multiplicacio expressio
+  |
+    expressio op_divisio expressio
+  |
+    expressio pc_modul expressio
+  |
+    op_resta expressio   %prec menys_unitari
+  |
+    s_parentesiobert expressio s_parentesitancat
+  |
+    referencia
+  |
+    const
+  ;
+
+
+  
+  
+%%
+
+
+package pk_usintactica is
+
+    procedure yyparse;
+    
+
+end pk_usintactica;
+
+
+
+with    pk_usintactica_token,
+        pk_usintactica_shift_reduce,
+        pk_usintactica_goto,
+        compilemon_io,
+        u_lexica;
+        
+
+use     pk_usintactica_token,
+        pk_usintactica_shift_reduce,
+        pk_usintactica_goto,
+        compilemon_io,
+        u_lexica;
+        
+
+package body pk_usintactica is
+
+##
+
+end pk_usintactica;
+  
+
+    \end{lstlisting}
+    \newpage
+    
+    \chapter{Anàlisi Semàntica}
+        En aquest capítol tenim la definició de les estructures de dades necesaries per l'anàlisi semàntic\footnote{En posteriors versions del document introduïrem les rutines semàntiques i la comprovació de tipus en aquest capítol.}.
+        
+    \section{Descripció}
+    \subsection{decls-dtdesc.ads}
+    \begin{lstlisting}[style=Ada]
+-- ------------------------------------------------
+--  Paquet de declaracions del tipus descripcio
+-- ------------------------------------------------
+--  Versio    :    0.1
+--  Autors    :    Jose Ruiz Bravo
+--                 Biel Moya Alcover
+--                 Alvaro Medina Ballester
+-- ------------------------------------------------
+--        Declaracions del tipus descripcio.
+--
+-- ------------------------------------------------
+
+
+with    decls.dgenerals;
+
+use     decls.dgenerals;
+
+
+package decls.dtdesc is
+
+    pragma pure;
+
+    type tdescrip is (dnula,
+                      dconst,
+                      dvar,
+                      dtipus,
+                      dproc,
+                      dcamp,
+                      dargc);
+                       
+    type tipusdetipus is (tsbool,
+                          tscar,
+                          tsent,
+                          tsrec,
+                          tsarr,
+                          tsnul);
+    
+    type descriptipus (tt : tipusdetipus := tsnul) is
+        record
+            ocup : despl;
+            case tt is
+                when tsbool | tscar | tsent => linf, lsup : valor;
+                when tsarr                  => tcamp : id_nom;
+                when tsrec | tsnul          => null;
+            end case;
+        end record;
+        
+    
+    type descrip (td : tdescrip := dnula) is
+        record
+            case td is
+                when dnula  => null;
+                when dtipus => dt : descriptipus;
+                when dvar   => tr : id_nom;
+                               nv : num_var;
+                when dproc  => np : num_proc;
+                when dconst => tc : id_nom;
+                               vc : valor;
+                when dargc  => nvarg: num_var;
+                                targ: id_nom;
+                when dcamp  => tcamp: id_nom;
+                                 dsp: rang_despl; 
+
+            end case;
+        end record;
+    
+        
+end decls.dtdesc;
+    \end{lstlisting}
+    
+    \newpage
+    
+    
+    \section{Taula de símbols}
+    \subsection{decls-dtsimbols.ads}
+    \begin{lstlisting}[style=Ada]
+-- ------------------------------------------------
+--  Paquet de declaracions de la taula de simbols
+-- ------------------------------------------------
+--  Versio    :    0.1
+--  Autors    :    Jose Ruiz Bravo
+--                 Biel Moya Alcover
+--                 Alvaro Medina Ballester
+-- ------------------------------------------------
+--        En aquest fitxer tenim implementada
+--  l'estructura de la taula de simbols i totes
+--  les declaracions de les operacions que podem
+--  realitzar sobre les mateixes.
+--
+-- ------------------------------------------------
+
+with    decls.dtdesc,
+        decls.dgenerals;
+        
+use     decls.dtdesc,
+        decls.dgenerals;
+
+
+package decls.dtsimbols is
+
+    pragma pure;
+
+    type tsimbols is limited private;
+    type cursor_idx is private;
+    type cursor_arg is private;
+    
+    -- VERSIO 1: llenguatge simple sense estructura 
+    -- de blocs estil Fortran.
+    procedure tbuida (ts: out tsimbols);
+    
+    procedure posa (ts: in out tsimbols;
+                    id: in id_nom;
+                     d: in descrip;
+                     e: out boolean);
+                     
+    function cons (ts: in tsimbols;
+                   id: in id_nom) return descrip;
+             
+                    
+    -- VERSIO 2: Normal, llenguatge amb blocs estil Pascal.
+    procedure entrabloc (ts: in out tsimbols);
+    
+    procedure surtbloc (ts: in out tsimbols);
+    
+    
+    -- VERSIO 3: Blocs mes records.
+    procedure posacamp (ts: in out tsimbols;
+                       idr: in id_nom;
+                       idc: in id_nom;
+                         d: in descrip;
+                         e: out boolean);
+                        
+    function conscamp (ts: in tsimbols;
+                      idr: in id_nom;
+                      idc: in id_nom) return descrip;
+
+
+    -- VERSIO 4: Arrays.
+    procedure posa_idx (ts: in tsimbols;
+                       ida: in id_nom;
+                       idi: in id_nom;
+                         e: out boolean);
+                        
+    function primer_idx (ts: in tsimbols;
+                        ida: in id_nom) return cursor_idx;
+                         
+    function succ_idx (ts: in tsimbols;
+                       ci: in cursor_idx) return cursor_idx;
+                             
+    function idx_valid (ci: in cursor_idx) return boolean;
+    
+    function cons_idx (ts: in tsimbols;
+                       ci: cursor_idx) return id_nom;
+                      
+                         
+    -- VERSIO 5: Procediments
+--    procedure posa_arg (ts: in tsimbols;
+--                       idp: in id_nom;
+--                       ida: in id_nom;
+--                         d: in descrip;
+--                         e: out boolean);
+                          
+--    function primer_arg () return cursor_arg; --OMPLIR
+--    
+--    function succ_arg () return cursor_arg; --OMPLIR
+--    
+--    function arg_valid () return boolean; --OMPLIR
+    
+--    procedure cons_arg (ts: in tsimbols;
+--                        ca: in cursor_arg;
+--                       ida: out id_nom;
+--                        dn: out descrip);
+                         
+--    procedure actualitza (ts: in out tsimbols;
+--                          id: in id_nom;
+--                           d: in descrip);
+    
+    private
+    
+        type tipus_descrip is record
+            np : nivell_prof;
+             d : descrip;
+             s : rang_despl;
+        end record;
+        
+        type tipus_despl is record
+            np : nivell_prof;
+             d : descrip;
+            id : id_nom;
+             s : rang_despl; -- Afegit per tal d'implementar els records
+        end record;
+         
+        type taula_blocs is array (1 .. nivell_prof'Last) of rang_despl;
+        type taula_despl is array (1 .. rang_despl'Last) of tipus_despl;
+        type taula_descrip is array (1 .. id_nom'Last) of tipus_descrip;
+        
+        type cursor_idx is new rang_despl;
+            
+        type tsimbols is record
+            tdesc : taula_descrip;
+           tdespl : taula_despl;
+            tbloc : taula_blocs;
+            nprof : nivell_prof;
+        end record;
+
+end decls.dtsimbols;
+    \end{lstlisting}
+    \newpage
+    
+    \subsection{decls-dtsimbols.adb}
+    \begin{lstlisting}[style=Ada]
+-- ------------------------------------------------
+--  Procediments taula de simbols
+-- ------------------------------------------------
+--  Versio    :    0.1
+--  Autors    :    Jose Ruiz Bravo
+--                 Biel Moya Alcover
+--                 Alvaro Medina Ballester
+-- ------------------------------------------------
+--        Procediments per tractar la taula de
+--      simbols:
+--            - Taula buida
+--            - Posa
+--            - Consulta
+--            - Entra bloc
+--            - Surt bloc
+--            - Posa camp
+--            - Consulta camp
+--            - Posa index
+--            - Primer index
+--            - Successor index
+--            - Index valid?
+--            - Consulta index
+--            - Posa argument
+--            - Primer argument
+--            - Successor argument
+--            - Argument valid?
+--            - Consulta argument
+--            - Actualitza
+--
+-- ------------------------------------------------
+
+package body decls.dtsimbols is
+
+    -- VERSIO 1: llenguatge simple sense estructura 
+    -- de blocs estil Fortran.
+    procedure tbuida (ts : out tsimbols) is
+    
+        descnula : descrip(dnula);
+        
+    begin
+        
+        ts.nprof := 1;
+        ts.tbloc(ts.nprof) := 0;
+        
+        for i in 1 .. id_nom'Last loop
+            ts.tdesc(i) := (0, descnula, -1);
+        end loop;
+    
+    end tbuida;
+    
+    
+    procedure posa (ts : in out tsimbols;
+                    id : in id_nom;
+                     d : in descrip;
+                     e : out boolean) is
+                      
+        idespl : rang_despl;
+    
+    begin
+    
+        e := (ts.tdesc(id).np = ts.nprof);
+        
+        if not e then
+            ts.tbloc(ts.nprof) := ts.tbloc(ts.nprof) + 1;
+            idespl := ts.tbloc(ts.nprof);
+            
+            ts.tdespl(idespl) := (ts.tdesc(id).np, ts.tdesc(id).d, id, 0);
+            ts.tdesc(id) := (ts.nprof, d, 0);
+        end if;
+    
+    end posa;
+    
+    
+    function cons (ts : in tsimbols;
+                   id : in id_nom) return descrip is
+                    
+    begin
+    
+        return ts.tdesc(id).d;
+    
+    end cons;
+    
+    
+    
+    -- VERSIO 2: Normal, llenguatge amb blocs estil Pascal.
+    procedure entrabloc (ts : in out tsimbols) is
+    
+    begin
+    
+        ts.nprof := ts.nprof + 1;
+        ts.tbloc(ts.nprof) := ts.tbloc(ts.nprof - 1);
+    
+    end entrabloc;
+    
+    
+    procedure surtbloc (ts : in out tsimbols) is
+    
+        idespl1 : rang_despl;
+        idespl2 : rang_despl;
+             id : id_nom;
+        
+    begin
+    
+        idespl1  := ts.tbloc(ts.nprof);
+        ts.nprof := ts.nprof - 1;
+        idespl2  := ts.tbloc(ts.nprof) + 1;
+        
+        for idespl in reverse idespl1 .. idespl2 loop
+            if ts.tdespl(idespl).np >= 0 then
+                id := ts.tdespl(idespl).id;
+                ts.tdesc(id).d  := ts.tdespl(idespl).d;
+                ts.tdesc(id).np := ts.tdespl(idespl).np;
+                ts.tdesc(id).s  := ts.tdespl(idespl).s;
+            end if;
+        end loop;
+    
+    end surtbloc;
+    
+    
+    
+    -- VERSIO 3: Blocs mes records.
+    procedure posacamp (ts : in out tsimbols;
+                       idr : in id_nom;
+                       idc : in id_nom;
+                         d : in descrip;
+                         e : out boolean) is
+                          
+            des : descrip;
+             td : descriptipus;
+              p : rang_despl;
+        itdespl : rang_despl;
+    
+    begin
+    
+        des := ts.tdesc(idr).d;
+        if des.td /= dtipus then e := TRUE; end if;
+        
+        td := des.dt;
+        if td.tt /= tsrec then e := TRUE; end if;
+        
+        p := ts.tdesc(idr).s;
+        while p /= 0 and then ts.tdespl(p).id /= idc loop
+            p := ts.tdespl(p).s;
+        end loop;
+        
+        e := (p /= 0);
+        if not e then
+            ts.tbloc(ts.nprof) := ts.tbloc(ts.nprof) + 1;
+            itdespl := ts.tbloc(ts.nprof);
+            ts.tdespl(itdespl) := (-1, d, idc, ts.tdesc(idr).s);
+        end if;
+        
+    end posacamp;
+    
+    
+    function conscamp (ts : in tsimbols;
+                      idr : in id_nom;
+                      idc : in id_nom) return descrip is
+                       
+             d : descrip;
+            td : tdescrip;
+             p : rang_despl;
+      descnula : descrip(dnula);
+                       
+    begin
+    
+        d  := ts.tdesc(idr).d;
+        td := d.td;
+        
+        p := ts.tdesc(idr).s;
+        while p /= 0 and then ts.tdespl(p).id /= idc loop
+            p := ts.tdespl(p).s;
+        end loop;
+        
+        if p = 0 then
+            return  descnula;
+        else
+            return ts.tdespl(p).d;
+        end if;
+    
+    end conscamp;
+    
+    
+    
+    -- VERSIO 4: Arrays.
+    procedure posa_idx (ts : in tsimbols;
+                       ida : in id_nom;
+                       idi : in id_nom;
+                         e : out boolean) is
+                        
+             d : descrip;
+            dt : descriptipus;
+             p : rang_despl;
+            pp : rang_despl;
+        idespl : rang_despl;
+                        
+    begin
+    
+        d := ts.tdesc(ida).d;
+        if d.td /= dtipus then e := TRUE; end if; -- Introduir control d'errors
+        
+        dt := d.dt;
+        if dt.tt /= ts then e := TRUE; end if; -- Introduir control d'errors   
+        
+        p := ts.tdesc(ida).s;
+        
+        while p /= 0 loop
+            pp := p;
+            p := ts.tdespl(p).s;
+        end loop;
+        
+        ts.tbloc(ts.nprof) := ts.tbloc(ts.nprof) + 1;
+        idespl := ts.tbloc(ts.nprof);
+        
+        ts.tdespl(idespl) := ( -1, dnula,idi, 0);
+        
+        if pp = 0 then
+            ts.tdesc(ida).s := idespl;
+        else
+            ts.tdespl(pp).s := idespl;
+        end if;        
+    
+    end posa_idx;
+    
+    
+    function idx_valid (ci : in cursor_idx) 
+                            return boolean is
+    
+    begin
+    
+        return (ci > 0);
+    
+    end idx_valid;
+    
+    
+    function primer_idx (ts : in tsimbols;
+                        ida : in id_nom) return cursor_idx is
+    
+    begin
+    
+        return cursor_idx(ts.tdesc(ida).s);
+    
+    end primer_idx;
+    
+    
+    function succ_idx (ts : in tsimbols;
+                       ci : in cursor_idx) return cursor_idx is
+    
+    begin
+    
+        if idx_valid(ci) then
+            return cursor_idx(ts.tdespl(rang_despl(ci)).s);
+        else 
+            return 0;
+        end if;
+        
+    end succ_idx;
+    
+    
+    function cons_idx (ts : in tsimbols;
+                       ci : in cursor_idx) return id_nom is
+    
+    begin
+    
+        return  ts.tdespl(rang_despl(ci)).id;
+    
+    end cons_idx;
+    
+    
+end decls.dtsimbols;
+    \end{lstlisting}
+    \newpage
+   
+    
+    
+    
+    \index{Declaracions i altres paquets@\textbf{Declaracions i altres paquets}}
+    \chapter{Declaracions i altres paquets}
+        Per mantenir una organització del codi i dels paquets que anirem creant, hem definit un paquet anomenat \textit{decls} del qual penjen les declaracions. Com hem vist, la taula de noms penja d'aquest paquet, i a la vegada penjen els paquets \textit{d\_hash} i \textit{dgenerals} que son necessaris per la implementació de la taula de noms.
+        \\
+        
+        Cal destacar que la funció de hash que empram per la taula de noms s'anomena Hash Quadràtic\footnote{http://es.wikipedia.org/wiki/Tabla\_hash\#Direccionamiento\_abierto} vista a l'assignatura \textit{1671 - Estructures de la Informació}.
+    \newpage
+    \index{Declaracions i altres paquets@\textbf{Declaracions i altres paquets}!decls.ads}
+    \section{decls.ads}
+    \begin{lstlisting}[style=Ada]
+-- ------------------------------------------------
+--  Paquet de Declaracions
+-- ------------------------------------------------
+--  Versio  :   0.1
+--  Autors  :   Jose Ruiz Bravo
+--              Biel Moya Alcover
+--              Alvaro Medina Ballester
+-- ------------------------------------------------
+--      Paquet de declaracions pare.
+--
+-- ------------------------------------------------
+
+package decls is
+
+    pragma pure;
+
+
+end decls;
+    \end{lstlisting}
+    
+    \newpage
+    \section{decls-dgenerals.ads}
+    \begin{lstlisting}[style=Ada]
+-- ------------------------------------------------
+--  Paquet de declaracions generals
+-- ------------------------------------------------
+--  Versio    :    0.2
+--  Autors    :    Jose Ruiz Bravo
+--                 Biel Moya Alcover
+--                 Alvaro Medina Ballester
+-- ------------------------------------------------
+--        Declaracions generals.
+--
+-- ------------------------------------------------
+
+package decls.dgenerals is
+
+    pragma pure;
+
+    -- TAULA DE NOMS
+    max_id : constant integer := 1000;
+    type id_nom is new integer range 0 .. max_id;
+    
+    -- Valor nul per al tipus id_nom
+    id_nul : constant id_nom := 0;
+        
+    -- La longitud es el nombre de paraules * la longitud de cadascuna
+    longitut : constant integer := 40;
+    type rang_tcar is new integer range 0 .. (longitut*max_id);
+    
+    -- Taula de dispersio:
+    -- Tipus per la taula de dispersio de la taula de noms
+    tam_dispersio : constant integer := 101;
+    type rang_dispersio is new integer range -1 .. tam_dispersio;
+    
+    -- Valor nul per el rang dispersio
+    dispersio_nul : constant rang_dispersio := -1;
+    
+    -- Declaracio de la taula de dispersio
+    type taula_dispersio is array (rang_dispersio) of id_nom;
+    
+    
+    -- TAULA DE SIMBOLS
+    type despl is new integer;
+    
+    max_prof : constant integer := 20;
+    type nivell_prof is new integer range 0 .. max_prof;
+    
+    max_despl : constant integer := max_prof*max_id;
+    type rang_despl is new integer range 0 .. max_despl;
+    
+    type valor is new integer range 0 .. integer'Last;
+    
+
+end decls.dgenerals;
+    \end{lstlisting}
+    \newpage
+        
+    \index{Declaracions i altres paquets@\textbf{Declaracions i altres paquets}!decls-d\_hash.ads}
+    \section{decls-d\_hash.ads}
+    \begin{lstlisting}[style=Ada]
+-- ------------------------------------------------
+--  Paquet de declaracions de les funcions hash
+-- ------------------------------------------------
+--  Versio    :    0.2
+--  Autors    :    Jose Ruiz Bravo
+--                 Biel Moya Alcover
+--                 Alvaro Medina Ballester
+-- ------------------------------------------------
+--        Especificacio de les funcions de hash:
+--            - Hashing Quadratic.
+--
+-- ------------------------------------------------
+
+with    decls.dgenerals;
+
+use     decls.dgenerals;
+
+
+package decls.d_hash is
+
+    pragma pure;
+
+    function fdisp_tn (nom : in string) return rang_dispersio;
+    
+    
+end decls.d_hash;
+    \end{lstlisting}
+    \newpage
+    
+    \index{Declaracions i altres paquets@\textbf{Declaracions i altres paquets}!decls-d\_hash.adb}
+    \section{decls-d\_hash.adb}
+    \begin{lstlisting}[style=Ada]
+-- ------------------------------------------------
+--  Paquet de procediments de les funcions hash
+-- ------------------------------------------------
+--  Versio    :    0.2
+--  Autors    :    Jose Ruiz Bravo
+--                 Biel Moya Alcover
+--                 Alvaro Medina Ballester
+-- ------------------------------------------------
+--        Procediments de les funcions de hash:
+--            - Hashing quadratic
+--
+-- ------------------------------------------------
+
+package body decls.d_hash is
+
+    function fdisp_tn (nom : in string) return rang_dispersio is
+        
+        a : array (nom'Range) of integer;
+        r : array (1..2*nom'Last) of integer;
+        
+        k, c, m, n : integer;
+        
+        base : constant integer := character'pos(character'Last)+1;
+        
+    begin
+        
+        n := nom'Last;
+        m := nom'Length;
+    
+        for i in 1..n loop
+            a(i) := character'Pos(nom(i));
+        end loop;
+        
+        for i in 1..2*n loop
+            r(i) := 0;
+        end loop;
+        
+        for i in 1..n loop
+            c := 0; k := i - 1;
+            for j in 1..n loop
+                c := c + r(k+j) + a(i) + a(j);
+                r(k+j) := c mod base;
+                c := c/base;
+            end loop;
+            r(k+n+1) := r(k+n+1) + c;
+        end loop;
+        
+        c := (r(n+1) * base + r(n)) mod (tam_dispersio);
+        
+        return rang_dispersio(c);
+        
+    end fdisp_tn;
+    
+    
+end decls.d_hash;
+    \end{lstlisting}
+    \newpage
+    
+    
+    \chapter{Programa principal}
+        Al programa principal podem trobar un petit procediment de prova.
+    \\
+    
+    \index{Programa principal@\textbf{Programa principal}!compilemon.adb}
+    \section{compilemon.adb}
+    \begin{lstlisting}[style=Ada]
+-- ------------------------------------------------
+--  Programa de prova
+-- ------------------------------------------------
+--  Versio    :    0.1
+--  Autors    :    Jose Ruiz Bravo
+--                 Biel Moya Alcover
+--                 Alvaro Medina Ballester
+-- ------------------------------------------------
+--        Programa per comprovar les funcionalitats
+--    del lexic i la taula de noms.
+--
+-- ------------------------------------------------
+
+with    Ada.Text_IO,
+        Ada.Command_Line,
+        decls.d_taula_de_noms,
+        decls.tn,
+        decls.dgenerals,
+        decls.dtsimbols,
+        decls.dtdesc,
+        d_token,
+        compilemon_io,
+        u_lexica;
+        
+use     Ada.Text_IO,
+        Ada.Command_Line,
+        decls.d_taula_de_noms,
+        decls.tn,
+        decls.dgenerals,
+        decls.dtsimbols,
+        decls.dtdesc,
+        d_token,
+        compilemon_io,
+        u_lexica;
+        
+
+procedure compilemon is
+
+     Tk : token;
+    id1 : id_nom;
+    id2 : id_nom;
+    id3 : id_nom;
+    
+     ts : tsimbols;
+    
+begin
+
+    tbuida(tn);--NECESARIO?!
+
+    Open_Input(Argument(1));
+--    Tk := Yylex;
+--    
+--    while tk /= end_of_input loop
+--        Put_Line(Token'Image(Tk));
+--        Tk := Yylex;
+--    end loop;
+
+     posa_id (tn, id1, "pepe");
+     posa_id (tn, id2, "alvaro");
+     posa_id (tn, id3, "txebs");
+     
+   
+   Close_Input;
+   
+   exception
+      when E_Tids_Plena => 
+         Put_Line("ERROR: La taula d'identificadors es plena.");
+         
+      when E_Tcar_Plena =>
+          Put_Line("ERROR: La taula de caracters es plena.");
+
+end compilemon;
+    \end{lstlisting}
     
 \end{document}
 

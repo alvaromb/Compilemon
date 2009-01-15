@@ -42,10 +42,10 @@
 %token op_multiplicacio
 %token op_divisio
 %token id
-%token const ---- Sirve para la declaracion de constantes
+%token const -- Per declarar constants
 
 
---Precedència
+--Precedencia
 %left pc_or
 %left pc_and
 %nonassoc op_menor op_menorigual op_majorigual op_major op_igual op_distint
@@ -57,7 +57,7 @@
 
 
 
---Definició del tipus atribut
+--Definicio del tipus atribut
 %with d_atribut
 {
 	subtype yystype is d_atribut.atribut;
@@ -67,7 +67,7 @@
 %%
 
 
---Produccions de la gramàtica del llenguatge
+--Produccions de la gramatica del llenguatge
 programa:
 	M1 dec_procediment
   ;
@@ -111,7 +111,8 @@ declaracions:
 	declaracions declaracio
   |
   ;
-  
+
+-- DECLARACIONS
 declaracio:
 	dec_var
   |
@@ -135,7 +136,8 @@ c_decl_var:
 dec_constant:
 	id s_dospunts pc_constant id s_assignacio const s_final
   ;
-  
+
+-- TIPUS
 dec_tipus:
 	decl_coleccio
   |
@@ -179,12 +181,14 @@ p_dcoleccio:
   ;
 
   
+-- BLOC D'INSTRUCCIO
 bloc:
 	bloc sentencia
   | 
 	sentencia
   ;
   
+-- SENTENCIES D'INSTRUCCIONS
 sentencia: 
 	sassig
   |
@@ -194,11 +198,13 @@ sentencia:
   | 
     crida_proc
   ;
-  
+
+-- Sentencia assignacio
 sassig:
 	referencia s_assignacio expressio s_final
   ;
-  
+
+-- Sentencia condicional
 scond:
 	pc_si expressio pc_llavors 
 		bloc 
@@ -210,13 +216,15 @@ scond:
 		bloc
 	pc_fi pc_si
   ;
-  
+
+-- Sentencia bucle
 srep:
 	pc_mentre expressio pc_fer
 		bloc
 	pc_fi pc_fer
   ;
 
+-- Sentencia crida a procediment
 crida_proc:
 	referencia s_final
   ;
@@ -235,6 +243,7 @@ pri:
     pri s_coma expressio
   ;
   
+-- Expressions
 expressio:
 	expressio pc_or expressio
   |
@@ -305,17 +314,6 @@ use     pk_usintactica_token,
 package body pk_usintactica is
 
 ##
-
--- AQUI PODEMOS AÑADIR EL CONTROL DE ERRORES
---procedure YYError (txt: in String; tk: in token; atr:in Decls.Datributo.atributo) is
---begin
---	text_io.new_line(2);
---	text_io.put_line(txt & ".");
---	text_io.put_line("Ultimo token: " & tk'img);
---	text_io.Put("Atributos: ");
---	Imprime(Atr);
---	text_io.new_line(2);
---end YYError;
 
 end pk_usintactica;
   

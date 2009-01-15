@@ -11,7 +11,7 @@ package decls.dtsimbols is
 
 	type tsimbols is limited private;
 	type cursor_idx is private;
-	type cursor_arg is private;
+--	type cursor_arg is private;
 	
 	-- Operacions
 	-- VERSIO 1: llenguatge simple sense estructura 
@@ -46,7 +46,7 @@ package decls.dtsimbols is
 					   
 					   
 	-- VERSIO 4: Arrays.
-	procedure posa_idx (ts: in tsimbols;
+	procedure posa_idx (ts: in out tsimbols;
 						ida: in id_nom;
 						idi: in id_nom;
 						  e: out boolean);
@@ -64,11 +64,11 @@ package decls.dtsimbols is
 						 
 						 
 	-- VERSIO 5: Procediments
-	procedure posa_arg (ts: in tsimbols;
-						idp: in id_nom;
-						ida: in id_nom;
-						  d: in descrip;
-						  e: out boolean);
+--	procedure posa_arg (ts: in tsimbols;
+--						idp: in id_nom;
+--						ida: in id_nom;
+--						  d: in descrip;
+--						  e: out boolean);
 						  
 --	function primer_arg () return cursor_arg; --OMPLIR
 --	
@@ -76,14 +76,14 @@ package decls.dtsimbols is
 --	
 --	function arg_valid () return boolean; --OMPLIR
 	
-	procedure cons_arg (ts: in tsimbols;
-						 ca: in cursor_arg;
-						ida: out id_nom;
-						 dn: out descrip);
-						 
-	procedure actualitza (ts: in out tsimbols;
-						   id: in id_nom;
-						    d: in descrip);
+--	procedure cons_arg (ts: in tsimbols;
+--						 ca: in cursor_arg;
+--						ida: out id_nom;
+--						 dn: out descrip);
+--						 
+--	procedure actualitza (ts: in out tsimbols;
+--						   id: in id_nom;
+--						    d: in descrip);
     
     private
     
@@ -97,18 +97,18 @@ package decls.dtsimbols is
 			np : nivell_prof;
 			 d : descrip;
 		 	id : id_nom;
-		 	 s : rang_despl; --afegit per tal d'implementar els records
+		 	 s : rang_despl; -- Afegit per tal d'implementar els records
 		end record;
 		 
-		type taula_blocs is array (1 .. nivell_prof'LAST) of rang_despl;
-		type taula_despl is array (1 .. rang_despl'LAST) of tipus_despl;
+		type taula_blocs is array (1 .. nivell_prof'Last) of rang_despl;
+		type taula_despl is array (1 .. rang_despl'Last) of tipus_despl;
 		type taula_descrip is array (1 .. id_nom'Last) of tipus_descrip;
 		
 		type cursor_idx is new rang_despl;
 			
 		type tsimbols is record
 			tdesc : taula_descrip;
-		    tdespl : taula_despl;
+		   tdespl : taula_despl;
 			tbloc : taula_blocs; -- A LO MILLOR EL NOM S'HA DE CAMBIAR PER TAMB
 			nprof : nivell_prof;
 		end record;

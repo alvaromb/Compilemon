@@ -43,8 +43,7 @@ package body decls.dtsimbols is
 		ts.tbloc(ts.nprof) := 0;
 		
 		for i in 1 .. id_nom'Last loop
-		
-			ts.tdesc(i) := ( 0, descnula, -1);
+			ts.tdesc(i) := (0, descnula, nul_despl);
 		end loop;
 	
 	end tbuida;
@@ -137,11 +136,9 @@ package body decls.dtsimbols is
 	begin
 	
 		des := ts.tdesc(idr).d;
-		
 		if des.td /= dtipus then e := TRUE; end if;
 		
-		 td := des.dt;
-		
+		td := des.dt;
 		if td.tt /= tsrec then e := TRUE; end if;
 		
 		p := ts.tdesc(idr).s;
@@ -151,12 +148,9 @@ package body decls.dtsimbols is
 		
 		e := (p /= 0);
 		if not e then
-		
 			ts.tbloc(ts.nprof) := ts.tbloc(ts.nprof) + 1;
 			itdespl := ts.tbloc(ts.nprof);
-			-- ALERTA AMB EL -1 !!!!!
-			
-			ts.tdespl(itdespl) := (-1, d, idc, ts.tdesc(idr).s);
+			ts.tdespl(itdespl) := (nul_nprof, d, idc, ts.tdesc(idr).s);
 		end if;
 		
 	end posacamp;
@@ -182,7 +176,7 @@ package body decls.dtsimbols is
 		end loop;
 		
 		if p = 0 then
-			return  descnula;
+			return descnula;
 		else
 			return ts.tdespl(p).d;
 		end if;
@@ -192,7 +186,7 @@ package body decls.dtsimbols is
 	
 	
 	-- VERSIO 4: Arrays.
-	procedure posa_idx (ts: in tsimbols;
+	procedure posa_idx (ts: in out tsimbols;
 						ida: in id_nom;
 						idi: in id_nom;
 						  e: out boolean) is
@@ -209,8 +203,7 @@ package body decls.dtsimbols is
 	    if d.td /= dtipus then e := TRUE; end if; -- Introduir control d'errors
 	    
         dt := d.dt;
-		
-        if dt.tt /= ts then e := TRUE; end if; -- Introduir control d'errors   
+        if dt.tt /= tsarr then e := TRUE; end if; -- Introduir control d'errors   
         
         p := ts.tdesc(ida).s;
 		
@@ -222,7 +215,7 @@ package body decls.dtsimbols is
         ts.tbloc(ts.nprof) := ts.tbloc(ts.nprof) + 1;
         idespl := ts.tbloc(ts.nprof);
 		
-        ts.tdespl(idespl) := ( -1, dnula,idi, 0);
+        ts.tdespl(idespl) := (nul_nprof, (td => dnula), idi, 0);
         
         if pp = 0 then
             ts.tdesc(ida).s := idespl;
@@ -232,8 +225,8 @@ package body decls.dtsimbols is
 	
 	end posa_idx;
 	
-	function idx_valid (ci: in cursor_idx) return boolean is
 	
+	function idx_valid (ci : in cursor_idx) return boolean is
 	
 	begin
 	
@@ -241,8 +234,9 @@ package body decls.dtsimbols is
 	
 	end idx_valid;
 	
-	function primer_idx (ts: in tsimbols;
-						 ida: in id_nom) return cursor_idx is
+	
+	function primer_idx (ts : in tsimbols;
+						 ida : in id_nom) return cursor_idx is
 	
 	begin
 	
@@ -250,8 +244,9 @@ package body decls.dtsimbols is
 	
 	end primer_idx;
 	
-	function succ_idx (ts: in tsimbols;
-						ci: in cursor_idx) return cursor_idx is
+	
+	function succ_idx (ts : in tsimbols;
+						ci : in cursor_idx) return cursor_idx is
 	
 	begin
 	
@@ -260,26 +255,18 @@ package body decls.dtsimbols is
 		else 
 			return 0;
 		end if;
-		
 	
 	end succ_idx;
 	
-	function cons_idx (ts: in tsimbols;
-						ci: cursor_idx) return id_nom is
 	
-	
+	function cons_idx (ts : in tsimbols;
+						ci : cursor_idx) return id_nom is
+
 	begin
 	
 		return  ts.tdespl(rang_despl(ci)).id;
 	
-	
 	end cons_idx;
-	
-	
-	
-	
-	
-	
 	
 
 end decls.dtsimbols;
