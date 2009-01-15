@@ -27,25 +27,6 @@ package decls.dtdesc is
 					   dproc);
 					   --dcamp
 					   --darg
-	
-	type descrip (td : tdescrip := dnula) is
-		record
-			case td is
-				when dnula 	=> null;
-				when dtipus	=> dt: descriptipus;
---				when dvar 	=> tr: id_nom;   ALGUN TIPUS
---				               nv: num_var;  NUMERO DE LA VARIABLE
---				when dproc	=> np: num_proc; NUMERO DEL PROCEDIMENT
---				when dconst	=> tc: id_nom; TIPUS CONSTANT
---				               vc: valor;  VALOR CONSTANT
---              when dargc  => nvarg: num_var;  NUMERO DE LA VARIABLE
---                             targ: id_nom;    TIPUS ARGUMENT?
---              when dcampo => tcamp: id_nom;   TIPUS CAMP
---                             dsp: rang_despl; 
-
-			end case;
-		end record;
-	
 					   
 	type tipusdetipus is (tsbool,
 						   tscar,
@@ -63,6 +44,29 @@ package decls.dtdesc is
 				when tsrec | tsnul	=> null;
 			end case;
 		end record;
+		
+		
+	
+	type descrip (td : tdescrip := dnula) is
+		record
+			case td is
+				when dnula 	=> null;
+				when dtipus	=> dt: descriptipus;
+--				when dvar 	=> tr: id_nom;   ALGUN TIPUS
+--				               nv: num_var;  NUMERO DE LA VARIABLE
+--				when dproc	=> np: num_proc; NUMERO DEL PROCEDIMENT
+--				when dconst	=> tc: id_nom; TIPUS CONSTANT
+--				               vc: valor;  VALOR CONSTANT
+--              when dargc  => nvarg: num_var;  NUMERO DE LA VARIABLE
+--                             targ: id_nom;    TIPUS ARGUMENT?
+--              when dcamp => tcamp: id_nom;   TIPUS CAMP
+--                             dsp: rang_despl; 
+
+			end case;
+		end record;
+	
+					   
+
 						
 	
 		

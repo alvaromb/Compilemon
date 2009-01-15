@@ -46,6 +46,8 @@ package decls.dgenerals is
 	max_despl : constant integer := max_prof*max_id;
 	type rang_despl is new integer range 0 .. max_despl;
 	
+	type valor is new integer range 0 .. integer'LAST;
+	
 	
 	
 

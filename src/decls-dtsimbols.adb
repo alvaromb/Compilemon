@@ -35,14 +35,16 @@ package body decls.dtsimbols is
 	-- de blocs estil Fortran.
 	procedure tbuida (ts: out tsimbols) is
 	
+		descnula :  descrip( dnula);
+		
 	begin
 		
 		ts.nprof := 1;
 		ts.tbloc(ts.nprof) := 0;
 		
 		for i in 1 .. id_nom'Last loop
-			ts.tdesc(i).np := 0;
-			ts.tdesc(i).d := dnula;
+		
+			ts.tdesc(i) := ( 0, descnula, -1);
 		end loop;
 	
 	end tbuida;
@@ -60,12 +62,13 @@ package body decls.dtsimbols is
 		e := (ts.tdesc(id).np = ts.nprof);
 		
 		if not e then
+		
 			ts.tbloc(ts.nprof) := ts.tbloc(ts.nprof) + 1;
 			idespl := ts.tbloc(ts.nprof);
 			
-			ts.tdespl(idespl) := (id, ts.tdesc(id).np, ts.tdesc(id).d);
+			ts.tdespl(idespl) := (ts.tdesc(id).np, ts.tdesc(id).d, id, 0);
 			
-			ts.tdesc(id) := (ts.nprof, d);
+			ts.tdesc(id) := (ts.nprof, d, 0);
 		end if;
 	
 	end posa;
@@ -123,21 +126,23 @@ package body decls.dtsimbols is
 	procedure posacamp (ts: in out tsimbols;
 						idr: in id_nom;
 						idc: in id_nom;
-						  d: in descrip
+						  d: in descrip;
 						  e: out boolean) is
 						  
-		 d : descrip;
-		td : tdescrip;
+	   des: descrip;
+		td : descriptipus;
 		 p : rang_despl;
-		itdespl : rang_despl;
+   itdespl : rang_despl;
 	
 	begin
 	
-		d := ts.tdesc(idr).d;
-		if d.td /= dtipus then e := TRUE end if;
+		des := ts.tdesc(idr).d;
 		
-		td := d.td;
-		if td.tt /= tsrec then e := TRUE end if;
+		if des.td /= dtipus then e := TRUE; end if;
+		
+		 td := des.dt;
+		
+		if td.tt /= tsrec then e := TRUE; end if;
 		
 		p := ts.tdesc(idr).s;
 		while p /= 0 and then ts.tdespl(p).id /= idc loop
@@ -146,10 +151,12 @@ package body decls.dtsimbols is
 		
 		e := (p /= 0);
 		if not e then
-			ts.tbloc(ts.nprof) := ts.tamb(ts.nprof) + 1;
+		
+			ts.tbloc(ts.nprof) := ts.tbloc(ts.nprof) + 1;
 			itdespl := ts.tbloc(ts.nprof);
 			-- ALERTA AMB EL -1 !!!!!
-			ts.tdespl(itdespl) := (idc, -1, d, ts.tdesc(idr).s);
+			
+			ts.tdespl(itdespl) := (-1, d, idc, ts.tdesc(idr).s);
 		end if;
 		
 	end posacamp;
@@ -157,11 +164,12 @@ package body decls.dtsimbols is
 	
 	function conscamp (ts: in tsimbols;
 					   idr: in id_nom;
-					   idc: in id_camp) return descrip is
+					   idc: in id_nom) return descrip is
 					   
 		 d : descrip;
 		td : tdescrip;
 		 p : rang_despl;
+  descnula :  descrip( dnula);
 					   
 	begin
 	
@@ -174,7 +182,7 @@ package body decls.dtsimbols is
 		end loop;
 		
 		if p = 0 then
-			return dnula;
+			return  descnula;
 		else
 			return ts.tdespl(p).d;
 		end if;
@@ -198,12 +206,14 @@ package body decls.dtsimbols is
 	begin
 	
 	    d := ts.tdesc(ida).d;
-	    if d.td /= dtipus then e := TRUE end if; -- Introduir control d'errors
+	    if d.td /= dtipus then e := TRUE; end if; -- Introduir control d'errors
 	    
         dt := d.dt;
-        if dt.tt /= ts then e := TRUE end if; -- Introduir control d'errors
+		
+        if dt.tt /= ts then e := TRUE; end if; -- Introduir control d'errors   
         
         p := ts.tdesc(ida).s;
+		
         while p /= 0 loop -- Comprovar el 0
             pp := p;
             p := ts.tdespl(p).s;
@@ -211,7 +221,8 @@ package body decls.dtsimbols is
         
         ts.tbloc(ts.nprof) := ts.tbloc(ts.nprof) + 1;
         idespl := ts.tbloc(ts.nprof);
-        ts.tesdpl(idespl) := (idi, -1, dnula, 0);
+		
+        ts.tdespl(idespl) := ( -1, dnula,idi, 0);
         
         if pp = 0 then
             ts.tdesc(ida).s := idespl;
@@ -220,6 +231,55 @@ package body decls.dtsimbols is
         end if;        
 	
 	end posa_idx;
+	
+	function idx_valid (ci: in cursor_idx) return boolean is
+	
+	
+	begin
+	
+		return ci > 0; --Esto es asi , porque el rango de cursor va de 0 a rang despl pero el 0 lo utilizamos como nulo 
+	
+	end idx_valid;
+	
+	function primer_idx (ts: in tsimbols;
+						 ida: in id_nom) return cursor_idx is
+	
+	begin
+	
+		return cursor_idx(ts.tdesc(ida).s);
+	
+	end primer_idx;
+	
+	function succ_idx (ts: in tsimbols;
+						ci: in cursor_idx) return cursor_idx is
+	
+	begin
+	
+		if idx_valid(ci) then --Falta saber que pasaria si no es compleix
+			return cursor_idx(ts.tdespl(rang_despl(ci)).s);
+		else 
+			return 0;
+		end if;
+		
+	
+	end succ_idx;
+	
+	function cons_idx (ts: in tsimbols;
+						ci: cursor_idx) return id_nom is
+	
+	
+	begin
+	
+		return  ts.tdespl(rang_despl(ci)).id;
+	
+	
+	end cons_idx;
+	
+	
+	
+	
+	
+	
 	
 
 end decls.dtsimbols;

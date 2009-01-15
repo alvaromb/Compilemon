@@ -100,13 +100,15 @@ package decls.dtsimbols is
 		 	 s : rang_despl; --afegit per tal d'implementar els records
 		end record;
 		 
-		type taula_blocs is array (1 .. max_prof) of rang_despl;
-		type taula_despl is array (1 .. max_despl) of tipus_despl;
+		type taula_blocs is array (1 .. nivell_prof'LAST) of rang_despl;
+		type taula_despl is array (1 .. rang_despl'LAST) of tipus_despl;
 		type taula_descrip is array (1 .. id_nom'Last) of tipus_descrip;
+		
+		type cursor_idx is new rang_despl;
 			
 		type tsimbols is record
 			tdesc : taula_descrip;
-		   tdespl : taula_despl;
+		    tdespl : taula_despl;
 			tbloc : taula_blocs; -- A LO MILLOR EL NOM S'HA DE CAMBIAR PER TAMB
 			nprof : nivell_prof;
 		end record;
