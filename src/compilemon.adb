@@ -18,9 +18,10 @@ with	Ada.Text_IO,
 		decls.dgenerals,
 		decls.dtsimbols,
 		decls.dtdesc,
-		d_token,
+		pk_usintactica_tokens,
 		compilemon_io,
-		u_lexica;
+		u_lexica,
+		pk_usintactica;
 		
 use		Ada.Text_IO,
 		Ada.Command_Line,
@@ -29,14 +30,15 @@ use		Ada.Text_IO,
 		decls.dgenerals,
 		decls.dtsimbols,
 		decls.dtdesc,
-		d_token,
+		pk_usintactica_tokens,
 		compilemon_io,
-		u_lexica;
+		u_lexica,
+		pk_usintactica;
 		
 
 procedure compilemon is
 
-	Tk : token;
+--	Tk : token;
 --	id1 : id_nom;
 --	id2 : id_nom;
 --	id3 : id_nom;
@@ -46,18 +48,18 @@ procedure compilemon is
 begin
 
 	tbuida(tn);--NECESARIO?!
-
+    
+ 
+    
 	Open_Input(Argument(1));
-	Tk := Yylex;
+	yyparse;
+--	Tk := Yylex;
 	
-	while tk /= end_of_input loop
-		Put_Line(Token'Image(Tk));
-		Tk := Yylex;
-	end loop;
+--	while tk /= end_of_input loop
+--		Put_Line(Token'Image(Tk));
+--		Tk := Yylex;
+--	end loop;
 
--- 	posa_id (tn, id1, "pepe");
--- 	posa_id (tn, id2, "alvaro");
--- 	posa_id (tn, id3, "txebs");
  	
    
    Close_Input;
@@ -68,5 +70,8 @@ begin
          
       when E_Tcar_Plena =>
       	Put_Line("ERROR: La taula de caracters és plena.");
+      	
+      when Syntax_Error =>
+        Put_Line("ERROR: Error a la linea "&yy_line_number'img&" i columna "&yy_begin_column'img);
 
 end compilemon;

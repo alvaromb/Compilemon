@@ -10,4 +10,4 @@ mi_mkfs	:	compilemon.adb
 			$(CC) compilemon compilemon.adb
 
 clean: 
-	rm *.o *.ali ./compilemon u_lexica.adb u_lexica.adb compilemon_*
+	rm *.o *.ali ./compilemon u_lexica.adb u_lexica.ads compilemon_*

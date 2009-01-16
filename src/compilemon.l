@@ -64,12 +64,6 @@ llavors			{mt_atom(tok_begin_line, tok_begin_col, yylval);
 no				{mt_atom(tok_begin_line, tok_begin_col, yylval); 
 				return pc_no;}
 
-opcio			{mt_atom(tok_begin_line, tok_begin_col, yylval); 
-				return pc_opcio;}
-
-casos			{mt_atom(tok_begin_line, tok_begin_col, yylval); 
-				return pc_casos;}
-
 entra			{mt_atom(tok_begin_line, tok_begin_col, yylval); 
 				return pc_entra;}
 
@@ -212,17 +206,17 @@ rang			{mt_atom(tok_begin_line, tok_begin_col, yylval);
 
 with	decls.d_taula_de_noms,
 		d_atribut,
-		d_token;
+		--d_token,
+		pk_usintactica_tokens;
 		
 
 use		decls.d_taula_de_noms,
 		d_atribut,
-		d_token;
+		--d_token,
+		pk_usintactica_tokens;
 
 
 package u_lexica is
-
-	yylval : atribut;
 
 	function YYLex return token;
 	

@@ -297,22 +297,33 @@ end pk_usintactica;
 
 
 
-with    pk_usintactica_token,
+with    pk_usintactica_tokens,
         pk_usintactica_shift_reduce,
         pk_usintactica_goto,
 		compilemon_io,
-		u_lexica;
+		u_lexica,
+		Ada.Text_IO;
         
 
-use     pk_usintactica_token,
+use     pk_usintactica_tokens,
         pk_usintactica_shift_reduce,
         pk_usintactica_goto,
 		compilemon_io,
-		u_lexica;
+		u_lexica,
+		Ada,
+		Ada.Text_IO;
 		
 
 package body pk_usintactica is
 
+    procedure YYError (e : in string) is
+    
+    begin
+        
+        Put_Line(e);
+        raise Syntax_Error;
+    
+    end YYError;
 ##
 
 end pk_usintactica;
