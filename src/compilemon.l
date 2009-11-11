@@ -16,83 +16,78 @@ caracter \'[^\'\n\t]\'
 
 -- Paraules clau
 
-procediment		{mt_atom(tok_begin_line, tok_begin_col, yylval); 
-				return pc_procediment;} 
+procedure		{mt_atom(tok_begin_line, tok_begin_col, yylval); 
+				return pc_procedure;} 
 
-inici			{mt_atom(tok_begin_line, tok_begin_col, yylval); 
-				return pc_inici;}
+begin			{mt_atom(tok_begin_line, tok_begin_col, yylval); 
+				return pc_begin;}
 
-mentre			{mt_atom(tok_begin_line, tok_begin_col, yylval); 
-				return pc_mentre;}
+while			{mt_atom(tok_begin_line, tok_begin_col, yylval); 
+				return pc_while;}
 
-per				{mt_atom(tok_begin_line, tok_begin_col, yylval); 
-				return pc_per;}
+--entre			{mt_atom(tok_begin_line, tok_begin_col, yylval); 
+--				return pc_entre;}
 
-entre			{mt_atom(tok_begin_line, tok_begin_col, yylval); 
-				return pc_entre;}
+if				{mt_atom(tok_begin_line, tok_begin_col, yylval); 
+				return pc_if;}
 
-si				{mt_atom(tok_begin_line, tok_begin_col, yylval); 
-				return pc_si;}
+else			{mt_atom(tok_begin_line, tok_begin_col, yylval); 
+				return pc_else;}
 
-sino			{mt_atom(tok_begin_line, tok_begin_col, yylval); 
-				return pc_sino;}
+end				{mt_atom(tok_begin_line, tok_begin_col, yylval); 
+				return pc_end;}
 
-fi				{mt_atom(tok_begin_line, tok_begin_col, yylval); 
-				return pc_fi;}
+do				{mt_atom(tok_begin_line, tok_begin_col, yylval); 
+				return pc_do;}
 
-fer				{mt_atom(tok_begin_line, tok_begin_col, yylval); 
-				return pc_fer;}
-
-const			{mt_atom(tok_begin_line, tok_begin_col, yylval); 
+constant		{mt_atom(tok_begin_line, tok_begin_col, yylval); 
 				return pc_constant;}
 
-tipus			{mt_atom(tok_begin_line, tok_begin_col, yylval); 
-				return pc_tipus;}
+type			{mt_atom(tok_begin_line, tok_begin_col, yylval); 
+				return pc_type;}
 
-coleccio		{mt_atom(tok_begin_line, tok_begin_col, yylval); 
-				return pc_coleccio;}
+array			{mt_atom(tok_begin_line, tok_begin_col, yylval); 
+				return pc_array;}
 
-registre		{mt_atom(tok_begin_line, tok_begin_col, yylval); 
-				return pc_registre;}
+record			{mt_atom(tok_begin_line, tok_begin_col, yylval); 
+				return pc_record;}
 
-es				{mt_atom(tok_begin_line, tok_begin_col, yylval); 
-				return pc_es;}
+is				{mt_atom(tok_begin_line, tok_begin_col, yylval); 
+				return pc_is;}
 
-llavors			{mt_atom(tok_begin_line, tok_begin_col, yylval); 
-				return pc_llavors;}
+then			{mt_atom(tok_begin_line, tok_begin_col, yylval); 
+				return pc_then;}
 
-no				{mt_atom(tok_begin_line, tok_begin_col, yylval); 
-				return pc_no;}
+not				{mt_atom(tok_begin_line, tok_begin_col, yylval); 
+				return pc_not;}
 
-entra			{mt_atom(tok_begin_line, tok_begin_col, yylval); 
-				return pc_entra;}
+in				{mt_atom(tok_begin_line, tok_begin_col, yylval); 
+				return pc_in;}
 
-surt			{mt_atom(tok_begin_line, tok_begin_col, yylval); 
-				return pc_surt;}
+out				{mt_atom(tok_begin_line, tok_begin_col, yylval); 
+				return pc_out;}
 
-nou				{mt_atom(tok_begin_line, tok_begin_col, yylval); 
-				return pc_nou;}
+new				{mt_atom(tok_begin_line, tok_begin_col, yylval); 
+				return pc_new;}
 
-nul				{mt_atom(tok_begin_line, tok_begin_col, yylval); 
-				return pc_nul;}
+null			{mt_atom(tok_begin_line, tok_begin_col, yylval); 
+				return pc_null;}
 
-de				{mt_atom(tok_begin_line, tok_begin_col, yylval); 
-				return pc_de;}
+of				{mt_atom(tok_begin_line, tok_begin_col, yylval); 
+				return pc_of;}
 
-modul			{mt_atom(tok_begin_line, tok_begin_col, yylval); 
-				return pc_modul;}
+mod				{mt_atom(tok_begin_line, tok_begin_col, yylval); 
+				return pc_mod;}
 
-rang			{mt_atom(tok_begin_line, tok_begin_col, yylval); 
-				return pc_rang;}
+range			{mt_atom(tok_begin_line, tok_begin_col, yylval); 
+				return pc_range;}
 
-"||"			{mt_atom(tok_begin_line, tok_begin_col, yylval); 
+and				{mt_atom(tok_begin_line, tok_begin_col, yylval); 
 				return pc_or;}
 
-"&&"			{mt_atom(tok_begin_line, tok_begin_col, yylval); 
+or				{mt_atom(tok_begin_line, tok_begin_col, yylval); 
 				return pc_and;}
 
-
---SUBTIPUS
 
 --Simbols 
 
