@@ -33,8 +33,6 @@ package d_token is
 					pc_null,
 					pc_of,
 					pc_mod,
-					--pc_inclou,
-					--pc_usa,
 					pc_range,
 					pc_and,
 					pc_or,
