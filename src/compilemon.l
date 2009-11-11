@@ -206,13 +206,11 @@ rang			{mt_atom(tok_begin_line, tok_begin_col, yylval);
 
 with	decls.d_taula_de_noms,
 		d_atribut,
-		--d_token,
 		pk_usintactica_tokens;
 		
 
 use		decls.d_taula_de_noms,
 		d_atribut,
-		--d_token,
 		pk_usintactica_tokens;
 
 
@@ -228,9 +226,6 @@ package body u_lexica is
 
 ##
 
---begin
-
---	tbuida(tn);
 
 end u_lexica;
 

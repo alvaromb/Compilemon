@@ -1,3 +1,4 @@
+--Token
 %token pc_procediment
 %token pc_inici
 %token pc_mentre
@@ -111,6 +112,7 @@ declaracions:
 	declaracions declaracio
   |
   ;
+  
 
 -- DECLARACIONS
 declaracio:
@@ -136,6 +138,7 @@ c_decl_var:
 dec_constant:
 	id s_dospunts pc_constant id s_assignacio const s_final
   ;
+  
 
 -- TIPUS
 dec_tipus:
@@ -145,6 +148,7 @@ dec_tipus:
   | 
 	decl_subrang
   ;
+  
   
 -- TIPUS SUBRANG
 decl_subrang:
@@ -168,6 +172,7 @@ p_dregistre:
   | 
     pc_tipus id pc_es pc_registre id s_dospunts id s_final
   ;
+  
 
 -- TIPUS COLECCIO
 decl_coleccio:
@@ -187,6 +192,7 @@ bloc:
   | 
 	sentencia
   ;
+  
   
 -- SENTENCIES D'INSTRUCCIONS
 sentencia: 
@@ -243,6 +249,7 @@ pri:
     pri s_coma expressio
   ;
   
+  
 -- Expressions
 expressio:
 	expressio pc_or expressio
@@ -281,8 +288,6 @@ expressio:
   |
     const
   ;
-
-
   
   
 %%
@@ -324,6 +329,7 @@ package body pk_usintactica is
         raise Syntax_Error;
     
     end YYError;
+    
 ##
 
 end pk_usintactica;

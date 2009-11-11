@@ -2,9 +2,9 @@
 --  Programa de prova
 -- ------------------------------------------------
 --  Versió	:	0.1
---  Autors	:	José Ruiz Bravo
+--  Autors	:	Jose Ruiz Bravo
 --				Biel Moyà Alcover
---				Álvaro Medina Ballester
+--				Alvaro Medina Ballester
 -- ------------------------------------------------
 --		Programa per comprovar les funcionalitats
 --	del lèxic i la taula de noms.
@@ -38,18 +38,9 @@ use		Ada.Text_IO,
 
 procedure compilemon is
 
---	Tk : token;
---	id1 : id_nom;
---	id2 : id_nom;
---	id3 : id_nom;
---	
---	ts : tsimbols;
---	
 begin
 
-	tbuida(tn);--NECESARIO?!
-    
- 
+	tbuida(tn);
     
 	Open_Input(Argument(1));
 	yyparse;
@@ -59,17 +50,15 @@ begin
 --		Put_Line(Token'Image(Tk));
 --		Tk := Yylex;
 --	end loop;
-
- 	
    
    Close_Input;
    
    exception
       when E_Tids_Plena => 
-         Put_Line("ERROR: La taula d'identificadors és plena.");
+         Put_Line("ERROR: La taula d'identificadors es plena.");
          
       when E_Tcar_Plena =>
-      	Put_Line("ERROR: La taula de caracters és plena.");
+      	Put_Line("ERROR: La taula de caracters es plena.");
       	
       when Syntax_Error =>
         Put_Line("ERROR: Error a la linea "&yy_line_number'img&" i columna "&yy_begin_column'img);

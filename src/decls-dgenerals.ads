@@ -1,10 +1,10 @@
 -- ------------------------------------------------
 --  Paquet de declaracions generals
 -- ------------------------------------------------
---  Versió	:	0.2
---  Autors	:	José Ruiz Bravo
---				Biel Moyà Alcover
---				Álvaro Medina Ballester
+--  Versio	:	0.2
+--  Autors	:	Jose Ruiz Bravo
+--				Biel Moya Alcover
+--				Alvaro Medina Ballester
 -- ------------------------------------------------
 --		Declaracions generals.
 --
@@ -21,19 +21,19 @@ package decls.dgenerals is
 	-- Valor nul per al tipus id_nom
 	id_nul : constant id_nom := 0;
 		
-	-- La longitud és el nombre de paraules * la longitud de cadascuna
+	-- La longitud es el nombre de paraules * la longitud de cadascuna
 	longitut : constant integer := 40;
 	type rang_tcar is new integer range 0 .. (longitut*max_id);
 	
-	-- Taula de dispersió:
-	-- Tipus per la taula de dispersió de la taula de noms:
+	-- Taula de dispersio:
+	-- Tipus per la taula de dispersio de la taula de noms
 	tam_dispersio : constant integer := 101;
 	type rang_dispersio is new integer range -1 .. tam_dispersio;
 	
-	-- Valor nul per el rang dispersió.
+	-- Valor nul per el rang dispersio
 	dispersio_nul : constant rang_dispersio := -1;
 	
-	-- Declaració de la taula de dispersió
+	-- Declaracio de la taula de dispersio
 	type taula_dispersio is array (rang_dispersio) of id_nom;
 	
 	
@@ -58,5 +58,6 @@ package decls.dgenerals is
 	
 	-- Tipus constant
 	type valor is new integer range 0 .. integer'Last;
+
 
 end decls.dgenerals;

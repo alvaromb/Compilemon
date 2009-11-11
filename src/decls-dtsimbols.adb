@@ -2,12 +2,12 @@
 --  Procediments taula de simbols
 -- ------------------------------------------------
 --  Versio	:	0.1
---  Autors	:	José Ruiz Bravo
---				Biel Moyà Alcover
---				Álvaro Medina Ballester
+--  Autors	:	Jose Ruiz Bravo
+--				Biel Moya Alcover
+--				Alvaro Medina Ballester
 -- ------------------------------------------------
 --		Procediments per tractar la taula de
---      símbols:
+--      sImbols:
 --			- Taula buida
 --			- Posa
 --			- Consulta
@@ -15,15 +15,15 @@
 --			- Surt bloc
 --			- Posa camp
 --			- Consulta camp
---			- Posa índex
---			- Primer índex
---			- Successor índex
---			- Índex vàlid?
---			- Consulta índex
+--			- Posa Index
+--			- Primer Index
+--			- Successor Index
+--			- Index valid?
+--			- Consulta Index
 --			- Posa argument
 --			- Primer argument
 --			- Successor argument
---			- Argument vàlid?
+--			- Argument valid?
 --			- Consulta argument
 --			- Actualitza
 --
@@ -33,9 +33,9 @@ package body decls.dtsimbols is
 
 	-- VERSIO 1: llenguatge simple sense estructura 
 	-- de blocs estil Fortran.
-	procedure tbuida (ts: out tsimbols) is
+	procedure tbuida (ts : out tsimbols) is
 	
-		descnula :  descrip( dnula);
+		descnula : descrip(dnula);
 		
 	begin
 		
@@ -49,12 +49,12 @@ package body decls.dtsimbols is
 	end tbuida;
 	
 	
-	procedure posa (ts: in out tsimbols;
-					 id: in id_nom;
-					  d: in descrip;
-					  e: out boolean) is
+	procedure posa (ts : in out tsimbols;
+					 id : in id_nom;
+					  d : in descrip;
+					  e : out boolean) is
 					  
-		idespl: rang_despl;
+		idespl : rang_despl;
 	
 	begin
 	
@@ -73,8 +73,8 @@ package body decls.dtsimbols is
 	end posa;
 	
 	
-	function cons (ts: in tsimbols;
-					id: in id_nom) return descrip is
+	function cons (ts : in tsimbols;
+					id : in id_nom) return descrip is
 					
 	begin
 	
@@ -85,7 +85,7 @@ package body decls.dtsimbols is
 	
 	
 	-- VERSIO 2: Normal, llenguatge amb blocs estil Pascal.
-	procedure entrabloc (ts: in out tsimbols) is
+	procedure entrabloc (ts : in out tsimbols) is
 	
 	begin
 	
@@ -95,11 +95,11 @@ package body decls.dtsimbols is
 	end entrabloc;
 	
 	
-	procedure surtbloc (ts: in out tsimbols) is
+	procedure surtbloc (ts : in out tsimbols) is
 	
 		idespl1 : rang_despl;
 		idespl2 : rang_despl;
-		id : id_nom;
+		     id : id_nom;
 		
 	begin
 	
@@ -107,7 +107,7 @@ package body decls.dtsimbols is
 		ts.nprof := ts.nprof - 1;
 		idespl2 := ts.tbloc(ts.nprof) + 1;
 		
-		-- PRUEBA: Si peta mirar aquí
+		-- PRUEBA: Si peta mirar aqui
 		for idespl in reverse idespl1 .. idespl2 loop
 			if ts.tdespl(idespl).np >= 0 then
 				id := ts.tdespl(idespl).id;
@@ -121,17 +121,17 @@ package body decls.dtsimbols is
 	
 	
 	
-	-- VERSIO 3: Blocs més records.
-	procedure posacamp (ts: in out tsimbols;
-						idr: in id_nom;
-						idc: in id_nom;
-						  d: in descrip;
-						  e: out boolean) is
+	-- VERSIO 3: Blocs mes records.
+	procedure posacamp (ts : in out tsimbols;
+						idr : in id_nom;
+						idc : in id_nom;
+						  d : in descrip;
+						  e : out boolean) is
 						  
-	   des: descrip;
-		td : descriptipus;
-		 p : rang_despl;
-   itdespl : rang_despl;
+           des : descrip;
+	        td : descriptipus;
+	         p : rang_despl;
+       itdespl : rang_despl;
 	
 	begin
 	
@@ -156,14 +156,14 @@ package body decls.dtsimbols is
 	end posacamp;
 	
 	
-	function conscamp (ts: in tsimbols;
-					   idr: in id_nom;
-					   idc: in id_nom) return descrip is
+	function conscamp (ts : in tsimbols;
+					   idr : in id_nom;
+					   idc : in id_nom) return descrip is
 					   
-		 d : descrip;
-		td : tdescrip;
-		 p : rang_despl;
-  descnula :  descrip( dnula);
+	           d : descrip;
+	          td : tdescrip;
+	           p : rang_despl;
+        descnula :  descrip(dnula);
 					   
 	begin
 	
@@ -186,15 +186,15 @@ package body decls.dtsimbols is
 	
 	
 	-- VERSIO 4: Arrays.
-	procedure posa_idx (ts: in out tsimbols;
-						ida: in id_nom;
-						idi: in id_nom;
-						  e: out boolean) is
+	procedure posa_idx (ts : in out tsimbols;
+						ida : in id_nom;
+						idi : in id_nom;
+						  e : out boolean) is
 						
-	     d : descrip;
-	    dt : descriptipus;
-	     p : rang_despl;
-	    pp : rang_despl;
+	         d : descrip;
+	        dt : descriptipus;
+	         p : rang_despl;
+	        pp : rang_despl;
 	    idespl : rang_despl;
 						
 	begin
@@ -230,7 +230,7 @@ package body decls.dtsimbols is
 	
 	begin
 	
-		return ci > 0; --Esto es asi , porque el rango de cursor va de 0 a rang despl pero el 0 lo utilizamos como nulo 
+		return ci > 0;
 	
 	end idx_valid;
 	
@@ -250,10 +250,10 @@ package body decls.dtsimbols is
 	
 	begin
 	
-		if idx_valid(ci) then --Falta saber que pasaria si no es compleix
+		if idx_valid(ci) then
 			return cursor_idx(ts.tdespl(rang_despl(ci)).s);
 		else 
-			return 0;
+			return 0; -- Excepcio
 		end if;
 	
 	end succ_idx;

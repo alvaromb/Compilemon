@@ -151,12 +151,6 @@ llavors     {mt_atom(tok_begin_line, tok_begin_col, yylval);
 no          {mt_atom(tok_begin_line, tok_begin_col, yylval); 
             return pc_no;}
 
-opcio       {mt_atom(tok_begin_line, tok_begin_col, yylval); 
-            return pc_opcio;}
-
-casos       {mt_atom(tok_begin_line, tok_begin_col, yylval); 
-            return pc_casos;}
-
 entra       {mt_atom(tok_begin_line, tok_begin_col, yylval); 
             return pc_entra;}
 
@@ -190,7 +184,7 @@ rang        {mt_atom(tok_begin_line, tok_begin_col, yylval);
 --Simbols 
 
 ":="        {mt_atom(tok_begin_line, tok_begin_col, yylval); 
-            return s_asignacio;}
+            return s_assignacio;}
 
 ":"         {mt_atom(tok_begin_line, tok_begin_col, yylval); 
             return s_dospunts;}
@@ -252,39 +246,44 @@ rang        {mt_atom(tok_begin_line, tok_begin_col, yylval);
 
 --Digit
 
-{digit}+    {mt_numero(tok_begin_line, tok_begin_col,yytext, yylval); return const;}
+{digit}+     {mt_numero(tok_begin_line, tok_begin_col,yytext, yylval);
+             return const;}
             
             
 --Lletra
 
-{caracter}  {mt_caracter(tok_begin_line, tok_begin_col,yytext, yylval); return const;}
-            
-
---Identificador
-
-{lletra}({digit}|{lletra})* {mt_identificador(tok_begin_line, tok_begin_col, yytext, yylval); return id;}
+{caracter}   {mt_caracter(tok_begin_line, tok_begin_col,yytext, yylval); 
+             return const;}
 
 
 --String
 
-\"[^\"\n\t]*\"  {mt_string(tok_begin_line, tok_begin_col, yytext, yylval); return cadena;}
+\"[^\"\n\t]*\"  {mt_string(tok_begin_line, tok_begin_col, yytext, yylval);
+                return const;}
+
+
+--Identificador
+
+{lletra}({digit}|{lletra})*    {mt_identificador(tok_begin_line, tok_begin_col,
+                            yytext, yylval); return id;}
+
 
 
 --Comentaris
 
-"-""-"[^\n]*    {null;}
+"-""-"[^\n]*     {null;}
 
 
 --Separadors
 
-" "             {null;}
+" "              {null;}
 
-{separadors}    {null;}
+{separadors}*    {null;}
 
 
 --Error
 
-.               {return error;}
+.            {return error;}
 
 
 
@@ -294,17 +293,15 @@ rang        {mt_atom(tok_begin_line, tok_begin_col, yylval);
 
 with    decls.d_taula_de_noms,
         d_atribut,
-        d_token;
+        pk_usintactica_tokens;
         
 
 use     decls.d_taula_de_noms,
         d_atribut,
-        d_token;
+        pk_usintactica_tokens;
 
 
 package u_lexica is
-
-    yylval : atribut;
 
     function YYLex return token;
     
@@ -316,8 +313,8 @@ package body u_lexica is
 
 ##
 
-end u_lexica;
 
+end u_lexica;
     \end{lstlisting}
     
     \newpage
@@ -331,10 +328,10 @@ end u_lexica;
 -- ------------------------------------------------
 --  Paquet de declaracions de la taula de noms
 -- ------------------------------------------------
---  Versio  :   0.1
---  Autors  :   Jose Ruiz Bravo
---              Biel Moya Alcover
---              Alvaro Medina Ballester
+--  Versio    :    0.1
+--  Autors    :    Jose Ruiz Bravo
+--                 Biel Moya Alcover
+--                 Alvaro Medina Ballester
 -- ------------------------------------------------
 --    Especificacio de l'estructura necessaria
 -- per el maneig de la taula de noms i dels metodes
@@ -373,7 +370,8 @@ package decls.d_taula_de_noms is
                         idn : in id_nom) return string;
     
     function cons_str   (tn : in taula_de_noms; 
-                        ids : in rang_tcar) return string;   
+                        ids : in rang_tcar) return string;
+                                
     
     private
         
@@ -385,7 +383,7 @@ package decls.d_taula_de_noms is
         
         type taula_identificadors is array (1 .. id_nom'Last) of t_identificador;
         
-        type taula_caracters is array (rang_tcar) of character;
+        type taula_caracters is array (1 .. rang_tcar'Last) of character;
         
         type taula_de_noms is record
               td : taula_dispersio;
@@ -398,7 +396,8 @@ package decls.d_taula_de_noms is
         -- Funcio de comparacio de dues paraules
         function par_iguals (par1, par2 : in string) return boolean;        
                     
-end decls.d_taula_de_noms;        
+            
+end decls.d_taula_de_noms;         
     \end{lstlisting}
     
     \newpage
@@ -407,10 +406,10 @@ end decls.d_taula_de_noms;
 -- ------------------------------------------------
 --  Paquet de declaracions de la taula de noms
 -- ------------------------------------------------
---  Versio  :   0.2
---  Autors  :   Jose Ruiz Bravo
---              Biel Moya Alcover
---              Alvaro Medina Ballester
+--  Versio    :    0.2
+--  Autors    :    Jose Ruiz Bravo
+--                 Biel Moya Alcover
+--                 Alvaro Medina Ballester
 -- ------------------------------------------------
 --        Implementacio dels procediments per al
 --    tractament de la taula de noms:
@@ -421,6 +420,7 @@ end decls.d_taula_de_noms;
 --            - Consulta
 --
 -- ------------------------------------------------
+
 
 package body decls.d_taula_de_noms is
 
@@ -435,7 +435,7 @@ package body decls.d_taula_de_noms is
         end loop;
         
         tn.nid := 1;
-        tn.ncar := 0;
+        tn.ncar := 1;
         
         tn.tid(1).seguent := id_nul;
         
@@ -479,11 +479,11 @@ package body decls.d_taula_de_noms is
         -- Variable per el valor de la funcio de dispersio.
         p_tid : rang_dispersio;
         
-        -- indexos per recorrer la taula d'identificadors.
+        -- Indexos per recorrer la taula d'identificadors.
         idx : id_nom;
-        idx_ant : id_nom; 
+        idx_ant: id_nom; 
         
-        -- index per recorrer la taula de caracters.
+        -- Index per recorrer la taula de caracters.
         jdx : rang_tcar; 
         
         p : taula_identificadors renames tn.tid;
@@ -527,7 +527,6 @@ package body decls.d_taula_de_noms is
             tn.tid(idn).long_paraula := nom'Length;
             tn.tid(idn).seguent := id_nul;
             tn.nid := tn.nid + 1;
-            
             -- Omplim la taula de caracters, desde la primera 
             -- posicio lliure 'ncar'.
             jdx := tn.ncar;
@@ -622,7 +621,7 @@ end decls.d_taula_de_noms;
     
     
     \section{Tokens i atributs}
-    Hem definit el tipus token al paquet \textit{d\_token} i el tipus atribut (amb els procediments corresponents per crear atributs i la definició d'atribut) al paquet \textit{d\_atribut}.
+    Hem definit el tipus token al paquet \textit{d\_token} i el tipus atribut (amb els procediments corresponents per crear atributs i la definició d'atribut) al paquet \textit{d\_atribut}. Una cop realitzada l'execució de l'eina \textbf{ayacc} sobre el fitxer \textit{pk\_usintactica.y}, ja no necessitarem el paquet \textit{d\_token.ads} i el substituirem per \textit{pk\_usintactica\_tokens}.
     \subsection{d\_token.ads}
     \begin{lstlisting}[style=Ada]
 -- ------------------------------------------------
@@ -687,13 +686,45 @@ package d_token is
                     op_multiplicacio,
                     op_divisio,
                     id,
-                    cadena,
                     const,
                     Error,
                     End_of_Input);
             
                     
 end d_token;
+    \end{lstlisting}
+    \newpage
+    
+    \subsection{pk\_usintactica\_tokens}
+    \begin{lstlisting}[style=Ada]
+with  D_Atribut;
+package Pk_Usintactica_Tokens is
+
+
+    subtype yystype is d_atribut.atribut;
+
+    YYLVal, YYVal : YYSType; 
+    type Token is
+        (End_Of_Input, Error, Pc_Procediment, Pc_Inici,
+         Pc_Mentre, Pc_Per, Pc_Entre,
+         Pc_Si, Pc_Sino, Pc_Fi,
+         Pc_Fer, Pc_Constant, Pc_Tipus,
+         Pc_Coleccio, Pc_Registre, Pc_Es,
+         Pc_Llavors, Pc_No, Pc_Entra,
+         Pc_Surt, Pc_Nou, Pc_Nul,
+         Pc_De, Pc_Modul, Pc_Rang,
+         Pc_Or, Pc_And, S_Assignacio,
+         S_Dospunts, S_Final, S_Coma,
+         S_Parentesiobert, S_Parentesitancat, S_Puntsrang,
+         S_Puntrec, Op_Menor, Op_Menorigual,
+         Op_Majorigual, Op_Major, Op_Igual,
+         Op_Distint, Op_Suma, Op_Resta,
+         Op_Multiplicacio, Op_Divisio, Id,
+         Const, Menys_Unitari);
+
+    Syntax_Error : exception;
+
+end Pk_Usintactica_Tokens;
     \end{lstlisting}
     \newpage
     
@@ -738,22 +769,22 @@ package d_atribut is
         
         case t is
         
-            when atom            => null;
+            when atom         => null;
             
-            when a_ident         => idn : id_nom;
+            when a_ident      => idn : id_nom;
             
-            when a_lit_num       => int : integer;
+            when a_lit_num    => int : integer;
             
-            when a_lit_car       => val : character;    
+            when a_lit_car    => val : character;    
             
-            when a_lit_string    => ids : rang_tcar;
+            when a_lit_string => ids : rang_tcar;
             
         end case;
                 
     end record;
     
     
-    procedure mt_atom  (l, c : in natural; a : out atribut);
+    procedure mt_atom        (l, c : in natural; a : out atribut);
     
     procedure mt_identificador  (l, c : in natural; 
                                     s : in string; 
@@ -763,9 +794,9 @@ package d_atribut is
                                s : in string; 
                                a : out atribut);
     
-    procedure mt_caracter  (l, c : in natural; 
-                             car : in string; 
-                               a : out atribut);
+    procedure mt_caracter    (l, c : in natural; 
+                               car : in string; 
+                                 a : out atribut);
     
     procedure mt_numero    (l, c : in natural; 
                                i : in string; 
@@ -804,8 +835,7 @@ use     u_lexica,
 package body d_atribut is    
     
     
-    procedure mt_atom (l, c : in natural; 
-                          a : out atribut) is
+    procedure mt_atom (l, c : in natural; a : out atribut) is
     
     begin
     
@@ -874,7 +904,7 @@ end d_atribut;
     
     
     \chapter{Anàlisi Sintàctica}
-    A l'Anàlisi Sintàctica podem trobar la gramàtica del nostre llenguatge i el fitxer \textit{compilemon.y}. Aquest fitxer és que utilitzam juntament amb l'eina \textbf{ayacc}.
+    A l'Anàlisi Sintàctica podem trobar la gramàtica del nostre llenguatge i el fitxer \textit{pk\_usintactica.y}. Aquest fitxer és que utilitzam juntament amb l'eina \textbf{ayacc}.
     
     \section{Gramàtica}
     \begin{tabbing}
@@ -1012,9 +1042,9 @@ end d_atribut;
     \end{tabbing}
     \newpage
     
-    \section{Especificació: \textit{compilemon.y}}
+    \section{Especificació: \textit{pk\_usintactica.y}}
     \begin{lstlisting}[style=Ada]
--- Tokens
+--Token
 %token pc_procediment
 %token pc_inici
 %token pc_mentre
@@ -1059,7 +1089,7 @@ end d_atribut;
 %token op_multiplicacio
 %token op_divisio
 %token id
-%token const -- Per declarar constants
+%token const 
 
 
 --Precedencia
@@ -1128,6 +1158,7 @@ declaracions:
     declaracions declaracio
   |
   ;
+  
 
 -- DECLARACIONS
 declaracio:
@@ -1153,6 +1184,7 @@ c_decl_var:
 dec_constant:
     id s_dospunts pc_constant id s_assignacio const s_final
   ;
+  
 
 -- TIPUS
 dec_tipus:
@@ -1162,6 +1194,7 @@ dec_tipus:
   | 
     decl_subrang
   ;
+  
   
 -- TIPUS SUBRANG
 decl_subrang:
@@ -1185,6 +1218,7 @@ p_dregistre:
   | 
     pc_tipus id pc_es pc_registre id s_dospunts id s_final
   ;
+  
 
 -- TIPUS COLECCIO
 decl_coleccio:
@@ -1204,6 +1238,7 @@ bloc:
   | 
     sentencia
   ;
+  
   
 -- SENTENCIES D'INSTRUCCIONS
 sentencia: 
@@ -1260,6 +1295,7 @@ pri:
     pri s_coma expressio
   ;
   
+  
 -- Expressions
 expressio:
     expressio pc_or expressio
@@ -1298,8 +1334,6 @@ expressio:
   |
     const
   ;
-
-
   
   
 %%
@@ -1308,38 +1342,47 @@ expressio:
 package pk_usintactica is
 
     procedure yyparse;
-    
 
 end pk_usintactica;
 
 
 
-with    pk_usintactica_token,
+with    pk_usintactica_tokens,
         pk_usintactica_shift_reduce,
         pk_usintactica_goto,
         compilemon_io,
-        u_lexica;
+        u_lexica,
+        Ada.Text_IO;
         
 
-use     pk_usintactica_token,
+use     pk_usintactica_tokens,
         pk_usintactica_shift_reduce,
         pk_usintactica_goto,
         compilemon_io,
-        u_lexica;
+        u_lexica,
+        Ada,
+        Ada.Text_IO;
         
 
 package body pk_usintactica is
 
+    procedure YYError (e : in string) is
+    
+    begin
+        
+        Put_Line(e);
+        raise Syntax_Error;
+    
+    end YYError;
+    
 ##
 
 end pk_usintactica;
-  
-
     \end{lstlisting}
     \newpage
     
     \chapter{Anàlisi Semàntica}
-        En aquest capítol tenim la definició de les estructures de dades necesaries per l'anàlisi semàntic\footnote{En posteriors versions del document introduïrem les rutines semàntiques i la comprovació de tipus en aquest capítol.}.
+        En aquest capitol tenim la definició de les estructures de dades necesaries per l'anàlisi semàntic\footnote{En posteriors versions del document introduïrem les rutines semàntiques i la comprovació de tipus en aquest capItol.}.
         
     \section{Descripció}
     \subsection{decls-dtdesc.ads}
@@ -1381,7 +1424,7 @@ package decls.dtdesc is
                           tsarr,
                           tsnul);
     
-    type descriptipus (tt : tipusdetipus := tsnul) is
+    type descriptipus (tt: tipusdetipus := tsnul) is
         record
             ocup : despl;
             case tt is
@@ -1402,10 +1445,10 @@ package decls.dtdesc is
                 when dproc  => np : num_proc;
                 when dconst => tc : id_nom;
                                vc : valor;
-                when dargc  => nvarg: num_var;
-                                targ: id_nom;
-                when dcamp  => tcamp: id_nom;
-                                 dsp: rang_despl; 
+                when dargc  => nvarg : num_var;
+                                targ : id_nom;
+                when dcamp  => tcamp : id_nom;
+                                 dsp : rang_despl; 
 
             end case;
         end record;
@@ -1413,27 +1456,25 @@ package decls.dtdesc is
         
 end decls.dtdesc;
     \end{lstlisting}
-    
     \newpage
     
     
-    \section{Taula de símbols}
+    \section{Taula de Simbols}
     \subsection{decls-dtsimbols.ads}
     \begin{lstlisting}[style=Ada]
 -- ------------------------------------------------
---  Paquet de declaracions de la taula de simbols
+--  Declaracions taula de simbols
 -- ------------------------------------------------
 --  Versio    :    0.1
 --  Autors    :    Jose Ruiz Bravo
 --                 Biel Moya Alcover
 --                 Alvaro Medina Ballester
 -- ------------------------------------------------
---        En aquest fitxer tenim implementada
---  l'estructura de la taula de simbols i totes
---  les declaracions de les operacions que podem
---  realitzar sobre les mateixes.
+--        Declaracions dels procediments de la
+--  taula de simbols.
 --
 -- ------------------------------------------------
+
 
 with    decls.dtdesc,
         decls.dgenerals;
@@ -1448,63 +1489,64 @@ package decls.dtsimbols is
 
     type tsimbols is limited private;
     type cursor_idx is private;
-    type cursor_arg is private;
+--    type cursor_arg is private;
     
+    -- Operacions
     -- VERSIO 1: llenguatge simple sense estructura 
     -- de blocs estil Fortran.
-    procedure tbuida (ts: out tsimbols);
+    procedure tbuida (ts : out tsimbols);
     
-    procedure posa (ts: in out tsimbols;
-                    id: in id_nom;
-                     d: in descrip;
-                     e: out boolean);
+    procedure posa (ts : in out tsimbols;
+                    id : in id_nom;
+                     d : in descrip;
+                     e : out boolean);
                      
-    function cons (ts: in tsimbols;
-                   id: in id_nom) return descrip;
-             
+    function cons (ts : in tsimbols;
+                   id : in id_nom) return descrip;
+                    
                     
     -- VERSIO 2: Normal, llenguatge amb blocs estil Pascal.
-    procedure entrabloc (ts: in out tsimbols);
+    procedure entrabloc (ts : in out tsimbols);
     
-    procedure surtbloc (ts: in out tsimbols);
+    procedure surtbloc (ts : in out tsimbols);
     
     
     -- VERSIO 3: Blocs mes records.
-    procedure posacamp (ts: in out tsimbols;
-                       idr: in id_nom;
-                       idc: in id_nom;
-                         d: in descrip;
-                         e: out boolean);
+    procedure posacamp (ts : in out tsimbols;
+                       idr : in id_nom;
+                       idc : in id_nom;
+                         d : in descrip;
+                         e : out boolean);
                         
-    function conscamp (ts: in tsimbols;
-                      idr: in id_nom;
-                      idc: in id_nom) return descrip;
-
-
+    function conscamp (ts : in tsimbols;
+                      idr : in id_nom;
+                      idc : in id_nom) return descrip;
+                       
+                       
     -- VERSIO 4: Arrays.
-    procedure posa_idx (ts: in tsimbols;
-                       ida: in id_nom;
-                       idi: in id_nom;
-                         e: out boolean);
+    procedure posa_idx (ts : in out tsimbols;
+                       ida : in id_nom;
+                       idi : in id_nom;
+                         e : out boolean);
                         
-    function primer_idx (ts: in tsimbols;
-                        ida: in id_nom) return cursor_idx;
+    function primer_idx (ts : in tsimbols;
+                        ida : in id_nom) return cursor_idx;
                          
-    function succ_idx (ts: in tsimbols;
-                       ci: in cursor_idx) return cursor_idx;
+    function succ_idx (ts : in tsimbols;
+                       ci : in cursor_idx) return cursor_idx;
                              
-    function idx_valid (ci: in cursor_idx) return boolean;
+    function idx_valid (ci : in cursor_idx) return boolean;
     
-    function cons_idx (ts: in tsimbols;
-                       ci: cursor_idx) return id_nom;
-                      
+    function cons_idx (ts : in tsimbols;
+                       ci : cursor_idx) return id_nom;
+                         
                          
     -- VERSIO 5: Procediments
---    procedure posa_arg (ts: in tsimbols;
---                       idp: in id_nom;
---                       ida: in id_nom;
---                         d: in descrip;
---                         e: out boolean);
+--    procedure posa_arg (ts : in tsimbols;
+--                       idp : in id_nom;
+--                       ida : in id_nom;
+--                         d : in descrip;
+--                         e : out boolean);
                           
 --    function primer_arg () return cursor_arg; --OMPLIR
 --    
@@ -1512,14 +1554,14 @@ package decls.dtsimbols is
 --    
 --    function arg_valid () return boolean; --OMPLIR
     
---    procedure cons_arg (ts: in tsimbols;
---                        ca: in cursor_arg;
---                       ida: out id_nom;
---                        dn: out descrip);
-                         
---    procedure actualitza (ts: in out tsimbols;
---                          id: in id_nom;
---                           d: in descrip);
+--    procedure cons_arg (ts : in tsimbols;
+--                        ca : in cursor_arg;
+--                       ida : out id_nom;
+--                        dn : out descrip);
+--                         
+--    procedure actualitza (ts : in out tsimbols;
+--                          id : in id_nom;
+--                           d : in descrip);
     
     private
     
@@ -1548,6 +1590,7 @@ package decls.dtsimbols is
             tbloc : taula_blocs;
             nprof : nivell_prof;
         end record;
+        
 
 end decls.dtsimbols;
     \end{lstlisting}
@@ -1769,7 +1812,7 @@ package body decls.dtsimbols is
         ts.tbloc(ts.nprof) := ts.tbloc(ts.nprof) + 1;
         idespl := ts.tbloc(ts.nprof);
         
-        ts.tdespl(idespl) := ( -1, dnula,idi, 0);
+        ts.tdespl(idespl) := (-1, dnula,idi, 0);
         
         if pp = 0 then
             ts.tdesc(ida).s := idespl;
@@ -1830,8 +1873,6 @@ end decls.dtsimbols;
    
     
     
-    
-    \index{Declaracions i altres paquets@\textbf{Declaracions i altres paquets}}
     \chapter{Declaracions i altres paquets}
         Per mantenir una organització del codi i dels paquets que anirem creant, hem definit un paquet anomenat \textit{decls} del qual penjen les declaracions. Com hem vist, la taula de noms penja d'aquest paquet, i a la vegada penjen els paquets \textit{d\_hash} i \textit{dgenerals} que son necessaris per la implementació de la taula de noms.
         \\
@@ -1908,18 +1949,29 @@ package decls.dgenerals is
     
     max_prof : constant integer := 20;
     type nivell_prof is new integer range 0 .. max_prof;
+    nul_nprof : constant nivell_prof := 0;
     
     max_despl : constant integer := max_prof*max_id;
     type rang_despl is new integer range 0 .. max_despl;
+    nul_despl : constant rang_despl := 0;
     
+    -- Nombre de variables
+    max_var : constant integer := 1000;
+    type num_var is new integer range 0 .. max_var;
+    
+    -- Nombre de procediments
+    max_proc : constant integer := 100;
+    type num_proc is new integer range 0 .. max_proc;
+    
+    -- Tipus constant
     type valor is new integer range 0 .. integer'Last;
-    
+
 
 end decls.dgenerals;
     \end{lstlisting}
     \newpage
         
-    \index{Declaracions i altres paquets@\textbf{Declaracions i altres paquets}!decls-d\_hash.ads}
+
     \section{decls-d\_hash.ads}
     \begin{lstlisting}[style=Ada]
 -- ------------------------------------------------
@@ -1931,7 +1983,8 @@ end decls.dgenerals;
 --                 Alvaro Medina Ballester
 -- ------------------------------------------------
 --        Especificacio de les funcions de hash:
---            - Hashing Quadratic.
+--            - Hash de Pearson per accedir a la 
+--              taula de noms.
 --
 -- ------------------------------------------------
 
@@ -1951,7 +2004,7 @@ end decls.d_hash;
     \end{lstlisting}
     \newpage
     
-    \index{Declaracions i altres paquets@\textbf{Declaracions i altres paquets}!decls-d\_hash.adb}
+    
     \section{decls-d\_hash.adb}
     \begin{lstlisting}[style=Ada]
 -- ------------------------------------------------
@@ -2040,9 +2093,10 @@ with    Ada.Text_IO,
         decls.dgenerals,
         decls.dtsimbols,
         decls.dtdesc,
-        d_token,
+        pk_usintactica_tokens,
         compilemon_io,
-        u_lexica;
+        u_lexica,
+        pk_usintactica;
         
 use     Ada.Text_IO,
         Ada.Command_Line,
@@ -2051,36 +2105,26 @@ use     Ada.Text_IO,
         decls.dgenerals,
         decls.dtsimbols,
         decls.dtdesc,
-        d_token,
+        pk_usintactica_tokens,
         compilemon_io,
-        u_lexica;
+        u_lexica,
+        pk_usintactica;
         
 
 procedure compilemon is
 
-     Tk : token;
-    id1 : id_nom;
-    id2 : id_nom;
-    id3 : id_nom;
-    
-     ts : tsimbols;
-    
 begin
 
-    tbuida(tn);--NECESARIO?!
-
+    tbuida(tn);
+    
     Open_Input(Argument(1));
+    yyparse;
 --    Tk := Yylex;
---    
+    
 --    while tk /= end_of_input loop
 --        Put_Line(Token'Image(Tk));
 --        Tk := Yylex;
 --    end loop;
-
-     posa_id (tn, id1, "pepe");
-     posa_id (tn, id2, "alvaro");
-     posa_id (tn, id3, "txebs");
-     
    
    Close_Input;
    
@@ -2090,9 +2134,45 @@ begin
          
       when E_Tcar_Plena =>
           Put_Line("ERROR: La taula de caracters es plena.");
+          
+      when Syntax_Error =>
+        Put_Line("ERROR: Error a la linea "&yy_line_number'img&" i columna "&yy_begin_column'img);
 
 end compilemon;
     \end{lstlisting}
+    \newpage
     
+    
+    \section{Proves}
+    Hem realitzat dos jocs de proves per comprovar el correcte funcionament de la nostra pràctica.
+    \\
+    \subsection{Prova 1: \textit{prova1.lem}}
+    \begin{lstlisting}
+procedimiento
+procedimiento
+procedimiento
+
+"cadena"
+
+
+      prova
+proves
+Es
+ES
+procedimiento
+prova
+prova
+si
+sino
+    \end{lstlisting}
+    \newpage
+    
+    \subsection{Prova 2: \textit{prova2.lem}}
+    \begin{lstlisting}
+procediment joan es
+inici
+    yyparse;
+fi joan;
+    \end{lstlisting}
 \end{document}
 

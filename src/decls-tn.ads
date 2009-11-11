@@ -1,10 +1,10 @@
 -- ------------------------------------------------
 --  Paquet de declaracions
 -- ------------------------------------------------
---  Versió	:	0.1
---  Autors	:	José Ruiz Bravo
---				Biel Moyà Alcover
---				Álvaro Medina Ballester
+--  Versio	:	0.1
+--  Autors	:	Jose Ruiz Bravo
+--				Biel Moya Alcover
+--				Alvaro Medina Ballester
 -- ------------------------------------------------
 --		En aquest fitxer tenim declarada la
 --  taula de noms perque sigui visible.
@@ -18,7 +18,7 @@ use		decls.d_taula_de_noms;
 
 package decls.tn is
 
---	pragma pure;
+	pragma pure;
 
 	tn : taula_de_noms;
 

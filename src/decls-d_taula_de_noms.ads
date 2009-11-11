@@ -2,12 +2,12 @@
 --  Paquet de declaracions de la taula de noms
 -- ------------------------------------------------
 --  Versio	:	0.1
---  Autors	:	José Ruiz Bravo
---				Biel Moyà Alcover
---				Álvaro Medina Ballester
+--  Autors	:	Jose Ruiz Bravo
+--				Biel Moya Alcover
+--				Alvaro Medina Ballester
 -- ------------------------------------------------
---	Especificació de l'estructura necessaria
--- per el maneig de la taula de noms i dels mètodes
+--	Especificacio de l'estructura necessaria
+-- per el maneig de la taula de noms i dels metodes
 -- per tractar-la.
 --
 -- ------------------------------------------------
@@ -66,7 +66,7 @@ package decls.d_taula_de_noms is
 			ncar : rang_tcar;
 		end record;
 		
-		-- Funció de comparació de dues paraules
+		-- Funcio de comparacio de dues paraules
 		function par_iguals (par1, par2 : in string) return boolean;		
 					
 			

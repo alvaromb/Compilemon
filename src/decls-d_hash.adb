@@ -2,12 +2,12 @@
 --  Paquet de procediments de les funcions hash
 -- ------------------------------------------------
 --  Versio	:	0.2
---  Autors	:	José Ruiz Bravo
---				Biel Moyà Alcover
---				Álvaro Medina Ballester
+--  Autors	:	Jose Ruiz Bravo
+--				Biel Moya Alcover
+--				Alvaro Medina Ballester
 -- ------------------------------------------------
 --		Procediments de les funcions de hash:
---			- Hashing quadràtic
+--			- Hashing quadratic
 --
 -- ------------------------------------------------
 

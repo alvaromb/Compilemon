@@ -1,15 +1,15 @@
 -- ------------------------------------------------
 --  Paquet de procediments dels atributs
 -- ------------------------------------------------
---  Versió	:	0.1
---  Autors	:	José Ruiz Bravo
---				Biel Moyà Alcover
---				Álvaro Medina Ballester
+--  Versio	:	0.1
+--  Autors	:	Jose Ruiz Bravo
+--				Biel Moya Alcover
+--				Alvaro Medina Ballester
 -- ------------------------------------------------
 --		En aquest fitxer tenim implementats les 
 --	assignacions de cada tipus de token al tipus
 --	atribut que li correspon. Cal destacar 
---	l'utilització de la taula de noms en els
+--	l'utilitzacio de la taula de noms en els
 --	casos d'identificadors i strings.
 --
 -- ------------------------------------------------

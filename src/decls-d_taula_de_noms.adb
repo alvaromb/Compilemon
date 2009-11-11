@@ -1,24 +1,20 @@
 -- ------------------------------------------------
 --  Paquet de declaracions de la taula de noms
 -- ------------------------------------------------
---  Versió	:	0.2
---  Autors	:	José Ruiz Bravo
---				Biel Moyà Alcover
---				Álvaro Medina Ballester
+--  Versio	:	0.2
+--  Autors	:	Jose Ruiz Bravo
+--				Biel Moya Alcover
+--				Alvaro Medina Ballester
 -- ------------------------------------------------
---		Implementació dels procediments per al
+--		Implementacio dels procediments per al
 --	tractament de la taula de noms:
 --
 --			- Buidat de la taula
---			- Inserció
---			- Inserció d'strings
+--			- Insercio
+--			- Insercio d'strings
 --			- Consulta
 --
 -- ------------------------------------------------
-
---PRUEBA
---with Ada.Text_IO;
---use Ada.Text_IO;
 
 
 package body decls.d_taula_de_noms is
@@ -75,7 +71,7 @@ package body decls.d_taula_de_noms is
 					   	idn : out id_nom; 
 					   	nom : in string) is
 		
-		-- Variable per el valor de la funció de dispersió.
+		-- Variable per el valor de la funcio de dispersio.
 		p_tid : rang_dispersio;
 		
 		-- Índexos per recorrer la taula d'identificadors.
@@ -91,10 +87,6 @@ package body decls.d_taula_de_noms is
 	
 		p_tid := fdisp_tn(nom);
 		
-		--prueba
---		New_Line;
---		Put_Line("Fhash : "&p_tid'img);
-		
 		-- Control d'errors
 		if tn.nid = id_nul then
 			raise E_Tids_Plena;
@@ -109,9 +101,6 @@ package body decls.d_taula_de_noms is
 		end if;
 		
 		idx := tn.td(p_tid);
-		
-		--PRUEBA
---		Put_Line("cons "&cons(tn, idx)&" idx "&idx'Img);
 
 		while idx /= id_nul and then not par_iguals(nom, cons_nom(tn, idx)) loop
 			 
@@ -128,15 +117,7 @@ package body decls.d_taula_de_noms is
 			idn := tn.nid;
 			tn.tid(idx_ant).seguent := idn;
 			
-			-- Comprovació errors TITO LLEMO PROBLEM ?
---			if tn.nid = id_nom'Last then
---				tn.nid := id_nul;
---			else 
-				
---			end if;
-			
 			-- Apuntam a la primera posicio buida de la taula de caracters
---			put("*ID_NOM: "&tn.nid'img);
 			tn.tid(idn).pos_tcar := tn.ncar; 
 			tn.tid(idn).long_paraula := nom'Length;
 			tn.tid(idn).seguent := id_nul;
@@ -161,13 +142,6 @@ package body decls.d_taula_de_noms is
 			idn := idx;
 			
 		end if;
-		
---		-- PRUEBA
---		Put_Line("idn = "&idn'Img);
---		for i in 0..50 loop
---			put(tn.tc(rang_tcar(i)));
---		end loop;
---		--PRUEBA
 		
 	end posa_id;
 	

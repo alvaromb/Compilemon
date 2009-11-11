@@ -2,11 +2,11 @@
 --  Paquet de declaracions de les funcions hash
 -- ------------------------------------------------
 --  Versio	:	0.2
---  Autors	:	José Ruiz Bravo
---				Biel Moyà Alcover
---				Álvaro Medina Ballester
+--  Autors	:	Jose Ruiz Bravo
+--				Biel Moya Alcover
+--				Alvaro Medina Ballester
 -- ------------------------------------------------
---		Especificació de les funcions de hash:
+--		Especificacio de les funcions de hash:
 --			- Hash de Pearson per accedir a la 
 --			  taula de noms.
 --
