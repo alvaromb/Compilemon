@@ -1,44 +1,43 @@
 -- ------------------------------------------------
 --  Paquet de declaracions dels tokens
 -- ------------------------------------------------
---  Versio	:	0.1
---  Autors	:	Jose Ruiz Bravo
---				Biel Moya Alcover
---				Alvaro Medina Ballester
+--  Versió	:	0.2
+--  Autors	:	José Ruiz Bravo
+--				Biel Moyà Alcover
+--				Álvaro Medina Ballester
 -- ------------------------------------------------
---		Definicio del tipus token.
+--		Definició del tipus token.
 --
 -- ------------------------------------------------
 
 package d_token is
 
-	type token is 	(pc_procediment,
-					pc_inici,
-					pc_mentre,
-					pc_per,
-					pc_entre,
-					pc_si,
-					pc_sino,
-					pc_fi,
-					pc_fer,
+	type token is  (pc_procedure,
+					pc_begin,
+					pc_while,
+					--pc_entre,
+					pc_if,
+					pc_else,
+					pc_end,
+					pc_do,
 					pc_constant,
-					pc_tipus,
-					pc_coleccio,
-					pc_registre,
-					pc_es,
-					pc_llavors,
-					pc_no,
-					pc_opcio,
-					pc_casos,
-					pc_entra,
-					pc_surt,
-					pc_nou,
-					pc_nul,
-					pc_de,
-					pc_modul,
-					pc_inclou,
-					pc_usa,
-					pc_rang,
+					pc_type,
+					pc_array,
+					pc_record,
+					pc_is,
+					pc_then,
+					pc_not,
+					pc_in,
+					pc_out,
+					pc_new,
+					pc_null,
+					pc_of,
+					pc_mod,
+					--pc_inclou,
+					--pc_usa,
+					pc_range,
+					pc_and,
+					pc_or,
 					s_assignacio,
 					s_dospunts,
 					s_final,
@@ -47,8 +46,6 @@ package d_token is
 					s_parentesitancat,
 					s_puntsrang,
 					s_puntrec,
-					pc_or,
-					pc_and,
 					op_menor,
 					op_menorigual,
 					op_majorigual,
