@@ -12,7 +12,7 @@
 % Paquete donde especificamos el idioma del documento.
 \usepackage[catalan]{babel}
 
-\usepackage[pdftex]{color, graphix}
+\usepackage[pdftex]{color, graphicx}
 % Este paquete establece el formato del titulo de los caption (por ejemplo para
 % ponerlo en una tabla o figura).
 \usepackage[font=small, format=plain, labelfont=bf, up, textfont=it, up]{caption}
@@ -27,55 +27,44 @@
 \usepackage{hyperref}
 \usepackage{makeidx}
 \usepackage{amssymb, amsmath}
-\pagestyle{headings}
-\usepackage[format=plain, labelfont=bf, up, textfont=it, up]{caption}
-\pagestyle{headings}
+% No encuentra el paquete
+%\usepackage{lgrind}
 
 % Para resaltar la sintaxis del código fuente:
 % - Definimos una serie de colores
 \usepackage{color}
 \usepackage{listings}
 \lstset{
-  frame=Ltb,
-  framerule=0pt,
-  aboveskip=0.5,
-  framextopmargin=3pt,
-  framexbottonmargin=3pt,
-  framexleftmargin=0.4cm,
-  framesep=0pt,
-  rulesep=.4pt,
-  backgroundcolor=\color={gray97},
-  rulesepcolor=\color={black},
-  stringstyle=\ttffamily\color{red},
-  showstringspaces=false,
-  basicstyle=\small\ttffamily,
-  commentstyle=\color{gray45},
-  keywordstyle=\color{blue},
+  language=Ada,
+  basicstyle=\footnotesize,
   numbers=left,
-  numbersep=15pt,
   numberstyle=\tiny,
-  numberfirstline=false,
-  breaklines=true
+  stepnumber=1
 }
 
 % - Minimizar fragmentado de listados
-\lstnewenvironment{listing}[1][]
-{\lstset{#1}\pagebreak[0]}{\pagebreak[0]}
+%\lstnewenvironment{listing}[1][]
+%{\lstset{#1}\pagebreak[0]}{\pagebreak[0]}
 
-\lstdefinestyle{terminal}
-{basicstyle=\scriptsize\bf\ttfamily,
-backgroundcolor=\color{gray75}}
+%\lstdefinestyle{terminal}
+%{basicstyle=\scriptsize\bf\ttfamily,
+%backgroundcolor=\color{gray75},
+%}
 
 % - Definimos el lenguaje Ada
-\lstdefinestyle{Ada}{language=Ada}
+%\lstdefinestyle{Ada}{language=Ada}
 
+
+\pagestyle{headings}
+\usepackage[format=plain,labelfont=bf,up,textfont=it,up]{caption}
+\pagestyle{headings}
 
 \newpage
 \makeindex
 \author{
   José Ruiz Bravo, \small{123456789 <joseruizbravo@gmail.com>},\\
   Biel Moyà Alcover, \small{43142617E <bilibiel@gmail.com>},\\
-  Álvaro Medina Ballester, \small{43176576X <alvaro@comiendolimones.com>
+  Álvaro Medina Ballester, \small{43176576X <alvaro@comiendolimones.com>}
 }
 
 \date{data d'entrega}
