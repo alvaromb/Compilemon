@@ -1,0 +1,81 @@
+% Distintas opciones de impresion:
+% - Para la entrega final:
+\documentclass[a4paper, onecolumn, 12pt, final]{article}
+
+% - Por si hay que ir imprimiendo versiones:
+%\documentclass[a4paper, onecolumn, 11pt, draft]{article}
+
+\usepackage[utf8]{inputenc}
+% Si eliminamos esta línea la tipografía queda como la original (creo).
+\usepackage[T1]{fontenc}
+
+% Paquete donde especificamos el idioma del documento.
+\usepackage[catalan]{babel}
+
+\usepackage[pdftex]{color, graphix}
+% Este paquete establece el formato del titulo de los caption (por ejemplo para
+% ponerlo en una tabla o figura).
+\usepackage[font=small, format=plain, labelfont=bf, up, textfont=it, up]{caption}
+\usepackage{url}
+\usepackage[plainpages=false, pdfpagelabels, bookmarks=true]{hyperref}
+\usepackage{textcomp}
+\usepackage{sverb}
+\usepackage{verbatim}
+\usepackage[kerning, spacing]{microtype}
+\microtypecontext{spacing=nonfrench}
+\usepackage{url}
+\usepackage{hyperref}
+\usepackage{makeidx}
+\usepackage{amssymb, amsmath}
+\pagestyle{headings}
+\usepackage[format=plain, labelfont=bf, up, textfont=it, up]{caption}
+\pagestyle{headings}
+
+% Para resaltar la sintaxis del código fuente:
+% - Definimos una serie de colores
+\usepackage{color}
+\usepackage{listings}
+\lstset{
+  frame=Ltb,
+  framerule=0pt,
+  aboveskip=0.5,
+  framextopmargin=3pt,
+  framexbottonmargin=3pt,
+  framexleftmargin=0.4cm,
+  framesep=0pt,
+  rulesep=.4pt,
+  backgroundcolor=\color={gray97},
+  rulesepcolor=\color={black},
+  stringstyle=\ttffamily\color{red},
+  showstringspaces=false,
+  basicstyle=\small\ttffamily,
+  commentstyle=\color{gray45},
+  keywordstyle=\color{blue},
+  numbers=left,
+  numbersep=15pt,
+  numberstyle=\tiny,
+  numberfirstline=false,
+  breaklines=true
+}
+
+% - Minimizar fragmentado de listados
+\lstnewenvironment{listing}[1][]
+{\lstset{#1}\pagebreak[0]}{\pagebreak[0]}
+
+\lstdefinestyle{terminal}
+{basicstyle=\scriptsize\bf\ttfamily,
+backgroundcolor=\color{gray75}}
+
+% - Definimos el lenguaje Ada
+\lstdefinestyle{Ada}{language=Ada}
+
+
+\newpage
+\makeindex
+\author{
+  José Ruiz Bravo, \small{123456789 <joseruizbravo@gmail.com>},\\
+  Biel Moyà Alcover, \small{43142617E <bilibiel@gmail.com>},\\
+  Álvaro Medina Ballester, \small{43176576X <alvaro@comiendolimones.com>
+}
+
+\date{data d'entrega}
