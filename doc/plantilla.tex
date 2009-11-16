@@ -33,13 +33,23 @@
 % Para resaltar la sintaxis del código fuente:
 % - Definimos una serie de colores
 \usepackage{color}
+\definecolor{gray45}{gray}{.45}
+\definecolor{gray97}{gray}{.97}
 \usepackage{listings}
 \lstset{
   language=Ada,
-  basicstyle=\footnotesize,
+  basicstyle=\small\ttfamily,
   numbers=left,
   numberstyle=\tiny,
-  stepnumber=1
+  stepnumber=1,
+  numbersep=5pt,
+  backgroundcolor=\color{gray97},
+  showspaces=false,
+  showtabs=false,
+  tabsize=4,
+  breakatwhitespace=false,
+  showstringspaces=false,
+  keywordstyle=\color{blue},
 }
 
 % - Minimizar fragmentado de listados
