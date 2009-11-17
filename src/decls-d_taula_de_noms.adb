@@ -76,7 +76,7 @@ package body decls.d_taula_de_noms is
 
         -- Indexos per recorrer la taula d'identificadors.
         idx : id_nom;
-        boolean : trobat;
+        Trobat : boolean;
 
         -- Index per recorrer la taula de caracters.
         jdx : rang_tcar;
@@ -87,6 +87,7 @@ package body decls.d_taula_de_noms is
 
        p_tid := fdisp_tn(nom);
        Idx := Tn.Td(P_Tid);
+       Trobat := False;
 
        while not Trobat and Idx/=Id_Nul loop
           if (Nom = Cons_Nom(Tn, Idx)) then
@@ -106,9 +107,11 @@ package body decls.d_taula_de_noms is
           Tn.Td(P_Tid) := Tn.Nid;
 
           Tn.Nid := Tn.Nid + 1;
-          Tn.Tcar(Tn.Ncar .. Tn.Ncar + Nom'Length-1) := Nom;
-          Tn.Ncar := Tn.Ncar + Nom'Lengt;
-          Tn.Tcar(Tn.Ncar) := $;
+          for I in 1 .. Nom'Length loop
+             Tn.Tc(Tn.ncar) := Nom(I);
+             Tn.Ncar := Tn.Ncar + 1;
+          end loop;
+          Tn.Tc(Tn.Ncar) := '$';
           Tn.Ncar := Tn.Ncar + 1;
        end if;
 

@@ -35,7 +35,7 @@ end	{mt_atom(tok_begin_line, tok_begin_col, yylval);
 do	{mt_atom(tok_begin_line, tok_begin_col, yylval); 
 	return pc_do;}
 
-constant{mt_atom(tok_begin_line, tok_begin_col, yylval); 
+constant	{mt_atom(tok_begin_line, tok_begin_col, yylval); 
 	return pc_constant;}
 
 type	{mt_atom(tok_begin_line, tok_begin_col, yylval);
@@ -196,13 +196,23 @@ or	{mt_atom(tok_begin_line, tok_begin_col, yylval);
 
 
 with	decls.d_taula_de_noms,
-	d_atribut,
-	pk_usintactica_tokens;
+		Ada.Text_IO,
+		Ada.Command_Line,
+		decls.dgenerals,
+		d_token,
+		compilemon_io,
+		d_atribut;
+	--pk_usintactica_tokens;
 		
 
 use	decls.d_taula_de_noms,
-	d_atribut,
-	pk_usintactica_tokens;
+	Ada.Text_IO,
+	Ada.Command_Line,
+	decls.dgenerals,
+	d_token,
+	compilemon_io,
+	d_atribut;
+	--pk_usintactica_tokens;
 
 
 package u_lexica is
