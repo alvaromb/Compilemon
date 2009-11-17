@@ -14,11 +14,12 @@
 with    Ada.Text_IO,
         Ada.Command_Line,
         decls.d_taula_de_noms,
-        decls.tn,
+        --decls.tn,
         decls.dgenerals,
-        decls.dtsimbols,
-        decls.dtdesc,
---      pk_usintactica_tokens,
+        --decls.dtsimbols,
+        --decls.dtdesc,
+        --pk_usintactica_tokens,
+        d_token,
         compilemon_io,
         u_lexica;
         --pk_usintactica;
@@ -26,24 +27,25 @@ with    Ada.Text_IO,
 use     Ada.Text_IO,
         Ada.Command_Line,
         decls.d_taula_de_noms,
-        decls.tn,
+        --decls.tn,
         decls.dgenerals,
-        decls.dtsimbols,
-        decls.dtdesc,
-    --  pk_usintactica_tokens,
+        --decls.dtsimbols,
+        --decls.dtdesc,
+        --pk_usintactica_tokens,
+        d_token,
         compilemon_io,
         u_lexica;
     --  pk_usintactica;
 
 
 procedure compilemon is
-
+    Tk:Token;
 begin
 
-    tbuida(tn);
+    --tbuida(tn);
 
     Open_Input(Argument(1));
-    yyparse;
+    --yyparse;
     tk := Yylex;
 
   while tk /= end_of_input loop

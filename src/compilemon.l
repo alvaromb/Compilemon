@@ -196,29 +196,31 @@ or	{mt_atom(tok_begin_line, tok_begin_col, yylval);
 
 
 with	decls.d_taula_de_noms,
-		Ada.Text_IO,
-		Ada.Command_Line,
-		decls.dgenerals,
+		--Ada.Text_IO,
+		--Ada.Command_Line,
+		--decls.dgenerals,
 		d_token,
-		compilemon_io,
+		--compilemon_io,
 		d_atribut;
 	--pk_usintactica_tokens;
 		
 
 use	decls.d_taula_de_noms,
-	Ada.Text_IO,
-	Ada.Command_Line,
-	decls.dgenerals,
+	--Ada.Text_IO,
+	--Ada.Command_Line,
+	--decls.dgenerals,
 	d_token,
-	compilemon_io,
+	--compilemon_io,
 	d_atribut;
 	--pk_usintactica_tokens;
 
 
 package u_lexica is
 
+	yylval: atribut;
+	tn : taula_de_noms;
 	function YYLex return token;
-	
+
 end u_lexica;
 
 
@@ -227,6 +229,9 @@ package body u_lexica is
 
 ##
 
+begin
+
+	tbuida(tn);
 
 end u_lexica;
 
