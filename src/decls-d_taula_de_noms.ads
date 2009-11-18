@@ -13,6 +13,8 @@
 -- ------------------------------------------------
 
 with    decls.dgenerals,
+  Ada.Integer_Text_IO,
+  Ada.Text_IO,
         decls.d_hash;
 
 use     decls.dgenerals,
@@ -21,7 +23,7 @@ use     decls.dgenerals,
 
 package decls.d_taula_de_noms is
 
-    pragma pure;
+    --pragma pure;
 
     -- Excepcions
     E_Tids_Plena : exception;
@@ -67,10 +69,6 @@ package decls.d_taula_de_noms is
            nid : id_nom;
           ncar : rang_tcar;
         end record;
-
-        -- Funcio de comparacio de dues paraules
-        function par_iguals (par1, par2 : in string)
-                            return boolean;
 
 
 end decls.d_taula_de_noms;

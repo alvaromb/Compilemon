@@ -200,6 +200,7 @@ with	decls.d_taula_de_noms,
 		--Ada.Command_Line,
 		--decls.dgenerals,
 		d_token,
+		--decls.tn,
 		--compilemon_io,
 		d_atribut;
 	--pk_usintactica_tokens;
@@ -210,6 +211,7 @@ use	decls.d_taula_de_noms,
 	--Ada.Command_Line,
 	--decls.dgenerals,
 	d_token,
+	--decls.tn,
 	--compilemon_io,
 	d_atribut;
 	--pk_usintactica_tokens;
@@ -220,6 +222,8 @@ package u_lexica is
 	yylval: atribut;
 	tn : taula_de_noms;
 	function YYLex return token;
+	tok_begin_line : integer;
+	tok_begin_col : integer;
 
 end u_lexica;
 

@@ -14,11 +14,11 @@
 --
 -- ------------------------------------------------
 
-with    u_lexica,
-        decls.tn;
+with    U_Lexica;
+        --decls.tn;
 
-use     u_lexica,
-        decls.tn;
+use     U_Lexica;
+        --decls.tn;
 
 
 package body d_atribut is

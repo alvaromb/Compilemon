@@ -30,40 +30,11 @@ package body decls.d_taula_de_noms is
         end loop;
 
         tn.nid := 1;
-        tn.ncar := 0;
+        Tn.Ncar := 1;
 
         tn.tid(1).seguent := id_nul;
 
     end tbuida;
-
-
-
-    function par_iguals (par1, par2 : in string) return boolean is
-
-        it_p1 : integer;
-        it_p2 : integer;
-
-    begin
-
-        if par1'Length = par2'Length then
-
-            it_p1 := par1'First;
-            it_p2 := par2'First;
-
-            while it_p1 < par2'Length and par2(it_p2) = par1(it_p1) loop
-                it_p1 := it_p1 + 1;
-                it_p2 := it_p2 + 1;
-            end loop;
-
-            if par1(it_p1) = par2(it_p2) then
-                return true;
-            end if;
-
-        end if;
-
-        return false;
-
-    end par_iguals;
 
 
 
@@ -74,12 +45,9 @@ package body decls.d_taula_de_noms is
         -- Variable per el valor de la funcio de dispersio.
         p_tid : rang_dispersio;
 
-        -- Indexos per recorrer la taula d'identificadors.
+        -- Index per recorrer la taula d'identificadors.
         idx : id_nom;
         Trobat : boolean;
-
-        -- Index per recorrer la taula de caracters.
-        jdx : rang_tcar;
 
         p : taula_identificadors renames tn.tid;
 
@@ -93,16 +61,15 @@ package body decls.d_taula_de_noms is
           if (Nom = Cons_Nom(Tn, Idx)) then
              Trobat := True;
           else
-             Idx := Tn.Tid(Idx).Seguent;
+             Idx := p(Idx).Seguent;
           end if;
        end loop;
 
        if not Trobat then
-          Idx := Tn.Nid;
-
-          Tn.Tid(Idx).Pos_Tcar := Tn.Ncar;
-          Tn.Tid(Idx).Seguent := Tn.Td(P_Tid);
-          Tn.Tid(Idx).Long_Paraula := Nom'Length;
+          Idn := Tn.Nid;
+          p(idn).Pos_Tcar := Tn.Ncar;
+          p(idn).Seguent := Tn.Td(P_Tid);
+          p(idn).Long_Paraula := Nom'Length;
 
           Tn.Td(P_Tid) := Tn.Nid;
 
@@ -111,6 +78,7 @@ package body decls.d_taula_de_noms is
              Tn.Tc(Tn.ncar) := Nom(I);
              Tn.Ncar := Tn.Ncar + 1;
           end loop;
+
           Tn.Tc(Tn.Ncar) := '$';
           Tn.Ncar := Tn.Ncar + 1;
        end if;
@@ -120,8 +88,8 @@ package body decls.d_taula_de_noms is
 
 
     procedure posa_str  (tn : in out taula_de_noms;
-                            ids : out rang_tcar;
-                              s : in string) is
+                        ids : out rang_tcar;
+                          s : in string) is
 
         -- Index per recorrer la taula de caracters.
         jdx : rang_tcar;
@@ -139,10 +107,8 @@ package body decls.d_taula_de_noms is
         ids := tn.ncar;
 
         for i in 1..s'Length loop
-
             tn.tc(jdx) := s(i);
             jdx := jdx + 1;
-
         end loop;
 
         tn.ncar := jdx + 1;
@@ -153,17 +119,26 @@ package body decls.d_taula_de_noms is
 
 
 
-    function cons_nom (tn : in taula_de_noms; idn : in id_nom) return string is
+    function cons_nom  (tn : in taula_de_noms;
+                       idn : in id_nom) return string is
+
+       It1, It2 : Rang_Tcar;
 
     begin
 
-        return string(tn.tc(tn.tid(idn).pos_tcar .. tn.tid(idn).pos_tcar+rang_tcar(tn.tid(idn).long_paraula)-1));
+       It1 := Tn.Tid(Idn).Pos_Tcar;
+       It2 := Rang_Tcar(Tn.Tid(Idn).Long_Paraula);
+       It2 := It2 + It1 - 1;
+
+       return String(Tn.Tc(it1 .. it2));
+
 
     end cons_nom;
 
 
 
-    function cons_str   (tn : in taula_de_noms; ids : in rang_tcar) return string is
+    function cons_str   (tn : in taula_de_noms;
+                        ids : in rang_tcar) return string is
 
         idx : rang_tcar;
 
