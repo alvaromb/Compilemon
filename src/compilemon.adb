@@ -1,13 +1,13 @@
 -- ------------------------------------------------
 --  Programa de prova
 -- ------------------------------------------------
---  Versió  :   0.1
+--  Versio  :   0.1
 --  Autors  :   Jose Ruiz Bravo
---              Biel Moyà Alcover
+--              Biel Moya Alcover
 --              Alvaro Medina Ballester
 -- ------------------------------------------------
 --      Programa per comprovar les funcionalitats
---  del lèxic i la taula de noms.
+--  del lexic i la taula de noms.
 --
 -- ------------------------------------------------
 
@@ -16,26 +16,18 @@ with    Ada.Text_IO,
         decls.d_taula_de_noms,
         decls.tn,
         decls.dgenerals,
-        --decls.dtsimbols,
-        --decls.dtdesc,
-        --pk_usintactica_tokens,
         d_token,
         compilemon_io,
         u_lexica;
-        --pk_usintactica;
 
 use     Ada.Text_IO,
         Ada.Command_Line,
         decls.d_taula_de_noms,
         decls.tn,
         decls.dgenerals,
-        --decls.dtsimbols,
-        --decls.dtdesc,
-        --pk_usintactica_tokens,
         d_token,
         compilemon_io,
         u_lexica;
-    --  pk_usintactica;
 
 
 procedure compilemon is
@@ -45,7 +37,6 @@ begin
     --tbuida(tn);
 
     Open_Input(Argument(1));
-    --yyparse;
     tk := Yylex;
 
   while tk /= end_of_input loop

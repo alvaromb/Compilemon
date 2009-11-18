@@ -13,8 +13,6 @@
 -- ------------------------------------------------
 
 with    decls.dgenerals,
-  Ada.Integer_Text_IO,
-  Ada.Text_IO,
         decls.d_hash;
 
 use     decls.dgenerals,
@@ -48,27 +46,27 @@ package decls.d_taula_de_noms is
                         ids : in rang_tcar) return string;
 
 
-    private
+private
 
-        type t_identificador is record
-                pos_tcar : rang_tcar;
-                 seguent : id_nom;
-            long_paraula : Natural;
-        end record;
+    type t_identificador is record
+            pos_tcar : rang_tcar;
+             seguent : id_nom;
+        long_paraula : Natural;
+    end record;
 
-        type taula_identificadors is array
-          (1 .. id_nom'Last) of t_identificador;
+    type taula_identificadors is array
+      (1 .. id_nom'Last) of t_identificador;
 
-        type taula_caracters is array (rang_tcar)
-          of character;
+    type taula_caracters is array (rang_tcar)
+      of character;
 
-        type taula_de_noms is record
-            td : taula_dispersio;
-           tid : taula_identificadors;
-            tc : taula_caracters;
-           nid : id_nom;
-          ncar : rang_tcar;
-        end record;
+    type taula_de_noms is record
+         td : taula_dispersio;
+        tid : taula_identificadors;
+         tc : taula_caracters;
+        nid : id_nom;
+       ncar : rang_tcar;
+    end record;
 
 
 end decls.d_taula_de_noms;

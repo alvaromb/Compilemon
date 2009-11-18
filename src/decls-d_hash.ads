@@ -1,13 +1,13 @@
 -- ------------------------------------------------
 --  Paquet de declaracions de les funcions hash
 -- ------------------------------------------------
---  Versio  :   0.2
+--  Versio  :   0.3
 --  Autors  :   Jose Ruiz Bravo
 --              Biel Moya Alcover
 --              Alvaro Medina Ballester
 -- ------------------------------------------------
 --  Especificacio de les funcions de hash:
---      - Hash de Pearson per accedir a la
+--      - Hash de quadratic per accedir a la
 --      taula de noms.
 --
 -- ------------------------------------------------

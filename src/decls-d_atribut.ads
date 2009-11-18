@@ -21,7 +21,7 @@ use     decls.dgenerals,
         decls.d_taula_de_noms;
 
 
-package d_atribut is
+package decls.d_atribut is
 
 
     type tipus_atribut is (atom,
@@ -72,4 +72,4 @@ package d_atribut is
                             a : out atribut);
 
 
-end d_atribut;
+end decls.d_atribut;

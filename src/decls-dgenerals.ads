@@ -22,11 +22,11 @@ package decls.dgenerals is
     -- Valor nul per al tipus id_nom
     id_nul : constant id_nom := 0;
 
-    -- La longitud es el nombre de paraules * la longitud
+    -- 'Long' es el nombre de paraules * la longitud
     -- de cadascuna
-    longitut : constant integer := 40;
+    long : constant integer := 40;
     type rang_tcar is new integer
-      range 0 .. (longitut*max_id);
+      range 0 .. (long*max_id);
 
     -- Taula de dispersio:
     -- Tipus per la taula de dispersio de la taula de noms
@@ -42,6 +42,7 @@ package decls.dgenerals is
       of id_nom;
 
 
+    -- FORA PER LA PRIMERA ENTREGA
     -- TAULA DE SIMBOLS
     type despl is new integer;
 

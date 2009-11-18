@@ -19,7 +19,7 @@ with    U_Lexica;
 use     U_Lexica;
 
 
-package body d_atribut is
+package body decls.d_atribut is
 
 
     procedure mt_atom (l, c : in natural;
@@ -66,4 +66,4 @@ package body d_atribut is
     end mt_numero;
 
 
-end d_atribut;
+end decls.d_atribut;

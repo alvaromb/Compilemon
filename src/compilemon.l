@@ -197,12 +197,12 @@ or			{mt_atom(tok_begin_line, tok_begin_col,
 
 with	decls.d_taula_de_noms,
 		d_token,
-		d_atribut;
+		decls.d_atribut;
 
 
 use		decls.d_taula_de_noms,
 		d_token,
-		d_atribut;
+		decls.d_atribut;
 
 
 package u_lexica is

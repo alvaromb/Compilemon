@@ -72,6 +72,7 @@ package body decls.d_taula_de_noms is
 
           Tn.Td(P_Tid) := Tn.Nid;
 
+          --Posa a la taula de caracters
           Tn.Nid := Tn.Nid + 1;
           for I in 1 .. Nom'Length loop
              Tn.Tc(Tn.ncar) := Nom(I);
