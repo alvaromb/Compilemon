@@ -68,8 +68,8 @@ package d_atribut is
                                 a : out atribut);
 
     procedure mt_numero (l, c : in natural;
-                                i : in string;
-                                a : out atribut);
+                            i : in string;
+                            a : out atribut);
 
 
 end d_atribut;

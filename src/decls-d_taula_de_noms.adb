@@ -1,7 +1,7 @@
 -- ------------------------------------------------
 --  Paquet de declaracions de la taula de noms
 -- ------------------------------------------------
---  Versio  :   0.2
+--  Versio  :   0.3
 --  Autors  :   Jose Ruiz Bravo
 --              Biel Moya Alcover
 --              Alvaro Medina Ballester
@@ -19,8 +19,7 @@
 
 package body decls.d_taula_de_noms is
 
-    -- Donam els valors per defecte de cada camp, sempre
-    -- que un camp no sigui utilitzat valdra 0.
+    -- Donam els valors per defecte de cada camp.
     procedure tbuida (tn : out taula_de_noms) is
 
     begin
@@ -120,7 +119,8 @@ package body decls.d_taula_de_noms is
 
 
     function cons_nom  (tn : in taula_de_noms;
-                       idn : in id_nom) return string is
+                       idn : in id_nom)
+                       return string is
 
        It1, It2 : Rang_Tcar;
 
@@ -138,7 +138,8 @@ package body decls.d_taula_de_noms is
 
 
     function cons_str   (tn : in taula_de_noms;
-                        ids : in rang_tcar) return string is
+                        ids : in rang_tcar)
+                        return string is
 
         idx : rang_tcar;
 

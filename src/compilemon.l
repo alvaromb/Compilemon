@@ -15,133 +15,133 @@ caracter	\'[^\'\n\t]\'
 -- Paraules clau
 
 procedure	{mt_atom(tok_begin_line, tok_begin_col,
-		yylval); return pc_procedure;} 
+			yylval); return pc_procedure;} 
 
-begin	{mt_atom(tok_begin_line, tok_begin_col, yylval); 
-	return pc_begin;}
+begin		{mt_atom(tok_begin_line, tok_begin_col, 
+			yylval); return pc_begin;}
 
-while	{mt_atom(tok_begin_line, tok_begin_col, yylval); 
-	return pc_while;}
+while		{mt_atom(tok_begin_line, tok_begin_col, 
+			yylval); return pc_while;}
 
-if	{mt_atom(tok_begin_line, tok_begin_col, yylval); 
-	return pc_if;}
+if	   		{mt_atom(tok_begin_line, tok_begin_col, 
+			yylval); return pc_if;}
 
-else	{mt_atom(tok_begin_line, tok_begin_col, yylval); 
-	return pc_else;}
+else		{mt_atom(tok_begin_line, tok_begin_col, 
+			yylval); return pc_else;}
 
-end	{mt_atom(tok_begin_line, tok_begin_col, yylval); 
-	return pc_end;}
+end			{mt_atom(tok_begin_line, tok_begin_col, 
+			yylval); return pc_end;}
 
-do	{mt_atom(tok_begin_line, tok_begin_col, yylval); 
-	return pc_do;}
+do			{mt_atom(tok_begin_line, tok_begin_col, 
+			yylval); return pc_do;}
 
-constant	{mt_atom(tok_begin_line, tok_begin_col, yylval); 
-	return pc_constant;}
+constant	{mt_atom(tok_begin_line, tok_begin_col, 
+			yylval); return pc_constant;}
 
-type	{mt_atom(tok_begin_line, tok_begin_col, yylval);
-	return pc_type;}
+type		{mt_atom(tok_begin_line, tok_begin_col, 
+			yylval); return pc_type;}
 
-array	{mt_atom(tok_begin_line, tok_begin_col, yylval); 
-	return pc_array;}
+array		{mt_atom(tok_begin_line, tok_begin_col, 
+			yylval); return pc_array;}
 
-record	{mt_atom(tok_begin_line, tok_begin_col, yylval); 
-	return pc_record;}
+record		{mt_atom(tok_begin_line, tok_begin_col, 
+			yylval); return pc_record;}
 
-is	{mt_atom(tok_begin_line, tok_begin_col, yylval); 
-	return pc_is;}
+is			{mt_atom(tok_begin_line, tok_begin_col, 
+			yylval); return pc_is;}
 
-then	{mt_atom(tok_begin_line, tok_begin_col, yylval); 
-	return pc_then;}
+then		{mt_atom(tok_begin_line, tok_begin_col, 
+			yylval); return pc_then;}
 
-not	{mt_atom(tok_begin_line, tok_begin_col, yylval); 
-	return pc_not;}
+not			{mt_atom(tok_begin_line, tok_begin_col, 
+			yylval); return pc_not;}
 
-in	{mt_atom(tok_begin_line, tok_begin_col, yylval); 
-	return pc_in;}
+in			{mt_atom(tok_begin_line, tok_begin_col, 
+			yylval); return pc_in;}
 
-out	{mt_atom(tok_begin_line, tok_begin_col, yylval); 
-	return pc_out;}
+out			{mt_atom(tok_begin_line, tok_begin_col, 
+			yylval); return pc_out;}
 
-new	{mt_atom(tok_begin_line, tok_begin_col, yylval); 
-	return pc_new;}
+new			{mt_atom(tok_begin_line, tok_begin_col, 
+			yylval); return pc_new;}
 
-null	{mt_atom(tok_begin_line, tok_begin_col, yylval); 
-	return pc_null;}
+null		{mt_atom(tok_begin_line, tok_begin_col, 
+			yylval); return pc_null;}
 
-of	{mt_atom(tok_begin_line, tok_begin_col, yylval); 
-	return pc_of;}
+of			{mt_atom(tok_begin_line, tok_begin_col, 
+			yylval); return pc_of;}
 
-mod	{mt_atom(tok_begin_line, tok_begin_col, yylval); 
-	return pc_mod;}
+mod			{mt_atom(tok_begin_line, tok_begin_col, 
+			yylval); return pc_mod;}
 
-range	{mt_atom(tok_begin_line, tok_begin_col, yylval); 
-	return pc_range;}
+range  		{mt_atom(tok_begin_line, tok_begin_col, 
+			yylval); return pc_range;}
 
-and	{mt_atom(tok_begin_line, tok_begin_col, yylval); 
-	return pc_or;}
+and			{mt_atom(tok_begin_line, tok_begin_col, 
+			yylval); return pc_or;}
 
-or	{mt_atom(tok_begin_line, tok_begin_col, yylval); 
-	return pc_and;}
+or			{mt_atom(tok_begin_line, tok_begin_col, 
+			yylval); return pc_and;}
 
 
 --Simbols 
 
-":="	{mt_atom(tok_begin_line, tok_begin_col, yylval); 
-	return s_assignacio;}
+":="		{mt_atom(tok_begin_line, tok_begin_col, 
+			yylval); return s_assignacio;}
 
-":"	{mt_atom(tok_begin_line, tok_begin_col, yylval); 
-	return s_dospunts;}
+":"			{mt_atom(tok_begin_line, tok_begin_col, 
+			yylval); return s_dospunts;}
 
-";"	{mt_atom(tok_begin_line, tok_begin_col, yylval); 
-	return s_final;}
+";"			{mt_atom(tok_begin_line, tok_begin_col, 
+			yylval); return s_final;}
 
-","	{mt_atom(tok_begin_line, tok_begin_col, yylval); 
-	return s_coma;}
+","			{mt_atom(tok_begin_line, tok_begin_col, 
+			yylval); return s_coma;}
 
-"("	{mt_atom(tok_begin_line, tok_begin_col, yylval);
-	return s_parentesiobert;}
+"("			{mt_atom(tok_begin_line, tok_begin_col, 
+			yylval); return s_parentesiobert;}
 
-")"	{mt_atom(tok_begin_line, tok_begin_col, yylval);
-	return s_parentesitancat;}
+")"			{mt_atom(tok_begin_line, tok_begin_col, 
+			yylval); return s_parentesitancat;}
 
-".."	{mt_atom(tok_begin_line, tok_begin_col, yylval); 
-	return s_puntsrang;}
+".."		{mt_atom(tok_begin_line, tok_begin_col, 
+			yylval); return s_puntsrang;}
 			
-"."	{mt_atom(tok_begin_line, tok_begin_col, yylval); 
-	return s_puntrec;}
+"."			{mt_atom(tok_begin_line, tok_begin_col, 
+			yylval); return s_puntrec;}
 
 
 --Operadors
 
-"<"	{mt_atom(tok_begin_line, tok_begin_col, yylval); 
-	return op_menor;}
+"<"			{mt_atom(tok_begin_line, tok_begin_col, 
+			yylval); return op_menor;}
 
-"<="	{mt_atom(tok_begin_line, tok_begin_col, yylval);
-	return op_menorigual;}
+"<="		{mt_atom(tok_begin_line, tok_begin_col, 
+			yylval); return op_menorigual;}
 
-">="	{mt_atom(tok_begin_line, tok_begin_col, yylval);
-	return op_majorigual;}
+">="		{mt_atom(tok_begin_line, tok_begin_col, 
+			yylval); return op_majorigual;}
 
-">"	{mt_atom(tok_begin_line, tok_begin_col, yylval); 
-	return op_major;}
+">"			{mt_atom(tok_begin_line, tok_begin_col, 
+			yylval); return op_major;}
 
-"="	{mt_atom(tok_begin_line, tok_begin_col, yylval); 
-	return op_igual;}
+"="			{mt_atom(tok_begin_line, tok_begin_col, 
+			yylval); return op_igual;}
 
-"/="	{mt_atom(tok_begin_line, tok_begin_col, yylval); 
-	return op_distint;}
+"/="		{mt_atom(tok_begin_line, tok_begin_col, 
+			yylval); return op_distint;}
 
-"+"	{mt_atom(tok_begin_line, tok_begin_col, yylval); 
-	return op_suma;}
+"+"			{mt_atom(tok_begin_line, tok_begin_col, 
+			yylval); return op_suma;}
 
-"-"	{mt_atom(tok_begin_line, tok_begin_col, yylval); 
-	return op_resta;}
+"-"			{mt_atom(tok_begin_line, tok_begin_col, 
+			yylval); return op_resta;}
 
-"*"	{mt_atom(tok_begin_line, tok_begin_col, yylval);
-	return op_multiplicacio;}
+"*"			{mt_atom(tok_begin_line, tok_begin_col, 
+			yylval); return op_multiplicacio;}
 
-"/"	{mt_atom(tok_begin_line, tok_begin_col, yylval);
-	return op_divisio;}
+"/"			{mt_atom(tok_begin_line, tok_begin_col, 
+			yylval); return op_divisio;}
 
 
 
@@ -150,19 +150,19 @@ or	{mt_atom(tok_begin_line, tok_begin_col, yylval);
 --Digit
 
 {digit}+	{mt_numero(tok_begin_line, tok_begin_col,
-		yytext, yylval); return const;}
+			yytext, yylval); return const;}
 			
 			
 --Lletra
 
 {caracter}	{mt_caracter(tok_begin_line, tok_begin_col,
-		yytext, yylval); return const;}
+			yytext, yylval); return const;}
 
 
 --String
 
 \"[^\"\n\t]*\"	{mt_string(tok_begin_line, tok_begin_col, 
-		yytext, yylval); return const;}
+				yytext, yylval); return const;}
 
 
 --Identificador
@@ -180,7 +180,7 @@ or	{mt_atom(tok_begin_line, tok_begin_col, yylval);
 
 --Separadors
 
-" "		{null;}
+" "				{null;}
 
 {separadors}*	{null;}
 
@@ -196,25 +196,13 @@ or	{mt_atom(tok_begin_line, tok_begin_col, yylval);
 
 
 with	decls.d_taula_de_noms,
-		--Ada.Text_IO,
-		--Ada.Command_Line,
-		--decls.dgenerals,
 		d_token,
-		--decls.tn,
-		--compilemon_io,
 		d_atribut;
-	--pk_usintactica_tokens;
-		
 
-use	decls.d_taula_de_noms,
-	--Ada.Text_IO,
-	--Ada.Command_Line,
-	--decls.dgenerals,
-	d_token,
-	--decls.tn,
-	--compilemon_io,
-	d_atribut;
-	--pk_usintactica_tokens;
+
+use		decls.d_taula_de_noms,
+		d_token,
+		d_atribut;
 
 
 package u_lexica is

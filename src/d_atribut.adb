@@ -15,10 +15,8 @@
 -- ------------------------------------------------
 
 with    U_Lexica;
-        --decls.tn;
 
 use     U_Lexica;
-        --decls.tn;
 
 
 package body d_atribut is
