@@ -72,18 +72,29 @@ package body decls.d_taula_de_noms is
 
           Tn.Td(P_Tid) := Tn.Nid;
 
-          --Posa a la taula de caracters
-          Tn.Nid := Tn.Nid + 1;
-          for I in 1 .. Nom'Length loop
-             Tn.Tc(Tn.ncar) := Nom(I);
-             Tn.Ncar := Tn.Ncar + 1;
-          end loop;
+          posa_tc(tn, nom);
 
           Tn.Tc(Tn.Ncar) := '$';
           Tn.Ncar := Tn.Ncar + 1;
        end if;
 
     end posa_id;
+
+
+
+    procedure posa_tc   (tn : in out taula_de_noms;
+                        nom : in string) is
+
+    begin
+
+       tn.nid := tn.nid + 1;
+
+       for i in 1 .. nom'Length loop
+          tn.tc(tn.ncar) := nom(i);
+          tn.ncar := tn.ncar + 1;
+       end loop;
+
+    end posa_tc;
 
 
 
@@ -147,7 +158,6 @@ package body decls.d_taula_de_noms is
     begin
 
         idx := ids;
-
         while (tn.tc(idx) /= '$') loop
             idx := idx+1;
         end loop;

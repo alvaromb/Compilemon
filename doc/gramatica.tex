@@ -1,1 +1,137 @@
 % Gramàtica del nostre llenguatge
+
+    \begin{tabbing}
+    \hspace*{2.0cm} \= \hspace*{0.5cm} \= \hspace*{0.8cm} \= \kill
+        \textit{programa} \> $\rightarrow $ \> \textit{procediment} \\
+        \\
+        \textit{procediment} \> $ \rightarrow $ \> \textbf{PC\_PROCEDIMENT} \textit{encap} \textbf{PC\_ES} \\
+        \> \> \> \textit{declaracions} \\
+        \> \> \textbf{PC\_INICI} \\
+        \> \> \> \textit{bloc} \\
+        \> \> \textbf{PC\_FI} identificador; \\
+        \\
+        \textit{encap} \> $ \rightarrow $ \> identificador \textit{args} \\
+        \\
+        \textit{args} \> $\rightarrow$ \> (\textit{lparam}) \\
+        \> $ \mid $ \> $ \lambda $ \\
+        \\
+        \textit{lparam} \> $\rightarrow$ \> \textit{lparam} ; \textit{param} \\
+        \> $\mid$ \> \textit{param} \\
+        \\
+        \textit{param} \> $\rightarrow$ \> identificador : \textit{mode} identificador \\
+        \\
+        \textit{mode} \> $\rightarrow$ \> \textbf{PC\_ENTRA} \\
+        \> $\mid$ \> \textbf{PC\_SURT} \\
+        \> $\mid$ \> \textbf{PC\_ENTRA PC\_SURT} \\
+        \\
+        \textit{declaracions} \> $\rightarrow$ \> \textit{declaracions} \textit{declaracio} \\
+        \> $\mid$ \> $\lambda$ \\
+        \\
+        \textit{declaracio} \> $\rightarrow$ \> \textit{dec\_var} \\
+        \> $\mid$ \> \textit{dec\_constant} \\
+        \> $\mid$ \> \textit{dec\_tipus} \\
+        \> $\mid$ \> \textit{programa} \\
+        \\
+        
+        \underline{-- Manual d'usuari variables} \\
+        \textit{dec\_var} \> $\rightarrow$ \> \textit{lid} : identificador; \\
+        \\
+        \textit{lid} \> $\rightarrow$ \> \textit{lid}, identificador \\
+        \> $\mid$ \> identificador \\
+        \\
+        
+        \underline{-- Manual d'usuari constant} \\
+        \textit{dec\_constant} \> $\rightarrow$ \> identificador : \textbf{PC\_CONSTANT} identificador := \textit{valor};  \\
+        \\
+        \textit{valor} \> $\rightarrow$ \> \textit{lit} \\
+        \> $\mid$ \> $-$ \textit{lit} \\
+        \\
+        \textit{lit} \> $\rightarrow$ \> lit\_num \\
+        \> $\mid$ \> lit\_car \\
+        \> $\mid$ \> lit\_string \\
+        \\
+        
+        \underline{-- Manual d'usuari tipus} \\
+        \textit{dec\_tipus} \> $\rightarrow$ \> \textit{dec\_subrang}  \\
+        \> $\mid$ \> \textit{dec\_registre} \\
+        \> $\mid$ \> \textit{dec\_coleccio} \\
+        \\
+        \textit{dec\_subrang} \> $\rightarrow$ \> \textbf{PC\_TIPUS} identificador \textbf{PC\_ES PC\_NOU} identificador 
+			\\\> \textbf{PC\_RANG} \textit{valor} .. \textit{valor}; \\
+        \\
+        \textit{dec\_registre} \> $\rightarrow$ \> \textbf{PC\_TIPUS} identificador \textbf{PC\_ES PC\_REGISTRE} \\
+        \> \> \> \textit{ldc} \\
+        \> \> \textbf{PC\_FI PC\_REGISTRE}; \\
+        \\
+        \textit{ldc} \> $\rightarrow$ \> \textit{ldc dc} \\
+        \> $\mid$ \> \textit{dc} \\
+        \\
+        \textit{dc} \> $\rightarrow$ \> identificador : identificador; \\
+        \\
+        
+        \underline{-- Tipus colecció (\textit{array})} \\
+        \textit{dec\_coleccio} \> $\rightarrow$ \> \textbf{PC\_TIPUS} identificador \textbf{PC\_ES PC\_COLECCIO} \\
+		\> (\textit{lid}) \textbf{PC\_DE} identificador; \\
+        \\
+        \textit{lid} \> $\rightarrow$ \> \textit{lid}, identificador \\
+        \> $\mid$ \> identificador \\
+        \\
+        
+        
+        \underline{-- Bloc d'instruccions} \\
+        \textit{bloc} \> $\rightarrow$ \> \textit{bloc sent} \\
+        \> $\mid$ \> \textit{sent} \\
+        \\
+        \textit{sent} \> $\rightarrow$ \> \textit{sassig} \\
+        \> $\mid$ \> \textit{scond} \\
+        \> $\mid$ \> \textit{srep} \\
+        \> $\mid$ \> \textit{crida\_proc} \\
+        \\
+        
+        \textit{sassig} \> $\rightarrow$ \> \textit{referencia} := \textit{expressio}; \\
+        \\
+        
+        \textit{scond} \> $\rightarrow$ \> \textbf{PC\_SI} \textit{expressio} \textbf{PC\_LLAVORS} \\
+        \> \> \>  \textit{bloc} \\
+        \> \> \textbf{PC\_FI PC\_SI}; \\
+        \> $\mid$ \> \textbf{PC\_SI} \textit{expressio} \textbf{PC\_LLAVORS} \\
+        \> \> \> \textit{bloc} \\
+        \> \> \textbf{PC\_SINO} \\
+        \> \> \> \textit{bloc} \\
+        \> \> \textbf{PC\_FI PC\_SI}; \\
+        \\
+        
+        \textit{srep} \> $\rightarrow$ \> \textbf{PC\_MENTRE} \textit{expressio} \textbf{PC\_FER} \\
+        \> \> \> \textit{bloc} \\
+        \> \> \textbf{PC\_FI PC\_MENTRE}; \\
+        \\
+        
+        \textit{crida\_proc} \> $\rightarrow$ \> \textit{referencia}; \\
+        \\
+        \textit{referencia} \> $\rightarrow$ \> identificador \\
+        \> $\mid$ \> \textit{referencia}.identificador \\
+        \> $\mid$ \> \textit{referencia} (\textit{prparam}) \\
+        \\
+        \textit{prparam} \> $\rightarrow$ \> \textit{expressio} \\
+        \> $\mid$ \> \textit{expressio, prparam} \\
+        \\
+        
+        \textit{expressio} \> $\rightarrow$ \> \textit{expressio} $ + $ \textit{expressio} \\
+        \> $\mid$ \> \textit{expressio} $ - $ \textit{expressio} \\
+        \> $\mid$ \> \textit{expressio} $ * $ \textit{expressio} \\
+        \> $\mid$ \> \textit{expressio} $ / $ \textit{expressio} \\
+        \> $\mid$ \> \textit{expressio} \textbf{PC\_MOD} \textit{expressio} \\
+        \> $\mid$ \> \textit{expressio} $ > $ \textit{expressio} \\
+        \> $\mid$ \> \textit{expressio} $ < $ \textit{expressio} \\
+        \> $\mid$ \> \textit{expressio} $ \geq $ \textit{expressio} \\
+        \> $\mid$ \> \textit{expressio} $ \leq $ \textit{expressio} \\
+        \> $\mid$ \> \textit{expressio} $ \neq $ \textit{expressio} \\
+        \> $\mid$ \> \textit{expressio} $ = $ \textit{expressio} \\
+        \> $\mid$ \> $-$ \textit{expressio} \\
+        \> $\mid$ \> \textit{expressio} \&\& \textit{expressio} \\
+        \> $\mid$ \> \textit{expressio} $\mid\mid$ \textit{expressio} \\
+        \> $\mid$ \> \textbf{PC\_NO} \textit{expressio} \\
+        \> $\mid$ \> (\textit{expressio}) \\
+        \> $\mid$ \> \textit{referencia} \\
+        \> $\mid$ \> \textit{lit} \\
+    \end{tabbing}

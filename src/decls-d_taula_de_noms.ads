@@ -21,7 +21,7 @@ use     decls.dgenerals,
 
 package decls.d_taula_de_noms is
 
-    --pragma pure;
+    pragma pure;
 
     -- Excepcions
     E_Tids_Plena : exception;
@@ -33,6 +33,9 @@ package decls.d_taula_de_noms is
 
     procedure posa_id   (tn : in out taula_de_noms;
                         idn : out id_nom;
+                        nom : in string);
+
+    procedure posa_tc   (tn : in out taula_de_noms;
                         nom : in string);
 
     procedure posa_str  (tn : in out taula_de_noms;

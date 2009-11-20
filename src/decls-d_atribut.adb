@@ -59,10 +59,10 @@ package body decls.d_atribut is
 
 
     procedure mt_numero (l, c : in natural;
-                            i : in string;
+                            s : in string;
                             a : out atribut) is
     begin
-        a := (a_lit_num, l, c, Integer'value(i));
+        a := (a_lit_num, l, c, Integer'value(s));
     end mt_numero;
 
 

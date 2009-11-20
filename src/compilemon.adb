@@ -40,6 +40,7 @@ begin
     tk := Yylex;
 
   while tk /= end_of_input loop
+      Put(tok_begin_line'Img);
       Put_Line(Token'Image(Tk));
       tk := Yylex;
   end loop;
@@ -47,13 +48,17 @@ begin
    close_Input;
 
 --   exception
-  --    when E_Tids_Plena =>
-    --     Put_Line("ERROR: La taula d'identificadors es plena.");
+--     when E_Tids_Plena =>
+--     Put_Line("ERROR: La taula d'identificadors
+--               es plena.");
 
 --      when E_Tcar_Plena =>
-  --      Put_Line("ERROR: La taula de caracters es plena.");
+--      Put_Line("ERROR: La taula de caracters
+--                es plena.");
 
 --      when Syntax_Error =>
-  --      Put_Line("ERROR: Error a la linea "&yy_line_number'img&" i columna "&yy_begin_column'img);
+--      Put_Line("ERROR: Error a la linea
+--      "&yy_line_number'img&" i columna
+--      "&yy_begin_column'img);
 
 end compilemon;

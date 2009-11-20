@@ -1,7 +1,7 @@
 -- ------------------------------------------------
 --  Paquet de procediments dels atributs
 -- ------------------------------------------------
---  Versio  :   0.1
+--  Versio  :   0.2
 --  Autors  :   Jose Ruiz Bravo
 --              Biel Moya Alcover
 --              Alvaro Medina Ballester
@@ -43,7 +43,7 @@ package decls.d_atribut is
 
             when a_lit_num      => int : integer;
 
-            when a_lit_car      => val : character;
+            when a_lit_car      => car : character;
 
             when a_lit_string   => ids : rang_tcar;
 
@@ -52,24 +52,29 @@ package decls.d_atribut is
     end record;
 
 
-    procedure mt_atom       (l, c : in natural;
-                                a : out atribut);
+    procedure mt_atom
+      (l, c : in natural;
+          a : out atribut);
 
-    procedure mt_identificador  (l, c : in natural;
-                                    s : in string;
-                                    a : out atribut);
+    procedure mt_identificador
+      (l, c : in natural;
+          s : in string;
+          a : out atribut);
 
-    procedure mt_string (l, c : in natural;
-                            s : in string;
-                            a : out atribut);
+    procedure mt_string
+      (l, c : in natural;
+          s : in string;
+          a : out atribut);
 
-    procedure mt_caracter   (l, c : in natural;
-                              car : in string;
-                                a : out atribut);
+    procedure mt_caracter
+      (l, c : in natural;
+        car : in string;
+          a : out atribut);
 
-    procedure mt_numero (l, c : in natural;
-                            i : in string;
-                            a : out atribut);
+    procedure mt_numero
+      (l, c : in natural;
+          s : in string;
+          a : out atribut);
 
 
 end decls.d_atribut;

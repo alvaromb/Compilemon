@@ -3,7 +3,7 @@
 \documentclass[a4paper, onecolumn, 12pt, final]{article}
 
 % - Por si hay que ir imprimiendo versiones:
-%\documentclass[a4paper, onecolumn, 11pt, draft]{article}
+%\documentclass[a4paper, onecolumn, 10pt, final]{article}
 
 \usepackage[utf8]{inputenc}
 % Si eliminamos esta línea la tipografía queda como la original (creo).
@@ -49,9 +49,9 @@
   tabsize=8,
   breakatwhitespace=false,
   showstringspaces=false,
-  keywordstyle=\color{blue},
+  keywordstyle=\scshape\color{blue},
   commentstyle=\color{gray45},
-  stringstyle=\color{green},
+  stringstyle=\color{red},
 }
 
 % - Minimizar fragmentado de listados
@@ -64,7 +64,11 @@
 %}
 
 % - Definimos el lenguaje Ada
-%\lstdefinestyle{Ada}{language=Ada}
+\lstdefinestyle{LEM}{
+basicstyle=\small\bf\ttfamily,
+stringstyle=\color{black},
+keywordstyle=\bf\color{blue}
+}
 
 
 \pagestyle{headings}
