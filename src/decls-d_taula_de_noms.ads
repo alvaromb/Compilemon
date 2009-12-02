@@ -43,13 +43,38 @@ package decls.d_taula_de_noms is
                           s : in string);
 
     function cons_nom   (tn : in taula_de_noms;
-                        idn : in id_nom) return string;
+                        idn : in id_nom)
+                        return string;
 
     function cons_str   (tn : in taula_de_noms;
-                        ids : in rang_tcar) return string;
+                        ids : in rang_tcar)
+                        return string;
+
+    function fdisp_tn   (nom : in string)
+                        return rang_dispersio;
+
 
 
 private
+
+    type id_nom is new integer
+      range 0 .. max_id;
+
+    -- Valor nul per al tipus id_nom
+    id_nul : constant id_nom := 0;
+
+    type rang_tcar is new integer
+      range 0 .. (long_num_ident*max_id);
+
+    -- Representa un nombre primer: 0 a 1000 = 1001
+    type rang_dispersio is new integer
+      range -1 .. max_id;
+
+    -- Valor nul per el rang dispersio
+    dispersio_nul : constant rang_dispersio := -1;
+
+    type taula_dispersio is array (rang_dispersio)
+      of id_nom;
 
     type t_identificador is record
             pos_tcar : rang_tcar;

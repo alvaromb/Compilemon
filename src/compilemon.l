@@ -1,12 +1,9 @@
 -- Macros
 
-lletra	[A-Za-z]
-
-digit	[0-9]
-
+lletra		[A-Za-z]
+digit		[0-9]
 separadors	[\n\b\t\f]
-
-caracter	\'[^\'\n\t]\'
+caracter	\'[^\n\t]\'
 
 
 %%
@@ -144,9 +141,6 @@ or		{mt_atom(tok_begin_line, tok_begin_col,
 		yylval); return op_divisio;}
 
 
-
---EXPRESSIONS REGULARS
-
 --Digit
 
 {digit}+	{mt_numero(tok_begin_line, tok_begin_col,
@@ -167,9 +161,10 @@ or		{mt_atom(tok_begin_line, tok_begin_col,
 
 --Identificador
 
-{lletra}({digit}|{lletra})* {mt_identificador(tok_begin_line, 
-                            tok_begin_col, yytext, yylval);
-                            return id;}
+{lletra}({digit}|{lletra})* 
+				{mt_identificador(tok_begin_line, 
+                tok_begin_col, yytext, yylval);
+                return id;}
 
 
 
