@@ -1,7 +1,7 @@
 -- ------------------------------------------------
 --  Paquet de declaracions de la taula de noms
 -- ------------------------------------------------
---  Versio  :   0.1
+--  Versio  :   0.2
 --  Autors  :   Jose Ruiz Bravo
 --              Biel Moya Alcover
 --              Alvaro Medina Ballester
@@ -12,11 +12,9 @@
 --
 -- ------------------------------------------------
 
-with    decls.dgenerals,
-        decls.d_hash;
+with    decls.dgenerals;
 
-use     decls.dgenerals,
-        decls.d_hash;
+use     decls.dgenerals;
 
 
 package decls.d_taula_de_noms is
@@ -28,6 +26,19 @@ package decls.d_taula_de_noms is
     E_Tcar_Plena : exception;
 
     type taula_de_noms is limited private;
+
+    type id_nom is new integer
+      range 0 .. max_id;
+
+    type rang_dispersio is new integer
+      range 0 .. max_id;
+
+    type rang_tcar is new integer
+      range 0 .. (long_num_ident*max_id);
+
+    -- Valor nul per al tipus id_nom
+    id_nul : constant id_nom := 0;
+
 
     procedure tbuida    (tn : out taula_de_noms);
 
@@ -54,24 +65,8 @@ package decls.d_taula_de_noms is
                         return rang_dispersio;
 
 
-
 private
 
-    type id_nom is new integer
-      range 0 .. max_id;
-
-    -- Valor nul per al tipus id_nom
-    id_nul : constant id_nom := 0;
-
-    type rang_tcar is new integer
-      range 0 .. (long_num_ident*max_id);
-
-    -- Representa un nombre primer: 0 a 1000 = 1001
-    type rang_dispersio is new integer
-      range -1 .. max_id;
-
-    -- Valor nul per el rang dispersio
-    dispersio_nul : constant rang_dispersio := -1;
 
     type taula_dispersio is array (rang_dispersio)
       of id_nom;

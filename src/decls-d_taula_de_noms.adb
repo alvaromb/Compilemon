@@ -73,9 +73,6 @@ package body decls.d_taula_de_noms is
           Tn.Td(P_Tid) := Tn.Nid;
 
           posa_tc(tn, nom);
-
-          Tn.Tc(Tn.Ncar) := '$';
-          Tn.Ncar := Tn.Ncar + 1;
        end if;
 
     end posa_id;
@@ -93,6 +90,9 @@ package body decls.d_taula_de_noms is
           tn.tc(tn.ncar) := nom(i);
           tn.ncar := tn.ncar + 1;
        end loop;
+
+       --tn.tc(tn.ncar) := Ascii.nul;
+       --tn.ncar := tn.ncar + 1;
 
     end posa_tc;
 
@@ -123,7 +123,7 @@ package body decls.d_taula_de_noms is
         end loop;
 
         tn.ncar := jdx + 1;
-        tn.tc(jdx) := '$';
+        tn.tc(jdx) := Ascii.nul;
 
 
     end posa_str;
@@ -158,7 +158,7 @@ package body decls.d_taula_de_noms is
     begin
 
         idx := ids;
-        while (tn.tc(idx) /= '$') loop
+        while (tn.tc(idx) /= Ascii.nul) loop
             idx := idx+1;
         end loop;
 
@@ -201,7 +201,7 @@ package body decls.d_taula_de_noms is
             r(k+n+1) := r(k+n+1) + c;
         end loop;
 
-        c := (r(n+1) * base + r(n)) mod (tam_dispersio);
+        c := (r(n+1) * base + r(n)) mod (max_id);
 
         return rang_dispersio(c);
 

@@ -46,15 +46,15 @@ package body decls.d_atribut is
         id : rang_tcar;
     begin
         posa_str(tn, id, s);
-        a := (a_lit_string, l, c, id);
+        a := (a_lit, l, c, valor(id));
     end mt_string;
 
 
-    procedure mt_caracter (l, c : in natural;
-                            car : in string;
-                              a : out atribut) is
+     procedure mt_caracter (l, c : in natural;
+                             car : in string;
+                               a : out atribut) is
     begin
-        a := (a_lit_car, l, c, car(car'First+1));
+       a := (a_lit, l, c, valor(car'First+1));
     end mt_caracter;
 
 
@@ -62,7 +62,7 @@ package body decls.d_atribut is
                             s : in string;
                             a : out atribut) is
     begin
-        a := (a_lit_num, l, c, Integer'value(s));
+        a := (a_lit, l, c, valor(Integer'value(s)));
     end mt_numero;
 
 
