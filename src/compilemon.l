@@ -29,8 +29,8 @@ else		{mt_atom(tok_begin_line, tok_begin_col,
 end		{mt_atom(tok_begin_line, tok_begin_col, 
 		yylval); return pc_end;}
 
-do		{mt_atom(tok_begin_line, tok_begin_col, 
-		yylval); return pc_do;}
+loop		{mt_atom(tok_begin_line, tok_begin_col, 
+		yylval); return pc_loop;}
 
 constant	{mt_atom(tok_begin_line, tok_begin_col, 
 		yylval); return pc_constant;}

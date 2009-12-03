@@ -4,11 +4,11 @@
     \hspace*{2.0cm} \= \hspace*{0.5cm} \= \hspace*{0.8cm} \= \kill
         \textit{programa} \> $\rightarrow $ \> \textit{procediment} \\
         \\
-        \textit{procediment} \> $ \rightarrow $ \> \textbf{PC\_PROCEDIMENT} \textit{encap} \textbf{PC\_ES} \\
+        \textit{procediment} \> $ \rightarrow $ \> \textbf{PC\_PROCEDURE} \textit{encap} \textbf{PC\_IS} \\
         \> \> \> \textit{declaracions} \\
-        \> \> \textbf{PC\_INICI} \\
+        \> \> \textbf{PC\_BEGIN} \\
         \> \> \> \textit{bloc} \\
-        \> \> \textbf{PC\_FI} identificador; \\
+        \> \> \textbf{PC\_END} identificador; \\
         \\
         \textit{encap} \> $ \rightarrow $ \> identificador \textit{args} \\
         \\
@@ -20,9 +20,9 @@
         \\
         \textit{param} \> $\rightarrow$ \> identificador : \textit{mode} identificador \\
         \\
-        \textit{mode} \> $\rightarrow$ \> \textbf{PC\_ENTRA} \\
-        \> $\mid$ \> \textbf{PC\_SURT} \\
-        \> $\mid$ \> \textbf{PC\_ENTRA PC\_SURT} \\
+        \textit{mode} \> $\rightarrow$ \> \textbf{PC\_IN} \\
+        \> $\mid$ \> \textbf{PC\_OUT} \\
+        \> $\mid$ \> \textbf{PC\_IN PC\_OUT} \\
         \\
         \textit{declaracions} \> $\rightarrow$ \> \textit{declaracions} \textit{declaracio} \\
         \> $\mid$ \> $\lambda$ \\
@@ -56,12 +56,12 @@
         \> $\mid$ \> \textit{dec\_registre} \\
         \> $\mid$ \> \textit{dec\_coleccio} \\
         \\
-        \textit{dec\_subrang} \> $\rightarrow$ \> \textbf{PC\_TIPUS} identificador \textbf{PC\_ES PC\_NOU} identificador 
-			\\\> \textbf{PC\_RANG} \textit{valor} .. \textit{valor}; \\
+        \textit{dec\_subrang} \> $\rightarrow$ \> \textbf{PC\_TYPE} identificador \textbf{PC\_IS PC\_NEW} identificador 
+			\\\> \textbf{PC\_RANGE} \textit{valor} .. \textit{valor}; \\
         \\
-        \textit{dec\_registre} \> $\rightarrow$ \> \textbf{PC\_TIPUS} identificador \textbf{PC\_ES PC\_REGISTRE} \\
+        \textit{dec\_registre} \> $\rightarrow$ \> \textbf{PC\_TYPE} identificador \textbf{PC\_IS PC\_RECORD} \\
         \> \> \> \textit{ldc} \\
-        \> \> \textbf{PC\_FI PC\_REGISTRE}; \\
+        \> \> \textbf{PC\_END PC\_RECORD}; \\
         \\
         \textit{ldc} \> $\rightarrow$ \> \textit{ldc dc} \\
         \> $\mid$ \> \textit{dc} \\
@@ -70,8 +70,8 @@
         \\
         
         \underline{-- Tipus colecció (\textit{array})} \\
-        \textit{dec\_coleccio} \> $\rightarrow$ \> \textbf{PC\_TIPUS} identificador \textbf{PC\_ES PC\_COLECCIO} \\
-		\> (\textit{lid}) \textbf{PC\_DE} identificador; \\
+        \textit{dec\_coleccio} \> $\rightarrow$ \> \textbf{PC\_TYPE} identificador \textbf{PC\_IS PC\_ARRAY} \\
+		\> (\textit{lid}) \textbf{PC\_OF} identificador; \\
         \\
         \textit{lid} \> $\rightarrow$ \> \textit{lid}, identificador \\
         \> $\mid$ \> identificador \\
@@ -92,19 +92,19 @@
         \textit{sassig} \> $\rightarrow$ \> \textit{referencia} := \textit{expressio}; \\
         \\
         
-        \textit{scond} \> $\rightarrow$ \> \textbf{PC\_SI} \textit{expressio} \textbf{PC\_LLAVORS} \\
+        \textit{scond} \> $\rightarrow$ \> \textbf{PC\_IF} \textit{expressio} \textbf{PC\_THEN} \\
         \> \> \>  \textit{bloc} \\
-        \> \> \textbf{PC\_FI PC\_SI}; \\
-        \> $\mid$ \> \textbf{PC\_SI} \textit{expressio} \textbf{PC\_LLAVORS} \\
+        \> \> \textbf{PC\_END PC\_IF}; \\
+        \> $\mid$ \> \textbf{PC\_IF} \textit{expressio} \textbf{PC\_THEN} \\
         \> \> \> \textit{bloc} \\
-        \> \> \textbf{PC\_SINO} \\
+        \> \> \textbf{PC\_ELSE} \\
         \> \> \> \textit{bloc} \\
-        \> \> \textbf{PC\_FI PC\_SI}; \\
+        \> \> \textbf{PC\_END PC\_IF}; \\
         \\
         
-        \textit{srep} \> $\rightarrow$ \> \textbf{PC\_MENTRE} \textit{expressio} \textbf{PC\_FER} \\
+        \textit{srep} \> $\rightarrow$ \> \textbf{PC\_WHILE} \textit{expressio} \textbf{PC\_LOOP} \\
         \> \> \> \textit{bloc} \\
-        \> \> \textbf{PC\_FI PC\_MENTRE}; \\
+        \> \> \textbf{PC\_END PC\_WHILE}; \\
         \\
         
         \textit{crida\_proc} \> $\rightarrow$ \> \textit{referencia}; \\
@@ -131,7 +131,7 @@
         \> $\mid$ \> $-$ \textit{expressio} \\
         \> $\mid$ \> \textit{expressio} \&\& \textit{expressio} \\
         \> $\mid$ \> \textit{expressio} $\mid\mid$ \textit{expressio} \\
-        \> $\mid$ \> \textbf{PC\_NO} \textit{expressio} \\
+        \> $\mid$ \> \textbf{PC\_NOT} \textit{expressio} \\
         \> $\mid$ \> (\textit{expressio}) \\
         \> $\mid$ \> \textit{referencia} \\
         \> $\mid$ \> \textit{lit} \\
