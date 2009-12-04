@@ -13,6 +13,7 @@
 --          - Insercio
 --          - Insercio d'strings
 --          - Consulta
+--          - Funcio de hash
 --
 -- ------------------------------------------------
 
@@ -20,20 +21,18 @@
 package body decls.d_taula_de_noms is
 
     -- Donam els valors per defecte de cada camp.
-    procedure tbuida (tn : out taula_de_noms) is
+   procedure tbuida
+     (tn : out taula_de_noms) is
 
-    begin
+   begin
+      for i in tn.td'range loop
+         tn.td(i) := id_nul;
+      end loop;
 
-        for i in tn.td'range loop
-            tn.td(i) := id_nul;
-        end loop;
-
-        tn.nid := 1;
-        Tn.Ncar := 1;
-
-        tn.tid(1).seguent := id_nul;
-
-    end tbuida;
+      tn.nid := 1;
+      tn.ncar := 1;
+      tn.tid(1).seguent := id_nul;
+   end tbuida;
 
 
 

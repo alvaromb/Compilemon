@@ -40,29 +40,36 @@ package decls.d_taula_de_noms is
     id_nul : constant id_nom := 0;
 
 
-    procedure tbuida    (tn : out taula_de_noms);
+    procedure tbuida
+      (tn : out taula_de_noms);
 
-    procedure posa_id   (tn : in out taula_de_noms;
-                        idn : out id_nom;
-                        nom : in string);
+    procedure posa_id
+      (tn : in out taula_de_noms;
+      idn : out id_nom;
+      nom : in string);
 
-    procedure posa_tc   (tn : in out taula_de_noms;
-                        nom : in string);
+    procedure posa_tc
+      (tn : in out taula_de_noms;
+      nom : in string);
 
-    procedure posa_str  (tn : in out taula_de_noms;
-                        ids : out rang_tcar;
-                          s : in string);
+    procedure posa_str
+      (tn : in out taula_de_noms;
+      ids : out rang_tcar;
+        s : in string);
 
-    function cons_nom   (tn : in taula_de_noms;
-                        idn : in id_nom)
-                        return string;
+    function cons_nom
+      (tn : in taula_de_noms;
+      idn : in id_nom)
+      return string;
 
-    function cons_str   (tn : in taula_de_noms;
-                        ids : in rang_tcar)
-                        return string;
+    function cons_str
+      (tn : in taula_de_noms;
+      ids : in rang_tcar)
+      return string;
 
-    function fdisp_tn   (nom : in string)
-                        return rang_dispersio;
+    function fdisp_tn
+      (nom : in string)
+      return rang_dispersio;
 
 
 private

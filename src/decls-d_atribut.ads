@@ -27,9 +27,6 @@ package decls.d_atribut is
     type tipus_atribut is (atom,
                            a_ident,
                            a_lit);
-                           --a_lit_num,
-                           --a_lit_car,
-                           --a_lit_string);
 
     type valor is new integer;
 
@@ -38,14 +35,9 @@ package decls.d_atribut is
         lin, col : natural;
 
         case t is
-
             when atom           => null;
             when a_ident        => idn : id_nom;
             when a_lit          => val : valor;
-
-            --when a_lit_num      => int : integer;
-            --when a_lit_car      => car : character;
-            --when a_lit_string   => ids : rang_tcar;
         end case;
 
     end record;
