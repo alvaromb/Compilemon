@@ -22,48 +22,53 @@ use     U_Lexica;
 package body decls.d_atribut is
 
 
-    procedure mt_atom (l, c : in natural;
-                          a : out atribut) is
-    begin
-        a := (atom, l, c);
-    end mt_atom;
+   procedure mt_atom
+     (l, c : in natural;
+         a : out atribut) is
+   begin
+       a := (atom, l, c);
+   end mt_atom;
 
 
-    procedure mt_identificador (l, c : in natural;
-                                   s : in string;
-                                   a : out atribut) is
-        id : id_nom;
-    begin
-        id := id_nul;
-        posa_id(tn, id, s);
-        a := (a_ident, l, c, id);
-    end mt_identificador;
+   procedure mt_identificador
+     (l, c : in natural;
+         s : in string;
+         a : out atribut) is
+      id : id_nom;
+   begin
+       id := id_nul;
+       posa_id(tn, id, s);
+       a := (a_ident, l, c, id);
+   end mt_identificador;
 
 
-    procedure mt_string (l, c : in natural;
-                            s : in string;
-                            a : out atribut) is
-        id : rang_tcar;
-    begin
-        posa_str(tn, id, s);
-        a := (a_lit, l, c, valor(id));
-    end mt_string;
+   procedure mt_string
+     (l, c : in natural;
+         s : in string;
+         a : out atribut) is
+       id : rang_tcar;
+   begin
+       posa_str(tn, id, s);
+       a := (a_lit, l, c, valor(id));
+   end mt_string;
 
 
-     procedure mt_caracter (l, c : in natural;
-                             car : in string;
-                               a : out atribut) is
-    begin
-       a := (a_lit, l, c, valor(car'First+1));
-    end mt_caracter;
+   procedure mt_caracter
+     (l, c : in natural;
+       car : in string;
+         a : out atribut) is
+   begin
+      a := (a_lit, l, c, valor(car'First+1));
+   end mt_caracter;
 
 
-    procedure mt_numero (l, c : in natural;
-                            s : in string;
-                            a : out atribut) is
-    begin
-        a := (a_lit, l, c, valor(Integer'value(s)));
-    end mt_numero;
+   procedure mt_numero
+     (l, c : in natural;
+         s : in string;
+         a : out atribut) is
+   begin
+       a := (a_lit, l, c, valor(Integer'value(s)));
+   end mt_numero;
 
 
 end decls.d_atribut;

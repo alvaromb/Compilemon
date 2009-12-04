@@ -31,15 +31,12 @@ package decls.d_atribut is
     type valor is new integer;
 
     type atribut (t : tipus_atribut := atom) is record
-
         lin, col : natural;
-
         case t is
             when atom           => null;
             when a_ident        => idn : id_nom;
             when a_lit          => val : valor;
         end case;
-
     end record;
 
 
