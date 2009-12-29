@@ -2,8 +2,10 @@
 
 lletra		[A-Za-z]
 digit		[0-9]
-separadors	[\n\b\t\f]
-caracter	\'[^\n\t]\'
+separadors	[" "\n\b\t\f]
+caracter	\'[^\n\t]\' 
+car_string  \'[^\"]\'      --nomes serveix per als strings
+string      \"(car_string | \"\")*\"   
 
 
 %%
@@ -153,9 +155,9 @@ or		{mt_atom(tok_begin_line, tok_begin_col,
 		yytext, yylval); return const;}
 
 
---String
+--String  mirar a les declaracions
 
-\"[^\"\n\t]*\"	{mt_string(tok_begin_line, tok_begin_col, 
+{string}	{mt_string(tok_begin_line, tok_begin_col, 
 		yytext, yylval); return const;}
 
 
@@ -168,14 +170,12 @@ or		{mt_atom(tok_begin_line, tok_begin_col,
 
 
 
---Comentaris
+--Comentaris (Hem llevat les dobles comes abans era : "-""-")
 
 "--"[^\n]*	{null;}
 
 
 --Separadors
-
-" "		{null;}
 
 {separadors}*	{null;}
 
