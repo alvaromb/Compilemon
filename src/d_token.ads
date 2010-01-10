@@ -18,6 +18,7 @@ package d_token is
                         pc_if,
                         pc_else,
                         pc_end,
+                        pc_loop,
                         pc_do,
                         pc_constant,
                         pc_type,

@@ -5,7 +5,7 @@ digit		[0-9]
 separadors	[" "\n\b\t\f]
 caracter	\'[^\n\t]\' 
 car_string  \'[^\"]\'      --nomes serveix per als strings
-string      \"(car_string | \"\")*\"   
+string      \"[car_string | \"\"]*\"   
 
 
 %%
@@ -157,27 +157,25 @@ or		{mt_atom(tok_begin_line, tok_begin_col,
 
 --String  mirar a les declaracions
 
-{string}	{mt_string(tok_begin_line, tok_begin_col, 
-		yytext, yylval); return const;}
+{string}	{mt_string(tok_begin_line,tok_begin_col,
+			yytext, yylval); return const;}
 
 
 --Identificador
 
-{lletra}({digit}|{lletra})* 
-		{mt_identificador(tok_begin_line, 
-                tok_begin_col, yytext, yylval);
-                return id;}
+{lletra}(({digit}|{lletra})|("_"({digit}|{lletra})))*  {mt_identificador(tok_begin_line,tok_begin_col,yytext,yylval); return id;}
 
 
 
 --Comentaris (Hem llevat les dobles comes abans era : "-""-")
 
-"--"[^\n]*	{null;}
+"--"[^\n]*\n	{null;}
+--"--"[{car_string}]	{null;}
 
 
 --Separadors
 
-{separadors}*	{null;}
+{separadors}	{null;}
 
 
 --Error
@@ -219,4 +217,3 @@ begin
 	tbuida(tn);
 
 end u_lexica;
-
