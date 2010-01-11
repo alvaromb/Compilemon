@@ -1,27 +1,25 @@
---Token
-%token pc_procediment
-%token pc_inici
-%token pc_mentre
-%token pc_per
-%token pc_entre
-%token pc_si
-%token pc_sino
-%token pc_fi
-%token pc_fer
+﻿--Token
+%token pc_procedure
+%token pc_begin
+%token pc_while
+%token pc_if
+%token pc_else
+%token pc_end
+%token pc_loop
 %token pc_constant
-%token pc_tipus
-%token pc_coleccio
-%token pc_registre
-%token pc_es
-%token pc_llavors
-%token pc_no
-%token pc_entra
-%token pc_surt
-%token pc_nou
-%token pc_nul
-%token pc_de
-%token pc_modul
-%token pc_rang
+%token pc_type
+%token pc_array
+%token pc_record
+%token pc_is
+%token pc_then
+%token pc_not
+%token pc_in
+%token pc_out
+%token pc_new
+%token pc_null
+%token pc_of
+%token pc_mod
+%token pc_range
 %token pc_or
 %token pc_and
 %token s_assignacio
@@ -42,9 +40,9 @@
 %token op_resta
 %token op_multiplicacio
 %token op_divisio
-%token id
-%token const -- Per declarar constants
-
+%token id    
+%token const -- Per declarar constants (digit, lletra i string)
+			 -- MIRAR d_token.ads: pc_do Quitar??? cadena???
 
 --Precedencia
 %left pc_or
@@ -52,8 +50,8 @@
 %nonassoc op_menor op_menorigual op_majorigual op_major op_igual op_distint
 %left op_suma
 %left op_resta
-%left op_multiplicacio op_divisio pc_modul
-%left pc_no
+%left op_multiplicacio op_divisio pc_mod
+%left pc_not
 %left menys_unitari
 
 
@@ -77,12 +75,13 @@ M1:
   ;
 
 dec_procediment:
-	pc_procediment encap pc_es
+	pc_procedure encap pc_is
 		declaracions
-	pc_inici
+	pc_begin
 		bloc
-	pc_fi id s_final 
+	pc_end id s_final 
   ;
+
 
 encap:
 	id
@@ -100,12 +99,13 @@ param:
 	id s_dospunts mode id
   ;
 
+  
 mode:
-	pc_entra
+	pc_in
   |
-	pc_surt
+	pc_out
   |
-	pc_entra pc_surt
+	pc_in pc_out
   ;
   
 declaracions:
@@ -136,7 +136,7 @@ c_decl_var:
   ;
 
 dec_constant:
-	id s_dospunts pc_constant id s_assignacio const s_final
+	id s_dospunts pc_constant id s_assignacio const s_final -- ESTE const se refiere en los apuntes a VALOR
   ;
   
 
@@ -152,7 +152,7 @@ dec_tipus:
   
 -- TIPUS SUBRANG
 decl_subrang:
-	pc_tipus id pc_es pc_nou id pc_rang limit s_dospunts limit s_final
+	pc_type id pc_is pc_new id pc_range limit s_dospunts limit s_final
   ;
   
 limit:
@@ -164,25 +164,25 @@ limit:
   
 -- TIPUS REGISTRE
 decl_registre:
-	p_dregistre pc_fi pc_registre
+	p_dregistre pc_end pc_record
   ;
   
 p_dregistre: 
 	p_dregistre id s_dospunts id s_final
   | 
-    pc_tipus id pc_es pc_registre id s_dospunts id s_final
+    pc_type id pc_is pc_record id s_dospunts id s_final
   ;
   
 
 -- TIPUS COLECCIO
 decl_coleccio:
-	p_dcoleccio s_parentesitancat pc_de id s_final
+	p_dcoleccio s_parentesitancat pc_of id s_final
   ;
   
 p_dcoleccio:
 	p_dcoleccio s_coma id
   |
-	pc_tipus id pc_es pc_coleccio s_parentesiobert id
+	pc_type id pc_is pc_array s_parentesiobert id
   ;
 
   
@@ -202,8 +202,8 @@ sentencia:
   |
 	srep
   | 
-    crida_proc
-  ;
+    crida_proc 
+  ; --FALTARIA PONER LAMBDA???? En la doc, la pusimos. Tendría sentido un 'bloc' vacio? 
 
 -- Sentencia assignacio
 sassig:
@@ -212,22 +212,22 @@ sassig:
 
 -- Sentencia condicional
 scond:
-	pc_si expressio pc_llavors 
+	pc_if expressio pc_then 
 		bloc 
-	pc_fi pc_si
+	pc_end pc_if
   |
-    pc_si expressio pc_llavors 
+    pc_if expressio pc_then 
 		bloc 
-	pc_sino
+	pc_else
 		bloc
-	pc_fi pc_si
+	pc_end pc_if
   ;
 
 -- Sentencia bucle
 srep:
-	pc_mentre expressio pc_fer
+	pc_while expressio pc_loop
 		bloc
-	pc_fi pc_fer
+	pc_end pc_loop --CAMBIAR EN LA DOCUMENTACION (PONE end while????)
   ;
 
 -- Sentencia crida a procediment
@@ -256,7 +256,7 @@ expressio:
   |
 	expressio pc_and expressio
   |
-	pc_no expressio     %prec pc_no
+	pc_not expressio     %prec pc_not
   |
 	expressio op_menor expressio
   |
@@ -278,7 +278,7 @@ expressio:
   |
 	expressio op_divisio expressio
   |
-    expressio pc_modul expressio
+    expressio pc_mod expressio
   |
 	op_resta expressio   %prec menys_unitari
   |
