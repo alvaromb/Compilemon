@@ -17,7 +17,7 @@ with    Ada.Text_IO,
         decls.tn,
         decls.dgenerals,
         d_token,
-        compilemon_io,
+        pk_ulexica_io,
         u_lexica;
 
 use     Ada.Text_IO,
@@ -26,7 +26,7 @@ use     Ada.Text_IO,
         decls.tn,
         decls.dgenerals,
         d_token,
-        compilemon_io,
+        pk_ulexica_io,
         u_lexica;
 
 
