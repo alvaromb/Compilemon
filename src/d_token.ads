@@ -19,7 +19,6 @@ package d_token is
                         pc_else,
                         pc_end,
                         pc_loop,
-                        pc_do,
                         pc_constant,
                         pc_type,
                         pc_array,
@@ -55,7 +54,7 @@ package d_token is
                         op_multiplicacio,
                         op_divisio,
                         id,
-                        cadena,
+                        --cadena,
                         const,
                         Error,
                         End_of_Input);

@@ -60,7 +60,6 @@ package decls.dtdesc is
                                   targ: id_nom;
                 when dcamp  =>  tcamp: id_nom;
                                   dsp: rang_despl;
-
             end case;
         end record;
 

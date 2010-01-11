@@ -305,7 +305,7 @@ end pk_usintactica;
 with    pk_usintactica_tokens,
         pk_usintactica_shift_reduce,
         pk_usintactica_goto,
-		compilemon_io,
+		pk_ulexica_io,
 		u_lexica,
 		Ada.Text_IO;
         
@@ -313,7 +313,7 @@ with    pk_usintactica_tokens,
 use     pk_usintactica_tokens,
         pk_usintactica_shift_reduce,
         pk_usintactica_goto,
-		compilemon_io,
+		pk_ulexica_io,
 		u_lexica,
 		Ada,
 		Ada.Text_IO;
