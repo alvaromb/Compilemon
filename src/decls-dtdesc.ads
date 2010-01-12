@@ -11,14 +11,35 @@
 -- ------------------------------------------------
 
 
-with    decls.dgenerals;
+with    decls.dgenerals,
+        decls.d_taula_de_noms;
 
-use     decls.dgenerals;
+use     decls.dgenerals,
+        decls.d_taula_de_noms;
 
 
 package decls.dtdesc is
 
-    pragma pure;
+    --pragma pure;
+
+    -- Representa tambit
+    max_nprof : constant integer := 10;
+    type nprof is new integer range 0 .. max_nprof;
+    nul_nprof : constant nprof := 0;
+
+    type despl is new natural;
+
+    type valor is new integer range 0 .. integer'Last;
+
+    max_var : constant integer := 1000;
+    type num_var is new natural range 0 .. max_var;
+
+    max_proc : constant integer := 100;
+    type num_proc is new natural range 0 .. max_proc;
+
+    -- Representa texpansio
+    type rang_despl is new integer range 0 .. (max_id * max_nprof);
+    nul_despl : constant rang_despl := 0;
 
     type tdescrip is (dnula,
                       dconst,

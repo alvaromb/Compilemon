@@ -12,7 +12,7 @@
 
 package decls is
 
-   pragma pure;
+   --pragma pure;
 
 
 end decls;

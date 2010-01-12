@@ -14,15 +14,18 @@
 
 with    decls.dtdesc,
         decls.dgenerals,
-        decls.d_taula_de_noms;
+  decls.d_taula_de_noms,
+  Ada.Text_IO;
 
 use     decls.dtdesc,
-        decls.dgenerals;
+        decls.dgenerals,
+  decls.d_taula_de_noms,
+  Ada.Text_IO;
 
 
 package decls.dtsimbols is
 
-    pragma pure;
+    --pragma pure;
 
     type tsimbols is limited private;
     type cursor_idx is private;
@@ -31,7 +34,8 @@ package decls.dtsimbols is
     -- Operacions
     -- VERSIO 1: llenguatge simple sense estructura
     -- de blocs estil Fortran.
-    procedure tbuida (ts : out tsimbols);
+    procedure tbuida
+      (ts : out tsimbols);
 
     procedure posa (ts : in out tsimbols;
                      id : in id_nom;
@@ -69,13 +73,13 @@ package decls.dtsimbols is
     function primer_idx (ts : in tsimbols;
                          ida : in id_nom) return cursor_idx;
 
-    function succ_idx (ts : in tsimbols;
-                        ci : in cursor_idx) return cursor_idx;
+    --function succ_idx (ts : in tsimbols;
+    --                    ci : in cursor_idx) return cursor_idx;
 
     function idx_valid (ci : in cursor_idx) return boolean;
 
-    function cons_idx (ts : in tsimbols;
-                        ci : cursor_idx) return id_nom;
+   -- function cons_idx (ts : in tsimbols;
+     --                   ci : cursor_idx) return id_nom;
 
 
     -- VERSIO 5: Procediments
@@ -102,16 +106,14 @@ package decls.dtsimbols is
 
 private
 
-   nprof : constant integer := 10;
-   rang_despl : constant integer := max_id * nprof;
 
-   type tipus_expansio is record
+   type tipus_descripcio is record
       np : nprof;
        d : descrip;
        s : rang_despl;
    end record;
 
-   type tipus_desc is record
+   type tipus_expansio is record
       np : nprof;
        d : descrip;
       id : id_nom;
@@ -125,7 +127,7 @@ private
      (1 .. rang_despl'Last) of tipus_expansio;
 
    type taula_desc is array
-     (1 .. id_nom'Last) of tipus_desc;
+     (1 .. id_nom'Last) of tipus_descripcio;
 
    type cursor_idx is new rang_despl;
 

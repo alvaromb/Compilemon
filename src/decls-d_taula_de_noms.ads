@@ -19,7 +19,7 @@ use     decls.dgenerals;
 
 package decls.d_taula_de_noms is
 
-    pragma pure;
+    --pragma pure;
 
     -- Excepcions
     E_Tids_Plena : exception;

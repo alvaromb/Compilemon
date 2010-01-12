@@ -12,7 +12,7 @@
 
 package decls.dgenerals is
 
-    pragma pure;
+    --pragma pure;
 
     max_id : constant integer := 1000;
     long_num_ident : constant integer := 40;
