@@ -77,10 +77,10 @@ package decls.dtdesc is
                 when dproc  => np: num_proc;
                 when dconst => tc: id_nom;
                                vc: valor;
-                when dargc  =>  nvarg: num_var;
-                                  targ: id_nom;
-                when dcamp  =>  tcamp: id_nom;
-                                  dsp: rang_despl;
+                when dargc  => nvarg: num_var;
+                                targ: id_nom;
+                when dcamp  => tcamp: id_nom;
+                                 dsp: rang_despl;
             end case;
         end record;
 

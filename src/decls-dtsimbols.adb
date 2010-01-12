@@ -76,6 +76,7 @@ package body decls.dtsimbols is
            Put(ts.texp(i).s'img&")");
            New_Line;
         end loop;
+        Put_Line("PROFUNDITAT: "&ts.prof'img);
    end printts;
 
 
@@ -122,25 +123,24 @@ package body decls.dtsimbols is
     end posa;
 
 
-    function cons (ts : in tsimbols;
-                    id : in id_nom) return descrip is
+    function cons
+      (ts : in tsimbols;
+       id : in id_nom)
+      return descrip is
 
     begin
-
         return ts.tdesc(id).d;
-
     end cons;
 
 
 
     -- VERSIO 2: Normal, llenguatge amb blocs estil Pascal.
-    procedure entrabloc (ts : in out tsimbols) is
+    procedure entrabloc
+      (ts : in out tsimbols) is
 
     begin
-
         ts.prof := ts.prof + 1;
         ts.tambit(ts.prof) := ts.tambit(ts.prof - 1);
-
     end entrabloc;
 
 
@@ -171,12 +171,12 @@ package body decls.dtsimbols is
 
 
     -- VERSIO 3: Blocs mes records.
-    procedure posacamp (ts : in out
-tsimbols;
-                        idr : in id_nom;
-                        idc : in id_nom;
-                          d : in descrip;
-                          e : out boolean) is
+    procedure posacamp
+      (ts : in out tsimbols;
+      idr : in id_nom;
+      idc : in id_nom;
+        d : in descrip;
+        e : out boolean) is
 
            des : descrip;
             td : descriptipus;
@@ -186,11 +186,9 @@ tsimbols;
     begin
 
         des := ts.tdesc(idr).d;
-
         if des.td /= dtipus then e := TRUE; end if;
 
         td := des.dt;
-
         if td.tt /= tsrec then e := TRUE; end if;
 
         p := ts.tdesc(idr).s;

@@ -34,6 +34,9 @@ package decls.dtsimbols is
     -- Operacions
     -- VERSIO 1: llenguatge simple sense estructura
     -- de blocs estil Fortran.
+    procedure printts
+      (ts : in tsimbols);
+
     procedure tbuida
       (ts : out tsimbols);
 
