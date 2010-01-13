@@ -41,10 +41,12 @@ procedure compiprueba is
    d2: descrip(dproc);
    d3: descrip(dvar);
    d4: descrip(dtipus);
+   d5: descrip(dtipus);
    e: boolean;
    np1 : num_proc := 5;
    np2 : num_proc := 7;
    desctip : descriptipus(tsrec);
+   descarr : descriptipus(tsarr);
 begin
 
    --Tbuida
@@ -100,10 +102,31 @@ begin
    --Consulta camp
    Put_Line("Cons camp: "&conscamp(ts,8,1).nv'img);
    Put_Line("Cons camp: "&conscamp(ts,8,7).nv'img);
+
+   --Començam amb els arrays
+   descarr.ocup := 8;
+   d5.dt := descarr;
+   posa(ts, 5, d5, e); --Ficam l'array
+   posa_idx(ts, 5, 31, e); --Afegim un camp a l'array
+   printts(ts);
+   posa_idx(ts, 5, 32, e); --Afegim un altre camp a l'array
+   printts(ts);
+
+   --Primer_idx i idx_valir
+   Put_Line("PRIMER IDX: "&primer_idx(ts, 5)'img);
+   Put_Line("IDX VALID: "&idx_valid(primer_idx(ts, 5))'img);
+
+   --Provam el successor del camp 1
+   Put_Line("SUCCESSOR IDX: "&succ_idx(ts, primer_idx(ts, 5))'img);
+   Put_Line("SUCCESSOR IDX: "&succ_idx(ts, succ_idx(ts, primer_idx(ts, 5)))'img);
+
+   --Consultam idx
+   Put_Line("CONS IDX: "&cons_idx(ts, primer_idx(ts, 5))'img);
+   Put_Line("CONS IDX: "&cons_idx(ts, succ_idx(ts, primer_idx(ts, 5)))'img);
+
    if e then
       put_line("ERROR");
    end if;
-
 
 
 end compiprueba;

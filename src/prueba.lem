@@ -1,5 +1,6 @@
 procedure compilemon is
     Tk:Token;
+	p:string;
 begin
 
 --tbuida(tn);
@@ -8,25 +9,12 @@ begin
     tk := Yylex; 
 
   while tk /= end_of_input loop
-      Put(tok_begin_line'Img);
-      Put_Line(Token'Image(Tk));
+      Put(tok_begin_line);
+      Put_Line(Token(Tk));
       tk := Yylex;
   end loop;
-
-   close_Input;
-
---   exception
---     when E_Tids_Plena =>
---     Put_Line("ERROR: La taula d'identificadors
---               es plena.");
-
---      when E_Tcar_Plena =>
---      Put_Line("ERROR: La taula de caracters
---                es plena.");
-
---      when Syntax_Error =>
---      Put_Line("ERROR: Error a la linea
---      "&yy_line_number'img&" i columna
---      "&yy_begin_column'img);
+	a := 'a';
+	n := 9;
+	p := "PEPOTEESMARICON";
 
 end compilemon;

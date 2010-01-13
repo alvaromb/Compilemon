@@ -3,9 +3,10 @@
 lletra		[A-Za-z]
 digit		[0-9]
 separadors	[" "\n\b\t\f]
-caracter	\'[^\n\t]\' 
-car_string  \'[^\"]\'      --nomes serveix per als strings
-string      \"[car_string | \"\"]*\"   
+car			({lletra}|{digit})
+caracter	\'{car}\' 
+car_string  [\040-\041\043-\176]
+string      \"({car_string}|\"\")*\"
 
 
 %%
@@ -157,9 +158,7 @@ or		{mt_atom(tok_begin_line, tok_begin_col,
 
 --String  mirar a les declaracions
 
-{string}	{mt_string(tok_begin_line,tok_begin_col,
-			yytext, yylval); return const;}
-
+{string}	{mt_string(tok_begin_line,tok_begin_col,yytext,yylval);return const;}
 
 --Identificador
 
@@ -213,7 +212,5 @@ package body u_lexica is
 ##
 
 begin
-
 	tbuida(tn);
-
 end u_lexica;

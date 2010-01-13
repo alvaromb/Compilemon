@@ -237,10 +237,11 @@ package body decls.dtsimbols is
 
 
     -- VERSIO 4: Arrays.
-    procedure posa_idx (ts : in out tsimbols;
-                        ida : in id_nom;
-                        idi : in id_nom;
-                          e : out boolean) is
+    procedure posa_idx
+      (ts : in out tsimbols;
+      ida : in id_nom;
+      idi : in id_nom;
+        e : out boolean) is
 
              d : descrip;
             dt : descriptipus;
@@ -251,73 +252,76 @@ package body decls.dtsimbols is
     begin
 
         d := ts.tdesc(ida).d;
-        if d.td /= dtipus then e := TRUE; end if; -- Introduir control d'errors
+        if d.td /= dtipus then e := TRUE; end if;
 
         dt := d.dt;
-        if dt.tt /= tsarr then e := TRUE; end if; -- Introduir control d'errors
+        if dt.tt /= tsarr then e := TRUE; end if;
 
         p := ts.tdesc(ida).s;
-
+        pp := 0;
         while p /= 0 loop -- Comprovar el 0
             pp := p;
-            --p := ts.tdespl(p).s;
+            p := ts.texp(p).s;
         end loop;
 
-        --ts.tbloc(ts.nprof) := ts.tbloc(ts.nprof) + 1;
-        --idespl := ts.tbloc(ts.nprof);
+        ts.tambit(ts.prof) := ts.tambit(ts.prof) + 1;
+        idespl := ts.tambit(ts.prof);
 
-        --ts.tdespl(idespl) := (nul_nprof, (td => dnula), idi, 0);
+        ts.texp(idespl) := (nul_nprof, (td => dnula), idi, 0);
 
-        if pp = 0 then
-            ts.tdesc(ida).s := idespl;
-        --else
-            --ts.tdespl(pp).s := idespl;
+        if pp /= 0 then
+           ts.texp(pp).s := idespl;
+        else
+           ts.tdesc(ida).s := idespl;
         end if;
+
 
     end posa_idx;
 
 
-    function idx_valid (ci : in cursor_idx) return boolean is
-
+    function primer_idx
+      (ts : in tsimbols;
+      ida : in id_nom) return cursor_idx is
     begin
-
-        return ci > 0;
-
-    end idx_valid;
-
-
-    function primer_idx (ts : in tsimbols;
-                         ida : in id_nom) return cursor_idx is
-
-    begin
-
         return cursor_idx(ts.tdesc(ida).s);
-
     end primer_idx;
 
 
-    --function succ_idx (ts : in tsimbols;
-                        --ci : in cursor_idx) return cursor_idx is
-
-    --begin
-
-        --if idx_valid(ci) then
-            ---return cursor_idx(ts.tdespl(rang_despl(ci)).s);
-        --else
-           -- return 0; -- Excepcio
-        ---end if;
-
-    --end succ_idx;
+    function idx_valid
+      (ci : in cursor_idx) return boolean is
+    begin
+        return ci > 0;
+    end idx_valid;
 
 
-    --function cons_idx (ts : in tsimbols;
-    --                    ci : cursor_idx) return id_nom is
+    function succ_idx
+      (ts : in tsimbols;
+       ci : in cursor_idx) return cursor_idx is
+    begin
+        if idx_valid(ci) then
+           return cursor_idx(ts.texp(rang_despl(ci)).s);
+        else
+           return 0; --Excepcio
+        end if;
+    end succ_idx;
 
-    --begin
 
-    --    return  ts.tdespl(rang_despl(ci)).id;
+    function cons_idx
+      (ts : in tsimbols;
+       ci : in cursor_idx) return id_nom is
+    begin
+        return  ts.texp(rang_despl(ci)).id;
+    end cons_idx;
 
-    --end cons_idx;
+
+    procedure posa_arg
+      (ts : in tsimbols;
+      idp : in id_nom;
+      ida : in id_nom;
+        d : in descrip;
+        e : out boolean) is
+    begin
+
 
 
 end decls.dtsimbols;

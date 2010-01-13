@@ -28,7 +28,8 @@ package decls.dtsimbols is
     --pragma pure;
 
     type tsimbols is limited private;
-    type cursor_idx is private;
+    --type cursor_idx is private;
+    type cursor_idx is new rang_despl;
 --  type cursor_arg is private;
 
     -- Operacions
@@ -68,29 +69,34 @@ package decls.dtsimbols is
 
 
     -- VERSIO 4: Arrays.
-    procedure posa_idx (ts : in out tsimbols;
-                        ida : in id_nom;
-                        idi : in id_nom;
-                          e : out boolean);
+    procedure posa_idx
+      (ts : in out tsimbols;
+      ida : in id_nom;
+      idi : in id_nom;
+        e : out boolean);
 
-    function primer_idx (ts : in tsimbols;
-                         ida : in id_nom) return cursor_idx;
+    function primer_idx
+      (ts : in tsimbols;
+      ida : in id_nom) return cursor_idx;
 
-    --function succ_idx (ts : in tsimbols;
-    --                    ci : in cursor_idx) return cursor_idx;
+    function idx_valid
+      (ci : in cursor_idx) return boolean;
 
-    function idx_valid (ci : in cursor_idx) return boolean;
+    function succ_idx
+      (ts : in tsimbols;
+       ci : in cursor_idx) return cursor_idx;
 
-   -- function cons_idx (ts : in tsimbols;
-     --                   ci : cursor_idx) return id_nom;
-
+    function cons_idx
+      (ts : in tsimbols;
+       ci : in cursor_idx) return id_nom;
 
     -- VERSIO 5: Procediments
---  procedure posa_arg (ts : in tsimbols;
---                     idp : in id_nom;
---                     ida : in id_nom;
---                       d : in descrip;
---                       e : out boolean);
+    procedure posa_arg
+      (ts : in tsimbols;
+      idp : in id_nom;
+      ida : in id_nom;
+        d : in descrip;
+        e : out boolean);
 
 --  function primer_arg () return cursor_arg; --OMPLIR
 --
@@ -132,7 +138,8 @@ private
    type taula_desc is array
      (1 .. id_nom'Last) of tipus_descripcio;
 
-   type cursor_idx is new rang_despl;
+   --TORNAR A DESCOMENTAR AIXO
+   --type cursor_idx is new rang_despl;
 
    type tsimbols is record
       tdesc : taula_desc;
