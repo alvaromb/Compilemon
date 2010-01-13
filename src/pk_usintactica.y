@@ -1,4 +1,4 @@
-﻿--Token
+--Token
 %token pc_procedure
 %token pc_begin
 %token pc_while
@@ -57,9 +57,9 @@
 
 
 --Definicio del tipus atribut
-%with d_atribut
+%with decls.d_atribut
 {
-	subtype yystype is d_atribut.atribut;
+	subtype yystype is decls.d_atribut.atribut;
 }
 
 
@@ -295,6 +295,7 @@ expressio:
 
 package pk_usintactica is
 
+	tn : taula_de_noms;
 	procedure yyparse;
 	
 

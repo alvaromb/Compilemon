@@ -16,34 +16,43 @@ with    Ada.Text_IO,
         decls.d_taula_de_noms,
         decls.tn,
         decls.dgenerals,
-        d_token,
-        pk_ulexica_io,
-        u_lexica;
+  --d_token,
+  decls.dtsimbols,
+  decls.dtdesc,
+  pk_usintactica_tokens,
+  pk_ulexica_io,
+  u_lexica,
+  pk_usintactica;
 
 use     Ada.Text_IO,
         Ada.Command_Line,
         decls.d_taula_de_noms,
         decls.tn,
         decls.dgenerals,
-        d_token,
-        pk_ulexica_io,
-        u_lexica;
+  --d_token,
+  decls.dtsimbols,
+  decls.dtdesc,
+  pk_usintactica_tokens,
+  pk_ulexica_io,
+  u_lexica,
+  pk_usintactica;
 
 
 procedure compilemon is
-    Tk:Token;
+    --Tk:Token;
 begin
 
-    --tbuida(tn);
+    tbuida(tn);
 
     Open_Input(Argument(1));
-    tk := Yylex;
+    --tk := Yylex;
+    yyparse;
 
-  while tk /= end_of_input loop
-      Put(tok_begin_line'Img);
-      Put_Line(Token'Image(Tk));
-      tk := Yylex;
-  end loop;
+  --while tk /= end_of_input loop
+  --    Put(tok_begin_line'Img);
+   --   Put_Line(Token'Image(Tk));
+     -- tk := Yylex;
+  --end loop;
 
    close_Input;
 

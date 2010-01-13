@@ -188,19 +188,21 @@ or		{mt_atom(tok_begin_line, tok_begin_col,
 
 
 with	decls.d_taula_de_noms,
-	d_token,
+	--d_token,
+	pk_usintactica_tokens,
 	decls.d_atribut;
 
 
 use	decls.d_taula_de_noms,
-	d_token,
+	--d_token,
+	pk_usintactica_tokens,
 	decls.d_atribut;
 
 
 package u_lexica is
 
 	yylval: atribut;
-	tn : taula_de_noms;
+	--tn : taula_de_noms;
 	function YYLex return token;
 
 end u_lexica;
