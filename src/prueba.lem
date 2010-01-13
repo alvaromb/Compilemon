@@ -15,6 +15,6 @@ begin
   end loop;
 	a := 'a';
 	n := 9;
-	p := "PEPOTEESMARICON";
+	p := "PEPOTE ES MARICON";
 
 end compilemon;
