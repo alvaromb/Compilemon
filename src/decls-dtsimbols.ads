@@ -91,12 +91,12 @@ package decls.dtsimbols is
        ci : in cursor_idx) return id_nom;
 
     -- VERSIO 5: Procediments
-    procedure posa_arg
-      (ts : in tsimbols;
-      idp : in id_nom;
-      ida : in id_nom;
-        d : in descrip;
-        e : out boolean);
+--    procedure posa_arg
+--      (ts : in tsimbols;
+--      idp : in id_nom;
+ --     ida : in id_nom;
+   --     d : in descrip;
+     --   e : out boolean);
 
 --  function primer_arg () return cursor_arg; --OMPLIR
 --

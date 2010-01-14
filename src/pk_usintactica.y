@@ -295,7 +295,6 @@ expressio:
 
 package pk_usintactica is
 
-	tn : taula_de_noms;
 	procedure yyparse;
 	
 
@@ -306,18 +305,18 @@ end pk_usintactica;
 with    pk_usintactica_tokens,
         pk_usintactica_shift_reduce,
         pk_usintactica_goto,
-		pk_ulexica_io,
-		u_lexica,
-		Ada.Text_IO;
+	pk_ulexica_io,
+	u_lexica,
+  	Ada.text_IO;
         
 
 use     pk_usintactica_tokens,
         pk_usintactica_shift_reduce,
         pk_usintactica_goto,
-		pk_ulexica_io,
-		u_lexica,
-		Ada,
-		Ada.Text_IO;
+	pk_ulexica_io,
+	u_lexica,
+  	Ada,
+  	ada.text_io;
 		
 
 package body pk_usintactica is

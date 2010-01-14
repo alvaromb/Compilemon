@@ -14,11 +14,11 @@
 --
 -- ------------------------------------------------
 
-with    decls.dgenerals,
-        decls.d_taula_de_noms;
+with    decls.Dgenerals,
+  decls.D_Taula_De_Noms;
 
-use     decls.dgenerals,
-        decls.d_taula_de_noms;
+use     decls.Dgenerals,
+  decls.D_Taula_De_Noms;
 
 
 package decls.d_atribut is
@@ -63,6 +63,8 @@ package decls.d_atribut is
       (l, c : in natural;
           s : in string;
           a : out atribut);
+
+    Tn : Taula_De_Noms;
 
 
 end decls.d_atribut;

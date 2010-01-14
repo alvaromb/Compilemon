@@ -14,35 +14,33 @@
 with    Ada.Text_IO,
         Ada.Command_Line,
         decls.d_taula_de_noms,
-        decls.tn,
+        --decls.tn,
         decls.dgenerals,
-  --d_token,
   decls.dtsimbols,
   decls.dtdesc,
   pk_usintactica_tokens,
   pk_ulexica_io,
   u_lexica,
-  pk_usintactica;
+  Pk_Usintactica,
+  Decls.D_atribut;
 
 use     Ada.Text_IO,
         Ada.Command_Line,
         decls.d_taula_de_noms,
-        decls.tn,
+        --decls.tn,
         decls.dgenerals,
-  --d_token,
   decls.dtsimbols,
   decls.dtdesc,
   pk_usintactica_tokens,
   pk_ulexica_io,
   u_lexica,
-  pk_usintactica;
-
+  Pk_Usintactica;
 
 procedure compilemon is
     --Tk:Token;
 begin
 
-    tbuida(tn);
+    tbuida(Decls.D_Atribut.Tn);
 
     Open_Input(Argument(1));
     --tk := Yylex;
@@ -56,7 +54,7 @@ begin
 
    close_Input;
 
---   exception
+   exception
 --     when E_Tids_Plena =>
 --     Put_Line("ERROR: La taula d'identificadors
 --               es plena.");
@@ -65,9 +63,9 @@ begin
 --      Put_Line("ERROR: La taula de caracters
 --                es plena.");
 
---      when Syntax_Error =>
---      Put_Line("ERROR: Error a la linea
---      "&yy_line_number'img&" i columna
---      "&yy_begin_column'img);
+      when Syntax_Error =>
+         Put_Line("ERROR: Error a la linea "
+                    &yy_line_number'img&
+                    " i columna "&yy_begin_column'img);
 
 end compilemon;

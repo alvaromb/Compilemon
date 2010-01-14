@@ -314,14 +314,13 @@ package body decls.dtsimbols is
     end cons_idx;
 
 
-    procedure posa_arg
-      (ts : in tsimbols;
-      idp : in id_nom;
-      ida : in id_nom;
-        d : in descrip;
-        e : out boolean) is
-    begin
-
+--    procedure posa_arg
+--      (ts : in tsimbols;
+ --     idp : in id_nom;
+   --   ida : in id_nom;
+     --   d : in descrip;
+       -- e : out boolean) is
+    --begin
 
 
 end decls.dtsimbols;

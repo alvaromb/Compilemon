@@ -16,8 +16,10 @@
 -- ------------------------------------------------
 
 with    U_Lexica;
+--  Decls.Tn;
 
 use     U_Lexica;
+--  Decls.Tn;
 
 
 package body decls.d_atribut is

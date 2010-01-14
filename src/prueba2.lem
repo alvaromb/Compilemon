@@ -1,4 +1,4 @@
-procediment joan es
-inici
+procedure joan is
+begin
     yyparse;
-fi joan;
+end joan;

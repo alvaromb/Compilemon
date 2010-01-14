@@ -39,7 +39,6 @@ package decls.d_taula_de_noms is
     -- Valor nul per al tipus id_nom
     id_nul : constant id_nom := 0;
 
-
     procedure tbuida
       (tn : out taula_de_noms);
 
