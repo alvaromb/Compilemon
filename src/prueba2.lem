@@ -1,10 +1,10 @@
 procedure joan is
 
-   	type bili is record 
-		cat:regio;
-		ib: regio;
-		pv: basura;
-		esp:NACIONdetodas;
+   	type FCB is record 
+		puyol : defensa;
+		 xavi : centre;
+		pique : defensa;
+		  pep : entrenador;
    	end record;
 
 	bili : integer := 5;
@@ -15,8 +15,8 @@ procedure joan is
 
 	biel : string;
 
-	luis : string := "bili callate";
-	conmiweb : string := "heil ""hitler"" verbose";
+	lluis : string := "Hola, tinc un iPhone";
+	miquel : string := "Hola ""puc fer"" webs";
 
 	procedure i is 
 	begin
@@ -29,38 +29,29 @@ procedure joan is
 
 begin
 
-    pepe:=4;
+    pepe := 4;
 
     while a = 1 loop
    		sa:=a+1;
     end loop;
 
     if (p and q) or c then
-	
 		alvaro := no;
-
 	else
-		
 		if 1 then
 			e:= -3;
-		
 			while luis = pepe loop
 				k:=9;
 			end loop;
-	
 		end if;
-
     end if;
 
 	luis(d.t.r);
-
 	luis(k or 2);
-
 	luis(k /= 2);
 
 	pp(-2);
 	pp(0-2);
-	
 	lui(5*(3*3));
 
     bili.s := 9;

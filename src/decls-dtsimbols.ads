@@ -14,13 +14,13 @@
 
 with    decls.dtdesc,
         decls.dgenerals,
-  decls.d_taula_de_noms,
-  Ada.Text_IO;
+        decls.d_taula_de_noms,
+        Ada.Text_IO;
 
 use     decls.dtdesc,
         decls.dgenerals,
-  decls.d_taula_de_noms,
-  Ada.Text_IO;
+        decls.d_taula_de_noms,
+        Ada.Text_IO;
 
 
 package decls.dtsimbols is
@@ -50,16 +50,15 @@ package decls.dtsimbols is
       (ts : in tsimbols;
        id : in id_nom) return descrip;
 
-
-    -- VERSIO 2: Normal, llenguatge amb blocs estil Pascal.
+    -- VERSIO 2: Normal, llenguatge amb blocs
+    -- estil Pascal.
     procedure entrabloc
       (ts : in out tsimbols);
 
     procedure surtbloc
       (ts : in out tsimbols);
 
-
-    -- VERSIO 3: Blocs més records.
+    -- VERSIO 3: Blocs mes records.
     procedure posacamp
       (ts : in out tsimbols;
       idr : in id_nom;
@@ -137,7 +136,8 @@ private
       np : nprof;
        d : descrip;
       id : id_nom;
-       s : rang_despl; --Afegit per tal d'implementar els records
+       s : rang_despl; --Afegit per tal
+                       --d'implementar els records
    end record;
 
    type taula_ambits is array

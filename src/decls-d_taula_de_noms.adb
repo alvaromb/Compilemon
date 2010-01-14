@@ -102,7 +102,6 @@ package body decls.d_taula_de_noms is
 
       -- Index per recorrer la taula de caracters.
       jdx : rang_tcar;
-
       long : rang_tcar renames tn.ncar;
 
    begin

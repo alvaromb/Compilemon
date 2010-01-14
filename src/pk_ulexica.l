@@ -1,19 +1,17 @@
 -- Macros
-
 lletra		[A-Za-z]
 digit		[0-9]
 separadors	[" "\n\b\t\f]
-car			({lletra}|{digit})
+car		({lletra}|{digit})
 caracter	\'{car}\' 
-car_string  [\040-\041\043-\176]
-string      \"({car_string}|\"\")*\"
+car_string  	[\040-\041\043-\176]
+string      	\"({car_string}|\"\")*\"
 
 
 %%
 
 
 -- Paraules clau
-
 procedure	{mt_atom(tok_begin_line, tok_begin_col,
 		yylval); return pc_procedure;} 
 
@@ -83,9 +81,7 @@ and		{mt_atom(tok_begin_line, tok_begin_col,
 or		{mt_atom(tok_begin_line, tok_begin_col, 
 		yylval); return pc_and;}
 
-
 --Simbols 
-
 ":="		{mt_atom(tok_begin_line, tok_begin_col, 
 		yylval); return s_assignacio;}
 
@@ -110,9 +106,7 @@ or		{mt_atom(tok_begin_line, tok_begin_col,
 "."		{mt_atom(tok_begin_line, tok_begin_col, 
 		yylval); return s_puntrec;}
 
-
 --Operadors
-
 "<"		{mt_atom(tok_begin_line, tok_begin_col, 
 		yylval); return op_menor;}
 
@@ -143,54 +137,39 @@ or		{mt_atom(tok_begin_line, tok_begin_col,
 "/"		{mt_atom(tok_begin_line, tok_begin_col, 
 		yylval); return op_divisio;}
 
-
 --Digit
-
 {digit}+	{mt_numero(tok_begin_line, tok_begin_col,
 		yytext, yylval); return const;}
 			
-			
 --Lletra
-
 {caracter}	{mt_caracter(tok_begin_line, tok_begin_col,
 		yytext, yylval); return const;}
 
-
 --String  mirar a les declaracions
-
-{string}	{mt_string(tok_begin_line,tok_begin_col,yytext,yylval);return const;}
+{string}	{mt_string(tok_begin_line, tok_begin_col,
+		yytext, yylval); return const;}
 
 --Identificador
+{lletra}({car}|("_"{car}))*  
+	{mt_identificador(tok_begin_line, tok_begin_col,
+	yytext, yylval); return id;}
 
-{lletra}({car}|("_"{car}))*  {mt_identificador(tok_begin_line,tok_begin_col,yytext,yylval); return id;}
-
-
-
---Comentaris (Hem llevat les dobles comes abans era : "-""-")
-
+--Comentaris
 "--"[^\n]*\n	{null;}
---"--"[{car_string}]	{null;}
-
 
 --Separadors
-
 {separadors}	{null;}
 
-
 --Error
-
 .	{return error;}
-
 
 
 %%
 
 
-
 with	decls.d_taula_de_noms,
 	pk_usintactica_tokens,
 	decls.d_atribut;
-
 
 use	decls.d_taula_de_noms,
 	pk_usintactica_tokens,

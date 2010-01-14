@@ -19,8 +19,8 @@ with    Ada.Text_IO,
         d_token,
         pk_ulexica_io,
         u_lexica,
-    decls.dtsimbols,
-    decls.dtdesc;
+        decls.dtsimbols,
+        decls.dtdesc;
 
 use     Ada.Text_IO,
         Ada.Command_Line,
@@ -30,8 +30,8 @@ use     Ada.Text_IO,
         d_token,
         pk_ulexica_io,
         u_lexica,
-    decls.dtsimbols,
-    decls.dtdesc;
+        decls.dtsimbols,
+        decls.dtdesc;
 
 
 procedure compiprueba is
@@ -88,7 +88,7 @@ begin
    --entrabloc(ts);
    --posa(ts, id, d3, e);
 
-   --Començam amb records
+   --Comencam amb records
    desctip.ocup := 8;
    d4.dt := desctip;
    id := 8;
@@ -104,37 +104,47 @@ begin
    Put_Line("Cons camp: "&conscamp(ts,8,1).nv'img);
    Put_Line("Cons camp: "&conscamp(ts,8,7).nv'img);
 
-   --Començam amb els arrays
+   --Comencam amb els arrays
    descarr.ocup := 8;
    d5.dt := descarr;
    posa(ts, 5, d5, e); --Ficam l'array
    posa_idx(ts, 5, 31, e); --Afegim un camp a l'array
    printts(ts);
-   posa_idx(ts, 5, 32, e); --Afegim un altre camp a l'array
+   posa_idx(ts, 5, 32, e); --Afegim un altre camp
+                           --a l'array
    printts(ts);
 
-   --Primer_idx i idx_valir
-   Put_Line("PRIMER IDX: "&primer_idx(ts, 5)'img);
-   Put_Line("IDX VALID: "&idx_valid(primer_idx(ts, 5))'img);
+   --Primer_idx i idx_valid
+   Put_Line("PRIMER IDX: "
+              &primer_idx(ts, 5)'img);
+   Put_Line("IDX VALID: "
+              &idx_valid(primer_idx(ts, 5))'img);
 
    --Provam el successor del camp 1
-   Put_Line("SUCCESSOR IDX: "&succ_idx(ts, primer_idx(ts, 5))'img);
-   Put_Line("SUCCESSOR IDX: "&succ_idx(ts, succ_idx(ts, primer_idx(ts, 5)))'img);
+   Put_Line("SUCCESSOR IDX: "
+              &succ_idx(ts, primer_idx(ts, 5))'img);
+   Put_Line("SUCCESSOR IDX: "
+              &succ_idx(ts, succ_idx(ts,
+               primer_idx(ts, 5)))'img);
 
    --Consultam idx
-   Put_Line("CONS IDX: "&cons_idx(ts, primer_idx(ts, 5))'img);
-   Put_Line("CONS IDX: "&cons_idx(ts, succ_idx(ts, primer_idx(ts, 5)))'img);
+   Put_Line("CONS IDX: "
+              &cons_idx(ts, primer_idx(ts, 5))'img);
+   Put_Line("CONS IDX: "
+              &cons_idx(ts, succ_idx(ts,
+               primer_idx(ts, 5)))'img);
 
    --Posa_arg
    D6.Tr := 9;
    d6.Nv := 5;
    Posa(Ts, 9, D6, E); --Parametre variable 8 (argument)
-   Posa_Arg(Ts, 7, 9, D6, E); --Passam per primera vegada l'argument
-   Posa_Arg(Ts, 7, 9, D6, E); --El passam per segona vegada
+   Posa_Arg(Ts, 7, 9, D6, E); --Passam per primera vegada
+                              --l'argument
+   Posa_Arg(Ts, 7, 9, D6, E); --El passam per segona
+                              --vegada
    Printts(Ts);
 
    --Primer_arg
-
 
    --Actualitza
    Put_Line("Antes act: ");

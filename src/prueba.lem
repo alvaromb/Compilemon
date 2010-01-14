@@ -8,13 +8,14 @@ begin
     Open_Input(Argument(1));
     tk := Yylex; 
 
-  while tk /= end_of_input loop
-      Put(tok_begin_line);
-      Put_Line(Token(Tk));
-      tk := Yylex;
-  end loop;
+	while tk /= end_of_input loop      
+		Put(tok_begin_line);
+		Put_Line(Token(Tk));
+		tk := Yylex;
+	end loop;
+
 	a := 'a';
 	n := 9;
-	p := "PEPOTE ES MARICON";
+	p := "Josep Lluis";
 
 end compilemon;

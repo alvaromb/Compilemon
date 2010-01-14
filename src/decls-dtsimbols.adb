@@ -37,7 +37,8 @@ package body decls.dtsimbols is
       New_Line;
         Put_Line("tambit ----------");
         for i in 1 .. nprof'Last loop
-           Put_Line("tambit["&i'img&"] := "&ts.tambit(i)'img);
+           Put_Line("tambit["&i'img&"] := "
+                      &ts.tambit(i)'img);
         end loop;
 
         Put_Line("");
@@ -80,19 +81,21 @@ package body decls.dtsimbols is
    end printts;
 
 
+
     -- VERSIO 1: llenguatge simple sense estructura
     -- de blocs estil Fortran.
    procedure tbuida
      (ts : out tsimbols) is
 
       nul_desc : descrip(dnula);
-   begin
 
+   begin
         ts.prof := 1;
         ts.tambit(ts.prof) := nul_despl;
 
         for i in 1 .. id_nom'Last loop
-            ts.tdesc(i) := (nul_nprof, nul_desc, nul_despl);
+           ts.tdesc(i) := (nul_nprof, nul_desc,
+                           nul_despl);
         end loop;
 
     end tbuida;
@@ -105,16 +108,15 @@ package body decls.dtsimbols is
         e : out boolean) is
 
         idespl : rang_despl;
-    begin
 
+    begin
         e := (ts.tdesc(id).np = ts.prof);
 
         if not e then
             ts.tambit(ts.prof) := ts.tambit(ts.prof) + 1;
             idespl := ts.tambit(ts.prof);
-
-            ts.texp(idespl) := (ts.tdesc(id).np, ts.tdesc(id).d, id, 0);
-
+            ts.texp(idespl) := (ts.tdesc(id).np,
+                                ts.tdesc(id).d, id, 0);
             ts.tdesc(id) := (ts.prof, d, 0);
         end if;
 
@@ -133,30 +135,28 @@ package body decls.dtsimbols is
     end cons;
 
 
-
-    -- VERSIO 2: Normal, llenguatge amb blocs estil Pascal.
+    -- VERSIO 2: Normal, llenguatge amb blocs estil
+    -- Pascal.
     procedure entrabloc
       (ts : in out tsimbols) is
-
     begin
         ts.prof := ts.prof + 1;
         ts.tambit(ts.prof) := ts.tambit(ts.prof - 1);
     end entrabloc;
 
 
-    procedure surtbloc (ts : in out tsimbols) is
+    procedure surtbloc
+      (ts : in out tsimbols) is
 
         idespl1 : rang_despl;
         idespl2 : rang_despl;
              id : id_nom;
 
     begin
-
         idespl1 := ts.tambit(ts.prof);
         ts.prof := ts.prof - 1;
         idespl2 := ts.tambit(ts.prof) + 1;
 
-        -- PRUEBA: Si peta mirar aqui
         for idespl in reverse idespl1 .. idespl2 loop
             if ts.texp(idespl).np > 0 then
                 id := ts.texp(idespl).id;
@@ -167,7 +167,6 @@ package body decls.dtsimbols is
         end loop;
 
     end surtbloc;
-
 
 
     -- VERSIO 3: Blocs mes records.
@@ -184,7 +183,6 @@ package body decls.dtsimbols is
        itdespl : rang_despl;
 
     begin
-
         des := ts.tdesc(idr).d;
         if des.td /= dtipus then e := TRUE; end if;
 
@@ -200,24 +198,25 @@ package body decls.dtsimbols is
         if not e then
             ts.tambit(ts.prof) := ts.tambit(ts.prof) + 1;
             itdespl := ts.tambit(ts.prof);
-            ts.texp(itdespl) := (nul_nprof, d, idc, ts.tdesc(idr).s);
+            ts.texp(itdespl) := (nul_nprof, d, idc,
+                                 ts.tdesc(idr).s);
             ts.tdesc(idr).s := itdespl;
         end if;
 
     end posacamp;
 
 
-    function conscamp (ts : in tsimbols;
-                       idr : in id_nom;
-                       idc : in id_nom) return descrip is
+    function conscamp
+      (ts : in tsimbols;
+      idr : in id_nom;
+      idc : in id_nom) return descrip is
 
                d : descrip;
               td : tdescrip;
                p : rang_despl;
-            descnula : descrip(dnula);
+        descnula : descrip(dnula);
 
     begin
-
         d := ts.tdesc(idr).d;
         td := d.td;
 
@@ -235,7 +234,6 @@ package body decls.dtsimbols is
     end conscamp;
 
 
-
     -- VERSIO 4: Arrays.
     procedure posa_idx
       (ts : in out tsimbols;
@@ -250,7 +248,6 @@ package body decls.dtsimbols is
         idespl : rang_despl;
 
     begin
-
         d := ts.tdesc(ida).d;
         if d.td /= dtipus then e := TRUE; end if;
 
@@ -266,8 +263,8 @@ package body decls.dtsimbols is
 
         ts.tambit(ts.prof) := ts.tambit(ts.prof) + 1;
         idespl := ts.tambit(ts.prof);
-
-        ts.texp(idespl) := (nul_nprof, (td => dnula), idi, 0);
+        ts.texp(idespl) := (nul_nprof, (td => dnula),
+                            idi, 0);
 
         if pp /= 0 then
            ts.texp(pp).s := idespl;
@@ -327,7 +324,6 @@ package body decls.dtsimbols is
    idespl : rang_despl;
 
     begin
-
         d := ts.tdesc(idp).d;
         if d.td /= dproc then e := TRUE; end if;
 
@@ -340,7 +336,6 @@ package body decls.dtsimbols is
 
         ts.tambit(ts.prof) := ts.tambit(ts.prof) + 1;
         idespl := ts.tambit(ts.prof);
-
         ts.texp(idespl) := (nul_nprof, da, ida, 0);
 
         if pp /= 0 then

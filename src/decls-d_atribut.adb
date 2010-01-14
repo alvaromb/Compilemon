@@ -16,14 +16,11 @@
 -- ------------------------------------------------
 
 with    U_Lexica;
---  Decls.Tn;
 
 use     U_Lexica;
---  Decls.Tn;
 
 
 package body decls.d_atribut is
-
 
    procedure mt_atom
      (l, c : in natural;
