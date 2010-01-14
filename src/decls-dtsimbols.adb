@@ -42,7 +42,7 @@ package body decls.dtsimbols is
 
         Put_Line("");
         Put_Line("tdesc ------------");
-        for i in 1 .. (id_nom'Last-990) loop
+        for i in 1 .. (id_nom'Last-985) loop
            Put("tdesc["&i'img&"] := (");
            Put(ts.tdesc(i).np'img&", ");
            case ts.tdesc(i).d.td is
@@ -60,7 +60,7 @@ package body decls.dtsimbols is
 
         New_Line;
         Put_Line("texpansio --------");
-        for i in 1 .. (rang_despl'Last-9990) loop
+        for i in 1 .. (rang_despl'Last-9985) loop
            Put("texp["&i'img&"] := (");
            Put(ts.texp(i).np'img&", ");
            case ts.texp(i).d.td is
@@ -314,13 +314,89 @@ package body decls.dtsimbols is
     end cons_idx;
 
 
---    procedure posa_arg
---      (ts : in tsimbols;
- --     idp : in id_nom;
-   --   ida : in id_nom;
-     --   d : in descrip;
-       -- e : out boolean) is
-    --begin
+    procedure posa_arg
+      (ts : in out tsimbols;
+      idp : in id_nom;
+      ida : in id_nom;
+       da : in descrip;
+        e : out boolean) is
+
+        d : descrip;
+        p : rang_despl;
+       pp : rang_despl;
+   idespl : rang_despl;
+
+    begin
+
+        d := ts.tdesc(idp).d;
+        if d.td /= dproc then e := TRUE; end if;
+
+        p := ts.tdesc(idp).s;
+        pp := 0;
+        while p /= 0 loop -- Comprovar el 0
+            pp := p;
+            p := ts.texp(p).s;
+        end loop;
+
+        ts.tambit(ts.prof) := ts.tambit(ts.prof) + 1;
+        idespl := ts.tambit(ts.prof);
+
+        ts.texp(idespl) := (nul_nprof, da, ida, 0);
+
+        if pp /= 0 then
+           ts.texp(pp).s := idespl;
+        else
+           ts.tdesc(idp).s := idespl;
+        end if;
+
+    end Posa_Arg;
+
+
+    function Primer_Arg
+      (Ts : in Tsimbols;
+      Idp : in Id_Nom) return Cursor_Arg is
+    begin
+       return cursor_arg(ts.tdesc(idp).s);
+    end Primer_Arg;
+
+
+    function Succ_Arg
+      (ts : in tsimbols;
+       ca : in cursor_arg) return cursor_arg is
+    begin
+        if arg_valid(ca) then
+           return cursor_arg(ts.texp(rang_despl(ca)).s);
+        else
+           return 0; --Excepcio
+        end if;
+    end Succ_Arg;
+
+
+    function Arg_Valid
+      (Ca : in Cursor_Arg) return Boolean is
+    begin
+       return Ca > 0;
+    end Arg_Valid;
+
+
+    procedure cons_arg
+      (ts : in tsimbols;
+       ca : in cursor_arg;
+      ida : out id_nom;
+       Dn : out Descrip) is
+    begin
+       Ida := ts.texp(rang_despl(ca)).id;
+       Dn := Ts.Texp(Rang_Despl(Ca)).D;
+    end Cons_Arg;
+
+
+    procedure Actualitza
+      (Ts : in out Tsimbols;
+       Id : in Id_Nom;
+        D : in Descrip) is
+    begin
+       Ts.Tdesc(id).D := D;
+    end Actualitza;
 
 
 end decls.dtsimbols;

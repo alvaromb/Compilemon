@@ -42,6 +42,7 @@ procedure compiprueba is
    d3: descrip(dvar);
    d4: descrip(dtipus);
    d5: descrip(dtipus);
+   D6: Descrip(Dvar);
    e: boolean;
    np1 : num_proc := 5;
    np2 : num_proc := 7;
@@ -75,7 +76,7 @@ begin
 
    --Entra bloc
    entrabloc(ts);
-   d3.tr := 4;
+   D3.tr := 4;
    d3.nv := 3;
    posa(ts, id, d3, e);
 
@@ -123,6 +124,41 @@ begin
    --Consultam idx
    Put_Line("CONS IDX: "&cons_idx(ts, primer_idx(ts, 5))'img);
    Put_Line("CONS IDX: "&cons_idx(ts, succ_idx(ts, primer_idx(ts, 5)))'img);
+
+   --Posa_arg
+   D6.Tr := 9;
+   d6.Nv := 5;
+   Posa(Ts, 9, D6, E); --Parametre variable 8 (argument)
+   Posa_Arg(Ts, 7, 9, D6, E); --Passam per primera vegada l'argument
+   Posa_Arg(Ts, 7, 9, D6, E); --El passam per segona vegada
+   Printts(Ts);
+
+   --Primer_arg
+
+
+   --Actualitza
+   Put_Line("Antes act: ");
+   case cons(ts, 7).td is
+      when dnula => Put_Line("dnula");
+      when dtipus => Put_Line("dtipus");
+      when dvar => Put_Line("dvar");
+      when dproc => Put_Line("dproc");
+      when dconst => Put_Line("dconst");
+      when dargc => Put_Line("dargc");
+      when dcamp => Put_Line("dcamp");
+   end case;
+
+   Actualitza(Ts, 7, D6);
+   Put_Line("Act dvar: ");
+   case cons(ts, 7).td is
+      when dnula => Put_Line("dnula");
+      when dtipus => Put_Line("dtipus");
+      when dvar => Put_Line("dvar");
+      when dproc => Put_Line("dproc");
+      when dconst => Put_Line("dconst");
+      when dargc => Put_Line("dargc");
+      when dcamp => Put_Line("dcamp");
+   end case;
 
    if e then
       put_line("ERROR");

@@ -28,9 +28,8 @@ package decls.dtsimbols is
     --pragma pure;
 
     type tsimbols is limited private;
-    --type cursor_idx is private;
-    type cursor_idx is new rang_despl;
---  type cursor_arg is private;
+    type cursor_idx is new Rang_despl;
+    type cursor_arg is new Rang_despl;
 
     -- Operacions
     -- VERSIO 1: llenguatge simple sense estructura
@@ -41,32 +40,37 @@ package decls.dtsimbols is
     procedure tbuida
       (ts : out tsimbols);
 
-    procedure posa (ts : in out tsimbols;
-                     id : in id_nom;
-                      d : in descrip;
-                      e : out boolean);
+    procedure posa
+      (ts : in out tsimbols;
+       id : in id_nom;
+        d : in descrip;
+        e : out boolean);
 
-    function cons (ts : in tsimbols;
-                    id : in id_nom) return descrip;
+    function cons
+      (ts : in tsimbols;
+       id : in id_nom) return descrip;
 
 
     -- VERSIO 2: Normal, llenguatge amb blocs estil Pascal.
-    procedure entrabloc (ts : in out tsimbols);
+    procedure entrabloc
+      (ts : in out tsimbols);
 
-    procedure surtbloc (ts : in out tsimbols);
+    procedure surtbloc
+      (ts : in out tsimbols);
 
 
     -- VERSIO 3: Blocs més records.
-    procedure posacamp (ts : in out tsimbols;
-                        idr : in id_nom;
-                        idc : in id_nom;
-                          d : in descrip;
-                          e : out boolean);
+    procedure posacamp
+      (ts : in out tsimbols;
+      idr : in id_nom;
+      idc : in id_nom;
+        d : in descrip;
+        e : out boolean);
 
-    function conscamp (ts : in tsimbols;
-                       idr : in id_nom;
-                       idc : in id_nom) return descrip;
-
+    function conscamp
+      (ts : in tsimbols;
+      idr : in id_nom;
+      idc : in id_nom) return descrip;
 
     -- VERSIO 4: Arrays.
     procedure posa_idx
@@ -91,27 +95,34 @@ package decls.dtsimbols is
        ci : in cursor_idx) return id_nom;
 
     -- VERSIO 5: Procediments
---    procedure posa_arg
---      (ts : in tsimbols;
---      idp : in id_nom;
- --     ida : in id_nom;
-   --     d : in descrip;
-     --   e : out boolean);
+    procedure posa_arg
+      (ts : in out tsimbols;
+      idp : in id_nom;
+      ida : in id_nom;
+       da : in descrip;
+        e : out boolean);
 
---  function primer_arg () return cursor_arg; --OMPLIR
---
---  function succ_arg () return cursor_arg; --OMPLIR
---
---  function arg_valid () return boolean; --OMPLIR
+    function primer_arg
+      (ts : in tsimbols;
+       idp : in id_nom) return cursor_arg;
 
---  procedure cons_arg (ts : in tsimbols;
---                      ca : in cursor_arg;
---                     ida : out id_nom;
---                      dn : out descrip);
---
---  procedure actualitza (ts : in out tsimbols;
---                        id : in id_nom;
---                         d : in descrip);
+    function succ_arg
+      (ts : in tsimbols;
+       ca : in cursor_arg) return cursor_arg;
+
+    function arg_valid
+      (Ca : in Cursor_arg) return boolean;
+
+    procedure cons_arg
+      (ts : in tsimbols;
+       ca : in cursor_arg;
+      ida : out id_nom;
+       dn : out descrip);
+
+    procedure actualitza
+      (ts : in out tsimbols;
+       id : in id_nom;
+        d : in descrip);
 
 private
 
@@ -140,6 +151,7 @@ private
 
    --TORNAR A DESCOMENTAR AIXO
    --type cursor_idx is new rang_despl;
+   --type cursor_arg is new rang_despl;
 
    type tsimbols is record
       tdesc : taula_desc;
