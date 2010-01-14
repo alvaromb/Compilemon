@@ -162,7 +162,7 @@ or		{mt_atom(tok_begin_line, tok_begin_col,
 
 --Identificador
 
-{lletra}(({digit}|{lletra})|("_"({digit}|{lletra})))*  {mt_identificador(tok_begin_line,tok_begin_col,yytext,yylval); return id;}
+{lletra}({car}|("_"{car}))*  {mt_identificador(tok_begin_line,tok_begin_col,yytext,yylval); return id;}
 
 
 

@@ -1,4 +1,68 @@
 procedure joan is
+
+   	type bili is record 
+		cat:regio;
+		ib: regio;
+		pv: basura;
+		esp:NACIONdetodas;
+   	end record;
+
+	bili : integer := 5;
+	bili : character;
+	alvs : constant integer := 69;
+	txavs : constant integer := 0;
+	pepe : character := 'p';
+
+	biel : string;
+
+	luis : string := "bili callate";
+	conmiweb : string := "heil ""hitler"" verbose";
+
+	procedure i is 
+	begin
+		a:=5;
+	end i;
+
+	type porcella is new integer range 1..345;
+	type l is array (porcella) of integer;
+	type l is array (p) of integer;
+
 begin
-    yyparse;
+
+    pepe:=4;
+
+    while a = 1 loop
+   		sa:=a+1;
+    end loop;
+
+    if (p and q) or c then
+	
+		alvaro := no;
+
+	else
+		
+		if 1 then
+			e:= -3;
+		
+			while luis = pepe loop
+				k:=9;
+			end loop;
+	
+		end if;
+
+    end if;
+
+	luis(d.t.r);
+
+	luis(k or 2);
+
+	luis(k /= 2);
+
+	pp(-2);
+	pp(0-2);
+	
+	lui(5*(3*3));
+
+    bili.s := 9;
+
 end joan;

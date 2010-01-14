@@ -116,13 +116,13 @@ declaracions:
 
 -- DECLARACIONS
 declaracio:
-	dec_var
+	dec_var s_final
   |
-	dec_constant
+	dec_constant s_final
   |
-    dec_tipus
+    dec_tipus s_final
   |
-    dec_procediment
+    dec_procediment --s_final
   ;
   
 dec_var:
@@ -130,15 +130,19 @@ dec_var:
   ;
   
 c_decl_var:
-	s_dospunts id s_final
+	s_dospunts id c_decl_ass --s_final
   |
     s_coma id c_decl_var
   ;
 
 dec_constant:
-	id s_dospunts pc_constant id s_assignacio const s_final -- ESTE const se refiere en los apuntes a VALOR
+	id s_dospunts pc_constant id s_assignacio const --s_final -- ESTE const se refiere en los apuntes a VALOR
   ;
   
+c_decl_ass:
+	s_assignacio const
+  |
+  ;
 
 -- TIPUS
 dec_tipus:
@@ -152,7 +156,7 @@ dec_tipus:
   
 -- TIPUS SUBRANG
 decl_subrang:
-	pc_type id pc_is pc_new id pc_range limit s_dospunts limit s_final
+	pc_type id pc_is pc_new id pc_range limit s_puntsrang limit --s_final
   ;
   
 limit:
@@ -176,7 +180,7 @@ p_dregistre:
 
 -- TIPUS COLECCIO
 decl_coleccio:
-	p_dcoleccio s_parentesitancat pc_of id s_final
+	p_dcoleccio s_parentesitancat pc_of id --s_final
   ;
   
 p_dcoleccio:
@@ -188,9 +192,9 @@ p_dcoleccio:
   
 -- BLOC D'INSTRUCCIO
 bloc:
-	bloc sentencia
+	bloc sentencia s_final
   | 
-	sentencia
+	sentencia s_final
   ;
   
   
@@ -198,16 +202,16 @@ bloc:
 sentencia: 
 	sassig
   |
-	scond
+	scond 
   |
 	srep
   | 
-    crida_proc 
-  ; --FALTARIA PONER LAMBDA???? En la doc, la pusimos. Tendría sentido un 'bloc' vacio? 
+    crida_proc
+  ; 
 
 -- Sentencia assignacio
 sassig:
-	referencia s_assignacio expressio s_final
+	referencia s_assignacio expressio 
   ;
 
 -- Sentencia condicional
@@ -227,12 +231,12 @@ scond:
 srep:
 	pc_while expressio pc_loop
 		bloc
-	pc_end pc_loop --CAMBIAR EN LA DOCUMENTACION (PONE end while????)
+	pc_end pc_loop
   ;
 
 -- Sentencia crida a procediment
 crida_proc:
-	referencia s_final
+	referencia --s_final
   ;
 
 referencia:
