@@ -47,7 +47,8 @@
 --Precedencia
 %left pc_or
 %left pc_and
-%nonassoc op_menor op_menorigual op_majorigual op_major op_igual op_distint
+%nonassoc op_menor op_menorigual op_majorigual 
+op_major op_igual op_distint
 %left op_suma
 %left op_resta
 %left op_multiplicacio op_divisio pc_mod
@@ -68,57 +69,57 @@
 
 --Produccions de la gramatica del llenguatge
 programa:
-	M1 dec_procediment
+    M1 dec_procediment
   ;
   
 M1: 
   ;
 
 dec_procediment:
-	pc_procedure encap pc_is
-		declaracions
-	pc_begin
-		bloc
-	pc_end id s_final 
+    pc_procedure encap pc_is
+        declaracions
+    pc_begin
+        bloc
+    pc_end id s_final 
   ;
 
 
 encap:
-	id
+    id
   |
     pencap s_parentesitancat
   ;
   
 pencap:
-	pencap s_final param
+    pencap s_final param
   |
-	id s_parentesiobert param
+    id s_parentesiobert param
   ;
   
 param:
-	id s_dospunts mode id
+    id s_dospunts mode id
   ;
 
   
 mode:
-	pc_in
+    pc_in
   |
-	pc_out
+    pc_out
   |
-	pc_in pc_out
+    pc_in pc_out
   ;
   
 declaracions:
-	declaracions declaracio
+    declaracions declaracio
   |
   ;
   
 
 -- DECLARACIONS
 declaracio:
-	dec_var s_final
+    dec_var s_final
   |
-	dec_constant s_final
+    dec_constant s_final
   |
     dec_tipus s_final
   |
@@ -126,37 +127,38 @@ declaracio:
   ;
   
 dec_var:
-	id c_decl_var
+    id c_decl_var
   ;
   
 c_decl_var:
-	s_dospunts id c_decl_ass 
+    s_dospunts id c_decl_ass 
   |
     s_coma id c_decl_var
   ;
 
 dec_constant:
-	id s_dospunts pc_constant id s_assignacio const 
+    id s_dospunts pc_constant id s_assignacio const 
   ;
   
 c_decl_ass:
-	s_assignacio const
+    s_assignacio const
   |
   ;
 
 -- TIPUS
 dec_tipus:
-	decl_coleccio
+    decl_coleccio
   |
     decl_registre
   | 
-	decl_subrang
+    decl_subrang
   ;
   
   
 -- TIPUS SUBRANG
 decl_subrang:
-	pc_type id pc_is pc_new id pc_range limit s_puntsrang limit 
+    pc_type id pc_is pc_new id pc_range limit 
+    s_puntsrang limit 
   ;
   
 limit:
@@ -168,11 +170,11 @@ limit:
   
 -- TIPUS REGISTRE
 decl_registre:
-	p_dregistre pc_end pc_record
+    p_dregistre pc_end pc_record
   ;
   
 p_dregistre: 
-	p_dregistre id s_dospunts id s_final
+    p_dregistre id s_dospunts id s_final
   | 
     pc_type id pc_is pc_record id s_dospunts id s_final
   ;
@@ -180,75 +182,75 @@ p_dregistre:
 
 -- TIPUS COLECCIO
 decl_coleccio:
-	p_dcoleccio s_parentesitancat pc_of id 
+    p_dcoleccio s_parentesitancat pc_of id 
   ;
   
 p_dcoleccio:
-	p_dcoleccio s_coma id
+    p_dcoleccio s_coma id
   |
-	pc_type id pc_is pc_array s_parentesiobert id
+    pc_type id pc_is pc_array s_parentesiobert id
   ;
 
   
 -- BLOC D'INSTRUCCIO
 bloc:
-	bloc sentencia s_final
+    bloc sentencia s_final
   | 
-	sentencia s_final
+    sentencia s_final
   ;
   
   
 -- SENTENCIES D'INSTRUCCIONS
 sentencia: 
-	sassig
+    sassig
   |
-	scond 
+    scond 
   |
-	srep
+    srep
   | 
     crida_proc
   ; 
 
 -- Sentencia assignacio
 sassig:
-	referencia s_assignacio expressio 
+    referencia s_assignacio expressio 
   ;
 
 -- Sentencia condicional
 scond:
-	pc_if expressio pc_then 
-		bloc 
-	pc_end pc_if
+    pc_if expressio pc_then 
+        bloc 
+    pc_end pc_if
   |
     pc_if expressio pc_then 
-		bloc 
-	pc_else
-		bloc
-	pc_end pc_if
+        bloc 
+    pc_else
+        bloc
+    pc_end pc_if
   ;
 
 -- Sentencia bucle
 srep:
-	pc_while expressio pc_loop
-		bloc
-	pc_end pc_loop
+    pc_while expressio pc_loop
+        bloc
+    pc_end pc_loop
   ;
 
 -- Sentencia crida a procediment
 crida_proc:
-	referencia 
+    referencia 
   ;
 
 referencia:
-	id
+    id
   |
-	referencia s_puntrec id
+    referencia s_puntrec id
   |
-	pri s_parentesitancat
+    pri s_parentesitancat
   ;
   
 pri:
-	referencia s_parentesiobert expressio
+    referencia s_parentesiobert expressio
   |
     pri s_coma expressio
   ;
@@ -256,39 +258,39 @@ pri:
   
 -- Expressions
 expressio:
-	expressio pc_or expressio
+    expressio pc_or expressio
   |
-	expressio pc_and expressio
+    expressio pc_and expressio
   |
-	pc_not expressio     %prec pc_not
+    pc_not expressio     %prec pc_not
   |
-	expressio op_menor expressio
+    expressio op_menor expressio
   |
-	expressio op_menorigual expressio
+    expressio op_menorigual expressio
   |
-	expressio op_majorigual expressio
+    expressio op_majorigual expressio
   |
-	expressio op_major expressio
+    expressio op_major expressio
   |
-	expressio op_igual expressio	
+    expressio op_igual expressio    
   |
-	expressio op_distint expressio
+    expressio op_distint expressio
   |
-	expressio op_suma expressio
+    expressio op_suma expressio
   |
-	expressio op_resta expressio
+    expressio op_resta expressio
   |
-	expressio op_multiplicacio expressio
+    expressio op_multiplicacio expressio
   |
-	expressio op_divisio expressio
+    expressio op_divisio expressio
   |
     expressio pc_mod expressio
   |
-	op_resta expressio   %prec menys_unitari
+    op_resta expressio   %prec menys_unitari
   |
-	s_parentesiobert expressio s_parentesitancat
+    s_parentesiobert expressio s_parentesitancat
   |
-	referencia
+    referencia
   |
     const
   ;
@@ -299,29 +301,28 @@ expressio:
 
 package pk_usintactica is
 
-	procedure yyparse;
-	
+    procedure yyparse;
+    
 
 end pk_usintactica;
 
 
 
-with    pk_usintactica_tokens,
+with	pk_usintactica_tokens,
         pk_usintactica_shift_reduce,
         pk_usintactica_goto,
-	pk_ulexica_io,
-	u_lexica,
-  	Ada.text_IO;
-        
+    	pk_ulexica_io,
+    	u_lexica,
+      	Ada.text_IO;
 
-use     pk_usintactica_tokens,
-        pk_usintactica_shift_reduce,
-        pk_usintactica_goto,
-	pk_ulexica_io,
-	u_lexica,
-  	Ada,
-  	ada.text_io;
-		
+use	pk_usintactica_tokens,
+    	pk_usintactica_shift_reduce,
+    	pk_usintactica_goto,
+    	pk_ulexica_io,
+    	u_lexica,
+    	Ada,
+    	ada.text_io;
+        
 
 package body pk_usintactica is
 
