@@ -41,8 +41,8 @@
 %token op_multiplicacio
 %token op_divisio
 %token id    
-%token const -- Per declarar constants (digit, lletra i string)
-			 -- MIRAR d_token.ads: pc_do Quitar??? cadena???
+%token const 
+
 
 --Precedencia
 %left pc_or
@@ -122,7 +122,7 @@ declaracio:
   |
     dec_tipus s_final
   |
-    dec_procediment --s_final
+    dec_procediment 
   ;
   
 dec_var:
@@ -130,13 +130,13 @@ dec_var:
   ;
   
 c_decl_var:
-	s_dospunts id c_decl_ass --s_final
+	s_dospunts id c_decl_ass 
   |
     s_coma id c_decl_var
   ;
 
 dec_constant:
-	id s_dospunts pc_constant id s_assignacio const --s_final -- ESTE const se refiere en los apuntes a VALOR
+	id s_dospunts pc_constant id s_assignacio const 
   ;
   
 c_decl_ass:
@@ -156,7 +156,7 @@ dec_tipus:
   
 -- TIPUS SUBRANG
 decl_subrang:
-	pc_type id pc_is pc_new id pc_range limit s_puntsrang limit --s_final
+	pc_type id pc_is pc_new id pc_range limit s_puntsrang limit 
   ;
   
 limit:
@@ -180,7 +180,7 @@ p_dregistre:
 
 -- TIPUS COLECCIO
 decl_coleccio:
-	p_dcoleccio s_parentesitancat pc_of id --s_final
+	p_dcoleccio s_parentesitancat pc_of id 
   ;
   
 p_dcoleccio:
@@ -236,7 +236,7 @@ srep:
 
 -- Sentencia crida a procediment
 crida_proc:
-	referencia --s_final
+	referencia 
   ;
 
 referencia:

@@ -329,7 +329,7 @@ package body decls.dtsimbols is
 
         p := ts.tdesc(idp).s;
         pp := 0;
-        while p /= 0 loop -- Comprovar el 0
+        while p /= 0 loop 
             pp := p;
             p := ts.texp(p).s;
         end loop;

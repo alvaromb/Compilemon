@@ -28,8 +28,10 @@ package decls.dtsimbols is
     --pragma pure;
 
     type tsimbols is limited private;
-    type cursor_idx is new Rang_despl;
-    type cursor_arg is new Rang_despl;
+
+	--Serveix per al joc de proves
+    --type cursor_idx is new Rang_despl;
+    --type cursor_arg is new Rang_despl;
 
     -- Operacions
     -- VERSIO 1: llenguatge simple sense estructura
@@ -136,8 +138,7 @@ private
       np : nprof;
        d : descrip;
       id : id_nom;
-       s : rang_despl; --Afegit per tal
-                       --d'implementar els records
+       s : rang_despl; 
    end record;
 
    type taula_ambits is array
@@ -149,9 +150,9 @@ private
    type taula_desc is array
      (1 .. id_nom'Last) of tipus_descripcio;
 
-   --TORNAR A DESCOMENTAR AIXO
-   --type cursor_idx is new rang_despl;
-   --type cursor_arg is new rang_despl;
+
+   type cursor_idx is new rang_despl;
+   type cursor_arg is new rang_despl;
 
    type tsimbols is record
       tdesc : taula_desc;
