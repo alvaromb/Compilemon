@@ -35,11 +35,22 @@ use     Ada.Text_IO,
         Pk_Usintactica;
 
 procedure compilemon is
+   Tk: Token;
 begin
 
    tbuida(Decls.D_Atribut.Tn);
    Open_Input(Argument(1));
-   yyparse;
+   --yyparse;
+   --while(Yylex'Img/="END_OF_INPUT") loop
+   --Put_Line(""&Yy_Line_Number'Img&"/"&Yy_Begin_Column'Img&" Tk: "&Yylex'img);
+   --end loop;
+
+   Tk := Yylex;
+   while Tk/=End_Of_Input loop
+      Put_Line(Yy_Line_Number'Img&"/"&Yy_Begin_Column'Img&":"&Tk'Img);
+      Tk:= Yylex;
+   end loop;
+
    close_Input;
 
    exception

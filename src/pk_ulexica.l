@@ -150,12 +150,10 @@ or		{mt_atom(tok_begin_line, tok_begin_col,
 		yytext, yylval); return const;}
 
 --Identificador
-{lletra}({car}|("_"{car}))*  
-	{mt_identificador(tok_begin_line, tok_begin_col,
-	yytext, yylval); return id;}
+{lletra}({car}|("_"{car}))*	{mt_identificador(tok_begin_line, tok_begin_col,yytext, yylval); return id;}
 
 --Comentaris
-"--"[^\n]*\n	{null;}
+"--"[^\n]*		{null;}
 
 --Separadors
 {separadors}	{null;}

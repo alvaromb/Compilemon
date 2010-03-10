@@ -55,7 +55,7 @@ package decls.dtdesc is
        dcamp,
        dargc);
 
-    type tipusdetipus is
+    type tipussubjacent is
       (tsbool,
        tscar,
        tsent,
@@ -63,7 +63,7 @@ package decls.dtdesc is
        tsarr,
        tsnul);
 
-    type descriptipus (tt: tipusdetipus := tsnul) is
+    type descriptipus (tt: tipussubjacent := tsnul) is
         record
             ocup : despl;
             case tt is

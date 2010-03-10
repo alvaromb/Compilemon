@@ -47,16 +47,16 @@
 --Precedencia
 %left pc_or
 %left pc_and
+%left pc_not
 %nonassoc op_menor op_menorigual op_majorigual 
 op_major op_igual op_distint
 %left op_suma
 %left op_resta
 %left op_multiplicacio op_divisio pc_mod
-%left pc_not
 %left menys_unitari
 
 
-
+pc
 --Definicio del tipus atribut
 %with decls.d_atribut
 {
@@ -69,7 +69,7 @@ op_major op_igual op_distint
 
 --Produccions de la gramatica del llenguatge
 programa:
-    M1 dec_procediment
+    M1 dec_procediment 
   ;
   
 M1: 
@@ -137,11 +137,11 @@ c_decl_var:
   ;
 
 dec_constant:
-    id s_dospunts pc_constant id s_assignacio const 
+    id s_dospunts pc_constant id s_assignacio limit
   ;
   
 c_decl_ass:
-    s_assignacio const
+    s_assignacio limit
   |
   ;
 
@@ -315,7 +315,7 @@ with	pk_usintactica_tokens,
     	u_lexica,
       	Ada.text_IO;
 
-use	pk_usintactica_tokens,
+use		pk_usintactica_tokens,
     	pk_usintactica_shift_reduce,
     	pk_usintactica_goto,
     	pk_ulexica_io,

@@ -1,3 +1,4 @@
+
 procedure joan is
 
    	type FCB is record 
@@ -30,6 +31,7 @@ procedure joan is
 begin
 
     pepe := 4;
+    --Visca Catalunya Lliure i visca la Terra Catalana
 
     while a = 1 loop
    		sa:=a+1;
