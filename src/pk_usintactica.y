@@ -137,7 +137,7 @@ c_decl_var:
   ;
 
 dec_constant:
-    id s_dospunts pc_constant id s_assignacio limit
+    id s_dospunts pc_constant id s_assignacio expressio 
   ;
   
 c_decl_ass:
