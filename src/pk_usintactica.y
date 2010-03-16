@@ -56,11 +56,13 @@ op_major op_igual op_distint
 %left menys_unitari
 
 
-pc
+
 --Definicio del tipus atribut
-%with decls.d_atribut
+%with decls.d_atribut, decls.dtnode;
+%use decls.d_atribut, decls.dtnode;
 {
 	subtype yystype is decls.d_atribut.atribut;
+
 }
 
 
@@ -69,7 +71,7 @@ pc
 
 --Produccions de la gramatica del llenguatge
 programa:
-    M1 dec_procediment 
+    M1 dec_procediment { creaNode($$, $1, $2, programa);}
   ;
   
 M1: 
@@ -313,6 +315,8 @@ with	pk_usintactica_tokens,
         pk_usintactica_goto,
     	pk_ulexica_io,
     	u_lexica,
+		decls.d_arbre,
+		decls.dtnode,
       	Ada.text_IO;
 
 use		pk_usintactica_tokens,
@@ -320,13 +324,17 @@ use		pk_usintactica_tokens,
     	pk_usintactica_goto,
     	pk_ulexica_io,
     	u_lexica,
+		decls.d_arbre,
+		decls.dtnode,
     	Ada,
     	ada.text_io;
         
 
 package body pk_usintactica is
-
+	
     procedure YYError (e : in string) is
+		
+			
     
     begin
         

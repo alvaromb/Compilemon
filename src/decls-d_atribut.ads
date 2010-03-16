@@ -15,10 +15,12 @@
 -- ------------------------------------------------
 
 with    decls.Dgenerals,
-        decls.D_Taula_De_Noms;
+        decls.D_Taula_De_Noms,
+		decls.Dtnode;
 
 use     decls.Dgenerals,
-        decls.D_Taula_De_Noms;
+        decls.D_Taula_De_Noms,
+		decls.Dtnode;
 
 
 package decls.d_atribut is
@@ -26,9 +28,10 @@ package decls.d_atribut is
    type tipus_atribut is
      (atom,
       a_ident,
-      a_lit);
+      a_lit,
+	  nodeArbre);
 
-   type valor is new integer;
+   
 
    type atribut (t : tipus_atribut := atom) is record
        lin, col : natural;
@@ -36,6 +39,7 @@ package decls.d_atribut is
            when atom           => null;
            when a_ident        => idn : id_nom;
            when a_lit          => val : valor;
+		   when others		   => a   : pnode;
        end case;
    end record;
 

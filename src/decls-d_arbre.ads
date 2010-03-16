@@ -1,17 +1,31 @@
 
 
-with decls-dtnode;
+with Decls.Dtnode, 
+	 decls.D_Taula_De_Noms,
+	 decls.d_atribut,
+	 Ada.text_io;
 
-use decls-dtnode;
+use Decls.Dtnode,
+	 decls.D_Taula_De_Noms,
+	 decls.d_atribut,
+	 Ada.text_io;
 
 
 package decls.d_arbre is
 
+	
 
-	type arbre is private;
+	--procedure abuit(p: out node);
+    procedure creaNode(p:out atribut; fe,fd : in atribut; tn : in Tipusnode);
+    procedure creaNode(p:out atribut; fe,fc,fd : in atribut; tn : in Tipusnode);
+    procedure creaNode(p:out atribut; fe,fce,fc,fd : in atribut; tn : in Tipusnode);
+	procedure creaNode(p:out atribut; fe,fd: in atribut; op : in operacio; tn : in Tipusnode);
+	procedure creaNode(p:out atribut; f : in atribut; op : in operacio; tn : in Tipusnode);
+	procedure creaNode(p:out atribut; fe, fd : in atribut; m : in Mmode; tn : in Tipusnode);
+	procedure creaNode(p:out atribut; id : in id_nom; tn : in Tipusnode);--?
+	procedure creaNode(p:out atribut; a: in atribut; tn : in Tipusnode);
 
 
-	procedure abuit(p: out arbre);
 	--Se ha pensado crear un 'creanode' por cada 'when': 
 		-- 1º parametro servira para el linkaje
 		-- 2º parametro servira para el tipo de nodo
@@ -25,11 +39,6 @@ package decls.d_arbre is
 --	function fd(r: in arbre) return arbre;
 --	function empelta(op: in character; fe: in arbre; fd: in arbre) return arbre;
 --	procedure inordre_r(r: in arbre);
-
-
-private
-	
-	arbre : pnode;
 
 
 
