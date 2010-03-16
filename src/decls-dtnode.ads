@@ -10,20 +10,20 @@ package Decls.Dtnode is
       Entrasurt);
    --pragma pure;
    type Operacio is
-     (Suma,
-      Resta,
-      Mult,
-      Div,
-      Menor,
-      Menorig,
-      Major,
-      Majorig,
-      Igual,
-      Distint,
-      Modul,
-      Unio,
-      Interseccio,
-      Negacio);
+     (Suma, --
+      Resta, --
+      Mult, --
+      Div, --
+      Menor, --
+      Menorig, --
+      Major, --
+      Majorig, --
+      Igual, --
+      Distint, --
+      Modul, --
+      Unio, --
+      Interseccio, --
+      Negacio); --
 
    type valor is new integer;
 
@@ -32,31 +32,33 @@ package Decls.Dtnode is
    type Pnode is access Node;
 
    type Tipusnode is
-     (Programa,
-      M1,
-      Repeticio,
-      CondicionalS,
-      CondicionalC,
-      Expressio,
+     (Programa, --
+      M1, 
+      Repeticio, --
+      CondicionalS, --
+      CondicionalC, --
+      Expressio, --
       ExpressioUnaria, -- Not E, -E
 	  Pencap,
       Procediment, -- Fe = encap, Fc = declaracions, Fd = bloc
-      Dvariable,
-      Dconstant,
-      Dcoleccio,
-      Dregistre,
-	  Dencapregistre,
-      Dsubrang,
+      Dvariable, --
+      Dconstant, --
+      Dcoleccio, --
+      Dregistre, --
+	  Dencapregistre, --
+      Dsubrang, --
       Identificador,
-      Const,
-      Declaracions,
+      Const, --
+      Declaracions, --
       Bloc,
       Assignacio,
-      Referencia,
+      Referencia, --
       Pri,
-	  Param,
-	  Pcoleccio,
-	  Pdimcoleccio,
+	  Param, 
+	  Pcoleccio, --
+	  Pdimcoleccio, --
+	  Asigvalvar, --
+      Declmultvar, --	
 	  Tnul); 
 
 	type node (n: tipusnode := tnul) is record
@@ -64,8 +66,9 @@ package Decls.Dtnode is
             when m1 | tnul => null;
 			when programa | repeticio | condicionalS 
 			 			  |	declaracions | bloc | assignacio
-						  | pri | pencap | dcoleccio | pdimcoleccio
-						  | referencia | pcoleccio | dvariable => fe1, fd1: pnode; 
+						  | pri | dcoleccio | pdimcoleccio
+						  | referencia | pcoleccio | dvariable 
+						  | Asigvalvar | Declmultvar => fe1, fd1: pnode; 
 			
 			when CondicionalC | dconstant | 
 					dregistre | dencapregistre => fe2, fc2, fd2: pnode;
@@ -80,6 +83,9 @@ package Decls.Dtnode is
 
 			when param => fe10, fd10 : pnode;
 						  m10 : Mmode;
+
+			when pencap => f11 : pnode;
+						   m11 : Mmode;
 
 			when identificador => id12 : id_nom;
 
