@@ -48,15 +48,24 @@ package decls.d_arbre is
       m : in Mmode;
      tn : in Tipusnode);
 
-   procedure creaNode
+   procedure CreaNode_ID
      (p : out atribut;
      id : in atribut;
      tn : in Tipusnode);
 
-   procedure creaNode
+   procedure CreaNode_VAL
      (p : out atribut;
       a : in atribut;
      tn : in Tipusnode);
+
+   procedure CreaNode_MODE
+     (P : out Atribut;
+      M : in Mmode;
+     Tn : in Tipusnode);
+
+   procedure Remunta
+     (P : out Atribut;
+      A : in Atribut);
 
     --Se ha pensado crear un 'creanode' por cada 'when':
         -- 1º parametro servira para el linkaje

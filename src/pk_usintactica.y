@@ -90,34 +90,40 @@ dec_procediment:
 
 encap:
     id
+    {creaNode_ID($$, $1, identificador);}
   |
     pencap s_parentesitancat
+  {Remunta($$, $1);}
   ;
   
 pencap:
     pencap s_final param
-	--{creaNode($$, $1, $3, );}
+    {creaNode($$, $1, $3, pencap1);}
   |
     id s_parentesiobert param
-	--{creaNode($$, $1, $3, );}
+    {creaNode($$, $1, $3, pencap2);}
   ;
   
 param:
     id s_dospunts mode id
+    {creaNode($$, $1, $3, $4, Param);}
   ;
 
   
 mode:
     pc_in
+    {creanode_mode($$, entra, mode);}
   |
     pc_out
+  {creanode_mode($$, surt, mode);}
   |
     pc_in pc_out
+    {creanode_mode($$, entrasurt, mode);}
   ;
   
 declaracions:
     declaracions declaracio
-	{creaNode($$, $1, $2, declaracions);}
+    {creaNode($$, $1, $2, declaracions);}
   |
   ;
   
@@ -326,10 +332,10 @@ expressio:
     s_parentesiobert expressio s_parentesitancat -- Hacer funcion que implique paso de punteros 
   |
     referencia
-	{creaNode($$, $1, Referencia);}
+        {Remunta($$, $1);}
   |
     const
-	{creaNode($$, $1, Const);}
+	{creaNode_VAL($$, $1, Const);}
   ;
   
   

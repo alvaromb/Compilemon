@@ -4,11 +4,13 @@ use Decls.Dgenerals,decls.D_Taula_De_Noms;
 
 package Decls.Dtnode is
 
-    type Mmode is
+   --pragma pure;
+
+   type Mmode is
      (Entra,
       Surt,
       Entrasurt);
-   --pragma pure;
+
    type Operacio is
      (Suma, --
       Resta, --
@@ -39,7 +41,8 @@ package Decls.Dtnode is
       CondicionalC, --
       Expressio, --
       ExpressioUnaria, -- Not E, -E
-      Pencap,
+      Pencap1,
+      Pencap2,
       Procediment, -- Fe = encap, Fc = declaracions, Fd = bloc
       Dvariable, --
       Dconstant, --
@@ -59,14 +62,15 @@ package Decls.Dtnode is
       Pdimcoleccio, --
       Asigvalvar, --
       Declmultvar, --
-      Tnul);
+      Tnul,
+      Mode);
 
-   type node (n: tipusnode := tnul) is record
+   type node (n: Tipusnode := tnul) is record
       case n is
          when m1 | tnul => null;
          when programa | repeticio | condicionalS
            | declaracions | bloc | assignacio | pri
-           | dcoleccio | pdimcoleccio | referencia
+           | dcoleccio | Pdimcoleccio | Referencia
            | pcoleccio | dvariable | Asigvalvar |
            Declmultvar => fe1, fd1: pnode;
 
@@ -81,20 +85,25 @@ package Decls.Dtnode is
 
          when procediment | dsubrang => fe5, fc5, fd5, fid5: pnode;
 
-         when param => fe10, fd10 : pnode;
-                          m10 : Mmode;
+         when Param =>
+            fe10, fd10 : pnode;
+                   m10 : Mmode;
 
-         when pencap => f11 : pnode;
-                           m11 : Mmode;
+         when Pencap1 | Pencap2 => f11 : pnode;
+                         m11 : Mmode;
 
-         when identificador => id12 : id_nom
-                               l, c : natural;
+         when identificador => id12 : Id_Nom;
+                               l1, c1 : natural;
 
-         when const => val : valor
-              l, c : natural;
+         when const => val : Valor;
+            l2, c2 : natural;
+
+         when Mode => M12 : Mmode;
+
+         --when Referencia => F13 : Pnode;
+
 
         end case;
     end record;
 
 end Decls.Dtnode;
-
