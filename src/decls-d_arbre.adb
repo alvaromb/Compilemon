@@ -23,7 +23,7 @@ package body decls.d_arbre is
       paux := new node(tn);
       paux.fe1 := fe.a;
       paux.fd1 := fd.a;
-      p := (nodeArbre, 0, 0,paux);
+      p := (nodeArbre, 0, 0, paux);
    end creaNode;
 
 
@@ -44,19 +44,19 @@ package body decls.d_arbre is
     end creaNode;
 
 
-    procedure creaNode(p : out atribut; fe,fd: in atribut; op : in operacio; tn : in Tipusnode) is
 
+    procedure creaNode
+      (p : out atribut;
+  fe, fd : in atribut;
+      op : in operacio;
+      tn : in Tipusnode) is
         paux : pnode;
-
     begin
-
-         paux := new node(tn);
-         paux.fe3 := fe.a;
-         paux.fd3 := fd.a;
-         paux.op3 := op;
-
-         p := (nodeArbre, 0, 0, paux);
-
+       paux := new node(tn);
+       paux.fe3 := fe.a;
+       paux.fd3 := fd.a;
+       paux.op3 := op;
+       p := (nodeArbre, 0, 0, paux);
     end creaNode;
 
 
@@ -126,34 +126,36 @@ package body decls.d_arbre is
 
     end creaNode;
 
-
-    procedure creaNode(p : out atribut; id : in id_nom; tn : in Tipusnode) is
-
-        paux : pnode;
+    -- Crea node per identificadors
+    procedure creaNode
+      (p : out atribut;
+      id : in atribut;
+      tn : in Tipusnode) is
+       paux : pnode;
 
     begin
-
-        paux := new node(tn);
-
-        paux.id12 := id;
-
-        p := (nodeArbre, 0, 0, paux);
-
+       paux := new node(tn);
+       paux.id12 := id.idn;
+       paux.l := id.lin;
+       paux.c := id.col;
+       p := (nodeArbre, 0, 0, paux);
     end creaNode;
 
 
-    procedure creaNode(p : out atribut; a: in atribut; tn : in Tipusnode) is
 
-        paux : pnode;
+
+    procedure creaNode
+      (p : out atribut;
+       a : in atribut;
+      tn : in Tipusnode) is
+       paux : pnode;
 
     begin
-
-        paux := new node(tn);
-
-        paux.val := a.val;
-
-        p := (nodeArbre, 0, 0, paux);
-
+       paux := new node(tn);
+       paux.val := a.val;
+       paux.l := a.lin;
+       paux.c := a.col;
+       p := (nodeArbre, 0, 0, paux);
     end creaNode;
 
 
