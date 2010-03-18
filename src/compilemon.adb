@@ -40,13 +40,14 @@ use     Ada.Text_IO,
 
 procedure compilemon is
    Tk: Token;
+
 begin
 
    tbuida(Decls.D_Atribut.Tn);
    Open_Input(Argument(1));
    yyparse;
    while(Yylex'Img/="END_OF_INPUT") loop
-   	Put_Line(""&Yy_Line_Number'Img&"/"&Yy_Begin_Column'Img&" Tk: "&Yylex'img);
+   	Put_Line(""&Yy_Line_Number'Img&"/"&Yy_Begin_Column'Img&" Tk: "&Yylex'img); 
    end loop;
 
    
@@ -62,6 +63,9 @@ begin
    else
     Put_line("L'arbre és null");
    end if;
+
+	--if arbre.fd.tn = procediment then
+   put_line("tipusnode: "& arbre.fd1.fid5.n'img);
 
    close_Input;
 

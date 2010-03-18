@@ -173,8 +173,8 @@ dec_constant:
   ;
   
 c_decl_ass:
-    s_assignacio limit
-    {Remunta($$, $1);}
+    s_assignacio expressio
+    {Remunta($$, $2);}
   |
     {creaNode($$, tnul);}
   ;
@@ -207,6 +207,7 @@ limit:
   | 
     id
     {creaNode_ID($$, $1, identificador);}
+	--Remunta($$, $1);}
   ;
     
   
@@ -381,7 +382,7 @@ expressio:
 	{creaNode($$, $2, Resta, ExpressioUnaria);} 
   |
     s_parentesiobert expressio s_parentesitancat 
-    {Remunta($$, $1);}
+    {Remunta($$, $2);}
   |
     referencia
     {Remunta($$, $1);}
