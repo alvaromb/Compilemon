@@ -1,21 +1,7 @@
 procedure compilemon is
-    Tk:Token;
-	p:string;
+	peputo: mojamuto;
 begin
 
---tbuida(tn);
-
-    Open_Input(Argument(1));
-    tk := Yylex; 
-
-	while tk /= end_of_input loop      
-		Put(tok_begin_line);
-		Put_Line(Token(Tk));
-		tk := Yylex;
-	end loop;
-
-	a := 'a';
-	n := 9;
-	p := "Josep Lluis";
+	a:= a+1;
 
 end compilemon;

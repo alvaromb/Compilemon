@@ -72,10 +72,11 @@ op_major op_igual op_distint
 --Produccions de la gramatica del llenguatge
 programa:
     M1 dec_procediment 
-	{creaNode($$, $1, $2, programa);}
+	{creaNode_programa($$, $1, $2, programa);}
   ;
   
 M1: 
+    {creaNode($$, tnul);}
   ;
 
 dec_procediment:
@@ -84,7 +85,8 @@ dec_procediment:
     pc_begin
         bloc
     pc_end id s_final 
-	{creaNode($$, $2, $4, $6, $8, procediment);}
+	{creaNode_ID($8, $8, identificador);
+     creaNode($$, $2, $4, $6, $8, procediment);}
   ;
 
 
@@ -93,7 +95,7 @@ encap:
     {creaNode_ID($$, $1, identificador);}
   |
     pencap s_parentesitancat
-  {Remunta($$, $1);}
+    {Remunta($$, $1);}
   ;
   
 pencap:
@@ -101,12 +103,15 @@ pencap:
     {creaNode($$, $1, $3, pencap1);}
   |
     id s_parentesiobert param
-    {creaNode($$, $1, $3, pencap2);}
+    {creaNode_ID($1, $1, identificador);
+     creaNode($$, $1, $3, pencap2);}
   ;
   
 param:
     id s_dospunts mode id
-    {creaNode($$, $1, $3, $4, Param);}
+    {creaNode_ID($1, $1, identificador);
+     creaNode_ID($4, $4, identificador);
+     creaNode($$, $1, $3, $4, Param);}
   ;
 
   
@@ -115,7 +120,7 @@ mode:
     {creanode_mode($$, entra, mode);}
   |
     pc_out
-  {creanode_mode($$, surt, mode);}
+    {creanode_mode($$, surt, mode);}
   |
     pc_in pc_out
     {creanode_mode($$, entrasurt, mode);}
@@ -125,50 +130,65 @@ declaracions:
     declaracions declaracio
     {creaNode($$, $1, $2, declaracions);}
   |
+	{creaNode($$, tnul);}
   ;
   
 
 -- DECLARACIONS
 declaracio:
     dec_var s_final
+    {Remunta($$, $1);}
   |
     dec_constant s_final
+    {Remunta($$, $1);}
   |
     dec_tipus s_final
+    {Remunta($$, $1);}
   |
     dec_procediment 
+    {Remunta($$, $1);}
   ;
   
 dec_var:
     id c_decl_var
-	{creaNode($$, $1, $2, dvariable);}
+	{creaNode_ID($1, $1, identificador);
+     creaNode($$, $1, $2, dvariable);}
   ;
   
 c_decl_var:
     s_dospunts id c_decl_ass 
-	{creaNode($$, $2, $3, asigvalvar);}
+	{creaNode_ID($2, $2, identificador);
+     creaNode($$, $2, $3, asigvalvar);}
   |
     s_coma id c_decl_var
-	{creaNode($$, $2, $3, declmultvar);}
+	{creaNode_ID($2, $2, identificador);
+     creaNode($$, $2, $3, declmultvar);}
   ;
 
 dec_constant:
     id s_dospunts pc_constant id s_assignacio expressio
-	{creaNode($$, $1, $4, $6, dconstant);}
+    {creaNode_ID($1, $1, identificador);
+     creaNode_ID($4, $4, identificador);
+     creaNode($$, $1, $4, $6, dconstant);}
   ;
   
 c_decl_ass:
     s_assignacio limit
+    {Remunta($$, $1);}
   |
+    {creaNode($$, tnul);}
   ;
 
 -- TIPUS
 dec_tipus:
     decl_coleccio
+    {Remunta($$, $1);}
   |
     decl_registre
+    {Remunta($$, $1);}
   | 
     decl_subrang
+    {Remunta($$, $1);}
   ;
   
   
@@ -176,67 +196,90 @@ dec_tipus:
 decl_subrang:
     pc_type id pc_is pc_new id pc_range limit 
     s_puntsrang limit
-	{creaNode($$, $2, $5, $7, $9, dsubrang);} 
+	{creaNode_ID($2, $2, identificador);
+     creaNode_ID($5, $5, identificador);
+     creaNode($$, $2, $5, $7, $9, dsubrang);} 
   ;
   
 limit:
     const
+    {creaNode_VAL($$, $1, Const);}
   | 
     id
+    {creaNode_ID($$, $1, identificador);}
   ;
     
   
 -- TIPUS REGISTRE
 decl_registre:
     p_dregistre pc_end pc_record
+    {Remunta($$, $1);}
   ;
   
 p_dregistre: 
     p_dregistre id s_dospunts id s_final
-	{creaNode($$, $1, $2, $4, dencapregistre);}
+	{creaNode_ID($2, $2, identificador);
+	 creaNode_ID($4, $4, identificador);
+     creaNode($$, $1, $2, $4, dencapregistre);}
   | 
     pc_type id pc_is pc_record id s_dospunts id s_final
-	{creaNode($$, $2, $5, $7, Dregistre);}
+	{creaNode_ID($2, $2, identificador);
+	 creaNode_ID($5, $5, identificador);
+     creaNode_ID($7, $7, identificador);
+     creaNode($$, $2, $5, $7, Dregistre);}
   ;
   
 
 -- TIPUS COLECCIO
 decl_coleccio:
     p_dcoleccio s_parentesitancat pc_of id 
-	{creaNode($$, $1, $4, Dcoleccio);}
+	{creaNode_ID($4, $4, identificador);
+     creaNode($$, $1, $4, Dcoleccio);}
   ;
   
 p_dcoleccio:
     p_dcoleccio s_coma id
-	{creaNode($$, $1, $3, Pcoleccio);}
+	{creaNode_ID($3, $3, identificador);
+     creaNode($$, $1, $3, Pcoleccio);}
   |
     pc_type id pc_is pc_array s_parentesiobert id
-	{creaNode($$, $2, $6, Pdimcoleccio);}
+	{creaNode_ID($2, $2, identificador);
+	 creaNode_ID($6, $6, identificador);
+	 creaNode($$, $2, $6, Pdimcoleccio);}
   ;
 
   
 -- BLOC D'INSTRUCCIO
 bloc:
     bloc sentencia s_final
+     {creaNode($$, $1, $2, bloc);}
+    
   | 
     sentencia s_final
+     {Remunta($$, $1);}
   ;
   
   
 -- SENTENCIES D'INSTRUCCIONS
 sentencia: 
     sassig
+    {Remunta($$, $1);}
   |
-    scond 
+    scond
+    {Remunta($$, $1);} 
   |
     srep
+    {Remunta($$, $1);}
   | 
     crida_proc
+    {Remunta($$, $1);}
   ; 
 
 -- Sentencia assignacio
 sassig:
-    referencia s_assignacio expressio 
+    referencia s_assignacio expressio
+    {creaNode($$, $1, $3, assignacio);}
+     
   ;
 
 -- Sentencia condicional
@@ -264,21 +307,29 @@ srep:
 
 -- Sentencia crida a procediment
 crida_proc:
-    referencia 
+    referencia
+     {Remunta($$, $1);} 
   ;
 
 referencia:
     id
+    {creaNode_ID($$, $1, identificador);}
   |
     referencia s_puntrec id
+    {creaNode_ID($3, $3, identificador);
+     creaNode($$, $1, $3, referencia);}
   |
     pri s_parentesitancat
+    {Remunta($$, $1);}
   ;
   
 pri:
     referencia s_parentesiobert expressio
+    {creaNode($$, $1, $3, encappri);}
+    
   |
     pri s_coma expressio
+     {creaNode($$, $1,$3,pri);}
   ;
   
   
@@ -329,13 +380,14 @@ expressio:
     op_resta expressio   %prec menys_unitari
 	{creaNode($$, $2, Resta, ExpressioUnaria);} 
   |
-    s_parentesiobert expressio s_parentesitancat -- Hacer funcion que implique paso de punteros 
+    s_parentesiobert expressio s_parentesitancat 
+    {Remunta($$, $1);}
   |
     referencia
-        {Remunta($$, $1);}
+    {Remunta($$, $1);}
   |
     const
-	{creaNode_VAL($$, $1, Const);}
+    {creaNode_VAL($$, $1, Const);}
   ;
   
   

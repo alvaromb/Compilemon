@@ -63,7 +63,8 @@ package Decls.Dtnode is
       Asigvalvar, --
       Declmultvar, --
       Tnul,
-      Mode);
+      Mode,
+      encappri);
 
    type node (n: Tipusnode := tnul) is record
       case n is
@@ -71,11 +72,11 @@ package Decls.Dtnode is
          when programa | repeticio | condicionalS
            | declaracions | bloc | assignacio | pri
            | dcoleccio | Pdimcoleccio | Referencia
-           | pcoleccio | dvariable | Asigvalvar |
-           Declmultvar => fe1, fd1: pnode;
+           | pcoleccio | dvariable | Asigvalvar 
+           | Declmultvar | encappri => fe1, fd1: pnode;
 
-         when CondicionalC | dconstant
-           | dregistre | dencapregistre => fe2, fc2, fd2: pnode;
+         when CondicionalC | dconstant | dregistre 
+		   | dencapregistre => fe2, fc2, fd2: pnode;
 
          when expressio => fe3, fd3: pnode;
                               op3: operacio;

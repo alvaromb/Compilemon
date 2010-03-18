@@ -21,7 +21,9 @@ with    Ada.Text_IO,
         pk_ulexica_io,
         u_lexica,
         Pk_Usintactica,
-        Decls.D_atribut;
+        Decls.D_atribut,
+		decls.d_arbre,
+		decls.dtnode;
 
 use     Ada.Text_IO,
         Ada.Command_Line,
@@ -32,7 +34,9 @@ use     Ada.Text_IO,
         pk_usintactica_tokens,
         pk_ulexica_io,
         u_lexica,
-        Pk_Usintactica;
+        Pk_Usintactica,
+		decls.d_arbre,
+		decls.dtnode;
 
 procedure compilemon is
    Tk: Token;
@@ -40,16 +44,24 @@ begin
 
    tbuida(Decls.D_Atribut.Tn);
    Open_Input(Argument(1));
-   --yyparse;
-   --while(Yylex'Img/="END_OF_INPUT") loop
-   --Put_Line(""&Yy_Line_Number'Img&"/"&Yy_Begin_Column'Img&" Tk: "&Yylex'img);
+   yyparse;
+   while(Yylex'Img/="END_OF_INPUT") loop
+   	Put_Line(""&Yy_Line_Number'Img&"/"&Yy_Begin_Column'Img&" Tk: "&Yylex'img);
+   end loop;
+
+   
+
+   --Tk := Yylex;
+   --while Tk/=End_Of_Input loop
+   --   Put_Line(Yy_Line_Number'Img&"/"&Yy_Begin_Column'Img&":"&Tk'Img);
+   --   Tk:= Yylex;
    --end loop;
 
-   Tk := Yylex;
-   while Tk/=End_Of_Input loop
-      Put_Line(Yy_Line_Number'Img&"/"&Yy_Begin_Column'Img&":"&Tk'Img);
-      Tk:= Yylex;
-   end loop;
+   if arbre /= null then
+	Put_Line("L'arbre no és null");
+   else
+    Put_line("L'arbre és null");
+   end if;
 
    close_Input;
 

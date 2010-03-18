@@ -13,7 +13,14 @@ use Decls.Dtnode,
 
 package decls.d_arbre is
 
-    --procedure abuit(p: out node);
+    
+   arbre :pnode;   
+   --procedure abuit(p: out node);
+
+   procedure creaNode_programa
+     (p : out atribut;
+      fe, fd : in atribut;
+     tn : in Tipusnode);
 
    procedure creaNode
      (p : out atribut;
@@ -63,22 +70,20 @@ package decls.d_arbre is
       M : in Mmode;
      Tn : in Tipusnode);
 
+   procedure creaNode
+     (P : out Atribut;
+     Tn : in Tipusnode);
+
    procedure Remunta
      (P : out Atribut;
       A : in Atribut);
 
-    --Se ha pensado crear un 'creanode' por cada 'when':
-        -- 1º parametro servira para el linkaje
-        -- 2º parametro servira para el tipo de nodo
-        -- Siguientes parametros informacion y nodos hijos
 
---  procedure posa(r: in out arbre; e: in character);
 --  function consulta(i: in arbre) return character;
 --  function existeix(r: in arbre) return boolean;
 --  function fe(r: in arbre) return arbre;
 --  function fc(r: in arbre) return arbre;
 --  function fd(r: in arbre) return arbre;
---  function empelta(op: in character; fe: in arbre; fd: in arbre) return arbre;
 --  procedure inordre_r(r: in arbre);
 
 
