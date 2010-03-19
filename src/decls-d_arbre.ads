@@ -49,11 +49,11 @@ package decls.d_arbre is
      op : in operacio;
      tn : in Tipusnode);
 
-   procedure creaNode
-     (p : out atribut;
-      fe, fd : in atribut;
-      m : in Mmode;
-     tn : in Tipusnode);
+   --procedure creaNode
+  --   (p : out atribut;
+---fe, fd : in atribut;
+  --    m : in atribut;
+    -- tn : in Tipusnode);
 
    procedure CreaNode_ID
      (p : out atribut;

@@ -41,8 +41,7 @@ package Decls.Dtnode is
       CondicionalC, --
       Expressio, --
       ExpressioUnaria, -- Not E, -E
-      Pencap1,
-      Pencap2,
+      Pencap,
       Procediment, -- Fe = encap, Fc = declaracions, Fd = bloc
       Dvariable, --
       Dconstant, --
@@ -88,9 +87,9 @@ package Decls.Dtnode is
 
          when Param =>
             fe10, fd10 : pnode;
-                   m10 : Mmode;
+                   m10 : pnode;
 
-         when Pencap1 | Pencap2 => f11 : pnode;
+         when Pencap => f11 : pnode;
                          m11 : Mmode;
 
          when identificador => id12 : Id_Nom;

@@ -19,7 +19,7 @@ procedure joan is
 	lluis : string := "Hola, tinc un iPhone";
 	miquel : string := "Hola ""puc fer"" webs";
 
-	procedure i is 
+	procedure i(x : out fcb)is 
 	begin
 		a:=5;
 	end i;

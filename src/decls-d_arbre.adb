@@ -121,21 +121,21 @@ package body decls.d_arbre is
 
 
 
-    procedure CreaNode
-      (p : out atribut;
-       fe, fd : in atribut;
-       m : in Mmode;
-       tn : in Tipusnode) is
-        paux : pnode;
-    begin
-         put_line("tipusnode: "&tn'img);
-        paux := new node(tn);
-        paux.fe10 := fe.a;
-        paux.fd10 := fd.a;
-        paux.m10 := m;
-        p := (nodeArbre, 0, 0, paux);
-	  Put_Line("tipusnode: "&tn'img);
-    end creaNode;
+  --  procedure CreaNode
+   --   (p : out atribut;
+    --   fe, fd : in atribut;
+   --    m : in atribut;
+   --    tn : in Tipusnode) is
+   --     paux : pnode;
+   -- begin
+   --      put_line("tipusnode: "&tn'img);
+   --     paux := new node(tn);
+   --     paux.fe10 := fe.a;
+   --     paux.fd10 := fd.a;
+   --     paux.m10 := m.a;
+   --     p := (nodeArbre, 0, 0, paux);
+--	  Put_Line("tipusnode: "&tn'img);
+ --   end creaNode;
 
 
     procedure CreaNode
@@ -179,7 +179,7 @@ package body decls.d_arbre is
        paux : pnode;
 
     begin
-		 put_line("tipusnode: "&tn'img);
+	put_line("tipusnode: "&tn'img);
        paux := new node(tn);
        paux.val := a.val;
        paux.l2 := a.lin;
@@ -195,12 +195,13 @@ package body decls.d_arbre is
        Tn : in Tipusnode) is
 
        Paux : Pnode;
+
     begin
-		 put_line("tipusnode: "&tn'img);
+       put_line("tipusnode: "&tn'img);
        Paux := new Node(Tn);
        Paux.M12 := M;
        P := (NodeArbre, 0, 0, Paux);
-	  Put_Line("tipusnode: "&tn'img);
+       Put_Line("tipusnode: "&tn'img);
     end Creanode_Mode;
 
 

@@ -100,11 +100,11 @@ encap:
   
 pencap:
     pencap s_final param
-    {creaNode($$, $1, $3, pencap1);}
+    {creaNode($$, $1, $3, pencap);}
   |
     id s_parentesiobert param
     {creaNode_ID($1, $1, identificador);
-     creaNode($$, $1, $3, pencap2);}
+     creaNode($$, $1, $3, pencap);}
   ;
   
 param:
@@ -117,6 +117,7 @@ param:
   
 mode:
     pc_in
+
     {creanode_mode($$, entra, mode);}
   |
     pc_out
@@ -130,7 +131,7 @@ declaracions:
     declaracions declaracio
     {creaNode($$, $1, $2, declaracions);}
   |
-	{creaNode($$, tnul);}
+    {creaNode($$, tnul);}
   ;
   
 
