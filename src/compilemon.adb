@@ -22,8 +22,9 @@ with    Ada.Text_IO,
         u_lexica,
         Pk_Usintactica,
         Decls.D_atribut,
-		decls.d_arbre,
-		decls.dtnode;
+        decls.d_arbre,
+  decls.Dtnode,
+  Decls.Ctipus;
 
 use     Ada.Text_IO,
         Ada.Command_Line,
@@ -35,8 +36,9 @@ use     Ada.Text_IO,
         pk_ulexica_io,
         u_lexica,
         Pk_Usintactica,
-		decls.d_arbre,
-		decls.dtnode;
+        decls.d_arbre,
+  decls.Dtnode,
+  Decls.Ctipus;
 
 procedure compilemon is
    Tk: Token;
@@ -47,10 +49,11 @@ begin
    Open_Input(Argument(1));
    yyparse;
    while(Yylex'Img/="END_OF_INPUT") loop
-   	Put_Line(""&Yy_Line_Number'Img&"/"&Yy_Begin_Column'Img&" Tk: "&Yylex'img); 
+      Put_Line(""&Yy_Line_Number'Img&"/"&Yy_Begin_Column'Img
+                 &" Tk: "&Yylex'img);
    end loop;
 
-   
+
 
    --Tk := Yylex;
    --while Tk/=End_Of_Input loop
@@ -58,14 +61,10 @@ begin
    --   Tk:= Yylex;
    --end loop;
 
-   if arbre /= null then
-	Put_Line("L'arbre no és null");
-   else
-    Put_line("L'arbre és null");
-   end if;
+   Ct_Programa(Arbre);
 
-	--if arbre.fd.tn = procediment then
-   put_line("tipusnode: "& arbre.fd1.fid5.n'img);
+        --if arbre.fd.tn = procediment then
+   put_line("tipusnode: "& arbre.fd1.fid5.tipus'img);
 
    close_Input;
 

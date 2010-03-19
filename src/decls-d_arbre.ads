@@ -13,9 +13,11 @@ use Decls.Dtnode,
 
 package decls.d_arbre is
 
-    
-   arbre :pnode;   
-   --procedure abuit(p: out node);
+
+   arbre : pnode;
+
+   procedure Abuit
+     (P : out pnode);
 
    procedure creaNode_programa
      (p : out atribut;
@@ -49,12 +51,6 @@ package decls.d_arbre is
      op : in operacio;
      tn : in Tipusnode);
 
-   --procedure creaNode
-  --   (p : out atribut;
----fe, fd : in atribut;
-  --    m : in atribut;
-    -- tn : in Tipusnode);
-
    procedure CreaNode_ID
      (p : out atribut;
      id : in atribut;
@@ -78,6 +74,9 @@ package decls.d_arbre is
      (P : out Atribut;
       A : in Atribut);
 
+   procedure Cons_Tnode
+     (P : in Pnode;
+     Tn : out Tipusnode);
 
 --  function consulta(i: in arbre) return character;
 --  function existeix(r: in arbre) return boolean;

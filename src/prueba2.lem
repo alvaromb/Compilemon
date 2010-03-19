@@ -52,7 +52,7 @@ begin
 	luis(k or 2);
 	luis(k /= 2);
 
-	pp(-2);
+	pp(2,2,4);
 	pp(0-2);
 	lui(5*(3*3));
 

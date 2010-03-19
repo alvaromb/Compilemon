@@ -85,7 +85,7 @@ dec_procediment:
     pc_begin
         bloc
     pc_end id s_final 
-	{creaNode_ID($8, $8, identificador);
+    {creaNode_ID($8, $8, identificador);
      creaNode($$, $2, $4, $6, $8, procediment);}
   ;
 
@@ -117,7 +117,6 @@ param:
   
 mode:
     pc_in
-
     {creanode_mode($$, entra, mode);}
   |
     pc_out
@@ -152,17 +151,17 @@ declaracio:
   
 dec_var:
     id c_decl_var
-	{creaNode_ID($1, $1, identificador);
+    {creaNode_ID($1, $1, identificador);
      creaNode($$, $1, $2, dvariable);}
   ;
   
 c_decl_var:
     s_dospunts id c_decl_ass 
-	{creaNode_ID($2, $2, identificador);
+    {creaNode_ID($2, $2, identificador);
      creaNode($$, $2, $3, asigvalvar);}
   |
     s_coma id c_decl_var
-	{creaNode_ID($2, $2, identificador);
+    {creaNode_ID($2, $2, identificador);
      creaNode($$, $2, $3, declmultvar);}
   ;
 
@@ -197,7 +196,7 @@ dec_tipus:
 decl_subrang:
     pc_type id pc_is pc_new id pc_range limit 
     s_puntsrang limit
-	{creaNode_ID($2, $2, identificador);
+    {creaNode_ID($2, $2, identificador);
      creaNode_ID($5, $5, identificador);
      creaNode($$, $2, $5, $7, $9, dsubrang);} 
   ;
@@ -208,7 +207,6 @@ limit:
   | 
     id
     {creaNode_ID($$, $1, identificador);}
-	--Remunta($$, $1);}
   ;
     
   
@@ -220,13 +218,13 @@ decl_registre:
   
 p_dregistre: 
     p_dregistre id s_dospunts id s_final
-	{creaNode_ID($2, $2, identificador);
-	 creaNode_ID($4, $4, identificador);
+    {creaNode_ID($2, $2, identificador);
+     creaNode_ID($4, $4, identificador);
      creaNode($$, $1, $2, $4, dencapregistre);}
   | 
     pc_type id pc_is pc_record id s_dospunts id s_final
-	{creaNode_ID($2, $2, identificador);
-	 creaNode_ID($5, $5, identificador);
+    {creaNode_ID($2, $2, identificador);
+     creaNode_ID($5, $5, identificador);
      creaNode_ID($7, $7, identificador);
      creaNode($$, $2, $5, $7, Dregistre);}
   ;
@@ -235,19 +233,19 @@ p_dregistre:
 -- TIPUS COLECCIO
 decl_coleccio:
     p_dcoleccio s_parentesitancat pc_of id 
-	{creaNode_ID($4, $4, identificador);
+    {creaNode_ID($4, $4, identificador);
      creaNode($$, $1, $4, Dcoleccio);}
   ;
   
 p_dcoleccio:
     p_dcoleccio s_coma id
-	{creaNode_ID($3, $3, identificador);
+    {creaNode_ID($3, $3, identificador);
      creaNode($$, $1, $3, Pcoleccio);}
   |
     pc_type id pc_is pc_array s_parentesiobert id
-	{creaNode_ID($2, $2, identificador);
-	 creaNode_ID($6, $6, identificador);
-	 creaNode($$, $2, $6, Pdimcoleccio);}
+    {creaNode_ID($2, $2, identificador);
+     creaNode_ID($6, $6, identificador);
+     creaNode($$, $2, $6, Pdimcoleccio);}
   ;
 
   
@@ -281,7 +279,6 @@ sentencia:
 sassig:
     referencia s_assignacio expressio
     {creaNode($$, $1, $3, assignacio);}
-     
   ;
 
 -- Sentencia condicional
@@ -289,14 +286,14 @@ scond:
     pc_if expressio pc_then 
         bloc 
     pc_end pc_if
-	{creaNode($$, $2, $4, CondicionalS);}
+    {creaNode($$, $2, $4, CondicionalS);}
   |
     pc_if expressio pc_then 
         bloc 
     pc_else
         bloc
     pc_end pc_if
-	{creaNode($$, $2, $4, $6, CondicionalC);}
+    {creaNode($$, $2, $4, $6, CondicionalC);}
   ;
 
 -- Sentencia bucle
@@ -304,13 +301,13 @@ srep:
     pc_while expressio pc_loop
         bloc
     pc_end pc_loop
-	{creaNode($$, $2, $4, Repeticio);}
+    {creaNode($$, $2, $4, Repeticio);}
   ;
 
 -- Sentencia crida a procediment
 crida_proc:
     referencia
-     {Remunta($$, $1);} 
+    {Remunta($$, $1);} 
   ;
 
 referencia:
@@ -331,56 +328,56 @@ pri:
     
   |
     pri s_coma expressio
-     {creaNode($$, $1,$3,pri);}
+    {creaNode($$, $1,$3,pri);}
   ;
   
   
 -- Expressions
 expressio:
     expressio pc_or expressio
-	{creaNode($$, $1, $3, Unio, Expressio);}
+    {creaNode($$, $1, $3, Unio, Expressio);}
   |
     expressio pc_and expressio
-	{creaNode($$, $1, $3, Interseccio, Expressio);}
+    {creaNode($$, $1, $3, Interseccio, Expressio);}
   |
     pc_not expressio     %prec pc_not
-	{creaNode($$, $2, Negacio, ExpressioUnaria);}
+    {creaNode($$, $2, Negacio, ExpressioUnaria);}
   |
     expressio op_menor expressio
-	{creaNode($$, $1, $3, Menor, Expressio);}
+    {creaNode($$, $1, $3, Menor, Expressio);}
   |
     expressio op_menorigual expressio
-	{creaNode($$, $1, $3, Menorig, Expressio);}
+    {creaNode($$, $1, $3, Menorig, Expressio);}
   |
     expressio op_majorigual expressio
-	{creaNode($$, $1, $3, Majorig, Expressio);}
+    {creaNode($$, $1, $3, Majorig, Expressio);}
   |
     expressio op_major expressio
-	{creaNode($$, $1, $3, Major, Expressio);}
+    {creaNode($$, $1, $3, Major, Expressio);}
   |
     expressio op_igual expressio    
-	{creaNode($$, $1, $3, Igual, Expressio);}
+    {creaNode($$, $1, $3, Igual, Expressio);}
   |
     expressio op_distint expressio
-	{creaNode($$, $1, $3, Distint, Expressio);}
+    {creaNode($$, $1, $3, Distint, Expressio);}
   |
     expressio op_suma expressio
-	{creaNode($$, $1, $3, Suma, Expressio);}
+    {creaNode($$, $1, $3, Suma, Expressio);}
   |
     expressio op_resta expressio
-	{creaNode($$, $1, $3, Resta, Expressio);}
+    {creaNode($$, $1, $3, Resta, Expressio);}
   |
     expressio op_multiplicacio expressio
-	{creaNode($$, $1, $3, Mult, Expressio);}
+    {creaNode($$, $1, $3, Mult, Expressio);}
   |
     expressio op_divisio expressio
-	{creaNode($$, $1, $3, Div, Expressio);}
+    {creaNode($$, $1, $3, Div, Expressio);}
   |
     expressio pc_mod expressio
-	{creaNode($$, $1, $3, Modul, Expressio);}
+    {creaNode($$, $1, $3, Modul, Expressio);}
   |
     op_resta expressio   %prec menys_unitari
-	{creaNode($$, $2, Resta, ExpressioUnaria);} 
+    {creaNode($$, $2, Resta, ExpressioUnaria);} 
   |
     s_parentesiobert expressio s_parentesitancat 
     {Remunta($$, $2);}
@@ -410,17 +407,17 @@ with	pk_usintactica_tokens,
         pk_usintactica_goto,
     	pk_ulexica_io,
     	u_lexica,
-		decls.d_arbre,
-		decls.dtnode,
+	decls.d_arbre,
+	decls.dtnode,
       	Ada.text_IO;
 
-use		pk_usintactica_tokens,
+use	pk_usintactica_tokens,
     	pk_usintactica_shift_reduce,
     	pk_usintactica_goto,
     	pk_ulexica_io,
     	u_lexica,
-		decls.d_arbre,
-		decls.dtnode,
+	decls.d_arbre,
+	decls.dtnode,
     	Ada,
     	ada.text_io;
         
@@ -428,8 +425,6 @@ use		pk_usintactica_tokens,
 package body pk_usintactica is
 	
     procedure YYError (e : in string) is
-		
-			
     
     begin
         

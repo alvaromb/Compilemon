@@ -65,17 +65,18 @@ package Decls.Dtnode is
       Mode,
       encappri);
 
-   type node (n: Tipusnode := tnul) is record
-      case n is
+   type node (Tipus : Tipusnode := tnul) is record
+      case Tipus is
          when m1 | tnul => null;
+
          when programa | repeticio | condicionalS
            | declaracions | bloc | assignacio | pri
            | dcoleccio | Pdimcoleccio | Referencia
-           | pcoleccio | dvariable | Asigvalvar 
-           | Declmultvar | encappri => fe1, fd1: pnode;
+           | pcoleccio | dvariable | Asigvalvar
+           | Declmultvar | encappri | Pencap => fe1, fd1: pnode;
 
-         when CondicionalC | dconstant | dregistre 
-		   | dencapregistre => fe2, fc2, fd2: pnode;
+         when CondicionalC | dconstant | dregistre
+           | Dencapregistre | Param => fe2, fc2, fd2: pnode;
 
          when expressio => fe3, fd3: pnode;
                               op3: operacio;
@@ -85,13 +86,6 @@ package Decls.Dtnode is
 
          when procediment | dsubrang => fe5, fc5, fd5, fid5: pnode;
 
-         when Param =>
-            fe10, fd10 : pnode;
-                   m10 : pnode;
-
-         when Pencap => f11 : pnode;
-                         m11 : Mmode;
-
          when identificador => id12 : Id_Nom;
                                l1, c1 : natural;
 
@@ -99,9 +93,6 @@ package Decls.Dtnode is
             l2, c2 : natural;
 
          when Mode => M12 : Mmode;
-
-         --when Referencia => F13 : Pnode;
-
 
         end case;
     end record;
