@@ -1,4 +1,4 @@
-procedure provaid(pep: in integer) is
+procedure provaod is
 begin
 	a := a+1;
-end provaid;
+end provaod;
