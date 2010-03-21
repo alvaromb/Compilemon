@@ -50,18 +50,18 @@ begin
    yyparse;
    while(Yylex'Img/="END_OF_INPUT") loop
       Put_Line(""&Yy_Line_Number'Img&"/"&Yy_Begin_Column'Img
-                 &" Tk: "&Yylex'img);
-   end loop;
+              &" Tk: "&Yylex'img);
+  end loop;
 
 
 
-   --Tk := Yylex;
-   --while Tk/=End_Of_Input loop
-   --   Put_Line(Yy_Line_Number'Img&"/"&Yy_Begin_Column'Img&":"&Tk'Img);
-   --   Tk:= Yylex;
-   --end loop;
+  -- Tk := Yylex;
+--   while Tk/=End_Of_Input loop
+--      Put_Line(Yy_Line_Number'Img&"/"&Yy_Begin_Column'Img&":"&Tk'Img);
+--      Tk:= Yylex;
+--   end loop;
 
-   Ct_Programa(Arbre);
+  Ct_Programa(Arbre);
 
         --if arbre.fd.tn = procediment then
    put_line("tipusnode: "& arbre.fd1.fid5.tipus'img);

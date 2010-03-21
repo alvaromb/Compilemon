@@ -1,4 +1,6 @@
 procedure provaod is
 begin
 	a := a+1;
-end provaod;
+	pep := porcella;
+	a := pep;
+end provaid;
