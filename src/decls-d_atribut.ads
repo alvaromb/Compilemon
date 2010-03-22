@@ -16,11 +16,11 @@
 
 with    decls.Dgenerals,
         decls.D_Taula_De_Noms,
-                decls.Dtnode;
+        decls.Dtnode;
 
 use     decls.Dgenerals,
         decls.D_Taula_De_Noms,
-                decls.Dtnode;
+        decls.Dtnode;
 
 
 package decls.d_atribut is
@@ -30,7 +30,6 @@ package decls.d_atribut is
       a_ident,
       a_lit,
       nodeArbre);
-
 
    type atribut (t : tipus_atribut := atom) is record
        lin, col : natural;
@@ -68,7 +67,7 @@ package decls.d_atribut is
          a : out atribut);
 
    --Provisional
-   Tn : Taula_De_Noms;
+   --Tn : Taula_De_Noms;
 
 
 end decls.d_atribut;

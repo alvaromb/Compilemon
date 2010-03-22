@@ -167,11 +167,13 @@ or		{mt_atom(tok_begin_line, tok_begin_col,
 
 with	decls.d_taula_de_noms,
 	pk_usintactica_tokens,
-	decls.d_atribut;
+	decls.d_atribut,
+	decls.ctipus;
 
 use	decls.d_taula_de_noms,
 	pk_usintactica_tokens,
-	decls.d_atribut;
+	decls.d_atribut,
+	decls.ctipus;
 
 package u_lexica is
 

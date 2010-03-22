@@ -12,6 +12,7 @@ package body Decls.Ctipus is
    procedure Ct_M1 is
    begin
       Put_Line("M1: inicialitzam paràmetres");
+
    end Ct_M1;
 
 
@@ -24,20 +25,20 @@ package body Decls.Ctipus is
       Id : Pnode renames A.Fid5;
       Id_Inf : Id_Nom renames A.Fid5.Id12;
       Id_Sup : Id_Nom;
+      Tdecls : Tipusnode;
 
    begin
       Ct_Encap(Encap, Id_Sup);
-
-      Put_Line("id_inf: "&Id_Inf'Img);
-      Put_Line("id_sup: "&Id_Sup'Img);
-      Put_Line("id_sup: "&Cons_Nom(Tn, Id_Sup));
-      Put_Line("id_inf: "&Cons_Nom(Tn, Id_Inf));
 
       if Id_Inf /= Id_Sup then
          raise Identificadors_Diferents;
       end if;
 
-      --Ct_Declaracions(Decls);
+      Cons_Tnode(Decls, Tdecls);
+      if Tdecls /= Tnul then
+         Ct_Declaracions(Decls);
+      end if;
+
       --Ct_Bloc(Bloc);
 
    exception
@@ -52,14 +53,10 @@ package body Decls.Ctipus is
    procedure Ct_Encap
      (A : in Pnode;
       I : out Id_Nom) is
-
-      --Id : Id_Nom renames A.Id12;
-
    begin
       if A.Tipus = Pencap then
          Ct_Pencap(A, I);
       else
-         --I := Id;
          I := A.Id12;
       end if;
 
@@ -75,7 +72,7 @@ package body Decls.Ctipus is
       Id : Id_Nom renames A.Fe1.Id12;
 
    begin
-      --Ct_Param(Fesq);
+      Ct_Param(Fesq);
 
       if Fesq.Tipus = Identificador then
          I := Id; --si no funciona: fesq.id12
@@ -86,7 +83,48 @@ package body Decls.Ctipus is
    end Ct_Pencap;
 
 
+   procedure Ct_Param
+     (A : in Pnode) is
+   begin
+      Put_Line("comprovam els paràmetres");
+   end Ct_Param;
 
+
+   procedure Ct_Declaracions
+     (A : in Pnode) is
+
+      Decl : Pnode renames A.Fd1;
+      Decls : Pnode renames A.Fe1;
+      Tnode : Tipusnode;
+
+   begin
+      Cons_Tnode(Decl, Tnode);
+      case Tnode is
+         when Dvariable   => Ct_Decvar(Decl);
+         --when Dconstant   => Ct_Decconst(Decl);
+         --when Dcoleccio   => Ct_Deccol(Decl);
+         --when Dregistre   => Ct_Decregistre(Decl);
+         --when Dsubrang    => Ct_Decsubrang(Decl);
+         --when Procediment => Ct_Procediment(Decl);
+         when others => raise Tdeclaracio_Inexistent;
+      end case;
+
+      if Decls.Tipus = Declaracions then
+         Ct_Declaracions(Decls);
+      end if;
+
+   exception
+      when Tdeclaracio_Inexistent =>
+         Put_Line("ERROR CT: tipus declarat inexistent");
+
+   end Ct_Declaracions;
+
+
+   procedure Ct_Decvar
+     (A : in Pnode) is
+   begin
+      Put_Line("comprovam una variaaaable");
+   end Ct_Decvar;
 
 
 end Decls.Ctipus;

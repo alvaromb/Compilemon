@@ -418,7 +418,7 @@ use	pk_usintactica_tokens,
     	u_lexica,
 	decls.d_arbre,
 	decls.dtnode,
-    	Ada,
+        ada, --no llevar mai
     	ada.text_io;
         
 

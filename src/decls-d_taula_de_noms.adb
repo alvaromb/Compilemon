@@ -58,7 +58,7 @@ package body decls.d_taula_de_noms is
 
       while not Trobat and Idx/=Id_Nul loop
          if (Nom = Cons_Nom(Tn, Idx)) then
-			Idn := idx;
+            Idn := idx;
             Trobat := True;
          else
             Idx := p(Idx).Seguent;
@@ -75,7 +75,6 @@ package body decls.d_taula_de_noms is
 
          posa_tc(tn, nom);
       end if;
-	  Ada.text_IO.put_line("Id: "&idn'img);
 
    end posa_id;
 

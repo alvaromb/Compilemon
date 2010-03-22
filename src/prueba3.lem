@@ -1,4 +1,4 @@
-procedure provaod is
+procedure provaid is
 begin
 	a := a+1;
 	pep := porcella;
