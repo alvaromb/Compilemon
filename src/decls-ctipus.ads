@@ -15,6 +15,32 @@ use Ada.Text_Io,
 
 package Decls.Ctipus is
 
+   -- Rutines lexiques
+   procedure mt_atom
+     (l, c : in natural;
+         a : out atribut);
+
+   procedure mt_identificador
+     (l, c : in natural;
+         s : in string;
+         a : out atribut);
+
+   procedure mt_string
+     (l, c : in natural;
+         s : in string;
+         a : out atribut);
+
+   procedure mt_caracter
+     (l, c : in natural;
+       car : in string;
+         a : out atribut);
+
+   procedure mt_numero
+     (l, c : in natural;
+         s : in string;
+         a : out atribut);
+
+   -- Comprovacio de tipus
    procedure Ct_Programa
      (A : in Pnode);
 
@@ -38,6 +64,9 @@ package Decls.Ctipus is
      (A : in Pnode);
 
    procedure Ct_Decvar
+     (A : in Pnode);
+
+   procedure Ct_Declsvar
      (A : in Pnode);
 
    --procedure Ct_Decconst

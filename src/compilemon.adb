@@ -45,7 +45,10 @@ procedure compilemon is
 
 begin
 
-   tbuida(Decls.D_Atribut.Tn);
+   --tbuida(Decls.Ctipus.Tn);
+   --PROVISIONAL
+   Ct_M1;
+
    Open_Input(Argument(1));
    yyparse;
    while(Yylex'Img/="END_OF_INPUT") loop
@@ -53,6 +56,7 @@ begin
               &" Tk: "&Yylex'img);
   end loop;
 
+  Ct_Programa(Arbre);
 
 
   -- Tk := Yylex;
@@ -61,7 +65,7 @@ begin
 --      Tk:= Yylex;
 --   end loop;
 
-  Ct_Programa(Arbre);
+
 
         --if arbre.fd.tn = procediment then
    put_line("tipusnode: "& arbre.fd1.fid5.tipus'img);

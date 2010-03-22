@@ -12,9 +12,11 @@
 --
 -- ------------------------------------------------
 
-with    decls.dgenerals,Ada.text_IO;
+with    decls.dgenerals,
+        Ada.text_IO;
 
-use     decls.dgenerals;
+use     decls.Dgenerals,
+        Ada.Text_IO;
 
 
 package decls.d_taula_de_noms is

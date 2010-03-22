@@ -22,7 +22,6 @@ use     decls.Dgenerals,
         decls.D_Taula_De_Noms,
         decls.Dtnode;
 
-
 package decls.d_atribut is
 
    type tipus_atribut is
@@ -40,34 +39,6 @@ package decls.d_atribut is
            when others    => a   : pnode;
        end case;
    end record;
-
-
-   procedure mt_atom
-     (l, c : in natural;
-         a : out atribut);
-
-   procedure mt_identificador
-     (l, c : in natural;
-         s : in string;
-         a : out atribut);
-
-   procedure mt_string
-     (l, c : in natural;
-         s : in string;
-         a : out atribut);
-
-   procedure mt_caracter
-     (l, c : in natural;
-       car : in string;
-         a : out atribut);
-
-   procedure mt_numero
-     (l, c : in natural;
-         s : in string;
-         a : out atribut);
-
-   --Provisional
-   --Tn : Taula_De_Noms;
 
 
 end decls.d_atribut;
