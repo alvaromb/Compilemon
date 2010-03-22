@@ -16,11 +16,13 @@
 
 with    decls.Dgenerals,
         decls.D_Taula_De_Noms,
-        decls.Dtnode;
+  decls.Dtnode,
+  Decls.Dtdesc;
 
 use     decls.Dgenerals,
         decls.D_Taula_De_Noms,
-        decls.Dtnode;
+  decls.Dtnode,
+  Decls.dtdesc;
 
 package decls.d_atribut is
 

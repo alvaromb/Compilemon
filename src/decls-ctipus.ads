@@ -3,14 +3,16 @@ with Ada.Text_Io,
   Decls.D_Arbre,
   Decls.D_Taula_De_Noms,
   Decls.D_Atribut,
-  Decls.Dtsimbols;
+  Decls.Dtsimbols,
+  Decls.Dtdesc;
 
 use Ada.Text_Io,
   Decls.Dtnode,
   Decls.D_Arbre,
   Decls.D_Taula_De_Noms,
   Decls.D_Atribut,
-  Decls.Dtsimbols;
+  Decls.Dtsimbols,
+  Decls.Dtdesc;
 
 
 package Decls.Ctipus is
@@ -67,7 +69,8 @@ package Decls.Ctipus is
      (A : in Pnode);
 
    procedure Ct_Declsvar
-     (A : in Pnode);
+     (A : in Pnode;
+      T : out Tipussubjacent);
 
    --procedure Ct_Decconst
    --  (A : in Pnode);

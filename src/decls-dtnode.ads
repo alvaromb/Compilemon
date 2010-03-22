@@ -1,6 +1,10 @@
-with Decls.Dgenerals,decls.D_Taula_De_Noms;
+with Decls.Dgenerals,
+  decls.D_Taula_De_Noms,
+  Decls.dtdesc;
 
-use Decls.Dgenerals,decls.D_Taula_De_Noms;
+use Decls.Dgenerals,
+  decls.D_Taula_De_Noms,
+  Decls.dtdesc;
 
 package Decls.Dtnode is
 
@@ -27,7 +31,7 @@ package Decls.Dtnode is
       Interseccio, --
       Negacio); --
 
-   type valor is new integer;
+   --type valor is new integer;
 
    type Node;
 
@@ -89,7 +93,7 @@ package Decls.Dtnode is
          when identificador => id12 : Id_Nom;
                                l1, c1 : natural;
 
-         when const => val : Valor;
+         when const => val : valor;
             l2, c2 : natural;
 
          when Mode => M12 : Mmode;

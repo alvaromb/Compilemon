@@ -69,7 +69,6 @@ package body Decls.Ctipus is
    begin
       Put_Line("M1: inicialitzam paràmetres");
       Tbuida(Tn);
-
    end Ct_M1;
 
 
@@ -179,57 +178,75 @@ package body Decls.Ctipus is
 
    procedure Ct_Decvar
      (A : in Pnode) is
+
       Dvar : Pnode renames A.Fd1;
+      Id : Pnode renames A.Fe1;
+      Tipus : Tipussubjacent;
+
    begin
-      --Put_Line("comprovam una variaaaable");
-      Ct_Declsvar(Dvar);
-      -- Aqui hauriem de fer alguna cosa amb l'id?
+      Ct_Declsvar(Dvar, Tipus);
+
+      --Id.Tipussubjacent := Tipus;
+
+      ----------EXPLICACIO DEL CODI ANTERIOR-------------------
+      -- Aqui assignam el tipus subjacent 'Tipus'
+      --retornat per Ct_Declsvar a la variable 'Id'
+      --per guardar a la taula de simbols que aquesta
+      --variable es d'aquest tipus concret.
+      ---------------------------------------------------------
    end Ct_Decvar;
 
 
    procedure Ct_Declsvar
-     (A : in Pnode) is
+     (A : in Pnode;
+      T : out Tipussubjacent) is
 
-      Tvar : Tipusnode renames A.Tipus;
+      Tnode : Tipusnode renames A.Tipus;
       Fdret : Pnode renames A.Fd1;
-      Id_Tipus : Id_Nom renames A.Fe1;
-      --Tipus_A_Emmagatzemar : tipus
+      Id : Pnode renames A.Fe1;
 
    begin
-      if Tvar = Asigvalvar then
+      if Tnode = Asigvalvar then
          Put_Line("passam a assignacio de variable");
-         --Ct_Asigvalvar(Fdret, Tipus_A_Emmagatzemar);
 
-         --amb Id_Tipus hem de comprovar que el tipus
-         --retornat de la variable que assignam sigui
-         --el mateix que el del tipus a emmagatzemar
+         --T := Id.Tipussubjacent;
+         --Ct_Asigvalvar(Fdret, T);
 
-         --exemple:
-         --
-         -- caca : int := 0;
-         -- ---> int : tipus_int
-         -- ---> 0   : tipus_zero
+         ---------EXPLICACIO DEL CODI ANTERIOR-----------------
+         -- Aqui el tipus de 'Id' sira el tipus
+         --que haurem de retornar com a tipus 'T'
+         --mitjançant aquesta variable:
+         --       'T : out Tipussubjacent'
+         --Aquesta assignacio de 'T' fara que quan torni
+         --cap a dalt dins la cerca recursiva es pugui assignar
+         --el tipus a cada identificador (aixo es fa a l'else
+         --situat abaix)
 
-         --if tipus_int /= tipus_zero then
-         --   raise error_corresponent
+         -- Emprarem aquest tipus per comparar si el
+         --tipus de l'assignacio es el mateix, en cas de que
+         --existeixi el fill d'assignacio, el fill dret.
+         --Dins del procediment 'Ct_Asigvalvar' farem la comprovacio
+         --de tipus per saber si el tipus 'T' que li enviam es
+         --correspon amb el tipus de l'assignacio que s'ha
+         --introduit.
+         -------------------------------------------------------
 
-
-      else if Tvar = Declmultvar then
+      elsif Tnode = Declmultvar then
          Put_Line("mes variables d'aquest tipus");
-         --d'alguna forma hem de retornar el tipus de
-         --variable i emmagatzemarla dins el id que
-         --tenim.
-
-         --aixo es guardar a l'id corresponent el
-         --'tipus_int' en aquest cas. Possiblement
-         --haurem de retornar tipus en aquesta funcio
-         --per poder fer la propagacio d'aquest tipus
-         --cap adalt.
-         Ct_Declsvar(Fdret);
+         Ct_Declsvar(Fdret, T);
       end if;
+         -- Id.Tipussubjacent := T;
+
+         -------------EXPLICACIO DEL CODI ANTERIOR--------------
+         -- Aqui anirem cridant recursivament fins que entri a
+         --l'if Tnode = Asigvalvar i aquell bloc ens retorni
+         --la variable 'T' amb contingut. Una vegada haguem
+         --sortit, assignarem aquest Tipussubjacent 'T' al tipus
+         --de l'identificador corresponent a aquesta produccio.
+         -------------------------------------------------------
+
 
    end Ct_Declsvar;
-
 
 
 end Decls.Ctipus;
