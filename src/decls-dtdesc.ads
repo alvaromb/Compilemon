@@ -31,7 +31,7 @@ package decls.dtdesc is
     type despl is new natural;
 
     type valor is new integer
-      range 0 .. integer'Last;
+      range integer'First.. integer'Last;
 
     max_var : constant integer := 1000;
     type num_var is new natural

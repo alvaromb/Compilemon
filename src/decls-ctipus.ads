@@ -42,6 +42,9 @@ package Decls.Ctipus is
          s : in string;
          a : out atribut);
 
+   -- Taula de simbols
+   procedure Inicia_Enter;
+
    -- Comprovacio de tipus
    procedure Ct_Programa
      (A : in Pnode);
@@ -70,7 +73,9 @@ package Decls.Ctipus is
 
    procedure Ct_Declsvar
      (A : in Pnode;
-      T : out Tipussubjacent);
+      T : out Descrip);
+
+
 
    --procedure Ct_Decconst
    --  (A : in Pnode);
@@ -86,6 +91,7 @@ package Decls.Ctipus is
 
    Identificadors_Diferents : exception;
    Tdeclaracio_Inexistent : exception;
+   Tno_Existent : exception;
 
 private
 

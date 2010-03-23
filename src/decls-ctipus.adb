@@ -56,6 +56,22 @@ package body Decls.Ctipus is
    end mt_numero;
 
 
+   -- Taula de simbols
+   procedure Inicia_Enter is
+
+      D : Descrip;
+      Dt : Descriptipus;
+      Idn : Id_Nom;
+      E : Boolean;
+
+   begin
+      posa_id(tn, idn, "integer");
+      dt := (tsent, 4, valor(integer'first), valor(integer'last));
+      d := (dtipus,dt);
+      posa(ts, idn, d, e);
+
+   end Inicia_Enter;
+
    -- Comprovacio de tipus
    procedure Ct_Programa
      (A : in Pnode) is
@@ -69,6 +85,7 @@ package body Decls.Ctipus is
    begin
       Put_Line("M1: inicialitzam paràmetres");
       Tbuida(Tn);
+      Tbuida(Ts);
    end Ct_M1;
 
 
@@ -180,13 +197,13 @@ package body Decls.Ctipus is
      (A : in Pnode) is
 
       Dvar : Pnode renames A.Fd1;
-      Id : Pnode renames A.Fe1;
-      Tipus : Tipussubjacent;
+      Id : Id_Nom renames A.Fe1.Id12;
+      Tipus : Descrip;
+      E : Boolean;
 
    begin
       Ct_Declsvar(Dvar, Tipus);
-
-      --Id.Tipussubjacent := Tipus;
+      Posa(Ts, Id, Tipus, E);
 
       ----------EXPLICACIO DEL CODI ANTERIOR-------------------
       -- Aqui assignam el tipus subjacent 'Tipus'
@@ -199,15 +216,36 @@ package body Decls.Ctipus is
 
    procedure Ct_Declsvar
      (A : in Pnode;
-      T : out Tipussubjacent) is
+      T : out Descrip) is
 
       Tnode : Tipusnode renames A.Tipus;
       Fdret : Pnode renames A.Fd1;
-      Id : Pnode renames A.Fe1;
+      Id : Id_Nom renames A.Fe1.Id12;
+      E : Boolean;
 
    begin
       if Tnode = Asigvalvar then
-         Put_Line("passam a assignacio de variable");
+         Put_Line("VERBOSE: passam a assignacio de variable");
+
+         --PSEUDOCODI:
+         --si existeix_tipus_declarat llavors
+         T := Cons(Ts, Id);
+         if (T.Td /= Dnula) then
+            Put_Line("El tipus existeix...");
+         else
+            raise TNo_Existent;
+         end if;
+
+         --   si existeix_assignacio llavors
+         --      si tdeclarat /= tassignacio llavors
+         --         aixecar Error;
+         --      fsi;
+         --   fsi;
+         --   T := tipus_declarat;
+         --sino
+         --   aixecar Error;
+         --fsi;
+
 
          --T := Id.Tipussubjacent;
          --Ct_Asigvalvar(Fdret, T);
@@ -234,8 +272,8 @@ package body Decls.Ctipus is
       elsif Tnode = Declmultvar then
          Put_Line("mes variables d'aquest tipus");
          Ct_Declsvar(Fdret, T);
-      end if;
-         -- Id.Tipussubjacent := T;
+         Posa(Ts, Id, T, E);
+
 
          -------------EXPLICACIO DEL CODI ANTERIOR--------------
          -- Aqui anirem cridant recursivament fins que entri a
@@ -244,7 +282,11 @@ package body Decls.Ctipus is
          --sortit, assignarem aquest Tipussubjacent 'T' al tipus
          --de l'identificador corresponent a aquesta produccio.
          -------------------------------------------------------
+      end if;
 
+   exception
+      when TNo_Existent =>
+         Put_Line("ERROR CT: el tipus no existeix");
 
    end Ct_Declsvar;
 

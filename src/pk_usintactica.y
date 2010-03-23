@@ -428,6 +428,7 @@ package body pk_usintactica is
     
     begin
         
+  -- Aixo ho haurem de millorar un poc
         Put_Line(e);
         raise Syntax_Error;
     

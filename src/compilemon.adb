@@ -45,7 +45,6 @@ procedure compilemon is
 
 begin
 
-   --tbuida(Decls.Ctipus.Tn);
    --PROVISIONAL
    Ct_M1;
 
@@ -54,9 +53,9 @@ begin
    while(Yylex'Img/="END_OF_INPUT") loop
       Put_Line(""&Yy_Line_Number'Img&"/"&Yy_Begin_Column'Img
               &" Tk: "&Yylex'img);
-  end loop;
+   end loop;
 
-  Ct_Programa(Arbre);
+   Ct_Programa(Arbre);
 
 
   -- Tk := Yylex;
