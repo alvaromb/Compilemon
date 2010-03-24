@@ -1,4 +1,5 @@
 with Ada.Text_Io,
+  Decls.Dgenerals,
   Decls.Dtnode,
   Decls.D_Arbre,
   Decls.D_Taula_De_Noms,
@@ -7,6 +8,7 @@ with Ada.Text_Io,
   Decls.Dtdesc;
 
 use Ada.Text_Io,
+  Decls.Dgenerals,
   Decls.Dtnode,
   Decls.D_Arbre,
   Decls.D_Taula_De_Noms,
@@ -46,6 +48,8 @@ package Decls.Ctipus is
    procedure Inicia_Enter;
 
    -- Comprovacio de tipus
+   procedure Inicia_analisi;
+
    procedure Ct_Programa
      (A : in Pnode);
 
@@ -73,12 +77,13 @@ package Decls.Ctipus is
 
    procedure Ct_Declsvar
      (A : in Pnode;
-      T : out Descrip);
+      T : out Descrip;
+      Idvar :out Id_nom);
 
 
 
-   --procedure Ct_Decconst
-   --  (A : in Pnode);
+   procedure Ct_Decconst
+     (A : in Pnode);
 
    --procedure Ct_Deccol
    --  (A : in Pnode);
@@ -93,11 +98,14 @@ package Decls.Ctipus is
    Tdeclaracio_Inexistent : exception;
    Tno_Existent : exception;
    Tassig_Diferent : exception;
+   Identificador_Existent : exception;
 
 private
 
    --Provisional
    Ts : Tsimbols;
    Tn : Taula_De_Noms;
+   nv : num_var;
+   np : num_proc;
 
 end Decls.Ctipus;

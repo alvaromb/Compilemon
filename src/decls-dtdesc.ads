@@ -30,17 +30,6 @@ package decls.dtdesc is
 
     type despl is new natural;
 
-    type valor is new integer
-      range integer'First.. integer'Last;
-
-    max_var : constant integer := 1000;
-    type num_var is new natural
-      range 0 .. max_var;
-
-    max_proc : constant integer := 100;
-    type num_proc is new natural
-      range 0 .. max_proc;
-
     -- Representa texpansio
     type rang_despl is new integer
       range 0 .. (max_id * max_nprof);

@@ -44,10 +44,13 @@ procedure compilemon is
 
 begin
 
-   --PROVISIONAL
-   Ct_M1;
+   
 
    Open_Input(Argument(1));
+
+   --PROVISIONAL
+   Inicia_analisi;
+
    yyparse;
    --while(Yylex'Img/="END_OF_INPUT") loop
    --   Put_Line(""&Yy_Line_Number'Img&"/"&Yy_Begin_Column'Img
@@ -56,6 +59,7 @@ begin
 
    Ct_Programa(Arbre);
 
+   put_line("AHORA HA SALIDO PEPUTO MOJAMUTO");
    close_Input;
 
    exception
