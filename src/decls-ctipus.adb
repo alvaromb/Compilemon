@@ -83,9 +83,9 @@ package body Decls.Ctipus is
 
    procedure Ct_M1 is
    begin
-      Put_Line("M1: inicialitzam paràmetres");
       Tbuida(Tn);
       Tbuida(Ts);
+      Inicia_Enter;
    end Ct_M1;
 
 
@@ -223,70 +223,44 @@ package body Decls.Ctipus is
       Id : Id_Nom renames A.Fe1.Id12;
       E : Boolean;
 
+      Tassig : Descrip(Dnula); --ASSIGNACIO PROVISIONAL
+      Tdecl : Descrip;
+
    begin
       if Tnode = Asigvalvar then
          Put_Line("VERBOSE: passam a assignacio de variable");
 
          --PSEUDOCODI:
          --si existeix_tipus_declarat llavors
-         T := Cons(Ts, Id);
-         if (T.Td /= Dnula) then
-            Put_Line("El tipus existeix...");
+         Tdecl := Cons(Ts, Id);
+         if (Tdecl.Td /= Dnula) then
+         -- si existeix_assignacio llavors
+            if (Fdret.Tipus /= Tnul) then
+         --    Ct_Expressio(Tassig)
+         --    si tdeclarat /= tassignacio llavors
+               if (Tdecl.Td /= Tassig.Td) then
+         --       aixecar Error;
+                  raise Tassig_Diferent;
+               end if;
+            end if;
+         -- T := Tipus_Declarat;
+            T := Tdecl;
          else
             raise TNo_Existent;
          end if;
 
-         --   si existeix_assignacio llavors
-         --      si tdeclarat /= tassignacio llavors
-         --         aixecar Error;
-         --      fsi;
-         --   fsi;
-         --   T := tipus_declarat;
-         --sino
-         --   aixecar Error;
-         --fsi;
-
-
-         --T := Id.Tipussubjacent;
-         --Ct_Asigvalvar(Fdret, T);
-
-         ---------EXPLICACIO DEL CODI ANTERIOR-----------------
-         -- Aqui el tipus de 'Id' sira el tipus
-         --que haurem de retornar com a tipus 'T'
-         --mitjançant aquesta variable:
-         --       'T : out Tipussubjacent'
-         --Aquesta assignacio de 'T' fara que quan torni
-         --cap a dalt dins la cerca recursiva es pugui assignar
-         --el tipus a cada identificador (aixo es fa a l'else
-         --situat abaix)
-
-         -- Emprarem aquest tipus per comparar si el
-         --tipus de l'assignacio es el mateix, en cas de que
-         --existeixi el fill d'assignacio, el fill dret.
-         --Dins del procediment 'Ct_Asigvalvar' farem la comprovacio
-         --de tipus per saber si el tipus 'T' que li enviam es
-         --correspon amb el tipus de l'assignacio que s'ha
-         --introduit.
-         -------------------------------------------------------
-
       elsif Tnode = Declmultvar then
-         Put_Line("mes variables d'aquest tipus");
+         Put_Line("VERBOSE: diferents variables amb mateix tipus...");
          Ct_Declsvar(Fdret, T);
          Posa(Ts, Id, T, E);
-
-
-         -------------EXPLICACIO DEL CODI ANTERIOR--------------
-         -- Aqui anirem cridant recursivament fins que entri a
-         --l'if Tnode = Asigvalvar i aquell bloc ens retorni
-         --la variable 'T' amb contingut. Una vegada haguem
-         --sortit, assignarem aquest Tipussubjacent 'T' al tipus
-         --de l'identificador corresponent a aquesta produccio.
-         -------------------------------------------------------
       end if;
 
    exception
       when TNo_Existent =>
          Put_Line("ERROR CT: el tipus no existeix");
+      when Tassig_Diferent =>
+         Put_Line("ERROR CT: el tipus que es vol"&
+                    "assignar es diferent al declarat");
 
    end Ct_Declsvar;
 

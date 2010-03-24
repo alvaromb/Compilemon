@@ -118,7 +118,6 @@ package body decls.d_arbre is
        --put_line("tipusnode: "&tn'img);
        paux := new node(tn);
        paux.id12 := id.idn;
-       Put_Line("idnom del node: "&Id.Idn'Img);
        paux.l1 := id.lin;
        paux.c1 := id.col;
        p := (nodeArbre, 0, 0, paux);

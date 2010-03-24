@@ -120,8 +120,6 @@ package body decls.dtsimbols is
             ts.tdesc(id) := (ts.prof, d, 0);
         end if;
 
-        printts(ts);
-
     end posa;
 
 
@@ -329,7 +327,7 @@ package body decls.dtsimbols is
 
         p := ts.tdesc(idp).s;
         pp := 0;
-        while p /= 0 loop 
+        while p /= 0 loop
             pp := p;
             p := ts.texp(p).s;
         end loop;

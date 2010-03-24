@@ -1,5 +1,5 @@
 procedure provaid is
-	  a : integer;
+	  a, b, c, d : integer;
 begin
 	a := a+1;
 	pep := porcella;

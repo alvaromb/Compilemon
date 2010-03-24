@@ -41,7 +41,6 @@ use     Ada.Text_IO,
   Decls.Ctipus;
 
 procedure compilemon is
-   Tk: Token;
 
 begin
 
@@ -50,24 +49,12 @@ begin
 
    Open_Input(Argument(1));
    yyparse;
-   while(Yylex'Img/="END_OF_INPUT") loop
-      Put_Line(""&Yy_Line_Number'Img&"/"&Yy_Begin_Column'Img
-              &" Tk: "&Yylex'img);
-   end loop;
+   --while(Yylex'Img/="END_OF_INPUT") loop
+   --   Put_Line(""&Yy_Line_Number'Img&"/"&Yy_Begin_Column'Img
+   --           &" Tk: "&Yylex'img);
+   --end loop;
 
    Ct_Programa(Arbre);
-
-
-  -- Tk := Yylex;
---   while Tk/=End_Of_Input loop
---      Put_Line(Yy_Line_Number'Img&"/"&Yy_Begin_Column'Img&":"&Tk'Img);
---      Tk:= Yylex;
---   end loop;
-
-
-
-        --if arbre.fd.tn = procediment then
-   put_line("tipusnode: "& arbre.fd1.fid5.tipus'img);
 
    close_Input;
 

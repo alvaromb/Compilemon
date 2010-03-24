@@ -92,6 +92,7 @@ package Decls.Ctipus is
    Identificadors_Diferents : exception;
    Tdeclaracio_Inexistent : exception;
    Tno_Existent : exception;
+   Tassig_Diferent : exception;
 
 private
 
