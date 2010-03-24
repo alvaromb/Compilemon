@@ -73,16 +73,27 @@ package body Decls.Ctipus is
    end Inicia_Enter;
 
 
+   -- Procediments interns
+   procedure Posa_Id
+     (I : in Id_Nom;
+      E : out Boolean) is
+   begin
+      nv := nv + 1;
+      Tassig := (Dvar, I, Nv);
+      Posa(Ts, I, Tassig, E);
+   end Posa_Id;
+
+
    -- Comprovacio de tipus
    procedure Inicia_analisi is
 
    begin
-	nv := 0;
+        nv := 0;
     np := 0;
-	Tbuida(Tn);
+        Tbuida(Tn);
     Tbuida(Ts);
     Inicia_Enter;
-	 
+
    end Inicia_analisi;
 
 
@@ -97,7 +108,7 @@ package body Decls.Ctipus is
 
    procedure Ct_M1 is
    begin
-      put_line("M1 necessari per generacio de codi 3@");      
+      put_line("M1 necessari per generacio de codi 3@");
    end Ct_M1;
 
 
@@ -195,7 +206,7 @@ package body Decls.Ctipus is
 
    procedure Ct_Declaracions
      (A : in Pnode) is
-		
+
       Decl : Pnode renames A.Fd1;
       Decls : Pnode renames A.Fe1;
       Tnode : Tipusnode;
@@ -229,17 +240,16 @@ package body Decls.Ctipus is
       Dvariable : Pnode renames A.Fd1;
       Id : Id_Nom renames A.Fe1.Id12;
       Tipus : Descrip;
-      Tassig : descrip(dvar);
+      Tassig : Descrip;
       Idvar : Id_nom;
       E : Boolean;
 
    begin
       Ct_Declsvar(Dvariable, Tipus, Idvar);
+      nv := nv + 1;
+      Tassig := (Dvar, Idvar, Nv);
+      Posa(Ts, Id, Tassig, E);
 
-		nv := nv + 1;
-      Tassig.nv := nv;
- 		Tassig.tr := Idvar;       
-		Posa(Ts, Id, Tassig, E);
       if E then
          raise Identificador_Existent;
       end if;
@@ -254,7 +264,7 @@ package body Decls.Ctipus is
    exception
       when Identificador_Existent =>
          Put_Line("ERROR CT: L'identificador ja existeix");
-      
+
    end Ct_Decvar;
 
 
@@ -282,7 +292,7 @@ package body Decls.Ctipus is
          -- si existeix_assignacio llavors
             if (Fdret.Tipus /= Tnul) then
          --    Ct_Expressio(Tassig)
-		 --    Pensar a assignar valor i pujarlo cap a dalt
+                 --    Pensar a assignar valor i pujarlo cap a dalt
          --    si tdeclarat /= tassignacio llavors
                if (Tdecl.Td /= Tassig.Td) then
          --       aixecar Error;
@@ -317,31 +327,31 @@ package body Decls.Ctipus is
     procedure Ct_Decconst
      (A : in Pnode) is
 
-	  Id	  : Id_nom renames A.fe2.id12; 
-	  Idtipus : Id_nom renames A.fc2.id12; 
-	  Val : Pnode renames A.fd2;
-	  E : Boolean;
+          Id      : Id_nom renames A.fe2.id12;
+          Idtipus : Id_nom renames A.fc2.id12;
+          Val : Pnode renames A.fd2;
+          E : Boolean;
       Tdecl : Descrip;
-	  Txxx : Descrip;
+          Txxx : Descrip;
 
-	begin
+        begin
 
-		Tdecl := Cons(Ts, Idtipus);
+                Tdecl := Cons(Ts, Idtipus);
         if (Tdecl.Td /= Dnula) then
-			--Ct_Expressio(Tassig,valor);
-			Posa(Ts, Id, Tdecl, E);
+                        --Ct_Expressio(Tassig,valor);
+                        Posa(Ts, Id, Tdecl, E);
 
 
-	    else
+            else
             raise TNo_Existent;
         end if;
 
-	exception
+        exception
 
       when TNo_Existent =>
          Put_Line("ERROR CT: el tipus no existeix");
 
-	end Ct_Decconst;
+        end Ct_Decconst;
 
 
 end Decls.Ctipus;
