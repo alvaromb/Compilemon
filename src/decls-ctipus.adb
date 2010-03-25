@@ -75,25 +75,25 @@ package body Decls.Ctipus is
 
    -- Procediments interns
    procedure Posa_Id
-     (I : in Id_Nom;
+     (Idvar : in Id_Nom;
+      Idtipus : in Id_Nom;
       E : out Boolean) is
+      Tassig : Descrip;
    begin
       nv := nv + 1;
-      Tassig := (Dvar, I, Nv);
-      Posa(Ts, I, Tassig, E);
+      Tassig := (Dvar, Idtipus, Nv);
+      Posa(Ts, Idvar, Tassig, E);
    end Posa_Id;
 
 
    -- Comprovacio de tipus
    procedure Inicia_analisi is
-
    begin
-        nv := 0;
-    np := 0;
-        Tbuida(Tn);
-    Tbuida(Ts);
-    Inicia_Enter;
-
+      nv := 0;
+      np := 0;
+      Tbuida(Tn);
+      Tbuida(Ts);
+      Inicia_Enter;
    end Inicia_analisi;
 
 
@@ -241,14 +241,15 @@ package body Decls.Ctipus is
       Id : Id_Nom renames A.Fe1.Id12;
       Tipus : Descrip;
       Tassig : Descrip;
-      Idvar : Id_nom;
+      Idtipus : Id_nom;
       E : Boolean;
 
    begin
-      Ct_Declsvar(Dvariable, Tipus, Idvar);
-      nv := nv + 1;
-      Tassig := (Dvar, Idvar, Nv);
-      Posa(Ts, Id, Tassig, E);
+      Ct_Declsvar(Dvariable, Tipus, Idtipus);
+      --nv := nv + 1;
+      --Tassig := (Dvar, Idvar, Nv);
+      --Posa(Ts, Id, Tassig, E);
+      Posa_Id(Id, Idtipus, E);
 
       if E then
          raise Identificador_Existent;
@@ -271,7 +272,7 @@ package body Decls.Ctipus is
    procedure Ct_Declsvar
      (A : in Pnode;
       T : out Descrip;
-      Idvar : out Id_nom ) is
+      Idtipus : out Id_nom ) is
 
       Tnode : Tipusnode renames A.Tipus;
       Fdret : Pnode renames A.Fd1;
@@ -301,17 +302,18 @@ package body Decls.Ctipus is
             end if;
          -- T := Tipus_Declarat;
             T := Tdecl;
-            Idvar := Id;
+            Idtipus := Id;
          else
             raise TNo_Existent;
          end if;
 
       elsif Tnode = Declmultvar then
          Put_Line("VERBOSE: diferents variables amb mateix tipus...");
-         Ct_Declsvar(Fdret, T, Idvar);
-         nv := nv + 1;
-         Tassig := (dvar, Idvar, nv);
-         Posa(Ts, Id, Tassig, E);
+         Ct_Declsvar(Fdret, T, Idtipus);
+         Posa_Id(Id, Idtipus, E);
+         --nv := nv + 1;
+         --Tassig := (dvar, Idvar, nv);
+         --Posa(Ts, Id, Tassig, E);
       end if;
 
    exception
@@ -324,34 +326,29 @@ package body Decls.Ctipus is
    end Ct_Declsvar;
 
 
-    procedure Ct_Decconst
+   procedure Ct_Decconst
      (A : in Pnode) is
 
-          Id      : Id_nom renames A.fe2.id12;
-          Idtipus : Id_nom renames A.fc2.id12;
-          Val : Pnode renames A.fd2;
-          E : Boolean;
+      Id : Id_Nom renames A.Fe2.Id12;
+      Idtipus : Id_Nom renames A.Fc2.Id12;
+      Val : Pnode renames A.Fd2;
+      E : Boolean;
       Tdecl : Descrip;
-          Txxx : Descrip;
+      Txxx :  Descrip;
 
-        begin
+   begin
+      Tdecl := Cons(Ts, Idtipus);
+      if (Tdecl.Td /= Dnula) then
+         --Ct_Expressio(Tassig, valor);
+         Posa(Ts, Id, Tdecl, E);
+      else
+         raise Tno_Existent;
+      end if;
 
-                Tdecl := Cons(Ts, Idtipus);
-        if (Tdecl.Td /= Dnula) then
-                        --Ct_Expressio(Tassig,valor);
-                        Posa(Ts, Id, Tdecl, E);
-
-
-            else
-            raise TNo_Existent;
-        end if;
-
-        exception
-
-      when TNo_Existent =>
+   exception
+      when Tno_Existent =>
          Put_Line("ERROR CT: el tipus no existeix");
-
-        end Ct_Decconst;
+   end Ct_Decconst;
 
 
 end Decls.Ctipus;

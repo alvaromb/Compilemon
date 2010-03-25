@@ -78,7 +78,7 @@ package Decls.Ctipus is
    procedure Ct_Declsvar
      (A : in Pnode;
       T : out Descrip;
-      Idvar :out Id_nom);
+      Idtipus : out Id_nom);
 
 
 
