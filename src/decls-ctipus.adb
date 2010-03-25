@@ -74,7 +74,7 @@ package body Decls.Ctipus is
 
 
    -- Procediments interns
-   procedure Posa_Id
+   procedure Posa_Idvar
      (Idvar : in Id_Nom;
       Idtipus : in Id_Nom;
       E : out Boolean) is
@@ -83,7 +83,7 @@ package body Decls.Ctipus is
       nv := nv + 1;
       Tassig := (Dvar, Idtipus, Nv);
       Posa(Ts, Idvar, Tassig, E);
-   end Posa_Id;
+   end Posa_Idvar;
 
 
    -- Comprovacio de tipus
@@ -249,7 +249,7 @@ package body Decls.Ctipus is
       --nv := nv + 1;
       --Tassig := (Dvar, Idvar, Nv);
       --Posa(Ts, Id, Tassig, E);
-      Posa_Id(Id, Idtipus, E);
+      Posa_Idvar(Id, Idtipus, E);
 
       if E then
          raise Identificador_Existent;
@@ -310,7 +310,7 @@ package body Decls.Ctipus is
       elsif Tnode = Declmultvar then
          Put_Line("VERBOSE: diferents variables amb mateix tipus...");
          Ct_Declsvar(Fdret, T, Idtipus);
-         Posa_Id(Id, Idtipus, E);
+         Posa_Idvar(Id, Idtipus, E);
          --nv := nv + 1;
          --Tassig := (dvar, Idvar, nv);
          --Posa(Ts, Id, Tassig, E);
