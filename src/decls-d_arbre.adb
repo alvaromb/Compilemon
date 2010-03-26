@@ -135,6 +135,7 @@ package body decls.d_arbre is
        --put_line("tipusnode: "&tn'img);
        paux := new node(tn);
        paux.val := a.val;
+       Paux.Tconst := A.T;
        paux.l2 := a.lin;
        paux.c2 := a.col;
        p := (nodeArbre, 0, 0, paux);

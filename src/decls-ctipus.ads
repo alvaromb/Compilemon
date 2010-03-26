@@ -46,6 +46,7 @@ package Decls.Ctipus is
 
    -- Taula de simbols
    procedure Inicia_Enter;
+   procedure Inicia_Boolea;
 
    -- Comprovacio de tipus
    procedure Inicia_analisi;
@@ -80,8 +81,6 @@ package Decls.Ctipus is
       T : out Descrip;
       Idtipus : out Id_nom);
 
-
-
    procedure Ct_Decconst
      (A : in Pnode);
 
@@ -93,6 +92,11 @@ package Decls.Ctipus is
 
    --procedure Ct_Decsubrang
    --  (A : in Pnode);
+
+   procedure Ct_Expressioc
+     (A : in Pnode;
+      T : out Tipussubjacent;
+      Idtipus : out Id_Nom);
 
    Identificadors_Diferents : exception;
    Tdeclaracio_Inexistent : exception;

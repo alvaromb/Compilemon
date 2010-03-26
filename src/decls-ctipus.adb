@@ -34,7 +34,7 @@ package body Decls.Ctipus is
        id : rang_tcar;
    begin
        posa_str(tn, id, s);
-       a := (a_lit, l, c, valor(id));
+       a := (A_Lit_S, l, c, valor(id));
    end mt_string;
 
 
@@ -43,7 +43,7 @@ package body Decls.Ctipus is
        car : in string;
          a : out atribut) is
    begin
-      a := (a_lit, l, c, valor(car'First+1));
+      a := (A_Lit_C, l, c, valor(car'First+1));
    end mt_caracter;
 
 
@@ -52,7 +52,7 @@ package body Decls.Ctipus is
          s : in string;
          a : out atribut) is
    begin
-       a := (a_lit, l, c, valor(Integer'value(s)));
+       a := (A_Lit_N, l, c, valor(Integer'value(s)));
    end mt_numero;
 
 
@@ -73,6 +73,40 @@ package body Decls.Ctipus is
    end Inicia_Enter;
 
 
+   procedure Inicia_Boolea is
+      D : Descrip;
+      Dt : Descriptipus;
+      Idb, Idt, Idf : Id_Nom;
+      E : Boolean;
+   begin
+      Posa_Id(Tn, Idb, "boolean");
+      Dt := (Tsbool, 4, -1, 0);
+      D := (Dtipus, Dt);
+      Posa(Ts, Idb, D, E);
+
+      Posa_Id(Tn, Idt, "true");
+      Nv := Nv + 1;
+      D := (Dconst, Idt, -1, Nv);
+      Posa(Ts, Idt, D, E);
+
+      Posa_Id(Tn, Idf, "false");
+      Nv := Nv + 1;
+      D := (Dconst, Idf, 0, Nv);
+      Posa(Ts, Idf, D, E);
+   end Inicia_Boolea;
+
+
+   procedure Inicia_analisi is
+   begin
+      nv := 0;
+      np := 0;
+      Tbuida(Tn);
+      Tbuida(Ts);
+      Inicia_Enter;
+      Inicia_Boolea;
+   end Inicia_analisi;
+
+
    -- Procediments interns
    procedure Posa_Idvar
      (Idvar : in Id_Nom;
@@ -87,16 +121,6 @@ package body Decls.Ctipus is
 
 
    -- Comprovacio de tipus
-   procedure Inicia_analisi is
-   begin
-      nv := 0;
-      np := 0;
-      Tbuida(Tn);
-      Tbuida(Ts);
-      Inicia_Enter;
-   end Inicia_analisi;
-
-
    procedure Ct_Programa
      (A : in Pnode) is
    begin
@@ -246,9 +270,6 @@ package body Decls.Ctipus is
 
    begin
       Ct_Declsvar(Dvariable, Tipus, Idtipus);
-      --nv := nv + 1;
-      --Tassig := (Dvar, Idvar, Nv);
-      --Posa(Ts, Id, Tassig, E);
       Posa_Idvar(Id, Idtipus, E);
 
       if E then
@@ -286,21 +307,15 @@ package body Decls.Ctipus is
       if Tnode = Asigvalvar then
          Put_Line("VERBOSE: passam a assignacio de variable");
 
-         --PSEUDOCODI:
-         --si existeix_tipus_declarat llavors
          Tdecl := Cons(Ts, Id);
          if (Tdecl.Td /= Dnula) then
-         -- si existeix_assignacio llavors
             if (Fdret.Tipus /= Tnul) then
          --    Ct_Expressio(Tassig)
                  --    Pensar a assignar valor i pujarlo cap a dalt
-         --    si tdeclarat /= tassignacio llavors
                if (Tdecl.Td /= Tassig.Td) then
-         --       aixecar Error;
                   raise Tassig_Diferent;
                end if;
             end if;
-         -- T := Tipus_Declarat;
             T := Tdecl;
             Idtipus := Id;
          else
@@ -311,9 +326,6 @@ package body Decls.Ctipus is
          Put_Line("VERBOSE: diferents variables amb mateix tipus...");
          Ct_Declsvar(Fdret, T, Idtipus);
          Posa_Idvar(Id, Idtipus, E);
-         --nv := nv + 1;
-         --Tassig := (dvar, Idvar, nv);
-         --Posa(Ts, Id, Tassig, E);
       end if;
 
    exception
@@ -349,6 +361,63 @@ package body Decls.Ctipus is
       when Tno_Existent =>
          Put_Line("ERROR CT: el tipus no existeix");
    end Ct_Decconst;
+
+
+   procedure Ct_Expressioc
+     (A : in Pnode;
+      T : out Tipussubjacent;
+      Idtipus : out Id_Nom) is
+
+      Fesq : Pnode renames A.Fe3;
+      Fdret : Pnode renames A.Fd3;
+      Op : Operacio renames A.Op3;
+
+      Tesq : Tipussubjacent;
+      Idesq : Id_Nom;
+      Tdret : Tipussubjacent;
+      Iddret : Id_Nom;
+
+   begin
+      case Fesq.Tipus is
+         when Expressio =>
+            Ct_Expressioc(Fesq, Tesq, Idesq);
+         when ExpressioUnaria =>
+            --Ct_Expressiou(Fesq, Tesq, Idesq);
+            Put_Line("exun");
+         when Referencia =>
+            --Ct_Referencia(Fesq, Tesq, Idesq);
+            Put_Line("refe");
+         when Const =>
+            Put_Line("const");
+         when Identificador =>
+            Put_Line("identificador");
+         when others =>
+            null;
+      end case;
+
+      case Fdret.Tipus is
+         when Expressio =>
+            Ct_Expressioc(Fdret, Tdret, Iddret);
+         when ExpressioUnaria =>
+            Ct_Expressiou(Fdret, Tdret, Iddret);
+         when Referencia =>
+            Ct_Referencia(Fdret, Tdret, Iddret);
+         when Const =>
+            Put_Line("const");
+         when Identificador =>
+            Put_Line("identificador");
+         when others =>
+            null;
+      end case;
+
+      -- Comparam els tipus
+
+      -- Pujam el tipus corresponent
+
+   end Ct_Expressioc;
+
+
+
 
 
 end Decls.Ctipus;

@@ -31,7 +31,6 @@ package Decls.Dtnode is
       Interseccio, --
       Negacio); --
 
-   --type valor is new integer;
 
    type Node;
 
@@ -85,7 +84,7 @@ package Decls.Dtnode is
          when expressio => fe3, fd3: pnode;
                               op3: operacio;
 
-         when expressioUnaria => f4: pnode;
+         when ExpressioUnaria => f4: pnode;
                                     op4: operacio;
 
          when procediment | dsubrang => fe5, fc5, fd5, fid5: pnode;
@@ -95,6 +94,7 @@ package Decls.Dtnode is
 
          when const => val : valor;
             l2, c2 : natural;
+            Tconst : Tipus_Atribut;
 
          when Mode => M12 : Mmode;
 

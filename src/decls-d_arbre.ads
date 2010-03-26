@@ -1,12 +1,14 @@
 
 
-with Decls.Dtnode,
+with Decls.Dgenerals,
+  Decls.Dtnode,
      decls.D_Taula_De_Noms,
      decls.d_atribut,
      Ada.text_io;
 
-use Decls.Dtnode,
-     decls.D_Taula_De_Noms,
+use Decls.Dgenerals,
+  Decls.Dtnode,
+       decls.D_Taula_De_Noms,
      decls.d_atribut,
      Ada.text_io;
 

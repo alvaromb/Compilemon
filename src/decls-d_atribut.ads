@@ -26,21 +26,17 @@ use     decls.Dgenerals,
 
 package decls.d_atribut is
 
-   type tipus_atribut is
-     (atom,
-      a_ident,
-      a_lit,
-      nodeArbre);
 
-   type atribut (t : tipus_atribut := atom) is record
-       lin, col : natural;
-       case t is
-           when atom      => null;
-           when a_ident   => idn : id_nom;
-           when a_lit     => val : valor;
-           when others    => a   : pnode;
-       end case;
-   end record;
+  type atribut (t : tipus_atribut := atom) is record
+      lin, col : natural;
+      case t is
+          when atom      => null;
+          when a_ident   => idn : id_nom;
+          when A_Lit_C | A_Lit_N | A_Lit_S
+            => val : valor;
+          when others    => a   : pnode;
+      end case;
+  end record;
 
 
 end decls.d_atribut;
