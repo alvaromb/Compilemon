@@ -303,6 +303,10 @@ package body Decls.Ctipus is
       Tassig : Descrip; --ASSIGNACIO PROVISIONAL
       Tdecl : Descrip;
 
+      -- variables per la crida a procediment
+      Tps : Tipussubjacent;
+      Ids : Id_Nom;
+
    begin
       if Tnode = Asigvalvar then
          Put_Line("VERBOSE: passam a assignacio de variable");
@@ -310,8 +314,8 @@ package body Decls.Ctipus is
          Tdecl := Cons(Ts, Id);
          if (Tdecl.Td /= Dnula) then
             if (Fdret.Tipus /= Tnul) then
-         --    Ct_Expressio(Tassig)
-                 --    Pensar a assignar valor i pujarlo cap a dalt
+               Ct_Expressio(Fdret, Tps, Ids);
+         --    Pensar a assignar valor i pujarlo cap a dalt
                if (Tdecl.Td /= Tassig.Td) then
                   raise Tassig_Diferent;
                end if;
@@ -348,10 +352,14 @@ package body Decls.Ctipus is
       Tdecl : Descrip;
       Txxx :  Descrip;
 
+      -- variables per la crida a expressio
+      Tps : Tipussubjacent;
+      Ids : Id_Nom;
+
    begin
       Tdecl := Cons(Ts, Idtipus);
       if (Tdecl.Td /= Dnula) then
-         --Ct_Expressio(Tassig, valor);
+         Ct_Expressio(Val, Tps, Ids);
          Posa(Ts, Id, Tdecl, E);
       else
          raise Tno_Existent;
@@ -361,6 +369,28 @@ package body Decls.Ctipus is
       when Tno_Existent =>
          Put_Line("ERROR CT: el tipus no existeix");
    end Ct_Decconst;
+
+
+   procedure Ct_Expressio
+     (A : in Pnode;
+      T : out Tipussubjacent;
+      Idtipus : out Id_Nom) is
+
+      Tipus : Tipusnode renames A.Tipus;
+
+      Tps : Tipussubjacent;
+      Id : Id_Nom;
+
+   begin
+      if Tipus = Expressio then
+         Ct_Expressioc(A, Tps, Id);
+      elsif Tipus = ExpressioUnaria then
+         Ct_Expressiou(A, Tps, Id);
+      end if;
+      T := Tps;
+      Idtipus := Id;
+
+   end Ct_Expressio;
 
 
    procedure Ct_Expressioc
@@ -382,15 +412,14 @@ package body Decls.Ctipus is
          when Expressio =>
             Ct_Expressioc(Fesq, Tesq, Idesq);
          when ExpressioUnaria =>
-            --Ct_Expressiou(Fesq, Tesq, Idesq);
-            Put_Line("exun");
+            Ct_Expressiou(Fesq, Tesq, Idesq);
          when Referencia =>
             --Ct_Referencia(Fesq, Tesq, Idesq);
             Put_Line("refe");
          when Const =>
-            Put_Line("const");
+            Ct_Constant(Fesq, Tesq, Idesq);
          when Identificador =>
-            Put_Line("identificador");
+            Ct_Identificador(Fesq, Tesq, Idesq);
          when others =>
             null;
       end case;
@@ -401,23 +430,130 @@ package body Decls.Ctipus is
          when ExpressioUnaria =>
             Ct_Expressiou(Fdret, Tdret, Iddret);
          when Referencia =>
-            Ct_Referencia(Fdret, Tdret, Iddret);
+            --Ct_Referencia(Fdret, Tdret, Iddret);
+            Put_Line("refe");
          when Const =>
-            Put_Line("const");
+            Ct_Constant(Fdret, Tdret, Iddret);
          when Identificador =>
-            Put_Line("identificador");
+            Ct_Identificador(Fdret, Tdret, Iddret);
          when others =>
             null;
       end case;
 
       -- Comparam els tipus
-
-      -- Pujam el tipus corresponent
+      if (Idesq /= Id_Nul) and (Iddret /= Id_Nul) then
+         if (Idesq = Iddret) then
+            T := Tesq;
+            Idtipus := Idesq;
+         end if;
+      else
+         if (Tesq = Tdret) then
+            if (Idesq /= Id_Nul) then
+               Idtipus := Idesq;
+            elsif (Iddret /= Id_Nul) then
+               Idtipus := Iddret;
+            else
+               Idtipus := Id_Nul;
+            end if;
+            T := Tesq;
+         end if;
+      end if;
 
    end Ct_Expressioc;
 
 
+   procedure Ct_Expressiou
+     (A : in Pnode;
+      T : out Tipussubjacent;
+      Idtipus : out Id_Nom) is
 
+      Fdret : Pnode renames A.F4;
+      Op : Operacio renames A.Op4;
+
+      Tdret : Tipussubjacent;
+      Iddret : Id_Nom;
+
+
+   begin
+      case Fdret.Tipus is
+         when Expressio =>
+            Ct_Expressioc(Fdret, Tdret, Iddret);
+         when ExpressioUnaria =>
+            Ct_Expressiou(Fdret, Tdret, Iddret);
+         when Referencia =>
+            --Ct_Referencia(Fdret, Tdret, Iddret);
+            Put_Line("refe");
+         when Const =>
+            Ct_Constant(Fdret, Tdret, Iddret);
+         when Identificador =>
+            Ct_Identificador(Fdret, Tdret, Iddret);
+         when others =>
+            null;
+      end case;
+
+      -- Comprovar el tipus segons la Op
+      if (Op = Negacio) and (Tdret = Tsbool) then
+         T := Tdret;
+         Idtipus := Iddret;
+      elsif (Op = Resta) and (Tdret = Tsent) then
+         T := Tdret;
+         Idtipus := Iddret;
+      else
+         Put_Line("ERROR CT-expun: l'expressio no suporta el tipus");
+         -- Pujam aixo per seguir comprovant tipus
+         T := Tsbool;
+         Idtipus := Id_Nul;
+      end if;
+
+   end Ct_Expressiou;
+
+
+   procedure Ct_Constant
+     (A : in Pnode;
+      T : out Tipussubjacent;
+      Idtipus : out Id_Nom) is
+
+      Tatr : Tipus_Atribut renames A.Tconst;
+      D : Descrip;
+
+   begin
+      Idtipus := Id_Nul;
+      case (Tatr) is
+         when A_Lit_C =>
+            T := Tscar;
+         when A_Lit_N =>
+            T := Tsent;
+         when others =>
+            Put_Line("ERROR CT-constant: tipus constant erroni");
+      end case;
+
+   end Ct_Constant;
+
+
+   procedure Ct_Identificador
+     (A : in Pnode;
+      T : out Tipussubjacent;
+      Idtipus : out Id_Nom) is
+
+      Id : Id_Nom renames A.Id12;
+      D : Descrip;
+
+   begin
+      D := Cons(Ts, Id);
+      if (D.Td = Dvar) then
+         Idtipus := D.Tr;
+         D := Cons(Ts, Idtipus);
+         if (D.Td = Dtipus) then
+            T := D.Dt.Tt;
+         else
+            Put_Line("ERROR CT-identificador: el tipus no es"&
+                       "una descripcio de tipus "&D.Td'img);
+         end if;
+      else
+         Put_Line("ERROR CT: l'identificador no es una variable");
+      end if;
+
+   end Ct_Identificador;
 
 
 end Decls.Ctipus;

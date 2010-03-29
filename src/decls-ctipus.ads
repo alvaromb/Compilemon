@@ -93,10 +93,31 @@ package Decls.Ctipus is
    --procedure Ct_Decsubrang
    --  (A : in Pnode);
 
+   procedure Ct_Expressio
+     (A : in Pnode;
+      T : out Tipussubjacent;
+      Idtipus : out Id_Nom);
+
    procedure Ct_Expressioc
      (A : in Pnode;
       T : out Tipussubjacent;
       Idtipus : out Id_Nom);
+
+   procedure Ct_Expressiou
+     (A : in Pnode;
+      T : out Tipussubjacent;
+      Idtipus : out Id_Nom);
+
+   procedure Ct_Constant
+     (A : in Pnode;
+      T : out Tipussubjacent;
+      Idtipus : out Id_Nom);
+
+   procedure Ct_Identificador
+     (A : in Pnode;
+      T : out Tipussubjacent;
+      Idtipus : out Id_Nom);
+
 
    Identificadors_Diferents : exception;
    Tdeclaracio_Inexistent : exception;

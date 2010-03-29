@@ -1,7 +1,8 @@
 procedure provaid is
-	  provaid, c, d, f : integer;
+	  a, c, d, f : integer;
+	  j : boolean := a;
 begin
-	a := a+1;
+	a := a + j;
 	pep := porcella;
 	a := pep;
 end provaid;
