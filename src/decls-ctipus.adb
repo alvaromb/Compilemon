@@ -123,10 +123,13 @@ package body Decls.Ctipus is
    -- Comprovacio de tipus
    procedure Ct_Programa
      (A : in Pnode) is
+	d : Descrip;
+
    begin
       Ct_M1;
       Ct_Decprocediment(A.Fd1);
       printts(ts);
+
    end Ct_Programa;
 
 
@@ -138,7 +141,7 @@ package body Decls.Ctipus is
 
    procedure Ct_Decprocediment
      (A : in Pnode) is
-
+      
       Encap : Pnode renames A.Fe5;
       Decls : Pnode renames A.Fc5;
       Bloc : Pnode renames A.Fd5;
@@ -148,6 +151,7 @@ package body Decls.Ctipus is
       Tdecls : Tipusnode;
 
    begin
+      Put_line("CT_Decprocediment");
       Ct_Encap(Encap, Id_Sup);
 
       if Id_Inf /= Id_Sup then
@@ -178,6 +182,7 @@ package body Decls.Ctipus is
       E : Boolean;
 
    begin
+      Put_line("CT_ENCAP");
       if A.Tipus = Pencap then
          Ct_Pencap(A, I);
       else
@@ -204,6 +209,7 @@ package body Decls.Ctipus is
       E : Boolean;
 
    begin
+      Put_line("CT_pencap");
       Ct_Param(Fesq);
 
       if Fesq.Tipus = Identificador then
@@ -236,7 +242,12 @@ package body Decls.Ctipus is
       Tnode : Tipusnode;
 
    begin
-      Cons_Tnode(Decl, Tnode);
+	Put_line("CT_DECLARACIONS");
+      if Decls.Tipus = Declaracions then
+         Ct_Declaracions(Decls);
+      end if;
+
+     Cons_Tnode(Decl, Tnode);
       case Tnode is
          when Dvariable   => Ct_Decvar(Decl);
          when Dconstant   => Ct_Decconst(Decl);
@@ -246,10 +257,6 @@ package body Decls.Ctipus is
          --when Procediment => Ct_Procediment(Decl);
          when others => raise Tdeclaracio_Inexistent;
       end case;
-
-      if Decls.Tipus = Declaracions then
-         Ct_Declaracions(Decls);
-      end if;
 
    exception
       when Tdeclaracio_Inexistent =>
@@ -269,8 +276,10 @@ package body Decls.Ctipus is
       E : Boolean;
 
    begin
+      Put_line("CT_DECVAR");
       Ct_Declsvar(Dvariable, Tipus, Idtipus);
       Posa_Idvar(Id, Idtipus, E);
+    
 
       if E then
          raise Identificador_Existent;
@@ -308,15 +317,17 @@ package body Decls.Ctipus is
       Ids : Id_Nom;
 
    begin
+      Put_line("CT_DECLSVAR");
       if Tnode = Asigvalvar then
          Put_Line("VERBOSE: passam a assignacio de variable");
 
          Tdecl := Cons(Ts, Id);
-         if (Tdecl.Td /= Dnula) then
-            if (Fdret.Tipus /= Tnul) then
+         if (Tdecl.Td /= Dnula) then --la id existeix
+            if (Fdret.Tipus /= Tnul) then 
                Ct_Expressio(Fdret, Tps, Ids);
          --    Pensar a assignar valor i pujarlo cap a dalt
-               if (Tdecl.Td /= Tassig.Td) then
+               if (Id /= Ids) then --si ids es nul s'han de mirar els tipus subjacents
+		  PUT_LINE("VERBOSE: "&Ids'img);
                   raise Tassig_Diferent;
                end if;
             end if;
@@ -327,8 +338,9 @@ package body Decls.Ctipus is
          end if;
 
       elsif Tnode = Declmultvar then
-         Put_Line("VERBOSE: diferents variables amb mateix tipus...");
+         
          Ct_Declsvar(Fdret, T, Idtipus);
+	 Put_Line("VERBOSE: diferents variables amb mateix tipus...");
          Posa_Idvar(Id, Idtipus, E);
       end if;
 
@@ -337,7 +349,7 @@ package body Decls.Ctipus is
          Put_Line("ERROR CT: el tipus no existeix");
       when Tassig_Diferent =>
          Put_Line("ERROR CT: el tipus que es vol"&
-                    "assignar es diferent al declarat");
+                    " assignar es diferent al declarat");
 
    end Ct_Declsvar;
 
@@ -382,11 +394,17 @@ package body Decls.Ctipus is
       Id : Id_Nom;
 
    begin
+      Put_line("CT_EXP: "&Tipus'img );
       if Tipus = Expressio then
          Ct_Expressioc(A, Tps, Id);
       elsif Tipus = ExpressioUnaria then
          Ct_Expressiou(A, Tps, Id);
+      elsif Tipus = Identificador then
+      	 Ct_Identificador(A, Tps, Id);
+      elsif Tipus = const then
+          Ct_Constant(A, Tps, Id);
       end if;
+
       T := Tps;
       Idtipus := Id;
 
@@ -408,6 +426,7 @@ package body Decls.Ctipus is
       Iddret : Id_Nom;
 
    begin
+      Put_line("CT_EXPRESSIOC");
       case Fesq.Tipus is
          when Expressio =>
             Ct_Expressioc(Fesq, Tesq, Idesq);
@@ -420,6 +439,7 @@ package body Decls.Ctipus is
             Ct_Constant(Fesq, Tesq, Idesq);
          when Identificador =>
             Ct_Identificador(Fesq, Tesq, Idesq);
+	    Put_line("CT_EXP_COMP Id: "&Idesq'img);
          when others =>
             null;
       end case;
@@ -434,6 +454,7 @@ package body Decls.Ctipus is
             Put_Line("refe");
          when Const =>
             Ct_Constant(Fdret, Tdret, Iddret);
+	    Put_line("CT_EXP_COMP const: "&Iddret'img);
          when Identificador =>
             Ct_Identificador(Fdret, Tdret, Iddret);
          when others =>
@@ -447,7 +468,7 @@ package body Decls.Ctipus is
             Idtipus := Idesq;
          end if;
       else
-         if (Tesq = Tdret) then
+      	if (Tesq = Tdret) then
             if (Idesq /= Id_Nul) then
                Idtipus := Idesq;
             elsif (Iddret /= Id_Nul) then
@@ -456,7 +477,11 @@ package body Decls.Ctipus is
                Idtipus := Id_Nul;
             end if;
             T := Tesq;
-         end if;
+	else
+       		Put_line("Ct_expresio: Tipus subjacents diferents");
+		Idtipus := Idesq;
+		T := Tesq;
+	end if;
       end if;
 
    end Ct_Expressioc;
@@ -475,6 +500,7 @@ package body Decls.Ctipus is
 
 
    begin
+      Put_line("CT_EXPRESSIOU");
       case Fdret.Tipus is
          when Expressio =>
             Ct_Expressioc(Fdret, Tdret, Iddret);
@@ -501,7 +527,11 @@ package body Decls.Ctipus is
       else
          Put_Line("ERROR CT-expun: l'expressio no suporta el tipus");
          -- Pujam aixo per seguir comprovant tipus
-         T := Tsbool;
+
+         if (Op = Negacio) then T := Tsbool;
+	 else T := Tsent;
+	 end if;
+
          Idtipus := Id_Nul;
       end if;
 
@@ -517,6 +547,7 @@ package body Decls.Ctipus is
       D : Descrip;
 
    begin
+      Put_line("CT_CONSTANT");
       Idtipus := Id_Nul;
       case (Tatr) is
          when A_Lit_C =>
@@ -537,10 +568,12 @@ package body Decls.Ctipus is
 
       Id : Id_Nom renames A.Id12;
       D : Descrip;
-
+    --pensar amb les constants!!!!
    begin
+     put_line(" CT_ID : "&Id'img);
       D := Cons(Ts, Id);
-      if (D.Td = Dvar) then
+      if (D.Td = dvar) then
+	 
          Idtipus := D.Tr;
          D := Cons(Ts, Idtipus);
          if (D.Td = Dtipus) then
@@ -552,7 +585,7 @@ package body Decls.Ctipus is
       else
          Put_Line("ERROR CT: l'identificador no es una variable");
       end if;
-
+	Put_line("ct_id: Tipus: "&Idtipus'img);
    end Ct_Identificador;
 
 

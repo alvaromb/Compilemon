@@ -1,6 +1,6 @@
 procedure provaid is
 	  a, c, d, f : integer;
-	  j : boolean := -3;
+	  j: integer := 3;
 begin
 	a := a + j;
 	pep := porcella;
