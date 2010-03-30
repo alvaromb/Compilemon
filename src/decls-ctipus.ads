@@ -90,8 +90,8 @@ package Decls.Ctipus is
    --procedure Ct_Decregistre
    --  (A : in Pnode);
 
-   --procedure Ct_Decsubrang
-   --  (A : in Pnode);
+   procedure Ct_Decsubrang
+     (A : in Pnode);
 
    procedure Ct_Expressio
      (A : in Pnode;
@@ -123,7 +123,6 @@ package Decls.Ctipus is
    Tdeclaracio_Inexistent : exception;
    Tno_Existent : exception;
    Tassig_Diferent : exception;
-   Identificador_Existent : exception;
 
 private
 
