@@ -6,6 +6,12 @@ use U_Lexica;
 package body Decls.Ctipus is
 
 
+   -- FALTA:
+   --    - dir-li que es una constant
+   --    - mirar que quan assignam un valor sigui del rang
+   --    - fer entra i surt bloc
+   --    - guardar el valor
+
    -- Rutines lexiques
    procedure mt_atom
      (l, c : in natural;
