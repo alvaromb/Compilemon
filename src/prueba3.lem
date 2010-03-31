@@ -1,7 +1,7 @@
 procedure provaid is
 	  a, c, d, f : boolean := true;
-	  j: constant integer := 3;
-	  type pepe is new integer range  9 .. 7;
+	  j: constant integer := -3;
+
 begin
 	a := a + j;
 	pep := porcella;

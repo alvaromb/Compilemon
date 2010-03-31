@@ -355,6 +355,7 @@ package body Decls.Ctipus is
       Val : Pnode renames A.Fd2;
       E : Boolean;
       Tdecl : Descrip;
+	  Tconst : Descrip;
 
       -- variables per la crida a expressio
       Tps : Tipussubjacent;
@@ -363,7 +364,9 @@ package body Decls.Ctipus is
    begin
       Tdecl := Cons(Ts, Idtipus);
       if (Tdecl.Td /= Dnula) then
-         Ct_Expressio(Val, Tps, Ids);
+        
+         Ct_Constant(Val,Tps,Ids);
+ 
          if (Idtipus /= Ids) and (Ids /= Id_Nul) then
             Put_Line("ERROR CT-const: tipus assig diferent");
 
@@ -373,7 +376,10 @@ package body Decls.Ctipus is
          end if;
 
          -- Guardam la constant
-         Posa(Ts, Id, Tdecl, E);
+		 Nv := Nv + 1;
+		 Tconst := (dconst, IdTipus, Val.val, nv );
+         Posa(Ts, Id, Tconst, E);
+		  Put_Line("El valor de la constant es: "&Val.val'img);
          if E then
             Put_Line("ERROR-CT-const: var ja existent");
          end if;
@@ -538,45 +544,11 @@ package body Decls.Ctipus is
 			Put_Line("ERROR CT-decsubrang: tipus 'new x' x no es d'un tipus valid");
 			
 		end if;
-		
 
 	else
 		Put_Line("ERROR CT-decsubrang: tipus 'new x' x no existeix");	
 	end if;
 
-
-
-
-
-      --Agafam els tipus dels dos rangs
-      --      Ct_Constant(Rang_Esq, Tsesq, Idesq);
-            --Ct_Constant(Rang_Dret, Tsdret, Iddret);
-
-      --Comparam si son del mateix tipus
-            --if (Tsesq = Tsdret) then
-         --Comparam si son del mateix tipus que Idtsubrang
-         --Primer miram si Idtsubrang es d'un tipus existent
-        
-                --  if (Tsesq = Tdecl.Dt.Tt) then
-               --Els tipus del rang i el tipus de type son iguals
-        --             Put_Line("seguir un poc");
-               --FALTA SEGUIR AQUI
-         --         else
-          --           Put_Line("ERROR CT-decsubrang: tipus dels rangs i el "&
-         --                       "tipus del subrang declarat son diferents");
-         --         end if;
-         --      else
-            
-        --       end if;
-        --    else
-        --       Put_Line("ERROR CT-decsubrang: tipus dels rangs diferents");
-       --     end if;
-
-      --Lo darrer que farem sira comprovar que
-      --Idsubrang (es a dir, l'id del 'nom' del
-      --subrang) no existeix ja com un altre id
-      --declarat. Ho farem amb l'error E a l'hora
-      --de fer el posa.
    end Ct_Decsubrang;
 
 

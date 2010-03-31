@@ -166,9 +166,10 @@ c_decl_var:
   ;
 
 dec_constant:
-    id s_dospunts pc_constant id s_assignacio expressio
+    id s_dospunts pc_constant id s_assignacio const
     {creaNode_ID($1, $1, identificador);
      creaNode_ID($4, $4, identificador);
+	 creaNode_VAL($6, $6, Const);
      creaNode($$, $1, $4, $6, dconstant);}
   ;
   
