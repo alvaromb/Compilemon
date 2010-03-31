@@ -386,43 +386,185 @@ package body Decls.Ctipus is
 
       Idsubrang : Id_Nom renames A.Fe5.Id12;
       Idtsubrang : Id_Nom renames A.Fc5.Id12;
+      Idtipus : Id_nom;
 
-      --Suposarem que limit nomes pot ser 'const'
+      --Suposarem que limit nomes pot ser 'const' o una constant
       Rang_Esq : Pnode renames A.Fd5;
       Rang_Dret : Pnode renames A.Fid5;
       Tsesq : Tipussubjacent;
       Tsdret : Tipussubjacent;
+      T : Tipussubjacent;
       Idesq : Id_Nom;
       Iddret : Id_Nom;
 
       Tdecl : Descrip;
+      Tresq : Descrip;
+	  Trdret : Descrip;
+
+      Valesq : Valor;
+      Valdret : Valor;
+
+	  Tdescrip_decl : Descrip;
+	  Tdescript_decl : Descriptipus;
+
+	  E : Boolean;
 
    begin
+	Tdecl := Cons(Ts, Idtsubrang);
+	--Miram si el tipus sobre el qual es vol crear
+	if (Tdecl.Td /= Dnula) then
+		
+		if(Tdecl.Td = Dtipus) and (Tdecl.dt.tt = tsbool 
+                                        or  Tdecl.dt.tt = tscar
+                                        or  Tdecl.dt.tt = tsent ) then	
+
+			--Miram el fill esquerra
+			if (Rang_Esq.Tipus = Const) then
+
+				Ct_Constant(Rang_Esq, Tsesq, Idesq);
+				Valesq := Rang_Esq.val;
+
+			elsif( Rang_Esq.Tipus = Identificador) then
+				
+				Tresq := cons(ts,Rang_Esq.Id12);
+				if(Tresq.td = dconst) then
+					Ct_Identificador(Rang_Esq, Tsesq, Idesq);
+					Valesq := Tresq.vc;
+				else
+				  Put_Line("ERROR CT-decsubrang: El limit esquerra es una variable no constant");		
+				end if;
+			else   Put_Line("ERROR CT-decsubrang: El limit esq no es de cap tipus valid");
+			end if;
+
+			--Miram el fill dret
+			if (Rang_Dret.Tipus = Const) then
+
+				Ct_Constant(Rang_Dret, Tsdret, Iddret);
+				Valdret := Rang_Dret.val;
+
+			elsif( Rang_dret.Tipus = Identificador) then
+				
+				Trdret := cons(ts, Rang_Dret.Id12);
+				if(Trdret.td = dconst) then
+					Ct_Identificador(Rang_Dret, Tsdret, Iddret);
+					Valdret := Trdret.vc;
+				else
+				  Put_Line("ERROR CT-decsubrang: El limit dret es una variable no constant");
+		
+				end if;
+			else   Put_Line("ERROR CT-decsubrang: El limit dret no es de cap tipus valid");
+
+			end if;
+
+			-- Comparam els tipus
+			if (Idesq /= Id_Nul) and (Iddret /= Id_Nul) then
+				 if (Idesq = Iddret) then
+				    T := Tsesq;
+				    Idtipus := Idesq;
+
+			     else Put_Line("ERROR CT-decsubrang: Els tipus assignats no coincideixen");
+
+				 end if;
+			else
+				if (Tsesq = Tsdret) then
+				    if (Idesq /= Id_Nul) then
+				       Idtipus := Idesq;
+				    elsif (Iddret /= Id_Nul) then
+				       Idtipus := Iddret;
+				    else
+				       Idtipus := Id_Nul;
+				    end if;
+				    T := Tsesq;
+				else
+					Put_line("ERROR Ct_expresio: Tipus subjacents diferents");
+					Idtipus := Idesq;
+					T := Tsesq;
+				end if;
+			end if;
+			
+			if(Idtipus = Id_nul) then
+				if (T = Tdecl.dt.tt) then
+				--tipus subjacents iguals
+					if (valesq < valdret) then
+						--rang esq menor rang dret
+						--cream la variable
+						case (T) is
+							when tsbool => Tdescript_decl := (tsbool, 4, valesq, valdret);
+							when tscar => Tdescript_decl := (Tscar, 4, valesq, valdret);
+							when tsent => Tdescript_decl := (Tsent, 4, valesq, valdret);
+							when others => put_LINE("ERROR CT-decsubrang: ERROR UNCONTROLLED");
+						end case;
+						Tdescrip_decl := (Dtipus, Tdescript_decl); 
+						posa(ts, Idsubrang, Tdescrip_decl, E);
+						if E then
+							put_line("ERROR CT-decsubrang: el tipus que intentes declarar ja existeix");
+						end if;
+					else
+						put_line("ERROR CT-decsubrang: el rang esq es major o igual q el dret");
+					end if;
+				else
+					put_Line("ERROR CT-decsubrang: els tipus del rang i el declarat son diferents");
+				end if;
+			elsif (idtipus = idtsubrang) then
+				--tipus dels limits i del tipus subrang iguals
+				if (valesq < valdret) then
+					--rang esq menor rang dret
+					case (T) is
+						when tsbool => Tdescript_decl := (tsbool, 4, valesq, valdret);
+						when tscar => Tdescript_decl := (Tscar, 4, valesq, valdret);
+						when tsent => Tdescript_decl := (Tsent, 4, valesq, valdret);
+						when others => put_LINE("ERROR CT-decsubrang: ERROR UNCONTROLLED");
+					end case;
+					Tdescrip_decl := (Dtipus, Tdescript_decl);
+					posa(ts, Idsubrang, Tdescrip_decl, E);
+					if E then
+						put_line("ERROR CT-decsubrang: el tipus que intentes declarar ja existeix");
+					end if;
+				else
+					put_line("ERROR CT-decsubrang: el rang esq es major o igual q el dret");
+				end if;
+			else
+				put_line("ERROR CT-decsubrang: els tipus del rang i el declarat fallen");
+			end if;
+
+		else
+		
+			Put_Line("ERROR CT-decsubrang: tipus 'new x' x no es d'un tipus valid");
+			
+		end if;
+		
+
+	else
+		Put_Line("ERROR CT-decsubrang: tipus 'new x' x no existeix");	
+	end if;
+
+
+
+
 
       --Agafam els tipus dels dos rangs
-      Ct_Constant(Rang_Esq, Tsesq, Idesq);
-      Ct_Constant(Rang_Dret, Tsdret, Iddret);
+      --      Ct_Constant(Rang_Esq, Tsesq, Idesq);
+            --Ct_Constant(Rang_Dret, Tsdret, Iddret);
 
       --Comparam si son del mateix tipus
-      if (Tsesq = Tsdret) then
+            --if (Tsesq = Tsdret) then
          --Comparam si son del mateix tipus que Idtsubrang
          --Primer miram si Idtsubrang es d'un tipus existent
-         Tdecl := Cons(Ts, Idtsubrang);
-         if (Tdecl.Td /= Dnula) then
-            if (Tsesq = Tdecl.Dt.Tt) then
+        
+                --  if (Tsesq = Tdecl.Dt.Tt) then
                --Els tipus del rang i el tipus de type son iguals
-               Put_Line("seguir un poc");
+        --             Put_Line("seguir un poc");
                --FALTA SEGUIR AQUI
-            else
-               Put_Line("ERROR CT-decsubrang: tipus dels rangs i el "&
-                          "tipus del subrang declarat son diferents");
-            end if;
-         else
-            Put_Line("ERROR CT-decsubrang: tipus 'new x' x no existeix");
-         end if;
-      else
-         Put_Line("ERROR CT-decsubrang: tipus dels rangs diferents");
-      end if;
+         --         else
+          --           Put_Line("ERROR CT-decsubrang: tipus dels rangs i el "&
+         --                       "tipus del subrang declarat son diferents");
+         --         end if;
+         --      else
+            
+        --       end if;
+        --    else
+        --       Put_Line("ERROR CT-decsubrang: tipus dels rangs diferents");
+       --     end if;
 
       --Lo darrer que farem sira comprovar que
       --Idsubrang (es a dir, l'id del 'nom' del
@@ -449,7 +591,7 @@ package body Decls.Ctipus is
       elsif Tipus = ExpressioUnaria then
          Ct_Expressiou(A, Tps, Id);
       elsif Tipus = Identificador then
-         Ct_Identificador(A, Tps, Id);
+        Ct_identificador(A, Tps, Id);
       elsif Tipus = const then
          Ct_Constant(A, Tps, Id);
       end if;
