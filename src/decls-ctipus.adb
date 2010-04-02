@@ -396,7 +396,6 @@ package body Decls.Ctipus is
       S : in String) is
 
       Rang : Pnode renames A;
-      Idrang : Id_Nom renames A.Id12;
       Tipus : Descrip;
 
    begin
@@ -404,17 +403,17 @@ package body Decls.Ctipus is
          Ct_Constant(Rang, Tsubj, Id);
          Val := Rang.Val;
       elsif (Rang.Tipus = Identificador) then
-         Tipus := Cons(Ts, Idrang);
+         Tipus := Cons(Ts, A.Id12);
          if (Tipus.Td = Dconst) then
             Ct_Identificador(Rang, Tsubj, Id);
             Val := Tipus.Vc;
          else
             Put_Line("ERROR CT-Dsubrang_Limit: El limit "&S&
-                       "es una variable no constant.");
+                       " es una variable no constant.");
          end if;
       else
          Put_Line("ERROR CT-Dsubrang_Limit: El limit "&S&
-                    "no es de cap tipus vàlid.");
+                    " no es de cap tipus vàlid.");
       end if;
 
    end Ct_Dsubrang_Limit;
@@ -430,18 +429,18 @@ package body Decls.Ctipus is
       --Suposarem que limit nomes pot ser 'const' o una constant
       Rang_Esq : Pnode renames A.Fd5;
       Rang_Dret : Pnode renames A.Fid5;
+      T : Tipussubjacent;
+
       Tsesq : Tipussubjacent;
       Tsdret : Tipussubjacent;
-      T : Tipussubjacent;
       Idesq : Id_Nom;
       Iddret : Id_Nom;
-
-      Tdecl : Descrip;
-      Tresq : Descrip;
-      Trdret : Descrip;
-
       Valesq : Valor;
       Valdret : Valor;
+
+      Tdecl : Descrip;
+      --Tresq : Descrip;
+      --Trdret : Descrip;
 
       Tdescrip_decl : Descrip;
       Tdescript_decl : Descriptipus;
@@ -456,42 +455,11 @@ package body Decls.Ctipus is
                                 or  Tdecl.dt.tt = Tscar
                                 or  Tdecl.dt.tt = tsent ) then
 
-
             --Miram el fill esquerra
-            --if (Rang_Esq.Tipus = Const) then
-            --   Ct_Constant(Rang_Esq, Tsesq, Idesq);
-            --   Valesq := Rang_Esq.val;
-            --elsif (Rang_Esq.Tipus = Identificador) then
-            --   Tresq := cons(ts,Rang_Esq.Id12);
-            --   if(Tresq.td = dconst) then
-            --      Ct_Identificador(Rang_Esq, Tsesq, Idesq);
-            --      Valesq := Tresq.vc;
-            --   else
-            --      Put_Line("ERROR CT-decsubrang: El limit esquerra es"&
-            --                 " una variable no constant");
-            --   end if;
-            --else
-            --   Put_Line("ERROR CT-decsubrang: El limit esq no es de"&
-            --              " cap tipus valid");
-            --end if;
+            Ct_Dsubrang_Limit(Rang_Esq, Valesq, Idesq, Tsesq, "esquerra");
 
             --Miram el fill dret
-            if (Rang_Dret.Tipus = Const) then
-               Ct_Constant(Rang_Dret, Tsdret, Iddret);
-               Valdret := Rang_Dret.val;
-            elsif (Rang_dret.Tipus = Identificador) then
-               Trdret := cons(ts, Rang_Dret.Id12);
-               if (Trdret.td = dconst) then
-                  Ct_Identificador(Rang_Dret, Tsdret, Iddret);
-                  Valdret := Trdret.vc;
-               else
-                  Put_Line("ERROR CT-decsubrang: El limit dret es"&
-                             "una variable no constant");
-               end if;
-            else
-               Put_Line("ERROR CT-decsubrang: El limit dret no es de"&
-                          " cap tipus valid");
-            end if;
+            Ct_Dsubrang_Limit(Rang_Dret, Valdret, Iddret, Tsdret, "dret");
 
             -- Comparam els tipus
             if (Idesq /= Id_Nul) and (Iddret /= Id_Nul) then
