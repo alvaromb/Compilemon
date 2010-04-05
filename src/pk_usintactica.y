@@ -58,8 +58,8 @@ op_major op_igual op_distint
 
 
 --Definicio del tipus atribut
-%with decls.d_atribut, decls.dtnode;
-%use decls.d_atribut, decls.dtnode;
+%with decls.d_atribut, decls.dtnode, decls.dgenerals;
+%use decls.d_atribut, decls.dtnode, decls.dgenerals;
 {
 	subtype yystype is decls.d_atribut.atribut;
 
@@ -156,9 +156,9 @@ dec_var:
   ;
   
 c_decl_var:
-    s_dospunts id c_decl_ass 
+    s_dospunts id 
     {creaNode_ID($2, $2, identificador);
-     creaNode($$, $2, $3, asigvalvar);}
+     remunta($$, $2);} 
   |
     s_coma id c_decl_var
     {creaNode_ID($2, $2, identificador);
@@ -166,20 +166,12 @@ c_decl_var:
   ;
 
 dec_constant:
-    id s_dospunts pc_constant id s_assignacio const
+    id s_dospunts pc_constant id s_assignacio val
     {creaNode_ID($1, $1, identificador);
      creaNode_ID($4, $4, identificador);
-	 creaNode_VAL($6, $6, Const);
      creaNode($$, $1, $4, $6, dconstant);}
   ;
-  
-c_decl_ass:
-    s_assignacio expressio
-    {Remunta($$, $2);}
-  |
-    {creaNode($$, tnul);}
-  ;
-
+ 
 -- TIPUS
 dec_tipus:
     decl_coleccio
@@ -195,17 +187,28 @@ dec_tipus:
   
 -- TIPUS SUBRANG
 decl_subrang:
-    pc_type id pc_is pc_new id pc_range limit 
-    s_puntsrang limit
+    pc_type id pc_is pc_new id pc_range val
+    s_puntsrang val
     {creaNode_ID($2, $2, identificador);
      creaNode_ID($5, $5, identificador);
      creaNode($$, $2, $5, $7, $9, dsubrang);} 
   ;
-  
+
+val:
+    const
+    {creaNode_VAL($$, $1, const, 1);}
+  |
+    op_resta const
+    {creaNode_VAL($$, $2, const, 0);}
+  ;
+
 limit:
     const
-    {creaNode_VAL($$, $1, Const);}
+    {creaNode_VAL($$, $1, Const, 1);}
   | 
+    op_resta const
+    {creaNode_VAL($$, $2, const, 0);}
+  |
     id
     {creaNode_ID($$, $1, identificador);}
   ;
@@ -387,7 +390,7 @@ expressio:
     {Remunta($$, $1);}
   |
     const
-    {creaNode_VAL($$, $1, Const);}
+    {creaNode_VAL($$, $1, Const, 1);}
   ;
   
   

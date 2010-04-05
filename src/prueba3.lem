@@ -1,7 +1,8 @@
 procedure provaid is
-	  a, c, d, f : boolean := true;
-	  j: constant integer := 3;
-	  type juan is new integer range c..6;
+	  type alvaro is record
+	       alvaro : integer;
+	       bili : integer;
+	  end record;
 begin
 	a := a + j;
 	pep := porcella;

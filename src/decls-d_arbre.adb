@@ -128,13 +128,18 @@ package body decls.d_arbre is
     procedure CreaNode_VAL
       (p : out atribut;
        a : in atribut;
-      tn : in Tipusnode) is
+      tn : in Tipusnode;
+       S : in Valor) is
        paux : pnode;
 
     begin
        --put_line("tipusnode: "&tn'img);
        paux := new node(tn);
-       paux.val := a.val;
+       if S = 0 then
+          paux.val := A.Val*(-1);
+       else
+          Paux.Val := A.Val;
+       end if;
        Paux.Tconst := A.T;
        paux.l2 := a.lin;
        paux.c2 := a.col;

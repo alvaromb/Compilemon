@@ -78,7 +78,6 @@ package Decls.Ctipus is
 
    procedure Ct_Declsvar
      (A : in Pnode;
-      T : out Descrip;
       Idtipus : out Id_nom);
 
    procedure Ct_Decconst
@@ -87,8 +86,14 @@ package Decls.Ctipus is
    --procedure Ct_Deccol
    --  (A : in Pnode);
 
-   --procedure Ct_Decregistre
-   --  (A : in Pnode);
+   procedure Ct_Decregistre
+     (A : in Pnode;
+      Idrecord : out Id_Nom);
+
+   procedure Ct_Dregistre_Camp
+     (Idrecord : in Id_Nom;
+      Camp : in Pnode;
+      Tcamp : in Pnode);
 
    procedure Ct_Decsubrang
      (A : in Pnode);

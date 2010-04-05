@@ -62,7 +62,6 @@ package Decls.Dtnode is
       Param,
       Pcoleccio, --
       Pdimcoleccio, --
-      Asigvalvar, --
       Declmultvar, --
       Tnul,
       Mode,
@@ -75,7 +74,7 @@ package Decls.Dtnode is
          when programa | repeticio | condicionalS
            | declaracions | bloc | assignacio | pri
            | dcoleccio | Pdimcoleccio | Referencia
-           | pcoleccio | dvariable | Asigvalvar
+           | pcoleccio | dvariable
            | Declmultvar | encappri | Pencap => fe1, fd1: pnode;
 
          when CondicionalC | dconstant | dregistre

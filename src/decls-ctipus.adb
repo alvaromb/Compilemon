@@ -245,6 +245,7 @@ package body Decls.Ctipus is
       Decl : Pnode renames A.Fd1;
       Decls : Pnode renames A.Fe1;
       Tnode : Tipusnode;
+      Merdaid : Id_Nom;
 
    begin
         Put_line("CT_DECLARACIONS");
@@ -257,7 +258,8 @@ package body Decls.Ctipus is
          when Dvariable   => Ct_Decvar(Decl);
          when Dconstant   => Ct_Decconst(Decl);
          --when Dcoleccio   => Ct_Deccol(Decl);
-         --when Dregistre   => Ct_Decregistre(Decl);
+         when Dregistre |
+           Dencapregistre => Ct_Decregistre(Decl, Merdaid);
          when Dsubrang    => Ct_Decsubrang(Decl);
          --when Procediment => Ct_Procediment(Decl);
          when others => raise Tdeclaracio_Inexistent;
@@ -265,7 +267,7 @@ package body Decls.Ctipus is
 
    exception
       when Tdeclaracio_Inexistent =>
-         Put_Line("ERROR CT: tipus declarat inexistent");
+         Put_Line("ERROR CT-declaracions: tipus declarat inexistent");
 
    end Ct_Declaracions;
 
@@ -275,14 +277,13 @@ package body Decls.Ctipus is
 
       Dvariable : Pnode renames A.Fd1;
       Id : Id_Nom renames A.Fe1.Id12;
-      Tipus : Descrip;
       Tassig : Descrip;
       Idtipus : Id_nom;
       E : Boolean;
 
    begin
       Put_line("CT_DECVAR");
-      Ct_Declsvar(Dvariable, Tipus, Idtipus);
+      Ct_Declsvar(Dvariable, Idtipus);
       Posa_Idvar(Id, Idtipus, E);
 
    end Ct_Decvar;
@@ -290,49 +291,30 @@ package body Decls.Ctipus is
 
    procedure Ct_Declsvar
      (A : in Pnode;
-      T : out Descrip;
-      Idtipus : out Id_nom ) is
+      Idtipus : out Id_Nom) is
 
       Tnode : Tipusnode renames A.Tipus;
-      Fdret : Pnode renames A.Fd1;
-      Id : Id_Nom renames A.Fe1.Id12;
       E : Boolean;
-
-      Tassig : Descrip; --ASSIGNACIO PROVISIONAL
       Tdecl : Descrip;
 
       -- variables per la crida a procediment
-      Tsubj_assig : Tipussubjacent;
-      Id_assig : Id_Nom;
+      --Tsubj_assig : Tipussubjacent;
+      --Id_assig : Id_Nom;
 
    begin
       Put_line("CT_DECLSVAR");
-      if Tnode = Asigvalvar then
-         Put_Line("VERBOSE: passam a assignacio de variable");
-
-         Tdecl := Cons(Ts, Id);
+      if Tnode = Identificador then
+         Tdecl := Cons(Ts, A.Id12);
          if (Tdecl.Td /= Dnula) then --la id existeix
-            if (Fdret.Tipus /= Tnul) then --hi ha assignacio
-               Ct_Expressio(Fdret, Tsubj_assig, Id_assig);
-               if (Id /= Id_assig) and (Id_assig /= Id_Nul) then
-                  --si ids es nul s'han de mirar els tipus subjacents
-                  PUT_LINE("VERBOSE: "&Id_assig'img);
-                  raise Tassig_Diferent;
-               elsif (Id_assig = Id_Nul) and
-                 (Tsubj_assig /= Tdecl.Dt.Tt) then
-                  raise Tassig_Diferent;
-               end if;
-            end if;
-            T := Tdecl;
-            Idtipus := Id;
+            Idtipus := A.Id12;
          else
             raise TNo_Existent;
          end if;
 
       elsif Tnode = Declmultvar then
-         Ct_Declsvar(Fdret, T, Idtipus);
+         Ct_Declsvar(A.Fd1, Idtipus);
          Put_Line("VERBOSE: diferents variables amb mateix tipus...");
-         Posa_Idvar(Id, Idtipus, E);
+         Posa_Idvar(A.Fe1.Id12, Idtipus, E);
       end if;
 
    exception
@@ -368,16 +350,21 @@ package body Decls.Ctipus is
             Put_Line("ERROR CT-const: tipus assig diferent");
          elsif (Ids = Id_Nul) and (Tsubj /= Tdecl.Dt.Tt) then
             Put_Line("ERROR CT-const: tipus subj diferent");
+         else
+            if (Val.Val < Tdecl.Dt.Linf) or (Val.Val > Tdecl.Dt.Lsup) then
+               Put_Line("ERROR CT-const: el valor de la constant "&
+                       "surt del rang");
+            else
+               -- Guardam la constant
+               Nv := Nv + 1;
+               Tconst := (dconst, IdTipus, Val.val, Nv);
+               Posa(Ts, Id, Tconst, E);
+               Put_Line("El valor de la constant es: "&Val.val'img);                        if E then
+                  Put_Line("ERROR-CT-const: var ja existent");
+               end if;
+            end if;
          end if;
 
-         -- Guardam la constant
-         Nv := Nv + 1;
-         Tconst := (dconst, IdTipus, Val.val, Nv);
-         Posa(Ts, Id, Tconst, E);
-         Put_Line("El valor de la constant es: "&Val.val'img);
-         if E then
-            Put_Line("ERROR-CT-const: var ja existent");
-         end if;
       else
          raise Tno_Existent;
       end if;
@@ -386,6 +373,63 @@ package body Decls.Ctipus is
       when Tno_Existent =>
          Put_Line("ERROR CT-const: el tipus no existeix");
    end Ct_Decconst;
+
+
+   procedure Ct_Decregistre
+     (A : in Pnode;
+      Idrecord : out Id_Nom) is
+
+      Tipus : Tipusnode renames A.Tipus;
+      Drecord : Descrip;
+      Dtrecord : Descriptipus;
+      Camp : Pnode renames A.Fc2;
+      Tcamp : Pnode renames A.Fd2;
+      E : Boolean;
+
+   begin
+      if (Tipus = Dregistre) then
+         Dtrecord := (Tsrec, 0);
+         Drecord := (Dtipus, Dtrecord);
+         Posa(Ts, A.Fe2.Id12, Drecord, E);
+         Idrecord := A.Fe2.Id12;
+         if E then
+            Put_Line("ERROR CT-registre: el id del record "&
+                       "ja existeix");
+         end if;
+
+         Ct_Dregistre_Camp(A.Fe2.Id12, Camp, Tcamp);
+      elsif (Tipus = Dencapregistre) then
+         Ct_Decregistre(A.Fe2, Idrecord);
+         Ct_Dregistre_Camp(Idrecord, Camp, Tcamp);
+      end if;
+   end Ct_Decregistre;
+
+
+   procedure Ct_Dregistre_Camp
+     (Idrecord : in Id_Nom;
+      Camp : in Pnode;
+      Tcamp : in Pnode) is
+
+      Idtcamp : Id_Nom renames Tcamp.Id12;
+      Dtcamp : Descrip;
+      Idcamp : Id_Nom renames Camp.Id12;
+      Desc_Camp : Descrip;
+      E : Boolean;
+
+   begin
+      Dtcamp := Cons(Ts, Idtcamp);
+      if (Dtcamp.Td = Dnula) or (Dtcamp.Td /= Dtipus) then
+         Put_Line("ERROR CT-dregistre-camp: el tipus del camp no "&
+                    "existeix o no es d'un tipus");
+      end if;
+      --desplnul provisional
+      Desc_Camp := (Dcamp, Idtcamp, Nul_Despl);
+      Posacamp(Ts, Idrecord, Idcamp, Desc_Camp, E);
+      if E then
+         Put_Line("ERROR CT-dregistre-camp: ja existeix un camp amb "&
+                    "el mateix id en aquest record");
+      end if;
+   end Ct_Dregistre_Camp;
 
 
    procedure Ct_Dsubrang_Limit

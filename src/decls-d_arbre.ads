@@ -61,7 +61,8 @@ package decls.d_arbre is
    procedure CreaNode_VAL
      (p : out atribut;
       a : in atribut;
-     tn : in Tipusnode);
+     tn : in Tipusnode;
+      S : in Valor);
 
    procedure CreaNode_MODE
      (P : out Atribut;
