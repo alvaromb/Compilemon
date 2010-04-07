@@ -83,8 +83,13 @@ package Decls.Ctipus is
    procedure Ct_Decconst
      (A : in Pnode);
 
-   --procedure Ct_Deccol
-   --  (A : in Pnode);
+   procedure Ct_Deccol
+     (A : in Pnode);
+
+   procedure Ct_Pcoleccio
+     (A : in Pnode;
+      Idtipus_Array : in Id_Nom;
+      Idarray : out Id_Nom);
 
    procedure Ct_Decregistre
      (A : in Pnode;
@@ -122,6 +127,12 @@ package Decls.Ctipus is
      (A : in Pnode;
       T : out Tipussubjacent;
       Idtipus : out Id_Nom);
+
+   procedure Ct_Bloc
+     (A : in Pnode);
+
+   procedure Ct_Srep
+     (A : in Pnode);
 
 
    Identificadors_Diferents : exception;

@@ -134,7 +134,7 @@ package body Decls.Ctipus is
    begin
       Ct_M1;
       Ct_Decprocediment(A.Fd1);
-      --printts(ts);
+      printts(ts);
    end Ct_Programa;
 
 
@@ -168,7 +168,7 @@ package body Decls.Ctipus is
          Ct_Declaracions(Decls);
       end if;
 
-      --Ct_Bloc(Bloc);
+      Ct_Bloc(Bloc);
 
    exception
       when Identificadors_Diferents =>
@@ -257,7 +257,7 @@ package body Decls.Ctipus is
       case Tnode is
          when Dvariable   => Ct_Decvar(Decl);
          when Dconstant   => Ct_Decconst(Decl);
-         --when Dcoleccio   => Ct_Deccol(Decl);
+         when Dcoleccio   => Ct_Deccol(Decl);
          when Dregistre |
            Dencapregistre => Ct_Decregistre(Decl, Merdaid);
          when Dsubrang    => Ct_Decsubrang(Decl);
@@ -373,6 +373,66 @@ package body Decls.Ctipus is
       when Tno_Existent =>
          Put_Line("ERROR CT-const: el tipus no existeix");
    end Ct_Decconst;
+
+
+   procedure Ct_Deccol
+     (A : in Pnode) is
+
+      Darray : Descrip;
+      Fesq : Pnode renames A.Fe1;
+      Idtipus_Array : Id_Nom renames A.Fd1.Id12;
+      Idarray : Id_Nom;
+
+   begin
+      Darray := Cons(Ts, Idtipus_Array);
+      if (Darray.Td = Dtipus) then
+         Ct_Pcoleccio(Fesq, Idtipus_Array, Idarray);
+      else
+         Put_Line("ERROR-CT-deccol: el tipus de l'array no existeix");
+      end if;
+   end Ct_Deccol;
+
+
+   procedure Ct_Pcoleccio
+     (A : in Pnode;
+      Idtipus_Array : in Id_Nom;
+      Idarray : out Id_Nom) is
+
+      Fesq : Pnode renames A.Fe1;
+      Idrang : Id_Nom renames A.Fd1.Id12;
+      E : Boolean;
+
+      Dtarray : Descriptipus;
+      Darray : Descrip;
+
+   begin
+      if (A.Tipus = Pcoleccio) then
+         Ct_Pcoleccio(Fesq, Idtipus_Array, Idarray);
+         Posa_Idx(Ts, Idarray, Idrang, E);
+         if E then
+            Put_Line("ERROR CT-pcoleccio: error al posa_idx, error "&
+                       "del compilador, array no creat");
+         end if;
+
+      elsif (A.Tipus = Pdimcoleccio) then
+         Dtarray := (Tsarr, 4, Idtipus_Array);
+         Darray := (Dtipus, Dtarray);
+         Idarray := Fesq.Id12;
+
+         Posa(Ts, Idarray, Darray, E);
+         if E then
+            Put_Line("ERROR CT-pcoleccio: error al posar el tipus "&
+                       "de l'array");
+         end if;
+
+         Posa_Idx(Ts, Idarray, Idrang, E);
+         if E then
+            Put_Line("ERROR CT-pdimcoleccio: error al posa_idx, error "&
+                       "del compilador, array no creat, idarr: "&
+                       Idarray'Img);
+         end if;
+      end if;
+   end Ct_Pcoleccio;
 
 
    procedure Ct_Decregistre
@@ -697,9 +757,9 @@ package body Decls.Ctipus is
             end if;
             T := Tesq;
         else
-                Put_line("ERROR Ct_expresio: Tipus subjacents diferents");
-                Idtipus := Idesq;
-                T := Tesq;
+            Put_line("ERROR Ct_expresio: Tipus subjacents diferents");
+            Idtipus := Idesq;
+            T := Tesq;
         end if;
       end if;
 
@@ -817,6 +877,34 @@ package body Decls.Ctipus is
       Put_line("ct_id: Tipus: "&Idtipus'img);
 
    end Ct_Identificador;
+
+
+   procedure Ct_Bloc
+     (A : in Pnode) is
+   begin
+      case (A.Tipus) then
+         when Bloc =>
+            Ct_Bloc(A.Fe1);
+            Ct_Bloc(A.Fd1);
+         when Repeticio =>
+            Ct_Srep(A);
+         when others =>
+            Put_Line("blocothers");
+      end case;
+   end Ct_Bloc;
+
+
+   procedure Ct_Srep
+     (A : in Pnode) is
+
+      Tsexp : Tipussubjacent;
+      Idtipus_exp : Id_Nom;
+      Exp : Pnode renames A.Fe1;
+
+   begin
+      Ct_Expressio(Exp, Tsexp, Idtipus_Exp);
+
+   end Ct_Srep;
 
 
 end Decls.Ctipus;

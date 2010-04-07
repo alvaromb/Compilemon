@@ -1,8 +1,8 @@
 procedure provaid is
-	  type alvaro is record
-	       alvaro : integer;
-	       bili : integer;
-	  end record;
+	  type rang1 is new integer range 1..5;
+	  type array1 is array (rang1) of boolean;
+	  type rang2 is new integer range -3..3;
+	  type array2 is array (rang1, rang2) of boolean;
 begin
 	a := a + j;
 	pep := porcella;

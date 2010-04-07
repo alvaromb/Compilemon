@@ -246,11 +246,18 @@ package body decls.dtsimbols is
         idespl : rang_despl;
 
     begin
+       E := False;
+
         d := ts.tdesc(ida).d;
         if d.td /= dtipus then e := TRUE; end if;
 
         dt := d.dt;
         if dt.tt /= tsarr then e := TRUE; end if;
+
+        --proves
+        --New_line;
+        --Put_Line("dt.tt: "&Dt.Tt'Img);
+        --Put_Line("d.td: "&D.Td'Img);
 
         p := ts.tdesc(ida).s;
         pp := 0;
@@ -269,7 +276,6 @@ package body decls.dtsimbols is
         else
            ts.tdesc(ida).s := idespl;
         end if;
-
 
     end posa_idx;
 
