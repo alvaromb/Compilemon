@@ -3,8 +3,11 @@ procedure provaid is
 	  type array1 is array (rang1) of boolean;
 	  type rang2 is new integer range -3..3;
 	  type array2 is array (rang1, rang2) of boolean;
+	  a : rang2;
+	  c : rang2;
+	  b : integer;
 begin
-	a := a + j;
-	pep := porcella;
-	a := pep;
+	while (((a+c)*7)>=9) loop
+	      a := a + 1;
+	end loop;
 end provaid;

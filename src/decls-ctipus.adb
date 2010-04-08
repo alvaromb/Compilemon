@@ -134,7 +134,7 @@ package body Decls.Ctipus is
    begin
       Ct_M1;
       Ct_Decprocediment(A.Fd1);
-      printts(ts);
+      --printts(ts);
    end Ct_Programa;
 
 
@@ -741,21 +741,165 @@ package body Decls.Ctipus is
       end case;
 
       -- Comparam els tipus
+
+
       if (Idesq /= Id_Nul) and (Iddret /= Id_Nul) then
          if (Idesq = Iddret) then
-            T := Tesq;
-            Idtipus := Idesq;
+            case Op is
+               when Suma | Resta | Mult | Div | Modul =>
+                  T := Tesq;
+                  Idtipus := Idesq;
+               when Menor | Menorig | Major | Majorig
+                 | Igual | Distint | Unio | Interseccio =>
+                  T := Tsbool;
+                  if Tesq = Tsbool then
+                     Idtipus := Idesq;
+                  else
+                     Idtipus := Id_Nul;
+                  end if;
+                  if (Op = Unio) or (Op = Interseccio) then
+                     if (Tesq /= Tsbool) or (Tdret /= Tsbool) then
+                        Put_Line("ERROR CT-expressioc: operacio and|or "&
+                                   "nomes permesa amb operands booleans");
+                     end if;
+                  elsif (Op = Menor) or (Op = Menorig) or (Op = Major)
+                    or (Op = Majorig) then
+                     if (Tesq /= Tsent) or (Tdret /= Tsent) then
+                        Put_Line("ERROR CT-expressioc: operacions <, <=, "&
+                                   ">=, > nomes permeses amb operands "&
+                                   "sencers");
+                     end if;
+                  end if;
+               when others =>
+                  Put_Line("ERROR CT-expressioc: operacio no "&
+                             "reconeguda");
+            end case;
+         else
+            Put_Line("ERROR CT-expressioc: una expressio no es pot "&
+                       "composar amb dos tipus diferents");
+            case Op is
+               when Menor | Menorig | Major | Majorig | Igual
+                 | Distint | Unio | Interseccio =>
+                  T := Tsbool;
+                  Idtipus := Id_Nul;
+               when Suma | Resta | Mult | Div | Modul =>
+                  T := Tsent;
+                  Idtipus := Id_Nul;
+               when others => Put_Line("ERROR CT-expressioc: operacio "&
+                                         "no reconeguda i error del "&
+                                         "compilador");
+            end case;
          end if;
       else
         if (Tesq = Tdret) then
             if (Idesq /= Id_Nul) then
-               Idtipus := Idesq;
+               case Op is
+                  when Suma | Resta | Mult | Div | Modul
+                    | Unio | Interseccio =>
+                     T := Tesq;
+                     Idtipus := Idesq;
+                     if (Op = Unio) or (Op = Interseccio) then
+                        if T /= Tsbool then
+                           Put_Line("ERROR CT-expressioc: no es pot "&
+                                      "realitzar una operacio "&Op'Img&
+                                      "amb un tipus no boolea");
+                        end if;
+                     elsif (Op /= Unio) and (Op /= Interseccio) then
+                        if T /= Tsent then
+                           Put_Line("ERROR CT-expressioc: no es pot "&
+                                      "realitzar una operacio "&Op'Img&
+                                      "amb un tipus no sencer");
+                        end if;
+                     end if;
+                  when Menor | Menorig | Major | Majorig =>
+                     T := Tsbool;
+                     Idtipus := Id_Nul;
+                     if (Tesq /= Tsent) or (Tdret /= Tsent) then
+                        Put_Line("ERROR CT-expressioc: no es pot "&
+                                   "realitzar una operacio "&Op'Img&
+                                   "amb un tipus no sencer");
+                     end if;
+                  when Igual | Distint =>
+                     T := Tsbool;
+                     Idtipus := Id_Nul;
+                  when others =>
+                     Put_Line("ERROR CT-expressioc: operacio no permesa "&
+                             "i error del compilador");
+               end case;
+
             elsif (Iddret /= Id_Nul) then
-               Idtipus := Iddret;
+               case Op is
+                  when Suma | Resta | Mult | Div | Modul
+                    | Unio | Interseccio =>
+                     T := Tdret;
+                     Idtipus := Iddret;
+                     if (Op = Unio) or (Op = Interseccio) then
+                        if T /= Tsbool then
+                           Put_Line("ERROR CT-expressioc: no es pot "&
+                                      "realitzar una operacio "&Op'Img&
+                                      "amb un tipus no boolea");
+                        end if;
+                     elsif (Op /= Unio) and (Op /= Interseccio) then
+                        if T /= Tsent then
+                           Put_Line("ERROR CT-expressioc: no es pot "&
+                                      "realitzar una operacio "&Op'Img&
+                                      "amb un tipus no sencer");
+                        end if;
+                     end if;
+                  when Menor | Menorig | Major | Majorig =>
+                     T := Tsbool;
+                     Idtipus := Id_Nul;
+                     if (Tesq /= Tsent) or (Tdret /= Tsent) then
+                        Put_Line("ERROR CT-expressioc: no es pot "&
+                                   "realitzar una operacio "&Op'Img&
+                                   "amb un tipus no sencer");
+                     end if;
+                  when Igual | Distint =>
+                     T := Tsbool;
+                     Idtipus := Id_Nul;
+                  when others =>
+                     Put_Line("ERROR CT-expressioc: operacio no permesa i "&
+                                "error del compilador");
+               end case;
+
             else
-               Idtipus := Id_Nul;
+               case Op is
+                  when Suma | Resta | Mult | Div | Modul =>
+                     if Tesq = Tsent then
+                        T := Tesq;
+                     else
+                        T := Tsent;
+                        Put_Line("ERROR CT-expressioc: no es pot "&
+                                   "realitzar una operacio "&Op'Img&
+                                   "amb un tipus no sencer");
+                     end if;
+                     Idtipus := Id_Nul;
+                  when Menor | Menorig | Major | Majorig
+                    | Igual | Distint | Unio | Interseccio =>
+                     if (Op = Unio) or (Op = Interseccio) then
+                        if Tesq /= Tsbool then
+                           Put_Line("ERROR CT-expressioc: and|or nomes"&
+                                      " es poden fer amb tipus booleans");
+                        end if;
+                        T := Tsbool;
+                     elsif (Op = Menor) or (Op = Menorig) or (Op = Major) or
+                       (Op = Majorig) then
+                        if Tesq /= Tsent then
+                           Put_Line("ERROR CT-expressioc: els operadors "&
+                                      "<, <=, >=, > nomes es poden emprar "&
+                                      "amb sencers");
+                        end if;
+                        T := Tsbool;
+                     else
+                        T := Tsbool;
+                     end if;
+                     Idtipus := Id_Nul;
+                  when others =>
+                     Put_Line("ERROR CT-expressioc: operacio no permesa i"&
+                                "error del compilador");
+               end case;
+
             end if;
-            T := Tesq;
         else
             Put_line("ERROR Ct_expresio: Tipus subjacents diferents");
             Idtipus := Idesq;
@@ -882,7 +1026,7 @@ package body Decls.Ctipus is
    procedure Ct_Bloc
      (A : in Pnode) is
    begin
-      case (A.Tipus) then
+      case (A.Tipus) is
          when Bloc =>
             Ct_Bloc(A.Fe1);
             Ct_Bloc(A.Fd1);
@@ -903,6 +1047,8 @@ package body Decls.Ctipus is
 
    begin
       Ct_Expressio(Exp, Tsexp, Idtipus_Exp);
+      Put_LINe("WHILE: tsexp: "&Tsexp'Img);
+      Put_Line("       idtipus_exp: "&Idtipus_Exp'Img);
 
    end Ct_Srep;
 
