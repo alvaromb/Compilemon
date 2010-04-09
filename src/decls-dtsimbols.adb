@@ -328,7 +328,9 @@ package body decls.dtsimbols is
    idespl : rang_despl;
 
     begin
+        e:= false;
         d := ts.tdesc(idp).d;
+		put_line("jola: "&d.td'img);
         if d.td /= dproc then e := TRUE; end if;
 
         p := ts.tdesc(idp).s;

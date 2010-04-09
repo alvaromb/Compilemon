@@ -209,33 +209,63 @@ package body Decls.Ctipus is
 
       Param : Pnode renames A.Fd1;
       Fesq : Pnode renames A.Fe1;
-      Id : Id_Nom renames A.Fe1.Id12;
+      --Id : Id_Nom renames A.Fe1.Id12;
       Tproc : Descrip;
       E : Boolean;
 
    begin
-      Put_line("CT_pencap");
-      Ct_Param(Fesq);
+      Put_line("CT_pencap: ");
 
       if Fesq.Tipus = Identificador then
          --aqui
          --Entrabloc(Ts);
          np := np + 1;
          Tproc := (Dproc, np);
-         Posa(Ts, Id, Tproc, E);
+         Posa(Ts, A.Fe1.Id12, Tproc, E);
          --fi
-         I := Id; --si no funciona: fesq.id12
+         I := fesq.Id12; --PETA!!!
       else
          Ct_Pencap(Fesq, I);
       end if;
-
+      Ct_Param(Param, I);
    end Ct_Pencap;
 
 
    procedure Ct_Param
-     (A : in Pnode) is
+     (A : in Pnode;
+	  I : in Id_Nom) is
+
+      idPar : id_nom renames A.Fe2.id12;
+      mArg : mMode renames A.Fc2.M12;
+      idTipus : id_nom renames A.Fd2.id12;
+
+	  d : Descrip;
+	  dArg : Descrip;
+	  E : boolean;
+
    begin
-      Put_Line("comprovam els paràmetres");
+
+	    Put_line("CT_Param");
+
+   		d := cons(ts, idtipus);
+   	    if d.td /= dtipus then
+	        Put_Line("ERROR CT_Param: El tipus del parametre no es correcte"&d.td'img);
+		end if;
+
+		case mArg is
+			when Entra =>  nv := nv + 1;
+						   dArg := (dvar, idtipus, nv);
+			when Surt =>   nv := nv + 1;
+						   dArg := (dargc, nv, idtipus);
+			when others => null;
+		end case;
+
+		posa_arg(ts, idPar, I, dArg, E);
+		if E then
+			Put_Line("ERROR CT_Param: Error al enregistrar l'argument");
+		end if;
+		
+
    end Ct_Param;
 
 
@@ -261,7 +291,7 @@ package body Decls.Ctipus is
          when Dregistre |
            Dencapregistre => Ct_Decregistre(Decl, Merdaid);
          when Dsubrang    => Ct_Decsubrang(Decl);
-         --when Procediment => Ct_Procediment(Decl);
+         when Procediment => Ct_Decprocediment(Decl);
          when others => raise Tdeclaracio_Inexistent;
       end case;
 
@@ -1025,6 +1055,12 @@ package body Decls.Ctipus is
 
    procedure Ct_Bloc
      (A : in Pnode) is
+
+	--T : Tipussubjacent;
+   	--Idtipus : Id_Nom;
+	D : Descrip;
+	
+
    begin
       case (A.Tipus) is
          when Bloc =>
@@ -1032,8 +1068,20 @@ package body Decls.Ctipus is
             Ct_Bloc(A.Fd1);
          when Repeticio =>
             Ct_Srep(A);
+		 when identificador => 
+            Put_Line("CT_Bloc : IDENTIFICADOR");			
+			D := cons(ts, a.id12);
+			if d.td /= dproc then
+	            Put_Line("CT_Bloc : Aquest id no es correspon a un procediment");				
+			end if;
+  		 --when Referencia => 
+			--Ct_Referencia(A);	
+		 when condicionalS =>
+			Ct_Sconds(A);
+		 when condicionalC =>
+			Ct_Scondc(A); ----
          when others =>
-            Put_Line("blocothers");
+            Put_Line("blocothers"&A.Tipus'img);
       end case;
    end Ct_Bloc;
 
@@ -1044,13 +1092,69 @@ package body Decls.Ctipus is
       Tsexp : Tipussubjacent;
       Idtipus_exp : Id_Nom;
       Exp : Pnode renames A.Fe1;
+	  Bloc : Pnode renames A.fd1;
 
    begin
       Ct_Expressio(Exp, Tsexp, Idtipus_Exp);
-      Put_LINe("WHILE: tsexp: "&Tsexp'Img);
-      Put_Line("       idtipus_exp: "&Idtipus_Exp'Img);
-
+	  if tsexp /= tsbool then 
+	      Put_Line("Ct : La expresion para un bucle debe ser un booleano");		
+	  end if;
+	  Ct_Bloc(Bloc);
    end Ct_Srep;
 
+
+   procedure Ct_Sconds
+     (A : in Pnode) is
+
+      Tsexp : Tipussubjacent;
+      Idtipus_exp : Id_Nom;
+      Cond : Pnode renames A.Fe1;
+	  Bloc : Pnode renames A.fd1;
+
+   begin
+      Ct_Expressio(Cond, Tsexp, Idtipus_Exp);
+	  if tsexp /= tsbool then 
+	      Put_Line("Ct : La expresion para un condicional debe ser un booleano");		
+	  end if;
+	  Ct_Bloc(Bloc);
+   end Ct_Sconds;
+
+
+   procedure Ct_Scondc
+     (A : in Pnode) is
+
+      Tsexp : Tipussubjacent;
+      Idtipus_exp : Id_Nom;
+      Cond : Pnode renames A.Fe2;
+	  Bloc : Pnode renames A.fc2;
+	  Blocelse : Pnode renames A.fd2;
+
+   begin
+      Put_Line("Ct_CondCompost : Entram dins un condicional compost");		
+      Ct_Expressio(Cond, Tsexp, Idtipus_Exp);
+	  if tsexp /= tsbool then 
+	      Put_Line("Ct : La expresion para un condicional compuesto debe ser un booleano");		
+	  end if;
+	  Ct_Bloc(Bloc);
+	  Ct_Bloc(Blocelse);
+   end Ct_Scondc;
+
+
+
+--   procedure Ct_Referencia
+--     (A : in Pnode) is
+
+--   begin
+
+--      case (A.Tipus) is
+
+--	  	when id => ;
+--		when referencia =>
+--		when pri => 
+
+--	  end case;
+
+--   end Ct_referencia;
+	
 
 end Decls.Ctipus;

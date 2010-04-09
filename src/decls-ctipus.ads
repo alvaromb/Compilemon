@@ -68,7 +68,8 @@ package Decls.Ctipus is
       I : out Id_Nom);
 
    procedure Ct_Param
-     (A : in Pnode);
+     (A : in Pnode;
+	  I : in Id_Nom);
 
    procedure Ct_Declaracions
      (A : in Pnode);
@@ -132,6 +133,12 @@ package Decls.Ctipus is
      (A : in Pnode);
 
    procedure Ct_Srep
+     (A : in Pnode);
+
+   procedure Ct_Sconds
+     (A : in Pnode);
+
+   procedure Ct_Scondc
      (A : in Pnode);
 
 

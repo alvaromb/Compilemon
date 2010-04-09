@@ -1,13 +1,24 @@
 procedure provaid is
-	  type rang1 is new integer range 1..5;
-	  type array1 is array (rang1) of boolean;
+	  
 	  type rang2 is new integer range -3..3;
 	  type array2 is array (rang1, rang2) of boolean;
 	  a : rang2;
 	  c : rang2;
-	  b : integer;
+
+	  procedure titis(p: in rang2; g: out rang2) is
+
+	  begin 
+
+		p:= p+1;
+
+	  end titis;
+
 begin
-	while (((a+c)*7)>=9) loop
-	      a := a + 1;
-	end loop;
+	
+	if a = c then
+		a := a +1;
+	else 
+		matrices;
+	end if;
+
 end provaid;

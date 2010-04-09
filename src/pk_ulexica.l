@@ -156,7 +156,7 @@ or		{mt_atom(tok_begin_line, tok_begin_col,
 "--"[^\n]*		{null;}
 
 --Separadors
-{separadors}	{null;}
+[\t|\n|\ ]	{null;}
 
 --Error
 .	{return error;}

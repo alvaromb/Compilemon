@@ -1,21 +1,5 @@
 procedure compilemon is
-	peputo: mojamuto := bili;
-	peputo: mojamuto := 5;
+	p : integer;
 begin
-
-	a:= a+1;
-
-	if peps then
-		m:= -4;
-	else 
-		while true loop
-			a:= c;
-		end loop;
-	end if;
-
-	
-
-
-
-
+	a:=a+1;
 end compilemon;
