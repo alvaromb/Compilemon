@@ -1,24 +1,13 @@
 procedure provaid is
 	  
 	  type rang2 is new integer range -3..3;
-	  type array2 is array (rang1, rang2) of boolean;
-	  a : rang2;
-	  c : rang2;
-
-	  procedure titis(p: in rang2; g: out rang2) is
-
-	  begin 
-
-		p:= p+1;
-
-	  end titis;
+      type pep is array (rang2, rang2) of integer;
+	  a : integer;
+	  b:a;
+	  bili : constant integer := 69;
 
 begin
 	
-	if a = c then
-		a := a +1;
-	else 
-		matrices;
-	end if;
+	a;
 
 end provaid;

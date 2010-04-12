@@ -90,7 +90,8 @@ package Decls.Ctipus is
    procedure Ct_Pcoleccio
      (A : in Pnode;
       Idtipus_Array : in Id_Nom;
-      Idarray : out Id_Nom);
+      Idarray : out Id_Nom;
+      Ncomponents : out Despl);
 
    procedure Ct_Decregistre
      (A : in Pnode;

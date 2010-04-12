@@ -254,10 +254,6 @@ package body decls.dtsimbols is
         dt := d.dt;
         if dt.tt /= tsarr then e := TRUE; end if;
 
-        --proves
-        --New_line;
-        --Put_Line("dt.tt: "&Dt.Tt'Img);
-        --Put_Line("d.td: "&D.Td'Img);
 
         p := ts.tdesc(ida).s;
         pp := 0;
@@ -330,7 +326,7 @@ package body decls.dtsimbols is
     begin
         e:= false;
         d := ts.tdesc(idp).d;
-		put_line("jola: "&d.td'img);
+		
         if d.td /= dproc then e := TRUE; end if;
 
         p := ts.tdesc(idp).s;
