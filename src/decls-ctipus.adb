@@ -1,4 +1,4 @@
-with U_Lexica;
+ with U_Lexica;
 
 use U_Lexica;
 
@@ -670,7 +670,7 @@ package body Decls.Ctipus is
 		
 		when tsent =>  Tdescript_decl := (tsent, 4, valesq, valdret);
 		when tscar =>  Tdescript_decl := (tscar, 4, valesq, valdret);
-   	    when others => Put_line("ERROR Ct_subrang: (Sub)Tipus no valid per a un subrang");
+   	    when others => Put_line("ERROR Ct_subrang: Tipus(sub) no valid per a un subrang");
 
 	end case;
 
