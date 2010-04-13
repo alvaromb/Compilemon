@@ -139,7 +139,7 @@ package body Decls.Ctipus is
       Ct_M1;
       Ct_Decprocediment(A.Fd1);
       ida := primer_arg(ts,Idproc);
-	  if(arg_valid(ida)) then 
+	  if (arg_valid(ida)) then 
 
 		put_line("Ct_Programa: El procediment principal no pot tenir params");
 
@@ -217,8 +217,9 @@ package body Decls.Ctipus is
          Posa(Ts, I, Tproc, E);
 		 if E then
 			Put_Line("ERROR CT_ENCAP: Error el id del proccediment ja existeix");
-		end if;
-		Entrabloc(Ts);
+		 end if;
+		 Entrabloc(Ts);
+
       end if;
 
    end Ct_Encap;
@@ -312,9 +313,8 @@ package body Decls.Ctipus is
          when Dconstant   => Ct_Decconst(Decl);
          when Dcoleccio   => Ct_Deccol(Decl);
          when Dregistre | Dencapregistre 
-             |Firecord => 
-					Ocup := 0;					
-					Ct_Decregistre(Decl, Idrec,Ocup);
+             |Firecord => Ocup := 0;					
+					      Ct_Decregistre(Decl, Idrec,Ocup);
          when Dsubrang    => Ct_Decsubrang(Decl);
          when Procediment => Ct_Decprocediment(Decl);
          when others => Put_Line("ERROR CT_Declaracions:(DEBUG)tipus declarat inexistent "&Tnode'img);
@@ -360,7 +360,6 @@ package body Decls.Ctipus is
 		Idtipus := A.Id12;
 
       elsif Tnode = Declmultvar then
-
          Ct_Declsvar(A.Fd1, Idtipus);
          Put_Line("CT_DECLSVAR:(DEBUG) diferents variables amb mateix tipus...");
          Posa_Idvar(A.Fe1.Id12, Idtipus, E);
@@ -505,7 +504,6 @@ package body Decls.Ctipus is
      -- Camp : Pnode renames A.Fc2;
      -- Tcamp : Pnode renames A.Fd2;
       E : Boolean;
-
 
    begin
 	  

@@ -3,7 +3,7 @@ procedure provaid(a : in integer) is
 	  type rang2 is new integer range -3..3;
       type pep is array (rang2, rang2) of integer;
 
-	  procedure lalal(t : in pep; s :out rang2)	is
+	  procedure lalal(t : in out pep; s :out rang2)	is
 		
 	  begin
 
