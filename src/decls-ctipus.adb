@@ -133,11 +133,18 @@ package body Decls.Ctipus is
    procedure Ct_Programa
      (A : in Pnode) is
         d : Descrip;
+		Idproc : Id_nom renames A.Fd1.Fid5.Id12;
+        ida : cursor_arg;
    begin
       Ct_M1;
       Ct_Decprocediment(A.Fd1);
-      --AQUI!
-	  put_line("Id procedure : "&cons_nom(tn, A.Fd1.Fid5.Id12));
+      ida := primer_arg(ts,Idproc);
+	  if(arg_valid(ida)) then 
+
+		put_line("Ct_Programa: El procediment principal no pot tenir params");
+
+	  end if;
+	  
    end Ct_Programa;
 
 

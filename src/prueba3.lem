@@ -1,4 +1,4 @@
-procedure provaid is
+procedure provaid(a : in integer) is
 	  
 	  type rang2 is new integer range -3..3;
       type pep is array (rang2, rang2) of integer;
