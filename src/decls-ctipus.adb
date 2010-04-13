@@ -136,7 +136,8 @@ package body Decls.Ctipus is
    begin
       Ct_M1;
       Ct_Decprocediment(A.Fd1);
-      --printts(ts);
+      --AQUI!
+	  put_line("Id procedure : "&cons_nom(tn, A.Fd1.Fid5.Id12));
    end Ct_Programa;
 
 
