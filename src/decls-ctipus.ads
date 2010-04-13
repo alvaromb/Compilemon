@@ -95,12 +95,14 @@ package Decls.Ctipus is
 
    procedure Ct_Decregistre
      (A : in Pnode;
-      Idrecord : out Id_Nom);
+      Idrecord : out Id_Nom;
+	   Ocup: in out despl);
 
    procedure Ct_Dregistre_Camp
      (Idrecord : in Id_Nom;
       Camp : in Pnode;
-      Tcamp : in Pnode);
+      Tcamp : in Pnode;
+	  Ocup: in out Despl);
 
    procedure Ct_Decsubrang
      (A : in Pnode);

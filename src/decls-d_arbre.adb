@@ -105,7 +105,21 @@ package body decls.d_arbre is
         p := (nodeArbre, 0, 0, paux);
         --Put_Line("tipusnode: "&tn'img);
     end creaNode;
+    
+    procedure creaNode
+     (p : out atribut;
+      f : in atribut;
+      tn : in Tipusnode) is
 
+        paux : pnode;
+
+    begin
+        --put_line("tipusnode: "&tn'img);
+        paux := new node(tn);
+        paux.f6 := f.a;
+        p := (nodeArbre, 0, 0, paux);
+        --Put_Line("tipusnode: "&tn'img);
+    end creaNode;
 
     -- Crea node per identificadors
     procedure CreaNode_ID

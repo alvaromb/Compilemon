@@ -217,7 +217,7 @@ limit:
 -- TIPUS REGISTRE
 decl_registre:
     p_dregistre pc_end pc_record
-    {Remunta($$, $1);}
+    {creaNode($$,$1, firecord);}
   ;
   
 p_dregistre: 

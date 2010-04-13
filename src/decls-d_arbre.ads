@@ -41,6 +41,11 @@ package decls.d_arbre is
       fe, fce, fc, fd : in atribut;
      tn : in Tipusnode);
 
+     procedure creaNode
+     (p : out atribut;
+      f : in atribut;
+      tn : in Tipusnode);
+
    procedure creaNode
      (p : out atribut;
       fe, fd: in atribut;

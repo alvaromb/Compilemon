@@ -2,9 +2,14 @@ procedure provaid is
 	  
 	  type rang2 is new integer range -3..3;
       type pep is array (rang2, rang2) of integer;
-	  a : integer;
-	  b:a;
-	  bili : constant integer := 69;
+
+	  procedure lalal(t : in pep; s :out rang2)	is
+		
+	  begin
+
+		s :=s + 1;
+
+	  end lalal;  
 
 begin
 	
