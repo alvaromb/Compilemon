@@ -102,7 +102,7 @@ package Decls.Ctipus is
      (Idrecord : in Id_Nom;
       Camp : in Pnode;
       Tcamp : in Pnode;
-          Ocup: in out Despl);
+      Ocup: in out Despl);
 
    procedure Ct_Decsubrang
      (A : in Pnode);
@@ -184,6 +184,24 @@ package Decls.Ctipus is
 
    procedure Ct_Scondc
      (A : in Pnode);
+
+   procedure Ct_Referencia
+     (A : in Pnode;
+      T : out Tipussubjacent;
+      Id : out Id_Nom);
+
+   procedure Ct_Ref_Rec
+     (A : in Pnode;
+      T : out Tipussubjacent;
+      Idtipus : out Id_Nom;
+      Idbase : out Id_Nom);
+
+   procedure Ct_Ref_Pri
+     (A : in Pnode;
+      T : out Tipussubjacent;
+      Idtipus : out Id_Nom;
+      Idbase : out Id_Nom;
+      Iter : out Cursor_Idx);
 
 
    Identificadors_Diferents : exception;

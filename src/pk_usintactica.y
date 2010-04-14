@@ -332,7 +332,7 @@ pri:
     
   |
     pri s_coma expressio
-    {creaNode($$, $1,$3,pri);}
+    {creaNode($$, $1, $3, pri);}
   ;
   
   

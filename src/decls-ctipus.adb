@@ -1,4 +1,4 @@
- with U_Lexica;
+with U_Lexica;
 
 use U_Lexica;
 
@@ -208,7 +208,7 @@ package body Decls.Ctipus is
          Tproc := (Dproc, np);
          Posa(Ts, I, Tproc, E);
                  if E then
-                        Put_Line("ERROR CT_ENCAP: Error el id del proccediment ja existeix");
+                        Put_Line("ERROR CT_ENCAP: Error el id del procediment ja existeix");
                  end if;
                  Entrabloc(Ts);
 
@@ -236,7 +236,7 @@ package body Decls.Ctipus is
          Tproc := (Dproc, np);
          Posa(Ts, A.Fe1.Id12, Tproc, E);
          if E then
-                        Put_Line("ERROR CT_ENCAP: Error el id del proccediment ja existeix");
+                        Put_Line("ERROR CT_ENCAP: Error el id del procediment ja existeix");
                  end if;
          I := fesq.Id12;
 
@@ -968,33 +968,48 @@ package body Decls.Ctipus is
 
       Id : Id_Nom renames A.Id12;
       D : Descrip;
+      Desc : Tdescrip renames D.Td;
+
+      Carg : Cursor_Arg;
 
    begin
       put_line(" CT_ID : "&Id'img);
       D := Cons(Ts, Id);
 
-      if (D.Td = dvar) then
-         Idtipus := D.Tr;
-         D := Cons(Ts, Idtipus);
-         if (D.Td = Dtipus) then
-            T := D.Dt.Tt;
-         else
-            Put_Line("ERROR CT-identificador: el tipus no es"&
-                       " una descripcio de tipus "&D.Td'img);
-         end if;
+      case Desc is
+         when Dvar =>
+            Idtipus := D.Tr;
+            D := Cons(Ts, Idtipus);
+            if (D.Td = Dtipus) then
+               T := D.Dt.Tt;
+            else
+               Put_Line("ERROR CT-identificador: el tipus no es"&
+                          " una descripcio de tipus "&D.Td'img);
+            end if;
 
-      elsif (D.Td = Dconst) then
-         Idtipus := D.Tc;
-         D := Cons(Ts, Idtipus);
-         if (D.Td = Dtipus) then
-            T := D.Dt.Tt;
-         else
-            Put_Line("ERROR CT-identificador: el tipus no es"&
-                       " una descripcio de tipus "&D.Td'img);
-         end if;
-      else
-         Put_Line("ERROR CT: l'identificador no es una variable");
-      end if;
+         when Dconst =>
+            Idtipus := D.Tc;
+            D := Cons(Ts, Idtipus);
+            if (D.Td = Dtipus) then
+               T := D.Dt.Tt;
+            else
+               Put_Line("ERROR CT-identificador: el tipus no es"&
+                          " una descripcio de tipus "&D.Td'img);
+            end if;
+
+         when Dproc =>
+            Carg := Primer_Arg(Ts, Id);
+            if Arg_Valid(Carg) then
+               T := Tsarr;
+            else
+               T := Tsnul;
+            end if;
+            Idtipus := Id;
+
+         when others =>
+            Put_Line("ERROR CT: l'identificador no es reconegut");
+      end case;
+
       Put_line("ct_id: Tipus: "&Idtipus'img);
 
    end Ct_Identificador;
@@ -1005,8 +1020,10 @@ package body Decls.Ctipus is
 
         --T : Tipussubjacent;
         --Idtipus : Id_Nom;
-        D : Descrip;
-
+      D : Descrip;
+      T : Tipussubjacent;
+      Idbase : Id_Nom;
+      Idtipus : Id_Nom;
 
    begin
       case (A.Tipus) is
@@ -1015,18 +1032,15 @@ package body Decls.Ctipus is
             Ct_Bloc(A.Fd1);
          when Repeticio =>
             Ct_Srep(A);
-                 when identificador =>
+         when identificador =>
             Put_Line("CT_Bloc : IDENTIFICADOR");
-                        D := cons(ts, a.id12);
-                        if d.td /= dproc then
-                    Put_Line("CT_Bloc : Aquest id no es correspon a un procediment");
-                        end if;
-                 --when Referencia =>
-                        --Ct_Referencia(A);
-                 when condicionalS =>
-                        Ct_Sconds(A);
-                 when condicionalC =>
-                        Ct_Scondc(A); ----
+            Ct_Identificador(A, T, Idtipus);
+         when Referencia =>
+            Ct_Referencia(A, T, Idbase);
+         when condicionalS =>
+            Ct_Sconds(A);
+         when condicionalC =>
+            Ct_Scondc(A);
          when others =>
             Put_Line("blocothers"&A.Tipus'img);
       end case;
@@ -1039,14 +1053,15 @@ package body Decls.Ctipus is
       Tsexp : Tipussubjacent;
       Idtipus_exp : Id_Nom;
       Exp : Pnode renames A.Fe1;
-          Bloc : Pnode renames A.fd1;
+      Bloc : Pnode renames A.fd1;
 
    begin
       Ct_Expressio(Exp, Tsexp, Idtipus_Exp);
-          if tsexp /= tsbool then
-              Put_Line("Ct : La expresion para un bucle debe ser un booleano");
-          end if;
-          Ct_Bloc(Bloc);
+      if tsexp /= tsbool then
+         Put_Line("Ct : La expresion para un bucle debe ser un "&
+                    " booleano");
+      end if;
+      Ct_Bloc(Bloc);
    end Ct_Srep;
 
 
@@ -1056,14 +1071,15 @@ package body Decls.Ctipus is
       Tsexp : Tipussubjacent;
       Idtipus_exp : Id_Nom;
       Cond : Pnode renames A.Fe1;
-          Bloc : Pnode renames A.fd1;
+      Bloc : Pnode renames A.fd1;
 
    begin
       Ct_Expressio(Cond, Tsexp, Idtipus_Exp);
-          if tsexp /= tsbool then
-              Put_Line("Ct : La expresion para un condicional debe ser un booleano");
-          end if;
-          Ct_Bloc(Bloc);
+      if tsexp /= tsbool then
+         Put_Line("Ct : La expresion para un condicional "&
+                    "debe ser un booleano");
+      end if;
+      Ct_Bloc(Bloc);
    end Ct_Sconds;
 
 
@@ -1073,35 +1089,105 @@ package body Decls.Ctipus is
       Tsexp : Tipussubjacent;
       Idtipus_exp : Id_Nom;
       Cond : Pnode renames A.Fe2;
-          Bloc : Pnode renames A.fc2;
-          Blocelse : Pnode renames A.fd2;
+      Bloc : Pnode renames A.fc2;
+      Blocelse : Pnode renames A.fd2;
 
    begin
       Put_Line("Ct_CondCompost : Entram dins un condicional compost");
       Ct_Expressio(Cond, Tsexp, Idtipus_Exp);
-          if tsexp /= tsbool then
-              Put_Line("Ct : La expresion para un condicional compuesto debe ser un booleano");
-          end if;
-          Ct_Bloc(Bloc);
-          Ct_Bloc(Blocelse);
+      if tsexp /= tsbool then
+         Put_Line("Ct : La expresion para un condicional compuesto "&
+                    "debe ser un booleano");
+      end if;
+      Ct_Bloc(Bloc);
+      Ct_Bloc(Blocelse);
    end Ct_Scondc;
 
 
+   procedure Ct_Referencia
+     (A : in Pnode;
+      T : out Tipussubjacent;
+      Id : out Id_Nom) is
 
---   procedure Ct_Referencia
---     (A : in Pnode) is
+      Tipus : Tipusnode renames A.Tipus;
+      --Ts : Tipussubjacent;
+      Idtipus : Id_Nom;
+      --Idbase : Id_Nom;
 
---   begin
+   begin
+      case Tipus is
+         when Identificador =>
+            Ct_Identificador(A, T, Id);
+         when Referencia =>
+            Ct_Ref_Rec(A, T, Id, Idtipus); --alerta amb el q tornam
+         --when Encappri =>
+         --when Pri =>
+         when others =>
+            Put_Line("ERROR CT-referencia: node no reconegut");
+      end case;
 
---      case (A.Tipus) is
+   end Ct_Referencia;
 
---              when id => ;
---              when referencia =>
---              when pri =>
 
---        end case;
+   procedure Ct_Ref_Rec
+     (A : in Pnode;
+      T : out Tipussubjacent;
+      Idtipus : out Id_Nom;
+      Idbase : out Id_Nom) is
 
---   end Ct_referencia;
+      Fesq : Pnode renames A.Fe1;
+      Tesq : Tipussubjacent;
+      Idbase_Esq : Id_Nom;
+
+      Dcamp : Descrip;
+      Dtcamp : Descrip;
+      Idcamp : Id_Nom renames A.Fd1.Id12;
+
+   begin
+      Ct_Referencia(Fesq, Tesq, Idbase_Esq);
+      if Tesq /= Tsrec then
+         Put_Line("ERROR CT-ref_rec: camp no valid en l'acces a "&
+                    "referencia");
+      end if;
+
+      Dcamp := Conscamp(Ts, Idbase_Esq, Idcamp);
+      if Dcamp.Td = Dnula then
+         Put_Line("ERROR CT-ref_rec: id no es un nom de camp "&
+                    "valid per al tipus R");
+      end if;
+
+      Idtipus := Dcamp.Tcamp;
+      Dtcamp := Cons(Ts, Dcamp.Tcamp);
+      T := Dtcamp.Dt.Tt;
+      Idbase := Idbase_Esq;
+
+   end Ct_Ref_Rec;
+
+
+   procedure Ct_Ref_Pri
+     (A : in Pnode;
+      T : out Tipussubjacent;
+      Idtipus : out Id_Nom;
+      Idbase : out Id_Nom;
+      Iter : out Cursor_Idx) is
+
+      Tipus : Tipusnode renames A.Tipus;
+      Fesq : Pnode renames A.Fe1;
+      Tsub : Tipussubjacent;
+      Id : Id_Nom;
+
+   begin
+      case Tipus is
+         when Pri =>
+            Ct_Ref_Pri(Fesq);
+         when Encappri =>
+            Ct_Referencia(Fesq, Tsub, Id);
+         when others =>
+            Put_Line("ERROR CT-ref_pri: tipus no reconegut");
+      end case;
+
+   end Ct_Ref_Pri;
+
 
 
 end Decls.Ctipus;
