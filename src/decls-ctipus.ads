@@ -69,7 +69,7 @@ package Decls.Ctipus is
 
    procedure Ct_Param
      (A : in Pnode;
-	  I : in Id_Nom);
+          I : in Id_Nom);
 
    procedure Ct_Declaracions
      (A : in Pnode);
@@ -96,13 +96,13 @@ package Decls.Ctipus is
    procedure Ct_Decregistre
      (A : in Pnode;
       Idrecord : out Id_Nom;
-	   Ocup: in out despl);
+           Ocup: in out despl);
 
    procedure Ct_Dregistre_Camp
      (Idrecord : in Id_Nom;
       Camp : in Pnode;
       Tcamp : in Pnode;
-	  Ocup: in out Despl);
+          Ocup: in out Despl);
 
    procedure Ct_Decsubrang
      (A : in Pnode);
@@ -112,13 +112,54 @@ package Decls.Ctipus is
       T : out Tipussubjacent;
       Idtipus : out Id_Nom);
 
+   procedure Ct_Operand_Exp
+     (A : in Pnode;
+      T : out Tipussubjacent;
+      Idtipus : out Id_Nom);
+
    procedure Ct_Expressioc
      (A : in Pnode;
       T : out Tipussubjacent;
       Idtipus : out Id_Nom);
 
+   procedure Ct_Exp_Logica
+     (Tesq, Tdret : in Tipussubjacent;
+      Idesq, Iddret : in Id_Nom;
+      T : out Tipussubjacent;
+      Idtipus : out Id_Nom);
+
+   procedure Ct_Exp_Relacional
+     (Tesq, Tdret : in Tipussubjacent;
+      Idesq, Iddret : in Id_Nom;
+      T : out Tipussubjacent;
+      Idtipus : out Id_Nom);
+
+   --procedure Ct_Exp_Equivalencia
+   --  (Tesq, Tdret : in Tipussubjacent;
+   --   Idesq, Iddret : in Id_Nom;
+   --   T : out Tipussubjacent;
+   --   Idtipus : out Id_Nom);
+
+   procedure Ct_Exp_Aritmetica
+     (Tesq, Tdret : in Tipussubjacent;
+      Idesq, Iddret : in Id_Nom;
+      T : out Tipussubjacent;
+      Idtipus : out Id_Nom);
+
    procedure Ct_Expressiou
      (A : in Pnode;
+      T : out Tipussubjacent;
+      Idtipus : out Id_Nom);
+
+   procedure Ct_Exp_Negacio
+     (Ts : in Tipussubjacent;
+      Id : in Id_Nom;
+      T : out Tipussubjacent;
+      Idtipus : out Id_Nom);
+
+   procedure Ct_Exp_Neglogica
+     (Ts : in Tipussubjacent;
+      Id : in Id_Nom;
       T : out Tipussubjacent;
       Idtipus : out Id_Nom);
 

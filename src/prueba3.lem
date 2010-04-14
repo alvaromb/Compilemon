@@ -1,18 +1,18 @@
-procedure provaid(a : in integer) is
-	  
-	  type rang2 is new integer range -3..3;
-      type pep is array (rang2, rang2) of integer;
-
-	  procedure lalal(t : in out pep; s :out rang2)	is
-		
-	  begin
-
-		s :=s + 1;
-
-	  end lalal;  
+procedure provaid is
+	type rang2 is new integer range -3..3;
+	type rang3 is new integer range 8..100;
+      	type pep is array (rang2, rang2) of integer;
+	i : rang2;
+	j : rang3;
+	a : boolean;
+	b : boolean;
+	c : boolean;
 
 begin
-	
-	a;
+
+	--if (((j*98) /= ((3 + 5) mod 7)) and (i = 3)) then
+	if (3 < 4) then  
+		a := true;
+	end if;
 
 end provaid;
