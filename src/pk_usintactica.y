@@ -328,8 +328,7 @@ referencia:
   
 pri:
     referencia s_parentesiobert expressio
-    {creaNode($$, $1, $3, encappri);}
-    
+    {creaNode($$, $1, $3, encappri);}	
   |
     pri s_coma expressio
     {creaNode($$, $1, $3, pri);}
