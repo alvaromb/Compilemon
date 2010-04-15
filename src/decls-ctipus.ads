@@ -201,7 +201,8 @@ package Decls.Ctipus is
       T : out Tipussubjacent;
       Idtipus : out Id_Nom;
       Idbase : out Id_Nom;
-      Iter : out Cursor_Idx);
+      It_Idx : out Cursor_Idx;
+      It_Arg : out Cursor_Arg);
 
 
    Identificadors_Diferents : exception;

@@ -217,7 +217,7 @@ limit:
 -- TIPUS REGISTRE
 decl_registre:
     p_dregistre pc_end pc_record
-    {creaNode($$,$1, firecord);}
+    {creaNode($$, $1, firecord);}
   ;
   
 p_dregistre: 
@@ -323,7 +323,7 @@ referencia:
      creaNode($$, $1, $3, referencia);}
   |
     pri s_parentesitancat
-    {Remunta($$, $1);}
+    {creaNode($$, $1, fireferencia);}
   ;
   
 pri:

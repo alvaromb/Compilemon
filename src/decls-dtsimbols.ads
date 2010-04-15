@@ -107,7 +107,7 @@ package decls.dtsimbols is
       (ts : in tsimbols;
        idp : in id_nom) return cursor_arg;
 
-    function succ_arg
+    function Succ_Arg
       (ts : in tsimbols;
        ca : in cursor_arg) return cursor_arg;
 

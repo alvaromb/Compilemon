@@ -65,8 +65,9 @@ package Decls.Dtnode is
       Declmultvar, --
       Tnul,
       Mode,
-      encappri,
-	  firecord);
+      Encappri,
+      Firecord,
+      Fireferencia);
 
    type node (Tipus : Tipusnode := tnul) is record
       case Tipus is
@@ -92,7 +93,7 @@ package Decls.Dtnode is
          when identificador => id12 : Id_Nom;
                                l1, c1 : natural;
 
-		 when firecord => f6 : pnode;
+         when Firecord | Fireferencia => f6 : pnode;
 
          when const => val : valor;
             l2, c2 : natural;
