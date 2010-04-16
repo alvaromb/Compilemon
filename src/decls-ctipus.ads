@@ -185,7 +185,12 @@ package Decls.Ctipus is
    procedure Ct_Scondc
      (A : in Pnode);
 
-   procedure Ct_Referencia
+   procedure Ct_Referencia_Proc
+     (A : in Pnode;
+      T : out Tipussubjacent;
+      Id : out Id_Nom);
+
+   procedure Ct_Referencia_Var
      (A : in Pnode;
       T : out Tipussubjacent;
       Id : out Id_Nom);
@@ -199,9 +204,12 @@ package Decls.Ctipus is
    procedure Ct_Ref_Pri
      (A : in Pnode;
       T : out Tipussubjacent;
-      Idtipus : out Id_Nom;
-      Idbase : out Id_Nom;
-      It_Idx : out Cursor_Idx;
+      Id : out Id_Nom;
+      It_Idx : out Cursor_Idx);
+
+   procedure Ct_Ref_Pri
+     (A : in Pnode;
+      T : out Tipussubjacent;
       It_Arg : out Cursor_Arg);
 
 

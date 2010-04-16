@@ -136,15 +136,16 @@ package body decls.d_taula_de_noms is
        It1, It2 : Rang_Tcar;
 
     begin
-       It1 := Tn.Tid(Idn).Pos_Tcar;
-       It2 := Rang_Tcar(Tn.Tid(Idn).Long_Paraula);
-       It2 := It2 + It1 - 1;
-
-       return String(Tn.Tc(it1 .. it2));
-
+	   if Idn /= Id_nul then
+      		It1 := Tn.Tid(Idn).Pos_Tcar;
+       		It2 := Rang_Tcar(Tn.Tid(Idn).Long_Paraula);
+       		It2 := It2 + It1 - 1;
+			
+			return String(Tn.Tc(it1 .. it2));
+	
+		else return "Id_nul";
+		end if;
     end cons_nom;
-
-
 
     function cons_str
       (tn : in taula_de_noms;

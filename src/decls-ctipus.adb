@@ -162,7 +162,8 @@ package body Decls.Ctipus is
       Ct_Encap(Encap, Id_Sup);
 
       if Id_Inf /= Id_Sup then
-         Put_Line("ERROR CT_Decprocediment: identificadors de procediment diferents");
+         Put_Line("ERROR CT_Decprocediment: identificadors de "&
+                    "procediment diferents");
       end if;
 
       Cons_Tnode(Decls, Tdecls);
@@ -170,7 +171,7 @@ package body Decls.Ctipus is
          Ct_Declaracions(Decls);
       end if;
       Ct_Bloc(Bloc);
-          surtbloc(ts);
+      Surtbloc(Ts);
    end Ct_Decprocediment;
 
 
@@ -260,26 +261,28 @@ package body Decls.Ctipus is
           E : boolean;
 
    begin
-            Put_line("CT_Param");
 
-                d := cons(ts, idtipus);
-            if d.td /= dtipus then
-                Put_Line("ERROR CT_Param: El tipus del parametre no es correcte"&d.td'img);
-                end if;
+      Put_line("CT_Param");
+      d := cons(ts, idtipus);
+      if d.td /= dtipus then
+         Put_Line("ERROR CT_Param: El tipus del parametre no es correcte"&d.td'img);
+      end if;
 
-                case mArg is
-                        when Surt | Entrasurt =>  nv := nv + 1;
-                                                   dArg := (dvar, idtipus, nv);
-                        when Entra =>   nv := nv + 1;
-                                                   dArg := (dargc, nv, idtipus);
-                        when others => null;
-                end case;
+      case mArg is
+         when Surt | Entrasurt =>
+            nv := nv + 1;
+            dArg := (dvar, idtipus, nv);
+         when Entra =>
+            nv := nv + 1;
+            dArg := (dargc, nv, idtipus);
+         when others =>
+            null;
+      end case;
 
-                posa_arg(ts, I, idPar, dArg, E);
-                if E then
-                        Put_Line("ERROR CT_Param: Error al enregistrar l'argument");
-                end if;
-
+      posa_arg(ts, I, idPar, dArg, E);
+      if E then
+         Put_Line("ERROR CT_Param: Error al enregistrar l'argument");
+      end if;
 
    end Ct_Param;
 
@@ -390,9 +393,7 @@ package body Decls.Ctipus is
                        "surt del rang");
       end if;
 
-      -- Guardam la constant
-      --Tconst := (dconst, IdTipus, Val.val, Nv);
-          Tconst := (dconst, IdTipus, Val.val);
+      Tconst := (dconst, IdTipus, Val.val);
       Posa(Ts, Id, Tconst, E);
       Put_Line("CT_CONST: (DEBUG)El valor de la constant es: "&Val.val'img);
       if E then
@@ -554,37 +555,6 @@ package body Decls.Ctipus is
    end Ct_Dregistre_Camp;
 
 
-   procedure Ct_Dsubrang_Limit -- NO ES UTIL
-     (A : in Pnode;
-      Val : out Valor;
-      Id : out Id_Nom;
-      Tsubj : out Tipussubjacent;
-      S : in String) is
-
-      Rang : Pnode renames A;
-      Tipus : Descrip;
-
-   begin
-      if (Rang.Tipus = Const) then
-         Ct_Constant(Rang, Tsubj, Id);
-         Val := Rang.Val;
-      elsif (Rang.Tipus = Identificador) then
-         Tipus := Cons(Ts, A.Id12);
-         if (Tipus.Td = Dconst) then
-            Ct_Identificador(Rang, Tsubj, Id);
-            Val := Tipus.Vc;
-         else
-            Put_Line("ERROR CT-Dsubrang_Limit: El limit "&S&
-                       " es una variable no constant.");
-         end if;
-      else
-         Put_Line("ERROR CT-Dsubrang_Limit: El limit "&S&
-                    " no es de cap tipus vàlid.");
-      end if;
-
-   end Ct_Dsubrang_Limit;--NO ES UTIL
-
-
    procedure Ct_Decsubrang
      (A : in Pnode) is
 
@@ -682,28 +652,22 @@ package body Decls.Ctipus is
    begin
       Put_line("CT_EXP: "&Tipus'img );
 
-      -- COMENTARI BY ALVARO ---------------------
-      -- Falta que el tipus pugui ser Referencia.
-      -- En tot cas hauriem de comprovar que el
-      -- tipus subjacent no es 'tsnul' aixi sabriem
-      -- que no es un procediment, ja que una
-      -- expressio mai podra ser un procediment (sic).
-      -- Si es una Referencia, estam parlant d'un
-      -- record o un array.
-      -------------------------------------------
-      if Tipus = Expressio then
-         Ct_Expressioc(A, Tps, Id);
-      elsif Tipus = ExpressioUnaria then
-         Ct_Expressiou(A, Tps, Id);
-      elsif Tipus = Identificador then
-         -- COMENTARI BY ALVARO ---------------------
-         -- Aqui s'identificador nomes podra ser
-         -- variable,
-         --------------------------------------------
-         Ct_identificador(A, Tps, Id);
-      elsif Tipus = const then
-         Ct_Constant(A, Tps, Id);
-      end if;
+      case Tipus is
+         when Expressio =>
+            Ct_Expressioc(A, Tps, Id);
+         when ExpressioUnaria =>
+            Ct_Expressiou(A, Tps, Id);
+         when Identificador =>
+
+            Ct_Identificador(A, Tps, Id);
+         when Const =>
+            Ct_Constant(A, Tps, Id);
+         when Fireferencia | Referencia =>
+            Ct_Referencia_Var(A, Tps, Id);
+         when others =>
+            Put_Line("ERROR CT-exp: tipus expressio no trobat :S "&
+                       Tipus'Img);
+      end case;
 
       T := Tps;
       Idtipus := Id;
@@ -724,8 +688,8 @@ package body Decls.Ctipus is
             Ct_Expressioc(A, T, Idtipus);
          when ExpressioUnaria =>
             Ct_Expressiou(A, T, Idtipus);
-         when Referencia =>
-            --Ct_Referencia(Fesq, Tesq, Idesq);
+         when Referencia | Fireferencia=>
+            Ct_Referencia_var(A, T, IdTipus);
             Put_Line("refe");
          when Const =>
             Ct_Constant(A, T, Idtipus);
@@ -1009,8 +973,8 @@ package body Decls.Ctipus is
             end if;
             Idtipus := Id;
 
-         when others =>
-            Put_Line("ERROR CT: l'identificador no es reconegut");
+                 when others =>
+            Put_Line("ERROR CT: l'identificador no es reconegut "&Desc'img);
       end case;
 
       Put_line("ct_id: Tipus: "&Idtipus'img);
@@ -1021,19 +985,17 @@ package body Decls.Ctipus is
    procedure Ct_Bloc
      (A : in Pnode) is
 
-        --T : Tipussubjacent;
-        --Idtipus : Id_Nom;
       D : Descrip;
       T : Tipussubjacent;
       Idbase : Id_Nom;
       Idtipus : Id_Nom;
 
+      Tsexp : Tipussubjacent;
+      Idexp : Id_Nom;
+      Tsvar : Tipussubjacent;
+      Idvar : Id_Nom;
+
    begin
-      -- CONCLUSIO A BLOC BY ALVARO --------------------------
-      -- Sempre que hi hagi un Identificador o una Referencia
-      -- a un bloc, es o una crida a procediment sense parametres
-      -- o es una crida a procediment amb parametres respectivament.
-      --------------------------------------------------------
       case (A.Tipus) is
          when Bloc =>
             Ct_Bloc(A.Fe1);
@@ -1041,85 +1003,35 @@ package body Decls.Ctipus is
          when Repeticio =>
             Ct_Srep(A);
          when Identificador =>
-            -- COMENTARI BY ALVARO -----------------------------
-            --  Quan arribem, dins d'un bloc, a un identificador
-            -- de forma directa, només es permet una crida a
-            -- procediment SENSE PARÀMETRES. Per tant, comprovam
-            -- el tipus subjacent retornat i amb aixó construïm
-            -- l'error.
-            --
-            -- JUSTIFICACIO BY ALVARO---------------------------
-            -- 1.- Perque nomes comprovam que sigui distint de
-            --     'tsnul?
-            --  La resposta a aquesta pregunta es facil. Si
-            -- trobam un identificador, Ct_Identificador ens
-            -- retorna el tipus subjacent d'una variable o el
-            -- d'una constant o el d'un procediment, en aquest
-            -- ordre.
-            --  Si es un procediment, es a dir, un 'Dproc', pot
-            -- esser que estiguem en el cas d'un array.
-            --
-            -- 2.- Com sabem que un 'Dproc' representa un
-            --     procediment sense parametres?
-            --  Perque si troba qualsevol parametre, ens retorna
-            -- el tipus subjacent Tsarr. Aixo es perque un array
-            -- ha de tenir SEMPRE un parametre com a minim. Per
-            -- tant estam segurs que si el tipus retornat es
-            -- Tsnul esteim davant un procediment.
-            --
-            -- 3.- Pero, si Primer_Arg i Arg_Valid lo que fan es
-            --     comprovar si un procediment te parametres, al
-            --     contrari de Primer_Idx i Idx_Valid, que fan
-            --     respectivament lo mateix per arrays, com es
-            --     que ens serveix per aquest cas concret?
-            --  En aquest cas, trobant directament un identificador
-            -- dins un bloc, SI I NOMES SI ens esteim referint
-            -- a una crida a procediment sense parametres. Per
-            -- tant, entrarem a 'Dproc' i les funcions ens seran
-            -- valides.
-            --  Ara, si es cert que no acab d'entendre que
-            -- passaria si efectuam una cridada a un array sense
-            -- parametres. Si aquesta cridada entra a
-            -- Ct_Identificador i passa al 'when Dproc', les
-            -- funcions Primer_Arg i Arg_Valid fallarien. La
-            -- solucio podria ser afegir un altre 'when' que
-            -- distinguis el cas de trobar un array.
-            ----------------------------------------------------
             Put_Line("CT_Bloc : IDENTIFICADOR");
             Ct_Identificador(A, T, Idtipus);
-
-            -- CODI BY ALVARO ----------------------------------
             if T /= Tsnul then
                Put_Line("ERROR CT-bloc: un identificador nomes pot "&
                           "representar una crida a procediment sense "&
                           "parametres.");
             end if;
-            -- Generam codi necessari
-            -- END CODI BY ALVARO ------------------------------
 
-         when Referencia =>
-            -- COMENTARI BY ALVARO -----------------------------
-            --  Si a traves d'un bloc arribam a una referencia,
-            -- aquesta nomes pot representar SI O SI una crida
-            -- a un procediment AMB parametres. Com ho podem
-            -- fer? Si es retorna un tipus subjacent 'Tsarr' i
-            -- un Id (anomenat 'Idbase' en aquest cas), comprovam
-            -- si aquest 'Idbase' representa un procediment i ja
-            -- esta.
-            --
-            -- CONCLUSIO: Ct_Referencia ha de retornar l'id de
-            -- la referencia en questio, per exemple si tenim:
-            --   a(1,2);
-            -- on 'a' es un array, ha de retornar aquest id. El
-            -- mateix criteri s'aplica si 'a' es un procediment.
-            ----------------------------------------------------
-            Ct_Referencia(A, T, Idbase);
-            --D := Cons(Ts, Idbase);
-            --if D.Td /= Dproc then Error end if;
+         when Fireferencia =>
+            Ct_Referencia_Proc(A, T, Idbase);
+
          when condicionalS =>
             Ct_Sconds(A);
          when condicionalC =>
             Ct_Scondc(A);
+         when Assignacio =>
+            Ct_Referencia_Var(A.Fe1, Tsvar, Idvar);
+            Ct_Expressio(A.Fd1, Tsexp, Idexp);
+            if Tsvar /= Tsexp then
+               Put_Line("ERROR CT-bloc: l'assignacio es de tipus diferents");
+               Put_Line("ERROR CT-bloc: tsvar: "&Tsvar'Img&"/tsexp: "&
+                          Tsexp'Img);
+            end if;
+            if Idexp /= Id_Nul and Idexp /= Idvar then
+               Put_Line("ERROR CT-bloc: l'assignacio no es del tipus de la "&
+                          "variable.");
+               Put_Line("ERROR CT-bloc: idexp: "&Idexp'Img&"/idvar: "&
+                          Idvar'Img);
+            end if;
          when others =>
             Put_Line("blocothers"&A.Tipus'img);
       end case;
@@ -1183,35 +1095,76 @@ package body Decls.Ctipus is
    end Ct_Scondc;
 
 
-   procedure Ct_Referencia
+   procedure Ct_Referencia_Proc
      (A : in Pnode;
       T : out Tipussubjacent;
       Id : out Id_Nom) is
 
       Tipus : Tipusnode renames A.Tipus;
-      --Ts : Tipussubjacent;
-      Idtipus : Id_Nom;
-      --Idbase : Id_Nom;
-
-      It_Idx : Cursor_Idx;
       It_Arg : Cursor_Arg;
-      Idbase : Id_Nom;
 
    begin
       case Tipus is
          when Identificador =>
             Ct_Identificador(A, T, Id);
          when Referencia =>
-            Ct_Ref_Rec(A, T, Id, Idtipus); --alerta amb el q tornam
+            --Ct_Ref_Rec(A, T, Id, Idtipus); --alerta amb el q tornam
+            Put_Line("ERROR CT-referencia: no pots utilitzar un record com "&
+                       "una crida a procediment");
          when Fireferencia =>
-            --alerta amb el q tornam
-            --tsub i idtipus no estan be
-            Ct_Ref_Pri(A.F6, T, Idtipus, Idbase, It_Idx, It_Arg);
+            Ct_Ref_Pri(A.F6, T, It_Arg);
+            if Arg_Valid(It_Arg) then
+               Put_Line("ERROR CT-referencia: falten parametres al "&
+                          "procediment");
+            end if;
          when others =>
             Put_Line("ERROR CT-referencia: node no reconegut");
       end case;
 
-   end Ct_Referencia;
+   end Ct_Referencia_Proc;
+
+
+
+   procedure Ct_Referencia_Var
+     (A : in Pnode;
+      T : out Tipussubjacent;
+      Id : out Id_Nom) is
+
+      Tipus : Tipusnode renames A.Tipus;
+      Idtipus : Id_Nom;
+      It_Idx : Cursor_Idx;
+      D : Descrip;
+
+   begin
+      case Tipus is
+         when Identificador =>
+            Ct_Identificador(A, T, Id);
+            D := Cons(Ts, Id);
+            if D.Td = Dproc then
+               Put_Line("ERROR CT-referencia: no pot esser un procediment "&
+                          "idiota!");
+            end if;
+         when Referencia =>
+            Ct_Ref_Rec(A, T, Id, Idtipus); --alerta amb el q tornam
+         when Fireferencia =>
+            Ct_Ref_Pri(A.F6, T, Id, It_Idx);
+            if Idx_Valid(It_Idx) then
+               Put_Line("ERROR CT-referencia: falten parametres a "&
+                          "l'array.");
+            end if;
+			 Put_Line("(DEBUG)laaaaaaaaaaaaaaaaaa : "&ID'img&" , "&T'img);
+            if T = Tsarr then
+               D := Cons(Ts, Id);
+               Id := D.Dt.Tcamp;
+               D := Cons(Ts, Id);
+               T := D.Dt.Tt;
+				    
+            end if;
+         when others =>
+            Put_Line("ERROR CT-referencia: node no reconegut");
+      end case;
+
+   end Ct_Referencia_Var;
 
 
    procedure Ct_Ref_Rec
@@ -1229,7 +1182,8 @@ package body Decls.Ctipus is
       Idcamp : Id_Nom renames A.Fd1.Id12;
 
    begin
-      Ct_Referencia(Fesq, Tesq, Idbase_Esq);
+      Ct_Referencia_Var(Fesq, Tesq, Idbase_Esq);
+
       if Tesq /= Tsrec then
          Put_Line("ERROR CT-ref_rec: camp no valid en l'acces a "&
                     "referencia");
@@ -1252,9 +1206,87 @@ package body Decls.Ctipus is
    procedure Ct_Ref_Pri
      (A : in Pnode;
       T : out Tipussubjacent;
-      Idtipus : out Id_Nom;
-      Idbase : out Id_Nom;
-      It_Idx : out Cursor_Idx;
+      Id : out Id_Nom;
+      It_Idx : out Cursor_Idx) is
+
+      Tipus : Tipusnode renames A.Tipus;
+      Fesq : Pnode renames A.Fe1;
+      Fdret : Pnode renames A.Fd1;
+      Tsub : Tipussubjacent;
+      Idvar : Id_Nom;
+
+      Tsref : Tipussubjacent;
+      Idref : Id_Nom;
+
+      Id_Cursor : Id_Nom;
+      Dtipoarg : Descrip;
+      Dbase : Descrip;
+
+   begin
+      case Tipus is
+         when Pri =>
+            Put_Line("CT-ref_pri: pri");
+            Ct_Ref_Pri(Fesq, T, Id, It_Idx);
+            Ct_Expressio(Fdret, Tsref, Idref);
+
+            if not Idx_Valid(It_Idx) then
+               Put_Line("ERROR CT-ref_pri: sobren parametres");
+            else
+               Id_Cursor := Cons_Idx(Ts, It_Idx);
+               Dtipoarg := Cons(ts, Id_Cursor);
+
+               if Idref = Id_Nul then
+                  if Dtipoarg.dt.tt /= Tsref then
+                     Put_Line("ERROR CT-ref_pri: el tipus del parametre "&
+                                "no coincideix amb el tipus demanat");
+                  end if;
+               elsif Idref /= Id_cursor then
+                  Put_Line("ERROR CT-ref_pri: el tipus del parametre "&
+                             "no es correcte "&cons_nom(Tn, Idref)&" , "&
+                             Cons_nom(Tn, Id_cursor));
+               end if;
+               It_Idx := Succ_Idx(Ts, It_Idx);
+            end if;
+
+         when Encappri =>
+            Put_Line("CT-ref_pri: encappri");
+            Ct_Referencia_Var(Fesq, Tsub, Idvar);
+            Ct_Expressio(Fdret, Tsref, Idref);
+            Dbase := Cons (ts, Idvar);
+            if Tsub = Tsarr then
+               It_Idx := Primer_Idx(Ts, Idvar);
+               if Idx_Valid(It_Idx) then
+                  Id_Cursor := Cons_Idx(Ts, It_Idx);
+                  Dtipoarg := Cons(Ts, Id_Cursor);
+                  if Idref = Id_Nul then
+                     if Dtipoarg.dt.tt /= Tsref then
+                        Put_Line("ERROR CT-ref_pri: el tipus del parametre "&
+                                   "no coincideix amb el tipus demanat");
+                     end if;
+                  elsif Idref /= Id_Cursor then
+                     Put_Line("ERROR CT-ref_pri: el tipus del parametre "&
+                                "no es correcte "&cons_nom(tn, Idref)&
+                                " , "&Cons_nom(tn,Id_cursor));
+                  end if;
+               end if;
+            else
+               Put_Line("ERROR CT-ref_pri: error en el tipus, no es "&
+                          "un array "&Tsub'img);
+            end if;
+            It_Idx := Succ_Idx(Ts, It_Idx);
+            T := Tsub;
+            Id := Idvar;
+
+         when others =>
+            Put_Line("ERROR CT-ref_pri: tipus no reconegut");
+      end case;
+
+   end Ct_Ref_Pri;
+
+
+   procedure Ct_Ref_Pri
+     (A : in Pnode;
+      T : out Tipussubjacent;
       It_Arg : out Cursor_Arg) is
 
       Tipus : Tipusnode renames A.Tipus;
@@ -1266,44 +1298,87 @@ package body Decls.Ctipus is
       Tsref : Tipussubjacent;
       Idref : Id_Nom;
 
-      Idx : Cursor_Idx;
-      Arg : Cursor_Arg;
       Id_Cursor : Id_Nom;
+      Dparam : Descrip;
+      Dtipoarg : Descrip;
+      Dbase : Descrip;
 
    begin
       case Tipus is
          when Pri =>
-            Ct_Ref_Pri(Fesq);
-         when Encappri =>
-            Ct_Referencia(Fesq, Tsub, Id);
+            Put_Line("CT-ref_pri: pri");
+            Ct_Ref_Pri(Fesq, T, It_Arg);
             Ct_Expressio(Fdret, Tsref, Idref);
 
-            if Tsub = Tsarr then
-               Idx := Primer_Idx(Ts, Id);
-               if Idx_Valid(Idx) then
-                  Id_Cursor := Cons_Idx(Ts, Idx);
-                  if Idref = Id_Nul then
-                     --comprovar tipus subjacent i limits
-                  elsif Idref /= Id_Cursor then
-                     Put_Line("ERROR CT-ref_pri: el tipus del parametre "&
-                                "no es correcte");
-                  end if;
-                  Id_Cursor :=
-
-            elsif Tsub = Tsnul then
-
+            if not Arg_Valid(It_Arg) then
+               Put_Line("ERROR CT-ref_pri: sobren parametres");
             else
-               Put_Line("ERROR CT-ref_pri: error en el tipus, no es "&
-                          "ni arr ni proc");
+               Cons_Arg(Ts, It_Arg, Id_Cursor, Dparam);
+               if Idref = Id_Nul then
+                  Dtipoarg := Cons(ts, Dparam.targ);
+                  if Dtipoarg.dt.tt /= Tsref then
+                     Put_Line("ERROR CT-ref_pri: el tipus del parametre "&
+                                "no coincideix amb el tipus demanat");
+                  end if;
+               elsif Dparam.td = Dargc then 
+					 if Idref /= Dparam.targ then
+                     Put_Line("ERROR CT-ref_pri: el tipus del parametre "&
+                                "no es correcte "&cons_nom(tn, Idref)&
+                                " , "&Cons_nom(tn,Id_cursor));
+					 end if;
+				  elsif Dparam.td = Dvar then
+					 if Idref /= Dparam.tr then
+                     Put_Line("ERROR CT-ref_pri: el tipus del parametre "&
+                                "no es correcte "&cons_nom(tn, Idref)&
+                                " , "&Cons_nom(tn,Id_cursor));
+					 end if;
+					
+                  end if;
+               It_Arg := succ_arg(ts, It_Arg);
             end if;
 
+         when Encappri =>
+            Put_Line("CT-ref_pri: encappri");
+            Ct_Referencia_Proc(Fesq, Tsub, Id);
+            Ct_Expressio(Fdret, Tsref, Idref);
+            Dbase := Cons (ts, id);
+            if Tsub = Tsarr and Dbase.td = Dproc then
+               It_Arg := Primer_Arg(Ts, Id);
+               if Arg_Valid(It_Arg) then
+                  Cons_Arg(Ts, It_Arg, Id_Cursor, Dparam);
+                  if Idref = Id_Nul then
+                     Dtipoarg := Cons(ts, Dparam.targ);
+                     if Dtipoarg.dt.tt /= Tsref then
+                        Put_Line("ERROR CT-ref_pri: el tipus del parametre "&
+                                   "no coincideix amb el tipus demanat");
+                     end if;
+                  elsif Dparam.td = Dargc then 
+					 if Idref /= Dparam.targ then
+                     Put_Line("ERROR CT-ref_pri: el tipus del parametre "&
+                                "no es correcte "&cons_nom(tn, Idref)&
+                                " , "&Cons_nom(tn,Id_cursor));
+					 end if;
+				  elsif Dparam.td = Dvar then
+					 if Idref /= Dparam.tr then
+                     Put_Line("ERROR CT-ref_pri: el tipus del parametre "&
+                                "no es correcte "&cons_nom(tn, Idref)&
+                                " , "&Cons_nom(tn,Id_cursor));
+					 end if;
+					
+                  end if;
+               end if;
+            else
+               Put_Line("ERROR CT-ref_pri: error en el tipus, no es "&
+                          "un procediment amb parametres "&Tsub'img);
+            end if;
+            It_Arg := succ_arg(ts, It_Arg);
+            T := Tsub;
 
          when others =>
             Put_Line("ERROR CT-ref_pri: tipus no reconegut");
       end case;
 
    end Ct_Ref_Pri;
-
 
 
 end Decls.Ctipus;

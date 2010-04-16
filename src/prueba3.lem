@@ -1,18 +1,29 @@
 procedure provaid is
 	type rang2 is new integer range -3..3;
-	type rang3 is new integer range 8..100;
-      	type pep is array (rang2, rang2) of integer;
-	i : rang2;
-	j : rang3;
-	a : boolean;
-	b : boolean;
-	c : boolean;
+	type prpr is array (rang2, rang2) of integer;
+	x: prpr;
 
+	type rec is record
+		auxrec : integer;
+	end record;
+	varrec : rec;
+
+	aux : integer;
+	ele, eme : integer;	
+
+	procedure bil(a: in rang2;b: out rang2) is
+	begin
+		a;
+	end bil;
+
+	k,j : rang2;
+	
+
+   
 begin
 
-	--if (((j*98) /= ((3 + 5) mod 7)) and (i = 3)) then
-	if (3 < 4) then  
-		a := true;
-	end if;
+	bil(k,j);
+	
+		aux :=  x(1,1) + 3 + x(1,1);
 
 end provaid;
