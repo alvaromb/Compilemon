@@ -129,6 +129,7 @@ package body decls.dtsimbols is
       return descrip is
 
     begin
+	
         return ts.tdesc(id).d;
     end cons;
 

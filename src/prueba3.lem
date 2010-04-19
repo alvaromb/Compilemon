@@ -1,29 +1,29 @@
 procedure provaid is
-	type rang2 is new integer range -3..3;
-	type prpr is array (rang2, rang2) of integer;
-	x: prpr;
 
-	type rec is record
-		auxrec : integer;
-	end record;
-	varrec : rec;
+	--h:integer;
+	--type num is new integer range 0..2;
 
-	aux : integer;
-	ele, eme : integer;	
+--	type bili is array (h, num) of integer;
 
-	procedure bil(a: in rang2;b: out rang2) is
-	begin
-		a;
-	end bil;
+	--procedure m (a: in integer; a: in integer) is 
+	--begin
+		--h := 1;
+	--end m;
 
-	k,j : rang2;
-	
 
-   
+	--type p is record
+	--	m : boolean;
+	--	l : integer;
+	--end record;
+
+	e : boolean;
+
+
 begin
 
-	bil(k,j);
+	--h:=0;
+	if (-3 = 4) then
+	e := false;
+	end if;
 	
-		aux :=  x(1,1) + 3 + x(1,1);
-
 end provaid;

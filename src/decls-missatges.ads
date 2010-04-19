@@ -1,3 +1,9 @@
+with decls.dgenerals,
+	 Ada.Text_IO;
+
+use decls.dgenerals,
+	Ada.Text_IO;
+
 package decls.missatges is
 
    type Terror is
@@ -6,6 +12,7 @@ package decls.missatges is
       idProgDiferents,
       tipusParam,
       paramRepetit,
+	  enregArg,
       tipusInexistent,
       tipusSubIncorrecte,
       rang_sobrepassat,
@@ -15,7 +22,11 @@ package decls.missatges is
       ValEsqMajorDret,
       ValEsqMenor,
       ValDretMajor,
-      TsubNoValid);
+      TsubNoValid,
+	  argNoProc,
+	  tipusSubDiferents,
+	  posaIdxArray,
+	  tipusIdxErroniArray);
 
    procedure Obre_Fitxer;
 
@@ -23,7 +34,7 @@ package decls.missatges is
 
    procedure error
      (te : in terror;
-      l,c : in valor;
+      l,c : in Natural;
       id : string);
 
    procedure error
@@ -31,7 +42,7 @@ package decls.missatges is
       id : string);
 
    procedure Impressio
-     (sms : in string);
+     (msj : in string);
 
 private
 

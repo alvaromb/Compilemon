@@ -5,7 +5,8 @@ with Ada.Text_Io,
   Decls.D_Taula_De_Noms,
   Decls.D_Atribut,
   Decls.Dtsimbols,
-  Decls.Dtdesc;
+  Decls.Dtdesc,
+  Decls.Missatges;
 
 use Ada.Text_Io,
   Decls.Dgenerals,
@@ -14,7 +15,8 @@ use Ada.Text_Io,
   Decls.D_Taula_De_Noms,
   Decls.D_Atribut,
   Decls.Dtsimbols,
-  Decls.Dtdesc;
+  Decls.Dtdesc,
+  Decls.Missatges;
 
 
 package Decls.Ctipus is
