@@ -112,29 +112,34 @@ package Decls.Ctipus is
    procedure Ct_Expressio
      (A : in Pnode;
       T : out Tipussubjacent;
-      Idtipus : out Id_Nom);
+      Idtipus : out Id_Nom;
+      L, C : in out Natural);
 
    procedure Ct_Operand_Exp
      (A : in Pnode;
       T : out Tipussubjacent;
-      Idtipus : out Id_Nom);
+      Idtipus : out Id_Nom;
+      L, C : in out Natural);
 
    procedure Ct_Expressioc
      (A : in Pnode;
       T : out Tipussubjacent;
-      Idtipus : out Id_Nom);
+      Idtipus : out Id_Nom;
+      L, C : in out Natural);
 
    procedure Ct_Exp_Logica
      (Tesq, Tdret : in Tipussubjacent;
       Idesq, Iddret : in Id_Nom;
       T : out Tipussubjacent;
-      Idtipus : out Id_Nom);
+      Idtipus : out Id_Nom;
+      L, C : in out Natural);
 
    procedure Ct_Exp_Relacional
      (Tesq, Tdret : in Tipussubjacent;
       Idesq, Iddret : in Id_Nom;
       T : out Tipussubjacent;
-      Idtipus : out Id_Nom);
+      Idtipus : out Id_Nom;
+      L, C : in out Natural);
 
    --procedure Ct_Exp_Equivalencia
    --  (Tesq, Tdret : in Tipussubjacent;
@@ -146,34 +151,40 @@ package Decls.Ctipus is
      (Tesq, Tdret : in Tipussubjacent;
       Idesq, Iddret : in Id_Nom;
       T : out Tipussubjacent;
-      Idtipus : out Id_Nom);
+      Idtipus : out Id_Nom;
+      L, C : in out Natural);
 
    procedure Ct_Expressiou
      (A : in Pnode;
       T : out Tipussubjacent;
-      Idtipus : out Id_Nom);
+      Idtipus : out Id_Nom;
+      L, C : in out Natural);
 
    procedure Ct_Exp_Negacio
      (Ts : in Tipussubjacent;
       Id : in Id_Nom;
       T : out Tipussubjacent;
-      Idtipus : out Id_Nom);
+      Idtipus : out Id_Nom;
+      L, C : in out Natural);
 
    procedure Ct_Exp_Neglogica
      (Ts : in Tipussubjacent;
       Id : in Id_Nom;
       T : out Tipussubjacent;
-      Idtipus : out Id_Nom);
+      Idtipus : out Id_Nom;
+      L, C : in out Natural);
 
    procedure Ct_Constant
      (A : in Pnode;
       T : out Tipussubjacent;
-      Idtipus : out Id_Nom);
+      Idtipus : out Id_Nom;
+      L, C : in out Natural);
 
    procedure Ct_Identificador
      (A : in Pnode;
       T : out Tipussubjacent;
-      Idtipus : out Id_Nom);
+      Idtipus : out Id_Nom;
+      L, C : in out Natural);
 
    procedure Ct_Bloc
      (A : in Pnode);

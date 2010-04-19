@@ -95,6 +95,20 @@ package body Decls.Ctipus is
    end Inicia_Boolea;
 
 
+   procedure Inicia_Caracter is
+      D : Descrip;
+      Dt : Descriptipus;
+      Idn : Id_Nom;
+      E : Boolean;
+   begin
+      Posa_Id(Tn, Idn, "character");
+      Dt := (Tscar, 4, Valor(Character'Pos(Character'First)),
+             Valor(Character'Pos(Character'Last)));
+      D := (Dtipus, Dt);
+      Posa(Ts, Idn, D, E);
+   end Inicia_Caracter;
+
+
    procedure Inicia_analisi is
    begin
       nv := 0;
@@ -103,7 +117,8 @@ package body Decls.Ctipus is
       Tbuida(Ts);
       Inicia_Enter;
       Inicia_Boolea;
-          Obre_Fitxer;
+      Inicia_Caracter;
+      Obre_Fitxer;
    end Inicia_analisi;
 
 
@@ -111,6 +126,7 @@ package body Decls.Ctipus is
    procedure Posa_Idvar
      (Idvar : in Id_Nom;
       Idtipus : in Id_Nom;
+      L, C : in Natural;
       E : out Boolean) is
       Tassig : Descrip;
    begin
@@ -119,7 +135,8 @@ package body Decls.Ctipus is
       Posa(Ts, Idvar, Tassig, E);
       if E then
          --Put_Line("ERROR CT-posaidvar: l'identificador ja existeix");
-                 error(id_existent, cons_nom(tn, Idvar)); --Mirar si pasar el nodo o no
+         error(id_existent, L, C, cons_nom(tn, Idvar));
+         --Mirar si pasar el nodo o no
       end if;
    end Posa_Idvar;
 
@@ -164,7 +181,8 @@ package body Decls.Ctipus is
       Ct_Encap(Encap, Id_Sup);
 
       if Id_Inf /= Id_Sup then
-                 error(idProgDiferents, A.Fid5.l1, A.Fid5.c1, cons_nom(tn, Id_Sup));
+         error(idProgDiferents, A.Fid5.l1, A.Fid5.c1,
+               cons_nom(tn, Id_Sup));
       end if;
 
       Cons_Tnode(Decls, Tdecls);
@@ -173,6 +191,7 @@ package body Decls.Ctipus is
       end if;
       Ct_Bloc(Bloc);
       Surtbloc(Ts);
+
    end Ct_Decprocediment;
 
 
@@ -197,20 +216,19 @@ package body Decls.Ctipus is
             posa(ts, ida, dn, e);
             if E then
                 -- Pensar com solucionar aixo!!!
-                                error(enregArg, 3, 3, cons_nom(tn, ida));
+               error(enregArg, 3, 3, cons_nom(tn, ida));
             end if;
             idx_Arg := succ_arg(ts, idx_arg);
          end loop;
       else
-                 Entrabloc(Ts);
          I := A.Id12;
          np := np + 1;
          Tproc := (Dproc, np);
          Posa(Ts, I, Tproc, E);
          if E then
-                        error(id_existent, A.l1, A.c1, cons_nom(tn, I));
+            error(id_existent, A.l1, A.c1, cons_nom(tn, I));
          end if;
-
+         Entrabloc(Ts);
       end if;
 
    end Ct_Encap;
@@ -232,7 +250,7 @@ package body Decls.Ctipus is
          Tproc := (Dproc, np);
          Posa(Ts, Fesq.Id12, Tproc, E);
          if E then
-                        error(id_existent, Fesq.l1, Fesq.c1, cons_nom(tn, Fesq.Id12));
+            error(id_existent, Fesq.l1, Fesq.c1, cons_nom(tn, Fesq.Id12));
          end if;
          I := fesq.Id12;
       else
@@ -258,7 +276,7 @@ package body Decls.Ctipus is
       Put_line("CT_Param");
       d := cons(ts, idtipus);
       if d.td /= dtipus then
-                 error(tipusParam, A.Fd2.l1, A.Fd2.c1, cons_nom(tn, idtipus));
+         error(tipusParam, A.Fd2.l1, A.Fd2.c1, cons_nom(tn, idtipus));
       end if;
 
       case mArg is
@@ -275,7 +293,7 @@ package body Decls.Ctipus is
       posa_arg(ts, I, idPar, dArg, E);
       if E then
          -- Aquest error es dona quan I no es un id de procediment
-                 error(enregArg, A.Fe2.l1, A.Fe2.c1, cons_nom(tn, idPar));
+         error(enregArg, A.Fe2.l1, A.Fe2.c1, cons_nom(tn, idPar));
       end if;
 
    end Ct_Param;
@@ -313,7 +331,7 @@ package body Decls.Ctipus is
             Ct_Decprocediment(Decl);
          when others =>
             Put_Line("ERROR CT_Declaracions:(DEBUG)tipus declarat "&
-                       "inexistent "&Tnode'img);
+                       "inexistent "&Tnode'Img);
       end case;
 
    end Ct_Declaracions;
@@ -324,6 +342,8 @@ package body Decls.Ctipus is
 
       Dvariable : Pnode renames A.Fd1;
       Id : Id_Nom renames A.Fe1.Id12;
+      L : Natural renames A.Fe1.L1;
+      C : Natural  renames A.Fe1.C1;
       Tassig : Descrip;
       Idtipus : Id_nom;
       E : Boolean;
@@ -331,7 +351,7 @@ package body Decls.Ctipus is
    begin
       Put_line("CT_DECVAR");
       Ct_Declsvar(Dvariable, Idtipus);
-      Posa_Idvar(Id, Idtipus, E);
+      Posa_Idvar(Id, Idtipus, L, C, E);
    end Ct_Decvar;
 
 
@@ -348,7 +368,7 @@ package body Decls.Ctipus is
       if Tnode = Identificador then
          Tdecl := Cons(Ts, A.Id12);
          if (Tdecl.Td /= Dtipus) then
-                        error(tipusInexistent, A.l1, A.c1, cons_nom(tn, A.Id12));
+            error(tipusInexistent, A.l1, A.c1, cons_nom(tn, A.Id12));
          end if;
          Idtipus := A.Id12;
 
@@ -356,7 +376,7 @@ package body Decls.Ctipus is
          Ct_Declsvar(A.Fd1, Idtipus);
          Put_Line("CT_DECLSVAR:(DEBUG) diferents variables "&
                     "amb mateix tipus...");
-         Posa_Idvar(A.Fe1.Id12, Idtipus, E);
+         Posa_Idvar(A.Fd1.Id12, Idtipus, A.Fd1.L1, A.Fd1.C1, E);
       end if;
 
    end Ct_Declsvar;
@@ -375,31 +395,34 @@ package body Decls.Ctipus is
       -- variables per la crida a expressio
       Tsubj : Tipussubjacent;
       Ids : Id_Nom;
+      L, C : Natural := 0;
 
    begin
 
       Tdecl := Cons(Ts, Idtipus);
       if (Tdecl.Td /= Dtipus) then
-                 error(tipusInexistent, A.Fc2.l1, A.Fc2.c1, cons_nom(tn, Idtipus));
+         error(tipusInexistent, A.Fc2.l1, A.Fc2.c1, cons_nom(tn, Idtipus));
       else
-                  Ct_Constant(Val, Tsubj, Ids);
-                  if (Tsubj /= Tdecl.Dt.Tt) then
-                         error(tipusSubDiferents, A.Fc2.l1, A.Fc2.c1, cons_nom(tn, Idtipus));
-                  end if;
+         Ct_Constant(Val, Tsubj, Ids, L, C);
+         if (Tsubj /= Tdecl.Dt.Tt) then
+            error(tipusSubDiferents, A.Fc2.l1, A.Fc2.c1,
+                  cons_nom(tn, Idtipus));
+         end if;
 
-                  if (Val.Val < Tdecl.Dt.Linf) or (Val.Val > Tdecl.Dt.Lsup) then
-                         error(rang_sobrepassat, A.Fe2.l1, A.Fe2.c1, cons_nom(tn, Id));
-                  end if;
+         if (Val.Val < Tdecl.Dt.Linf) or (Val.Val > Tdecl.Dt.Lsup) then
+            error(rang_sobrepassat, A.Fe2.l1, A.Fe2.c1, cons_nom(tn, Id));
+         end if;
 
-                  Tconst := (dconst, IdTipus, Val.val);
-                  Posa(Ts, Id, Tconst, E);
-                  Put_Line("CT_CONST: (DEBUG)El valor de la constant es: "&Val.val'img);
-                  if E then
-                     --Put_Line("ERROR-CT-const: Constant ja existent");
-                         error(id_existent, A.Fe2.l1, A.Fe2.c1, cons_nom(tn, Id));
-                         --Ver si hacer un error nuevo o no (no es una variable) es una const
-                  end if;
-        end if;
+         Tconst := (dconst, IdTipus, Val.val);
+         Posa(Ts, Id, Tconst, E);
+         Put_Line("CT_CONST: (DEBUG)El valor de la constant es: "&
+                    Val.val'img);
+         if E then
+            error(id_existent, A.Fe2.l1, A.Fe2.c1, cons_nom(tn, Id));
+            --Ver si hacer un error nuevo o no (no es una variable) es
+            --una const
+         end if;
+      end if;
 
    end Ct_Decconst;
 
@@ -423,11 +446,7 @@ package body Decls.Ctipus is
          Ct_Pcoleccio(Fesq, Idtipus_Array, Idarray, Ncomponents);
          Darray := Cons(Ts, Idarray);
          Darray.Dt.Tcamp := Idtipus_Array;
-         --Put_Line("debug: darray: "&Darray.Dt.Ocup'Img&
-         --           "/ncomponents"&Ncomponents'Img&"/Dtarr:"&
-         --           Dtarray.Dt.Ocup'Img);
          Darray.Dt.Ocup := Ncomponents * Dtarray.Dt.Ocup;
-         --Put_Line("darray: "&Darray.Dt.Ocup'Img);
          Actualitza(Ts, Idarray, Darray);
       end if;
    end Ct_Deccol;
@@ -448,13 +467,11 @@ package body Decls.Ctipus is
       Di : Descrip;
 
    begin
-
       if (A.Tipus = Pcoleccio) then
          Ct_Pcoleccio(Fesq, Idtipus_Array, Idarray, Ncomponents);
          Posa_Idx(Ts, Idarray, Idrang, E);
 
          if E then
-            --Put_Line("ERROR CT-pcoleccio: error al posa_idx");
             error(posaIdxArray, A.Fd1.l1, A.Fd1.c1, cons_nom(tn, Idrang));
          else
             Di := Cons(Ts, Idrang);
@@ -462,8 +479,8 @@ package body Decls.Ctipus is
                Ncomponents := Ncomponents +
                  Despl(Di.Dt.Lsup - Di.Dt.Linf + 1);
             else
-               Put_line("Ct_pcoleccio: els index d'un array nomes "&
-                          "poden esser declaracions de tipus");
+               Error(Tipusidxerroniarray, A.Fd1.L1, A.Fd1.C1,
+                     Cons_Nom(Tn, Idrang));
             end if;
          end if;
 
@@ -585,7 +602,7 @@ package body Decls.Ctipus is
       Tdecl : Descrip;
       Tdescrip_decl : Descrip;
       Tdescript_decl : Descriptipus;
-
+      L, C : Natural := 0;
       E : Boolean;
 
    begin
@@ -595,38 +612,38 @@ package body Decls.Ctipus is
                cons_nom(tn, Idtsubrang));
       else
          --Miram el fill esquerra
-         Ct_Constant(Rang_Esq, Tsesq, Idesq);
+         Ct_Constant(Rang_Esq, Tsesq, Idesq, L, C);
          Valesq := Rang_Esq.val;
 
          --Miram el fill dret
-         Ct_Constant(Rang_Dret, Tsdret, Iddret);
+         Ct_Constant(Rang_Dret, Tsdret, Iddret, L, C);
          Valdret := Rang_Dret.val;
 
          -- Comparam els tipus
          if (Tsesq /= Tsdret) then
-            Put_line("ERROR Ct_subrang: Tipus subjacents diferents "&
-                       "dels valors del rang");
+            Error(Tipussubdiferents, A.Fc5.L1, A.Fc5.C1,
+                  ""&Tsesq'Img&"/"&Tsdret'Img);
          end if;
 
          Tsub := Tsesq;
          if (Tsub /= Tdecl.dt.tt) then
-            Put_line("ERROR Ct_subrang: Tipus subjacents diferents "&
-                       "del tipus del subrang");
+            Error(Tipussubdiferents, A.Fc5.L1, A.Fc5.C1,
+                  ""&Tsub'Img&"/"&Tdecl.Dt.Tt'Img);
          end if;
 
          if (valesq > valdret) then
-            Put_line("ERROR Ct_subrang: El valor esquerra no pot "&
-                       "ser major al de la dreta");
+            Error(ValEsqMajorDret, A.Fc5.L1, A.Fc5.C1,
+                  ""&Valesq'Img&" >"&Valdret'Img);
          end if;
 
-         if (valesq < Tdecl.dt.linf ) then
-            Put_line("ERROR Ct_subrang: Valor esquerra inferior al permes");
-            --error(ValEsqMenor, , , cons_nom(tn, ));
+         if (valesq < Tdecl.dt.Linf) then
+            Error(ValEsqMenor, A.Fc5.L1, A.Fc5.C1,
+                  Cons_Nom(Tn, Idtsubrang));
          end if;
 
-         if (valdret > Tdecl.dt.lsup ) then
-            Put_line("ERROR Ct_subrang: Valor dret superior al permes");
-            --error(ValDretMajor, , , cons_nom(tn, ));
+         if (valdret > Tdecl.dt.Lsup) then
+            Error(ValDretMajor, A.Fc5.L1, A.Fc5.C1,
+                  Cons_Nom(Tn, Idtsubrang));
          end if;
 
          case Tsub is
@@ -644,8 +661,6 @@ package body Decls.Ctipus is
          if E then
             error(id_existent, A.Fe5.l1, A.Fe5.c1,
                   cons_nom(tn, Idsubrang));
-            --Ver si hacer un error nuevo o no (no es una
-            --variable) es un tipo
          end if;
       end if;
 
@@ -655,7 +670,8 @@ package body Decls.Ctipus is
    procedure Ct_Expressio
      (A : in Pnode;
       T : out Tipussubjacent;
-      Idtipus : out Id_Nom) is
+      Idtipus : out Id_Nom;
+      L, C : in out Natural) is
 
       Tipus : Tipusnode renames A.Tipus;
       Tps : Tipussubjacent;
@@ -665,15 +681,15 @@ package body Decls.Ctipus is
       Put_line("CT_EXP: "&Tipus'img );
       case Tipus is
          when Expressio =>
-            Ct_Expressioc(A, Tps, Id);
+            Ct_Expressioc(A, Tps, Id, L, C);
          when ExpressioUnaria =>
-            Ct_Expressiou(A, Tps, Id);
+            Ct_Expressiou(A, Tps, Id, L, C);
          when Identificador =>
-            Ct_Identificador(A, Tps, Id);
+            Ct_Identificador(A, Tps, Id, L, C);
          when Const =>
-            Ct_Constant(A, Tps, Id);
+            Ct_Constant(A, Tps, Id, L, C);
          when Fireferencia | Referencia =>
-            Ct_Referencia_Var(A, Tps, Id);
+            Ct_Referencia_Var(A, Tps, Id); --falta L i C
          when others =>
             Put_Line("ERROR CT-exp: tipus expressio no trobat :S "&
                        Tipus'Img);
@@ -689,24 +705,25 @@ package body Decls.Ctipus is
    procedure Ct_Operand_Exp
      (A : in Pnode;
       T : out Tipussubjacent;
-      Idtipus : out Id_Nom) is
+      Idtipus : out Id_Nom;
+      L, C : in out Natural) is
 
       Tipus : Tipusnode renames A.Tipus;
 
    begin
       case Tipus is
          when Expressio =>
-            Ct_Expressioc(A, T, Idtipus);
+            Ct_Expressioc(A, T, Idtipus, L, C);
          when ExpressioUnaria =>
-            Ct_Expressiou(A, T, Idtipus);
+            Ct_Expressiou(A, T, Idtipus, L, C);
          when Referencia | Fireferencia=>
-            Ct_Referencia_var(A, T, IdTipus);
+            Ct_Referencia_var(A, T, IdTipus); --falta L i C
             Put_Line("refe");
          when Const =>
-            Ct_Constant(A, T, Idtipus);
+            Ct_Constant(A, T, Idtipus, L, C);
             Put_line("CT_EXP_COMP const: "&Idtipus'img);
          when Identificador =>
-            Ct_Identificador(A, T, Idtipus);
+            Ct_Identificador(A, T, Idtipus, L, C);
             Put_line("CT_EXP_COMP Id: "&Idtipus'img);
          when others =>
             null;
@@ -718,7 +735,8 @@ package body Decls.Ctipus is
    procedure Ct_Expressioc
      (A : in Pnode;
       T : out Tipussubjacent;
-      Idtipus : out Id_Nom) is
+      Idtipus : out Id_Nom;
+      L, C : in out Natural) is
 
       Fesq : Pnode renames A.Fe3;
       Fdret : Pnode renames A.Fd3;
@@ -732,18 +750,21 @@ package body Decls.Ctipus is
    begin
       Put_line("CT_EXPRESSIOC");
       --Analitzam l'operand esquerra
-      Ct_Operand_Exp(Fesq, Tesq, Idesq);
+      Ct_Operand_Exp(Fesq, Tesq, Idesq, L, C);
       --Analitzam l'operand dret
-      Ct_Operand_Exp(Fdret, Tdret, Iddret);
+      Ct_Operand_Exp(Fdret, Tdret, Iddret, L, C);
       -- Comparam els tipus
       case Op is
          when Unio | Interseccio =>
-            Ct_Exp_Logica(Tesq, Tdret, Idesq, Iddret, T, Idtipus);
+            Ct_Exp_Logica(Tesq, Tdret, Idesq, Iddret, T, Idtipus,
+                         L, C);
          when Menor | Menorig | Major | Majorig
            | Igual | Distint =>
-            Ct_Exp_Relacional(Tesq, Tdret, Idesq, Iddret, T, Idtipus);
+            Ct_Exp_Relacional(Tesq, Tdret, Idesq, Iddret, T, Idtipus,
+                             L, C);
          when Suma | Resta | Mult | Div | Modul =>
-            Ct_Exp_Aritmetica(Tesq, Tdret, Idesq, Iddret, T, Idtipus);
+            Ct_Exp_Aritmetica(Tesq, Tdret, Idesq, Iddret, T, Idtipus,
+                             L, C);
          when others =>
             null;
       end case;
@@ -758,21 +779,21 @@ package body Decls.Ctipus is
      (Tesq, Tdret : in Tipussubjacent;
       Idesq, Iddret : in Id_Nom;
       T : out Tipussubjacent;
-      Idtipus : out Id_Nom) is
+      Idtipus : out Id_Nom;
+      L, C : in out Natural) is
 
    begin
       if Tesq /= Tsbool then
-         Put_Line("ERROR CT-exp_logica: l'operand esq no es del ts boolea");
+         Error(Tsub_No_Bool, L, C, "esquerra");
       end if;
 
       if Tdret /= Tsbool then
-         Put_Line("ERROR CT-exp_logica: l'operand dret no es del ts boolea");
+         Error(Tsub_No_Bool, L, C, "dret");
       end if;
 
       if Idesq /= Id_Nul and Iddret /= Id_Nul then
          if Idesq /= Iddret then
-            Put_Line("ERROR CT-exp_logica: els tipus dels operands son"&
-                       " diferents");
+            Error(Tops_Diferents, L, C, "");
          end if;
       end if;
 
@@ -791,26 +812,25 @@ package body Decls.Ctipus is
      (Tesq, Tdret : in Tipussubjacent;
       Idesq, Iddret : in Id_Nom;
       T : out Tipussubjacent;
-      Idtipus : out Id_Nom) is
+      Idtipus : out Id_Nom;
+      L, C : in out Natural) is
 
    begin
       if Tesq /= Tdret then
-         Put_Line("ERROR CT-exp_relacional: els tipus subj dels operands"&
-                    " son diferents");
+         Error(Tsubs_Diferents, L, C, "");
       end if;
 
       if Tesq > Tsent then
-         Put_Line("ERROR CT-exp_relacional: el tipus esq no es escalar");
+         Error(Tsub_No_Escalar, L, C, "esquerra");
       end if;
 
       if Tdret > Tsent then
-         Put_Line("ERROR CT-exp_relacional: el tipus dret no es escalar");
+         Error(Tsub_No_Escalar, L, C, "dret");
       end if;
 
       if Idesq /= Id_Nul and Iddret /= Id_Nul then
          if Idesq /= Iddret then
-            Put_Line("ERROR CT-exp_relacional: els tipus dels operands "&
-                       "son diferents");
+            Error(Tops_Diferents, L, C, "");
          end if;
       end if;
 
@@ -824,21 +844,21 @@ package body Decls.Ctipus is
      (Tesq, Tdret : in Tipussubjacent;
       Idesq, Iddret : in Id_Nom;
       T : out Tipussubjacent;
-      Idtipus : out Id_Nom) is
+      Idtipus : out Id_Nom;
+      L, C : in out Natural) is
 
    begin
       if Tesq /= Tsent then
-         Put_Line("ERROR CT-exp_aritmetica: l'operand esq no es sencer");
+         Error(Tsub_No_Sencer, L, C, "esquerra");
       end if;
 
       if Tdret /= Tsent then
-         Put_Line("ERROR CT-exp_aritmetica: l'operand dret no es sencer");
+         Error(Tsub_No_Sencer, L, C, "dret");
       end if;
 
       if Idesq /= Id_Nul and Iddret /= Id_Nul then
          if Idesq /= Iddret then
-            Put_Line("ERROR CT-exp_aritmetica: els tipus dels operands son"&
-                       " diferents");
+            Error(Tops_Diferents, L, C, "");
          end if;
       end if;
 
@@ -855,7 +875,8 @@ package body Decls.Ctipus is
    procedure Ct_Expressiou
      (A : in Pnode;
       T : out Tipussubjacent;
-      Idtipus : out Id_Nom) is
+      Idtipus : out Id_Nom;
+      L, C : in out Natural) is
 
       Fdret : Pnode renames A.F4;
       Op : Operacio renames A.Op4;
@@ -864,12 +885,12 @@ package body Decls.Ctipus is
 
    begin
       Put_line("CT_EXPRESSIOU");
-      Ct_Operand_Exp(Fdret, Tdret, Iddret);
+      Ct_Operand_Exp(Fdret, Tdret, Iddret, L, C);
       case Op is
          when Resta =>
-            Ct_Exp_Negacio(Tdret, Iddret, T, Idtipus);
+            Ct_Exp_Negacio(Tdret, Iddret, T, Idtipus, L, C);
          when Negacio =>
-            Ct_Exp_Neglogica(Tdret, Iddret, T, Idtipus);
+            Ct_Exp_Neglogica(Tdret, Iddret, T, Idtipus, L, C);
          when others =>
             null;
       end case;
@@ -883,10 +904,11 @@ package body Decls.Ctipus is
      (Ts : in Tipussubjacent;
       Id : in Id_Nom;
       T : out Tipussubjacent;
-      Idtipus : out Id_Nom) is
+      Idtipus : out Id_Nom;
+      L, C : in out Natural) is
    begin
       if Ts /= Tsent then
-         Put_Line("ERROR CT-exp_negacio: l'operand ha de ser sencer");
+         Error(Tsub_No_Sencer, L, C, "");
       end if;
       Idtipus := Id;
       T := Tsent;
@@ -897,10 +919,11 @@ package body Decls.Ctipus is
      (Ts : in Tipussubjacent;
       Id : in Id_Nom;
       T : out Tipussubjacent;
-      Idtipus : out Id_Nom) is
+      Idtipus : out Id_Nom;
+      L, C: in out Natural) is
    begin
       if Ts /= Tsbool then
-         Put_Line("ERROR CT-exp_neglogica: l'operand ha de ser boolea");
+         Error(Tsub_No_Bool, L, C, "");
       end if;
       Idtipus := Id;
       T := Tsbool;
@@ -910,9 +933,12 @@ package body Decls.Ctipus is
    procedure Ct_Constant
      (A : in Pnode;
       T : out Tipussubjacent;
-      Idtipus : out Id_Nom) is
+      Idtipus : out Id_Nom;
+      L, C : in out Natural) is
 
       Tatr : Tipus_Atribut renames A.Tconst;
+      Lin : Natural renames A.L2;
+      Col : Natural renames A.C2;
       D : Descrip;
 
    begin
@@ -926,6 +952,8 @@ package body Decls.Ctipus is
          when others =>
             Put_Line("ERROR CT-constant: tipus constant erroni");
       end case;
+      L := Lin;
+      C := Col;
 
    end Ct_Constant;
 
@@ -933,11 +961,14 @@ package body Decls.Ctipus is
    procedure Ct_Identificador
      (A : in Pnode;
       T : out Tipussubjacent;
-      Idtipus : out Id_Nom) is
+      Idtipus : out Id_Nom;
+      L, C : in out Natural) is
 
       Id : Id_Nom renames A.Id12;
       D : Descrip;
       Desc : Tdescrip renames D.Td;
+      Lin : Natural renames A.L1;
+      Col : Natural renames A.C1;
 
       Carg : Cursor_Arg;
 
@@ -981,6 +1012,8 @@ package body Decls.Ctipus is
             T := tsnul;
 
       end case;
+      L := Lin;
+      C := Col;
 
       Put_line("ct_id: Tipus: "&Idtipus'img);
 
@@ -999,6 +1032,7 @@ package body Decls.Ctipus is
       Idexp : Id_Nom;
       Tsvar : Tipussubjacent;
       Idvar : Id_Nom;
+      L, C : Natural := 0;
 
    begin
       case (A.Tipus) is
@@ -1009,7 +1043,7 @@ package body Decls.Ctipus is
             Ct_Srep(A);
          when Identificador =>
             Put_Line("CT_Bloc : IDENTIFICADOR");
-            Ct_Identificador(A, T, Idtipus);
+            Ct_Identificador(A, T, Idtipus, L, C);
             if T /= Tsnul then
                Put_Line("ERROR CT-bloc: un identificador nomes pot "&
                           "representar una crida a procediment sense "&
@@ -1024,7 +1058,7 @@ package body Decls.Ctipus is
             Ct_Scondc(A);
          when Assignacio =>
             Ct_Referencia_Var(A.Fe1, Tsvar, Idvar);
-            Ct_Expressio(A.Fd1, Tsexp, Idexp);
+            Ct_Expressio(A.Fd1, Tsexp, Idexp, L, C);
             if Tsvar /= Tsexp then
                Put_Line("ERROR CT-bloc: l'assignacio es de tipus diferents");
               -- Put_Line("ERROR CT-bloc: tsvar: "&Tsvar'Img&"/tsexp: "&
@@ -1049,9 +1083,10 @@ package body Decls.Ctipus is
       Idtipus_exp : Id_Nom;
       Exp : Pnode renames A.Fe1;
       Bloc : Pnode renames A.fd1;
+      L, C : Natural := 0;
 
    begin
-      Ct_Expressio(Exp, Tsexp, Idtipus_Exp);
+      Ct_Expressio(Exp, Tsexp, Idtipus_Exp, L, C);
       if tsexp /= tsbool then
          Put_Line("Ct : La expresion para un bucle debe ser un "&
                     " booleano");
@@ -1067,9 +1102,10 @@ package body Decls.Ctipus is
       Idtipus_exp : Id_Nom;
       Cond : Pnode renames A.Fe1;
       Bloc : Pnode renames A.fd1;
+      L, C : Natural := 0;
 
    begin
-      Ct_Expressio(Cond, Tsexp, Idtipus_Exp);
+      Ct_Expressio(Cond, Tsexp, Idtipus_Exp, L, C);
       if tsexp /= tsbool then
          Put_Line("Ct : La expresion para un condicional "&
                     "debe ser un booleano");
@@ -1086,10 +1122,11 @@ package body Decls.Ctipus is
       Cond : Pnode renames A.Fe2;
       Bloc : Pnode renames A.fc2;
       Blocelse : Pnode renames A.fd2;
+      L, C : Natural := 0;
 
    begin
       Put_Line("Ct_CondCompost : Entram dins un condicional compost");
-      Ct_Expressio(Cond, Tsexp, Idtipus_Exp);
+      Ct_Expressio(Cond, Tsexp, Idtipus_Exp, L, C);
       if tsexp /= tsbool then
          Put_Line("Ct : La expresion para un condicional compuesto "&
                     "debe ser un booleano");
@@ -1106,11 +1143,12 @@ package body Decls.Ctipus is
 
       Tipus : Tipusnode renames A.Tipus;
       It_Arg : Cursor_Arg;
+      L, C : Natural := 0;
 
    begin
       case Tipus is
          when Identificador =>
-            Ct_Identificador(A, T, Id);
+            Ct_Identificador(A, T, Id, L, C);
          when Referencia =>
             --Ct_Ref_Rec(A, T, Id, Idtipus); --alerta amb el q tornam
             Put_Line("ERROR CT-referencia: no pots utilitzar un record com "&
@@ -1138,11 +1176,12 @@ package body Decls.Ctipus is
       Idtipus : Id_Nom;
       It_Idx : Cursor_Idx;
       D : Descrip;
+      L, C : Natural := 0;
 
    begin
       case Tipus is
          when Identificador =>
-            Ct_Identificador(A, T, Id);
+            Ct_Identificador(A, T, Id, L, C);
             D := Cons(Ts, Id);
             if D.Td = Dproc then
                Put_Line("ERROR CT-referencia: no pot esser un procediment "&
@@ -1222,13 +1261,14 @@ package body Decls.Ctipus is
       Id_Cursor : Id_Nom;
       Dtipoarg : Descrip;
       Dbase : Descrip;
+      L, C : Natural := 0;
 
    begin
       case Tipus is
          when Pri =>
             Put_Line("CT-ref_pri: pri");
             Ct_Ref_Pri(Fesq, T, Id, It_Idx);
-            Ct_Expressio(Fdret, Tsref, Idref);
+            Ct_Expressio(Fdret, Tsref, Idref, L, C);
             if not Idx_Valid(It_Idx) then
                Put_Line("ERROR CT-ref_pri: sobren parametres");
             else
@@ -1250,7 +1290,7 @@ package body Decls.Ctipus is
          when Encappri =>
             Put_Line("CT-ref_pri: encappri");
             Ct_Referencia_Var(Fesq, Tsub, Idvar);
-            Ct_Expressio(Fdret, Tsref, Idref);
+            Ct_Expressio(Fdret, Tsref, Idref, L, C);
             Dbase := Cons (ts, Idvar);
             if Tsub = Tsarr then
                It_Idx := Primer_Idx(Ts, Idvar);
@@ -1301,13 +1341,14 @@ package body Decls.Ctipus is
       Dparam : Descrip;
       Dtipoarg : Descrip;
       Dbase : Descrip;
+      L, C : Natural := 0;
 
    begin
       case Tipus is
          when Pri =>
             Put_Line("CT-ref_pri: pri");
             Ct_Ref_Pri(Fesq, T, It_Arg);
-            Ct_Expressio(Fdret, Tsref, Idref);
+            Ct_Expressio(Fdret, Tsref, Idref, L, C);
 
             if not Arg_Valid(It_Arg) then
                Put_Line("ERROR CT-ref_pri: sobren parametres");
@@ -1338,7 +1379,7 @@ package body Decls.Ctipus is
          when Encappri =>
             Put_Line("CT-ref_pri: encappri");
             Ct_Referencia_Proc(Fesq, Tsub, Id);
-            Ct_Expressio(Fdret, Tsref, Idref);
+            Ct_Expressio(Fdret, Tsref, Idref, L, C);
             Dbase := Cons (ts, id);
             if Tsub = Tsarr and Dbase.td = Dproc then
                It_Arg := Primer_Arg(Ts, Id);
