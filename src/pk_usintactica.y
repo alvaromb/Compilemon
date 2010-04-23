@@ -43,7 +43,6 @@
 %token id    
 %token const 
 
-
 --Precedencia
 %left pc_or
 %left pc_and
@@ -55,19 +54,14 @@ op_major op_igual op_distint
 %left op_multiplicacio op_divisio pc_mod
 %left menys_unitari
 
-
-
 --Definicio del tipus atribut
 %with decls.d_atribut, decls.dtnode, decls.dgenerals;
 %use decls.d_atribut, decls.dtnode, decls.dgenerals;
 {
 	subtype yystype is decls.d_atribut.atribut;
-
 }
 
-
 %%
-
 
 --Produccions de la gramatica del llenguatge
 programa:
@@ -423,22 +417,14 @@ use	pk_usintactica_tokens,
 	decls.dtnode,
         ada, --no llevar mai
     	ada.text_io;
-        
 
 package body pk_usintactica is
-	
     procedure YYError (e : in string) is
-    
     begin
-        
-  -- Aixo ho haurem de millorar un poc
         Put_Line(e);
         raise Syntax_Error;
-    
     end YYError;
-    
 ##
-
 end pk_usintactica;
   
 

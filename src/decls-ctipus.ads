@@ -98,7 +98,7 @@ package Decls.Ctipus is
    procedure Ct_Decregistre
      (A : in Pnode;
       Idrecord : out Id_Nom;
-           Ocup: in out despl);
+      Ocup: in out despl);
 
    procedure Ct_Dregistre_Camp
      (Idrecord : in Id_Nom;
@@ -224,12 +224,6 @@ package Decls.Ctipus is
      (A : in Pnode;
       T : out Tipussubjacent;
       It_Arg : out Cursor_Arg);
-
-
-   Identificadors_Diferents : exception;
-   Tdeclaracio_Inexistent : exception;
-   Tno_Existent : exception;
-   Tassig_Diferent : exception;
 
 private
 

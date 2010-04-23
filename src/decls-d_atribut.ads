@@ -16,16 +16,15 @@
 
 with    decls.Dgenerals,
         decls.D_Taula_De_Noms,
-  decls.Dtnode,
-  Decls.Dtdesc;
+        decls.Dtnode,
+        Decls.Dtdesc;
 
 use     decls.Dgenerals,
         decls.D_Taula_De_Noms,
-  decls.Dtnode,
-  Decls.dtdesc;
+        decls.Dtnode,
+        Decls.dtdesc;
 
 package decls.d_atribut is
-
 
   type atribut (t : tipus_atribut := atom) is record
       lin, col : natural;
@@ -37,6 +36,5 @@ package decls.d_atribut is
           when others    => a   : pnode;
       end case;
   end record;
-
 
 end decls.d_atribut;

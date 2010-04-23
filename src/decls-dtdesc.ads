@@ -10,13 +10,11 @@
 --
 -- ------------------------------------------------
 
-
 with    decls.dgenerals,
         decls.d_taula_de_noms;
 
 use     decls.dgenerals,
         decls.d_taula_de_noms;
-
 
 package decls.dtdesc is
 

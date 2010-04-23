@@ -178,16 +178,10 @@ use	decls.d_taula_de_noms,
 	decls.dtdesc;
 
 package u_lexica is
-
 	function YYLex return token;
-
 end u_lexica;
 
 
-
 package body u_lexica is
-
 ##
-
-
 end u_lexica;

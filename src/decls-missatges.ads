@@ -1,7 +1,7 @@
-with decls.dgenerals,
-         Ada.Text_IO;
+with    decls.dgenerals,
+        Ada.Text_IO;
 
-use decls.dgenerals,
+use     decls.dgenerals,
         Ada.Text_IO;
 
 package Decls.Missatges is
@@ -31,7 +31,22 @@ package Decls.Missatges is
       Tops_Diferents,
       Tsubs_Diferents,
       Tsub_No_Escalar,
-      Tsub_No_Sencer);
+      Tsub_No_Sencer,
+      Tipus_No_Desc,
+      Id_No_Reconegut,
+      Id_No_Cridaproc,
+      Assig_Tipus_Diferents,
+      Exp_No_Bool,
+      Rec_No_Cridaproc,
+      Falta_Param_Proc,
+      Refvar_No_Proc,
+      Falta_Param_Array,
+      Reccamp_No_Valid,
+      Idrec_No_Valid,
+      Sobren_Parametres,
+      Tparam_No_Coincident,
+      Tipus_No_Array,
+      Tproc_No_Param);
 
    procedure Obre_Fitxer;
 

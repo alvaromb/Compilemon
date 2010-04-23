@@ -23,8 +23,8 @@ with    Ada.Text_IO,
         Pk_Usintactica,
         Decls.D_atribut,
         decls.d_arbre,
-  decls.Dtnode,
-  Decls.Ctipus;
+        decls.Dtnode,
+        Decls.Ctipus;
 
 use     Ada.Text_IO,
         Ada.Command_Line,
@@ -37,30 +37,19 @@ use     Ada.Text_IO,
         u_lexica,
         Pk_Usintactica,
         decls.d_arbre,
-  decls.Dtnode,
-  Decls.Ctipus;
+        decls.Dtnode,
+        Decls.Ctipus;
 
 procedure compilemon is
-
 begin
-
-   
-
    Open_Input(Argument(1));
 
    --PROVISIONAL
    Inicia_analisi;
 
    yyparse;
-   --while(Yylex'Img/="END_OF_INPUT") loop
-   --   Put_Line(""&Yy_Line_Number'Img&"/"&Yy_Begin_Column'Img
-   --           &" Tk: "&Yylex'img);
-   --end loop;
-
    Ct_Programa(Arbre);
-
-   put_line("AHORA HA SALIDO PEPUTO MOJAMUTO");
-   close_Input;
+   Close_Input;
 
    exception
       when Syntax_Error =>
