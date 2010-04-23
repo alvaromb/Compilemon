@@ -65,12 +65,8 @@ op_major op_igual op_distint
 
 --Produccions de la gramatica del llenguatge
 programa:
-    M1 dec_procediment 
-	{creaNode_programa($$, $1, $2, programa);}
-  ;
-  
-M1: 
-    {creaNode($$, tnul);}
+    dec_procediment 
+    {creaNode_programa($$, $1);}
   ;
 
 dec_procediment:

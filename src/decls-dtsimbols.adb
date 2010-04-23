@@ -130,6 +130,7 @@ package body decls.dtsimbols is
     begin
         ts.prof := ts.prof + 1;
         ts.tambit(ts.prof) := ts.tambit(ts.prof - 1);
+        Put_Line("entraBLOCMACANUDO");
     end entrabloc;
 
 
@@ -150,6 +151,7 @@ package body decls.dtsimbols is
                 ts.tdesc(id).s := ts.texp(idespl).s;
             end if;
         end loop;
+        Put_Line("surtBLOCCCCCCCCTONIJAUMECAPO");
     end surtbloc;
 
 
@@ -284,6 +286,7 @@ package body decls.dtsimbols is
     end cons_idx;
 
 
+    -- PROCEDIMENTS
     procedure posa_arg
       (ts : in out tsimbols;
       idp : in id_nom;

@@ -1,6 +1,6 @@
 procedure provaid is
 
-	--h:integer;
+	h:integer;
 	--type num is new integer range 0..2;
 	--type bili is array (h, num) of integer;
 
@@ -9,10 +9,10 @@ procedure provaid is
 	--	h := 1;
 	--end provaid;
 
-	--procedure proaid is
-	--begin
-	--	h := 1;
-	--end proaid;
+	procedure provaid(a : out integer) is
+	begin
+		h := 1;
+	end provaid;
 
         --proaid : integer;
 
@@ -28,7 +28,7 @@ begin
 
 	--h:=0;
 	e := false;
-	if (e - e) then
+	if (e) then
 	e := true;
 	end if;
 		

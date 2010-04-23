@@ -38,7 +38,6 @@ package Decls.Dtnode is
 
    type Tipusnode is
      (Programa, --
-      M1,
       Repeticio, --
       CondicionalS, --
       CondicionalC, --
@@ -71,9 +70,12 @@ package Decls.Dtnode is
 
    type node (Tipus : Tipusnode := tnul) is record
       case Tipus is
-         when m1 | tnul  => null;
+         when tnul  => null;
 
-         when programa | repeticio | condicionalS
+         when Programa =>
+            Proc : Pnode;
+
+         when repeticio | condicionalS
            | declaracions | bloc | assignacio | pri
            | dcoleccio | Pdimcoleccio | Referencia
            | pcoleccio | dvariable
@@ -83,12 +85,13 @@ package Decls.Dtnode is
            | Dencapregistre | Param => fe2, fc2, fd2: pnode;
 
          when expressio => fe3, fd3: pnode;
-                              op3: operacio;
+                           op3: operacio;
 
          when ExpressioUnaria => f4: pnode;
-                                    op4: operacio;
+                                 op4: operacio;
 
-         when procediment | dsubrang => fe5, fc5, fd5, fid5: pnode;
+         when Procediment | dsubrang =>
+            fe5, fc5, fd5, fid5: pnode;
 
          when identificador => id12 : Id_Nom;
                                l1, c1 : natural;

@@ -13,13 +13,13 @@ use     Decls.Dgenerals,
 package decls.d_arbre is
 
    Arbre : Pnode;
+
    procedure Abuit
      (P : out pnode);
 
    procedure creaNode_programa
-     (p : out atribut;
-      fe, fd : in atribut;
-      tn : in Tipusnode);
+     (P : out Atribut;
+      A : in Atribut);
 
    procedure creaNode
      (p : out atribut;

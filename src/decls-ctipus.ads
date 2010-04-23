@@ -56,7 +56,15 @@ package Decls.Ctipus is
    procedure Ct_Programa
      (A : in Pnode);
 
-   procedure Ct_M1;
+
+private
+
+   Ts : Tsimbols;
+   Tn : Taula_De_Noms;
+   nv : num_var;
+   np : num_proc;
+
+   Esem : Boolean := False;
 
    procedure Ct_Decprocediment
      (A : in Pnode);
@@ -141,12 +149,6 @@ package Decls.Ctipus is
       Idtipus : out Id_Nom;
       L, C : in out Natural);
 
-   --procedure Ct_Exp_Equivalencia
-   --  (Tesq, Tdret : in Tipussubjacent;
-   --   Idesq, Iddret : in Id_Nom;
-   --   T : out Tipussubjacent;
-   --   Idtipus : out Id_Nom);
-
    procedure Ct_Exp_Aritmetica
      (Tesq, Tdret : in Tipussubjacent;
       Idesq, Iddret : in Id_Nom;
@@ -225,12 +227,5 @@ package Decls.Ctipus is
       T : out Tipussubjacent;
       It_Arg : out Cursor_Arg);
 
-private
-
-   --Provisional
-   Ts : Tsimbols;
-   Tn : Taula_De_Noms;
-   nv : num_var;
-   np : num_proc;
 
 end Decls.Ctipus;

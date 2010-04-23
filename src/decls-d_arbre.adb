@@ -8,16 +8,11 @@ package body decls.d_arbre is
 
 
    procedure creaNode_programa
-     (p : out atribut;
-      fe, fd : in atribut;
-      tn : in Tipusnode) is
-      paux : pnode;
+     (P : out Atribut;
+      A : in Atribut) is
    begin
-      paux := new node(tn);
-      paux.fe1 := fe.a;
-      paux.fd1 := fd.a;
-      p := (nodeArbre, 0, 0, paux);
-      arbre := paux;
+      P := A;
+      arbre := P.A;
    end creaNode_programa;
 
 
