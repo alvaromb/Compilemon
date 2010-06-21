@@ -1,16 +1,16 @@
 with    Decls.Dgenerals,
-        Decls.Dtnode,
-        decls.D_Taula_De_Noms,
-        decls.d_atribut,
-        Ada.text_io;
+        Semantica.Dtnode,
+        Decls.D_Taula_De_Noms,
+        Decls.D_Atribut,
+        Ada.Text_Io;
 
 use     Decls.Dgenerals,
-        Decls.Dtnode,
-        decls.D_Taula_De_Noms,
-        decls.d_atribut,
-        Ada.text_io;
+        Semantica.Dtnode,
+        Decls.D_Taula_De_Noms,
+        Decls.D_Atribut,
+        Ada.Text_Io;
 
-package decls.d_arbre is
+package Decls.D_Arbre is
 
    Arbre : Pnode;
 
@@ -81,4 +81,4 @@ package decls.d_arbre is
      (P : in Pnode;
      Tn : out Tipusnode);
 
-end decls.d_arbre;
+end Decls.D_Arbre;

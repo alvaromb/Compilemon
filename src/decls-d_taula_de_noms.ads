@@ -12,10 +12,10 @@
 --
 -- ------------------------------------------------
 
-with    decls.dgenerals,
+with    Decls.Dgenerals,
         Ada.text_IO;
 
-use     decls.Dgenerals,
+use     Decls.Dgenerals,
         Ada.Text_IO;
 
 

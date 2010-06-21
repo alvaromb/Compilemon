@@ -400,7 +400,7 @@ with	pk_usintactica_tokens,
         pk_usintactica_goto,
     	pk_ulexica_io,
     	u_lexica,
-	decls.d_arbre,
+	semantica,
 	decls.dtnode,
       	Ada.text_IO;
 
@@ -409,7 +409,7 @@ use	pk_usintactica_tokens,
     	pk_usintactica_goto,
     	pk_ulexica_io,
     	u_lexica,
-	decls.d_arbre,
+	semantica,
 	decls.dtnode,
         ada, --no llevar mai
     	ada.text_io;

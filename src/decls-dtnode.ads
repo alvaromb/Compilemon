@@ -1,10 +1,10 @@
 with Decls.Dgenerals,
-  decls.D_Taula_De_Noms,
-  Decls.dtdesc;
+  Decls.D_Taula_De_Noms,
+  Decls.Dtdesc;
 
 use Decls.Dgenerals,
-  decls.D_Taula_De_Noms,
-  Decls.dtdesc;
+  Decls.D_Taula_De_Noms,
+  Decls.Dtdesc;
 
 package Decls.Dtnode is
 

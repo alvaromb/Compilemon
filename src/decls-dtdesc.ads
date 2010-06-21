@@ -10,13 +10,13 @@
 --
 -- ------------------------------------------------
 
-with    decls.dgenerals,
-        decls.d_taula_de_noms;
+with    Decls.Dgenerals,
+        Decls.D_Taula_De_Noms;
 
-use     decls.dgenerals,
-        decls.d_taula_de_noms;
+use     Decls.Dgenerals,
+        Decls.D_Taula_De_Noms;
 
-package decls.dtdesc is
+package Decls.Dtdesc is
 
     --pragma pure;
 
@@ -80,4 +80,4 @@ package decls.dtdesc is
         end record;
 
 
-end decls.dtdesc;
+end Decls.Dtdesc;

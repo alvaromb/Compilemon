@@ -13,25 +13,25 @@
 
 with    Ada.Text_IO,
         Ada.Command_Line,
-        decls.d_taula_de_noms,
-        decls.tn,
-        decls.dgenerals,
-        d_token,
-        pk_ulexica_io,
-        u_lexica,
-        decls.dtsimbols,
-        decls.dtdesc;
+        Decls.D_Taula_De_Noms,
+        Decls.Tn,
+        Decls.Dgenerals,
+        D_Token,
+        Pk_Ulexica_Io,
+        U_Lexica,
+        Semantica.Dtsimbols,
+        Delcs.Dtdesc;
 
 use     Ada.Text_IO,
         Ada.Command_Line,
-        decls.d_taula_de_noms,
-        decls.tn,
-        decls.dgenerals,
-        d_token,
-        pk_ulexica_io,
-        u_lexica,
-        decls.dtsimbols,
-        decls.dtdesc;
+        Decls.D_Taula_De_Noms,
+        Decls.Tn,
+        Decls.Dgenerals,
+        D_Token,
+        Pk_Ulexica_Io,
+        U_Lexica,
+        Semantica.Dtsimbols,
+        Decls.Dtdesc;
 
 
 procedure compiprueba is

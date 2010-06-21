@@ -10,7 +10,7 @@
 --
 -- ------------------------------------------------
 
-package decls.dgenerals is
+package Decls.Dgenerals is
 
     --pragma pure;
 

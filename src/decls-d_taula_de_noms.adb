@@ -18,7 +18,7 @@
 -- ------------------------------------------------
 
 
-package body decls.d_taula_de_noms is
+package body Decls.D_Taula_De_Noms is
 
     -- Donam els valors per defecte de cada camp.
    procedure tbuida

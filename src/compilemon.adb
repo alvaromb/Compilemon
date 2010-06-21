@@ -11,36 +11,38 @@
 --
 -- ------------------------------------------------
 
-with    Ada.Text_IO,
-        Ada.Command_Line,
-        decls.d_taula_de_noms,
-        decls.dgenerals,
-        decls.dtsimbols,
-        decls.dtdesc,
-        pk_usintactica_tokens,
-        pk_ulexica_io,
-        u_lexica,
-        Pk_Usintactica,
-        Decls.D_atribut,
-        decls.d_arbre,
-        decls.Dtnode,
-        Decls.Ctipus;
+with Ada.Text_IO,
+  Ada.Command_Line,
+  Decls.D_Taula_De_Noms,
+  Decls.Dgenerals,
+  Semantica.Dtsimbols,
+  Decls.Dtdesc,
+  Pk_Usintactica_Tokens,
+  Pk_Ulexica_Io,
+  U_Lexica,
+  Pk_Usintactica,
+  Decls.D_Atribut,
+  Semantica,
+  Decls.Dtnode,
+  Semantica.Ctipus;
 
-use     Ada.Text_IO,
-        Ada.Command_Line,
-        decls.d_taula_de_noms,
-        decls.dgenerals,
-        decls.dtsimbols,
-        decls.dtdesc,
-        pk_usintactica_tokens,
-        pk_ulexica_io,
-        u_lexica,
-        Pk_Usintactica,
-        decls.d_arbre,
-        decls.Dtnode,
-        Decls.Ctipus;
+use Ada.Text_IO,
+  Ada.Command_Line,
+  Decls.D_Taula_De_Noms,
+  Decls.Dgenerals,
+  Semantica.Dtsimbols,
+  Decls.Dtdesc,
+  Pk_Usintactica_Tokens,
+  Pk_Ulexica_Io,
+  U_Lexica,
+  Pk_Usintactica,
+  Decls.D_Atribut,
+  Semantica,
+  Decls.Dtnode,
+  Semantica.Ctipus;
 
-procedure compilemon is
+
+procedure Compilemon is
 begin
    Open_Input(Argument(1));
 

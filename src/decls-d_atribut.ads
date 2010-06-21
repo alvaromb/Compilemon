@@ -14,23 +14,23 @@
 --
 -- ------------------------------------------------
 
-with    decls.Dgenerals,
-        decls.D_Taula_De_Noms,
-        decls.Dtnode,
+with    Decls.Dgenerals,
+        Decls.D_Taula_De_Noms,
+        Decls.Dtnode,
         Decls.Dtdesc;
 
-use     decls.Dgenerals,
-        decls.D_Taula_De_Noms,
-        decls.Dtnode,
-        Decls.dtdesc;
+use     Decls.Dgenerals,
+        Decls.D_Taula_De_Noms,
+        Decls.Dtnode,
+        Decls.Dtdesc;
 
 package decls.d_atribut is
 
   type atribut (t : tipus_atribut := atom) is record
       lin, col : natural;
       case t is
-          when atom      => null;
-          when a_ident   => idn : id_nom;
+          when Atom      => null;
+          when A_Ident   => idn : id_nom;
           when A_Lit_C | A_Lit_N | A_Lit_S
             => val : valor;
           when others    => a   : pnode;
