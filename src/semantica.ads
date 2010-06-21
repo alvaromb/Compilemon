@@ -1,16 +1,16 @@
 with    Decls.Dgenerals,
-        Semantica.Dtnode,
+        Decls.Dtnode,
         Decls.D_Taula_De_Noms,
         Decls.D_Atribut,
         Ada.Text_Io;
 
 use     Decls.Dgenerals,
-        Semantica.Dtnode,
+        Decls.Dtnode,
         Decls.D_Taula_De_Noms,
         Decls.D_Atribut,
         Ada.Text_Io;
 
-package Decls.D_Arbre is
+package Semantica is
 
    Arbre : Pnode;
 
@@ -81,4 +81,4 @@ package Decls.D_Arbre is
      (P : in Pnode;
      Tn : out Tipusnode);
 
-end Decls.D_Arbre;
+end Semantica;
