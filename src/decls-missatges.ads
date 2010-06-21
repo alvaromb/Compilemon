@@ -48,7 +48,7 @@ package Decls.Missatges is
       Tipus_No_Array,
       Tproc_No_Param);
 
-   procedure Obre_Fitxer;
+   procedure Obre_Fitxer(nom_fitxer: in string);
 
    procedure Tanca_Fitxer;
 

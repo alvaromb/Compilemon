@@ -9,12 +9,19 @@ procedure provaid is
 	--	h := 1;
 	--end provaid;
 
-	procedure provaid(a : out integer) is
+
+
+	procedure provaid(b: in integer) is
+		a: integer;
+		procedure provaid is
+		begin
+			h := 1;
+		end provaid;
 	begin
 		h := 1;
 	end provaid;
 
-        --proaid : integer;
+    --proaid : integer;
 
 	--type p is record
 	--	m : boolean;
@@ -31,5 +38,6 @@ begin
 	if (e) then
 	e := true;
 	end if;
+		h:=false;
 		
 end provaid;

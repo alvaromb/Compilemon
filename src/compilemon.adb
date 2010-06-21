@@ -47,7 +47,7 @@ begin
    Open_Input(Argument(1));
 
    --PROVISIONAL
-   Inicia_analisi;
+   Inicia_analisi(Argument(1));
 
    yyparse;
    Ct_Programa(Arbre);

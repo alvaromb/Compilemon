@@ -1,8 +1,8 @@
 package body decls.missatges is
 
-   procedure Obre_Fitxer is
+   procedure Obre_Fitxer(nom_fitxer: in string) is
    begin
-      Create(log_file, out_file, "Fitxer_errors.log");
+      Create(log_file, out_file, nom_fitxer&".log");
    end Obre_Fitxer;
 
    procedure Tanca_Fitxer is
