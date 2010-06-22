@@ -83,17 +83,19 @@ package Semantica.Declsc3a is
         Etiq       : num_etiq;
         end record;
 
-        Info_Proc_Nul : Info_Proc := (Idn        => Id_Nul,
-                                                                  Prof       => 0,
-                                                                  Ocup_Var   => 0,
-                                                                  Ocup_Param => 0,
-                                  Etiq       => etiq_nul);
+        Info_Proc_Nul : Info_Proc :=
+          (Idn => Id_Nul,
+           Prof => 0,
+           Ocup_Var   => 0,
+           Ocup_Param => 0,
+           Etiq => etiq_nul);
 
-        type taula_p is array (num_proc) of Info_Proc;
+        type Taula_P is array
+          (Num_Proc) of Info_Proc;
 
         type T_Procs is record
-        tp : taula_p;
-        np : num_proc;
+           Tp : Taula_P;
+           Np : Num_Proc;
         end record;
 
         Tp : T_Procs;
@@ -182,7 +184,7 @@ package Semantica.Declsc3a is
                  Ip  : in     Info_Proc);
 
 
-        --tabla variables
+        -- Taula variables
         procedure Posa
                 (Tv : in out T_Vars;
                  Iv : in     Info_Var;

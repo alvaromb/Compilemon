@@ -52,9 +52,24 @@ package body Semantica.Assemblador is
    procedure Ld
      (Org : in Tcamp;
       Dst : in String) is
+      Ivar : Info_Var;
+      Vconst : Valor;
    begin
       case Org.Tc is
          when Var =>
+            Ivar := Consulta(Tv, Org.Idv);
+            -- 'a' es un valor constant
+            if Ivar.Const then
+               Instruccio_2_Op
+                 ("movl", "$" & Ivar.Valconst'Img, Dst);
+            end if;
+            --  ^
+            --  |
+            -- BOOKMARK
+
+      end case;
+   end Ld;
+
 
 
 end Semantica.Assemblador;
