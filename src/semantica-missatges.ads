@@ -48,7 +48,7 @@ package Semantica.Missatges is
       Tipus_No_Array,
       Tproc_No_Param);
 
-   procedure Obre_Fitxer;
+   procedure Obre_Fitxer(nomFitxer: in String);
 
    procedure Tanca_Fitxer;
 

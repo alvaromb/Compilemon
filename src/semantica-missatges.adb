@@ -1,8 +1,8 @@
 package body Semantica.Missatges is
 
-   procedure Obre_Fitxer is
+   procedure Obre_Fitxer(nomFitxer: in String) is
    begin
-      Create(log_file, out_file, "Fitxer_errors.log");
+      Create(log_file, out_file, nomFitxer&".log");
    end Obre_Fitxer;
 
    procedure Tanca_Fitxer is

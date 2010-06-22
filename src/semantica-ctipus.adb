@@ -109,7 +109,7 @@ package body Semantica.Ctipus is
    end Inicia_Caracter;
 
 
-   procedure Inicia_analisi is
+   procedure Inicia_analisi(nomFitxer: in String) is
    begin
       Nv := 0;
       Np := 0;
@@ -118,7 +118,7 @@ package body Semantica.Ctipus is
       Inicia_Enter;
       Inicia_Boolea;
       Inicia_Caracter;
-      Obre_Fitxer;
+      Obre_Fitxer(nomFitxer);
    end Inicia_analisi;
 
 
@@ -1495,5 +1495,13 @@ package body Semantica.Ctipus is
             Esem := True;
       end case;
    end Ct_Ref_Pri;
+
+
+	--function getTn return Taula_de_nom is
+
+	--begin
+
+		 --return tn;
+	--end getTn;
 
 end Semantica.Ctipus;
