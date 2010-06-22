@@ -2,12 +2,14 @@ with    Decls.Dgenerals,
         Decls.Dtnode,
         Decls.D_Taula_De_Noms,
         Decls.D_Atribut,
+		Decls.dtsimbols,
         Ada.Text_Io;
 
 use     Decls.Dgenerals,
         Decls.Dtnode,
         Decls.D_Taula_De_Noms,
         Decls.D_Atribut,
+		Decls.dtsimbols,
         Ada.Text_Io;
 
 package Semantica is
@@ -80,5 +82,12 @@ package Semantica is
    procedure Cons_Tnode
      (P : in Pnode;
      Tn : out Tipusnode);
+
+private
+
+   Ts : Tsimbols;
+   Tn : Taula_De_Noms;	
+   nv : num_var;
+   np : num_proc;
 
 end Semantica;

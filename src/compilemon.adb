@@ -24,7 +24,8 @@ with Ada.Text_IO,
   Decls.D_Atribut,
   Semantica,
   Decls.Dtnode,
-  Semantica.Ctipus;
+  Semantica.Ctipus,
+  Semantica.declsc3a;
 
 use Ada.Text_IO,
   Ada.Command_Line,
@@ -39,7 +40,8 @@ use Ada.Text_IO,
   Decls.D_Atribut,
   Semantica,
   Decls.Dtnode,
-  Semantica.Ctipus;
+  Semantica.Ctipus,
+  Semantica.declsc3a;
 
 
 procedure Compilemon is

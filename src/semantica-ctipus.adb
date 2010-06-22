@@ -1497,11 +1497,4 @@ package body Semantica.Ctipus is
    end Ct_Ref_Pri;
 
 
-	function getTn return Taula_de_noms is
-
-	begin
-
-		 return tn;
-	end getTn;
-
 end Semantica.Ctipus;

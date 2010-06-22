@@ -236,7 +236,7 @@ private
    	F3as : Fitxer_Seq.File_Type;
    	F3at : Ada.Text_Io.File_Type;
 
-end Semantica.declsc3a ;
+end Semantica.declsc3a;
 
 
 	

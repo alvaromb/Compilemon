@@ -56,15 +56,12 @@ package Semantica.Ctipus is
    procedure Ct_Programa
      (A : in Pnode);
 
-   function getTn return Taula_de_noms;
-
-
 private
 
    Ts : Tsimbols;
-   Tn : Taula_De_Noms;	
-   nv : num_var;
-   np : num_proc;
+   --Tn : Taula_De_Noms;	
+   --nv : num_var;
+   --np : num_proc;
 
    Esem : Boolean := False;
 

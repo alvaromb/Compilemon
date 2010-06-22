@@ -107,7 +107,7 @@ procedure Novavar
 begin
 
    	Nomvar(Nomvar'First + 4):='_';
-   	Posa(Tn, Nomvar, Idn);
+   	Posa_Id(Tn, Idn, Nomvar);
    	Ip:=Consulta(Tp, Idpr);
    	Iv:=(Id       => Idn,
          Np       => Idpr,
@@ -120,7 +120,7 @@ begin
 	
 	Ip.Ocup_Var:=Ip.Ocup_Var+Iv.Ocup;
 	Posa(Tv, Iv, Idv);
-	Modifica_Descripcion(Tp, Idpr, Ip);
+	Modif_Descripcio(Tp, Idpr, Ip);
 
 end Novavar;
 
@@ -136,7 +136,7 @@ procedure Novaconst
    	Ip       : Info_Proc;
    	E        : Boolean;
    	Iv       : Info_Var;
-   	D        : Descripcion;
+   	D        : Descrip;
    	Ocup     : Despl;
    	Nconst   : Integer := Integer (Tv.Nv) + 1;
    	Nomconst : String  := "_cnt" & Integer'Image(Nconst);
@@ -152,7 +152,7 @@ begin
        Ocup:=Integer'Size/8;
    	end if;
 
-   	Posa(Tn, Nomconst, Idn);
+   	Posa_Id(Tn, Idn, Nomconst);
    	Ip:=Consulta(Tp, Idpr); -- No se emplea en ningun sitio
 
    	Iv:=(Id       => Idn,
@@ -257,14 +257,14 @@ end Novaconst;
 
 
 --Fitxers
-procedure Crea_Fitxer is
+procedure Crea_Fitxer(Nom_Fitxer: in String) is
 begin
 	Create(F3as, Out_File, Nom_Fitxer&".c3as");
 	Create(F3at, Out_File, Nom_Fitxer&".c3at");
 end Crea_Fitxer;
 
 
-procedure Obrir_Fitxer is
+procedure Obrir_Fitxer(Nom_Fitxer: in String) is
 begin
 	Open(F3as, In_File, Nom_Fitxer&".c3as");
 end Obrir_Fitxer;

@@ -12,18 +12,18 @@
 -- ------------------------------------------------
 
 
-with    decls.dtdesc,
-        decls.dgenerals,
-        decls.d_taula_de_noms,
+with    Decls.Dtdesc,
+        Decls.Dgenerals,
+        Decls.D_Taula_De_Noms,
         Ada.Text_IO;
 
-use     decls.dtdesc,
-        decls.dgenerals,
-        decls.d_taula_de_noms,
+use     Decls.Dtdesc,
+        Decls.Dgenerals,
+        Decls.D_Taula_De_Noms,
         Ada.Text_IO;
 
 
-package decls.dtsimbols is
+package Semantica.Dtsimbols is
 
     --pragma pure;
 
@@ -162,4 +162,4 @@ private
    end record;
 
 
-end decls.dtsimbols;
+end Semantica.Dtsimbols;
