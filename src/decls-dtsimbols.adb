@@ -29,7 +29,7 @@
 --
 -- ------------------------------------------------
 
-package body Semantica.Dtsimbols is
+package body Decls.Dtsimbols is
 
    procedure printts
      (ts : in tsimbols) is
@@ -368,4 +368,4 @@ package body Semantica.Dtsimbols is
     end Actualitza;
 
 
-end Semantica.Dtsimbols;
+end Decls.Dtsimbols;

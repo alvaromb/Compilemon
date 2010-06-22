@@ -23,7 +23,7 @@ use     Decls.Dtdesc,
         Ada.Text_IO;
 
 
-package Semantica.Dtsimbols is
+package Decls.Dtsimbols is
 
     --pragma pure;
 
@@ -162,4 +162,4 @@ private
    end record;
 
 
-end Semantica.Dtsimbols;
+end Decls.Dtsimbols;

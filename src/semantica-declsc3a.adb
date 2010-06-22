@@ -3,8 +3,8 @@ package body semantica.declsc3a is
 
 procedure Noves_taules
 	(Tp : out T_Procs;
-	 Tv : out T_Vars) is
---   	 Te : out T_Etiqs) is
+	 Tv : out T_Vars;
+   	 Te : out T_Etiqs) is
 begin
 
 	--null;
@@ -21,7 +21,7 @@ begin
 	Tv.Nv:=0;
 
 	--Te
-	--Te.Ne:=0;
+	Te.Ne:=0;
 
 
 end Noves_taules;
@@ -166,9 +166,9 @@ begin
 
    	Posa(Tv, Iv, Idc);
 
-   	D:=(Td => Dconst,
-        Tc => Id_Nul,
-        Vc => Idc);
+   	D:=(Dconst,
+        Id_Nul,
+        Vc);
 
    	Posa(Ts, Idn, D, E);
 
@@ -178,79 +178,79 @@ end Novaconst;
 
 --taula d'etiquetes
 
---function Nova_Etiq return num_Etiq is
---	ie : Info_Etiq;
---begin
+function Nova_Etiq return num_Etiq is
+	ie : Info_Etiq;
+begin
 		
---	Te.Ne:=Te.Ne+1;
---	ie:=(TipE => Etiq_Num,
---		 N    => Integer (Te.Ne));
---	Te.Te(Te.Ne):=ie;
+	Te.Ne:=Te.Ne+1;
+	ie:=(TipE => Etiq_Num,
+		 N    => Integer (Te.Ne));
+	Te.Te(Te.Ne):=ie;
 
---	return Te.Ne;
+	return Te.Ne;
 
---end Nova_Etiq;
-
-
---procedure Posa 
---	(Te  : in out T_Etiqs;
---   	 Ie  : in     Info_Etiq;
---   	 Ide :    out num_Etiq) is
-
---begin
---	Te.Ne:=Te.Ne+1;
---	Ide:=Te.Ne;
---	Te.Te(Ide):=Ie;
---end Posa;
+end Nova_Etiq;
 
 
---function Consulta 
---	(Te  : in T_Etiqs;
---   	 Ide : in num_Etiq) return Info_Etiq is
+procedure Posa 
+	(Te  : in out T_Etiqs;
+   	 Ie  : in     Info_Etiq;
+   	 Ide :    out num_Etiq) is
 
---begin
---	return Te.Te(Ide);
---end Consulta;
+begin
+	Te.Ne:=Te.Ne+1;
+	Ide:=Te.Ne;
+	Te.Te(Ide):=Ie;
+end Posa;
+
+
+function Consulta 
+	(Te  : in T_Etiqs;
+   	 Ide : in num_Etiq) return Info_Etiq is
+
+begin
+	return Te.Te(Ide);
+end Consulta;
 
 --------
---function Etiqueta 
---	(Idpr : in num_Proc) return String is
+function Etiqueta 
+	(Idpr : in num_Proc) return String is
 
---	Nomproc : String := Consulta (Tn, Consulta (Tp, Idpr).Idn);
+	Nomproc : String := Cons_nom(Tn, Consulta(Tp, Idpr).Idn);
 
---begin
---	return "_" & Nomproc;
---end Etiqueta;
+begin
+	return "_" & Nomproc;
+end Etiqueta;
 ---
 	
---function Etiqueta (
---   	N : in Integer) return String is
+function Etiqueta (
+   	N : in Integer) return String is
 
---	Text : String := "_etq" & Integer'Image (N);
---begin
---	Text(Text'First+4):='_';
---	return Text;
---end Etiqueta;
+	Text : String := "_etq" & Integer'Image (N);
+begin
+	Text(Text'First+4):='_';
+	return Text;
+end Etiqueta;
 
 ---
 
---function Etiqueta 
---	(Te  : in T_Etiqs;
---   	 Ide : in num_Etiq) return String is
+function Etiqueta 
+	(Te  : in T_Etiqs;
+   	 Ide : in num_Etiq) return String is
 
---	Ie : Info_Etiq;
+	Ie : Info_Etiq;
 
---begin
---	Ie:=Consulta(Te, Ide);
+begin
+	Ie:=Consulta(Te, Ide);
 	
---	case Ie.TipE is
---   		when Etiq_Num =>
---          	return Etiqueta (Ie.N);
---   		when Etiq_Proc =>
---      		return Etiqueta (Ie.Idpr);
---	end case;
+	case Ie.TipE is
+   		when Etiq_Num =>
+          	return Etiqueta (Ie.N);
+   		when Etiq_Proc =>
+      		return Etiqueta (Ie.Idpr);
+	end case;
 
---end Etiqueta;
+end Etiqueta;
 
 
 -----
@@ -389,52 +389,52 @@ end Fi_Fitxer;
 
 
 
---procedure imprime_Tablas is 
---begin
+procedure imprime_Tablas is 
+begin
 
 	--if Debug then
-		--Put_Line("");
-		--Put_Line("-------------------------------------------------");
-		--Put_Line("Contenido de la tabla de procedimientos:");
+		Put_Line("");
+		Put_Line("-------------------------------------------------");
+		Put_Line("Contenido de la tabla de procedimientos:");
 
-		--for I in num_Proc range 1..Tp.Np loop
-			--Put_Line("Procediment: " & I'Img);
-		    --Put_Line("     prof: " & Tp.Tp(I).Prof'Img);
-		    --Put_Line("     ocup varl: " & Tp.Tp(I).Ocup_Var'Img);
-		    --Put_Line("     ocup param: " & Tp.Tp(I).Ocup_Param'Img);
-		    --Put_Line("     etiqueta: " & Tp.Tp(I).Etiq'Img);
-		--end loop;
+		for I in num_Proc range 1..Tp.Np loop
+			Put_Line("Procediment: " & I'Img);
+		    Put_Line("     prof: " & Tp.Tp(I).Prof'Img);
+		    Put_Line("     ocup varl: " & Tp.Tp(I).Ocup_Var'Img);
+		    Put_Line("     ocup param: " & Tp.Tp(I).Ocup_Param'Img);
+		    Put_Line("     etiqueta: " & Tp.Tp(I).Etiq'Img);
+		end loop;
 
-		--Put_Line("-------------------------------------------------");
-		--Put_Line("Contenido de la tabla de variables:");
-		--for I in num_Var range 1..Tv.Nv loop
-			--Put_Line("variable: " & I'Img);
-		    --Put_Line("     nom:" & Consulta(Tn, Tv.Tv(I).Id));
-		    --Put_Line("     proc:" & Tv.Tv(I).Np'Img);
-		    --Put_Line("     ocup:" & Tv.Tv(I).Ocup'Img);
-		    --Put_Line("     dpv:" & Tv.Tv(I).Desp'Img);
-		    --Put_Line("     tsub:" & Tv.Tv(I).Tsub'Img);
-		    --Put_Line("     param:" & Tv.Tv(I).Param'Img);
-		    --Put_Line("     const:" & Tv.Tv(I).Const'Img);
-		    --Put_Line("     valconst:" & Tv.Tv(I).Valconst'Img);
+		Put_Line("-------------------------------------------------");
+		Put_Line("Contenido de la tabla de variables:");
+		for I in num_Var range 1..Tv.Nv loop
+			Put_Line("Variable: " & I'Img);
+		    Put_Line("     nom:" & Cons_nom(Tn, Tv.Tv(I).Id));
+		    Put_Line("     proc:" & Tv.Tv(I).Np'Img);
+		    Put_Line("     ocup:" & Tv.Tv(I).Ocup'Img);
+		    Put_Line("     dpv:" & Tv.Tv(I).Desp'Img);
+		    Put_Line("     tsub:" & Tv.Tv(I).Tsub'Img);
+		    Put_Line("     param:" & Tv.Tv(I).Param'Img);
+		    Put_Line("     const:" & Tv.Tv(I).Const'Img);
+		    Put_Line("     valconst:" & Tv.Tv(I).Valconst'Img);
 
 		    --if Tv.Tv(I).Tsub=TSARR and Tv.Tv(I).Const then
-		    	--Put_Line("          " & Consulta(Tn, Id_Str(Tv.Tv(I).Valconst)));
+		    	--Put_Line("          " & Cons_str(Tn, Id_Str(Tv.Tv(I).Valconst)));
 		    --end if;
 
-		--end loop;
+		end loop;
 
-		--Put_Line("-------------------------------------------------");
-		--Put_Line("Contenido de la tabla de etiquetas:");
-		--for I in Id_Etiq range 1..Te.Ne loop
-			--Put_Line("etiqueta: " & I'Img);
-		    --Put_Line("     " & Etiqueta (Te, I));
-		--end loop;
-		--Put_Line("-------------------------------------------------");
+		Put_Line("-------------------------------------------------");
+		Put_Line("Contenido de la tabla de etiquetas:");
+		for I in num_Etiq range 1..Te.Ne loop
+			Put_Line("etiqueta: " & I'Img);
+		    Put_Line("     " & Etiqueta (Te, I));
+		end loop;
+		Put_Line("-------------------------------------------------");
 
 	--end if;
 
---end imprime_Tablas;
+end imprime_Tablas;
 
 
 end semantica.declsc3a;

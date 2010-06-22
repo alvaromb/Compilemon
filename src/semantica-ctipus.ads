@@ -4,7 +4,8 @@ with Ada.Text_Io,
   Semantica,
   Decls.D_Taula_De_Noms,
   Decls.D_Atribut,
-  Semantica.Dtsimbols,
+  --Semantica.Dtsimbols,
+  Decls.dtsimbols,
   Decls.Dtdesc,
   Semantica.Missatges;
 
@@ -14,7 +15,8 @@ use Ada.Text_Io,
   Semantica,
   Decls.D_Taula_De_Noms,
   Decls.D_Atribut,
-  Semantica.Dtsimbols,
+  --Semantica.Dtsimbols,
+  Decls.Dtsimbols,
   Decls.Dtdesc,
   Semantica.Missatges;
 

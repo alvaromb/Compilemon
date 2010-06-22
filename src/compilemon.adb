@@ -15,7 +15,6 @@ with Ada.Text_IO,
   Ada.Command_Line,
   Decls.D_Taula_De_Noms,
   Decls.Dgenerals,
-  Semantica.Dtsimbols,
   Decls.Dtdesc,
   Pk_Usintactica_Tokens,
   Pk_Ulexica_Io,
@@ -25,13 +24,13 @@ with Ada.Text_IO,
   Semantica,
   Decls.Dtnode,
   Semantica.Ctipus,
-  Semantica.declsc3a;
+  Semantica.declsc3a,
+  Pilas;
 
 use Ada.Text_IO,
   Ada.Command_Line,
   Decls.D_Taula_De_Noms,
   Decls.Dgenerals,
-  Semantica.Dtsimbols,
   Decls.Dtdesc,
   Pk_Usintactica_Tokens,
   Pk_Ulexica_Io,
@@ -41,7 +40,8 @@ use Ada.Text_IO,
   Semantica,
   Decls.Dtnode,
   Semantica.Ctipus,
-  Semantica.declsc3a;
+  Semantica.declsc3a,
+  pilas;
 
 
 procedure Compilemon is

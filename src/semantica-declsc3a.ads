@@ -40,14 +40,14 @@ package semantica.declsc3a is
 		Major,
 		Diferent);
 
-	type dtCamp is
+	type tCamp is
        (Proc,
         Var,
         Etiq,
         Const);
 
-	type tCamp(dtc : dtCamp:=Const) is record
-		case dtc is
+	type Camp(tc : tCamp:=Const) is record
+		case tc is
        		when Proc   => Idp : num_Proc;
        		when Var    => Idv : num_var;
   			when Etiq   => Ide : num_etiq;
@@ -58,9 +58,9 @@ package semantica.declsc3a is
 
 	type c3a is record
 		Instr : tInstruccio;
-      	Camp1 : tCamp;
-      	Camp2 : tCamp;
-      	Camp3 : tCamp;
+      	Camp1 : Camp;
+      	Camp2 : Camp;
+      	Camp3 : Camp;
 	end record;
 
 
@@ -125,23 +125,23 @@ package semantica.declsc3a is
 
 -- Taula d'Etiquetes
                     
---	type Info_Etiq (TipE:Tipus_Etiq := Etiq_Num) is record
---   		case TipE is
---       		when Etiq_Num =>
---          		N:Integer;
---       		when Etiq_Proc =>
---          		Idpr: num_Proc;
---   			end case;
---	end record;
+	type Info_Etiq (TipE:Tipus_Etiq := Etiq_Num) is record
+   		case TipE is
+       		when Etiq_Num =>
+          		N:Integer;
+       		when Etiq_Proc =>
+          		Idpr: num_Proc;
+   			end case;
+	end record;
 
---	type Taula_E is array (num_Etiq) of Info_Etiq;
+	type Taula_E is array (num_Etiq) of Info_Etiq;
 
---	type T_Etiqs is record
---       Te : Taula_E;
---       Ne : num_Etiq;
---   	end record;
+	type T_Etiqs is record
+       Te : Taula_E;
+       Ne : num_Etiq;
+   	end record;
 
---	Te : T_Etiqs;
+	Te : T_Etiqs;
 
 
 
@@ -151,8 +151,8 @@ package semantica.declsc3a is
 	--Inicializar las tablas
 	procedure Noves_taules
 		(Tp : out T_Procs;
-		 Tv : out T_Vars);
---		 Te : out T_Etiqs);
+		 Tv : out T_Vars;
+		 Te : out T_Etiqs);
 
 	--taula procediments
 	procedure Nouproc 
@@ -202,32 +202,32 @@ package semantica.declsc3a is
 		 Idc  :    out num_var);
 
 	--taula d'etiquetes
---	function Nova_Etiq return num_Etiq;
+	function Nova_Etiq return num_Etiq;
 
---	procedure Posa 
---		(Te  : in out T_Etiqs;
---      	 Ie  : in     Info_Etiq;
---      	 Ide :    out num_Etiq);
+	procedure Posa 
+		(Te  : in out T_Etiqs;
+      	 Ie  : in     Info_Etiq;
+      	 Ide :    out num_Etiq);
 
---	function Consulta 
---		(Te  : in     T_Etiqs;
---      	 Ide : in     num_Etiq) return Info_Etiq;
+	function Consulta 
+		(Te  : in     T_Etiqs;
+      	 Ide : in     num_Etiq) return Info_Etiq;
 
---	function Etiqueta 
---		(Te  : in     T_Etiqs;
---      	 Ide : in     num_Etiq) return String;
+	function Etiqueta 
+		(Te  : in     T_Etiqs;
+      	 Ide : in     num_Etiq) return String;
 
 
 	--Fitxers
-	procedure Crea_Fitxer;
-	procedure Obrir_Fitxer;
+	procedure Crea_Fitxer(Nom_Fitxer: in String);
+	procedure Obrir_Fitxer(Nom_Fitxer: in String);
    	procedure Tancar_Fitxer;
    	procedure Llegir_Fitxer(Instruccio : out c3a);
    	procedure Escriure_Fitxer(Instruccio : in c3a);
    	function Fi_Fitxer return Boolean;
 
 	--Función auxiliar para ver el contenido de las tablas
-	--procedure imprime_Tablas;
+	procedure imprime_Tablas;
 
 private
 
