@@ -33,7 +33,28 @@ package body Semantica.Assemblador is
                  Operand2);
    end Instruccio_2_Op;
 
+   -- Comentaris
+   procedure Comentari
+     (Comentari : in String) is
+   begin
+      Put_Line(Fitxer_Asmbl, Tab & " # " & Tab &
+                 Comentari);
+   end Comentari;
+
+   -- Etiquetes
+   procedure Etiqueta
+     (Etiqueta : in String) is
+   begin
+      Put_Line(Fitxer_Asmbl, Etiqueta & ": nop");
+   end Etiqueta;
+
+   -- LD a, %eax
+   procedure Ld
+     (Org : in Tcamp;
+      Dst : in String) is
+   begin
+      case Org.Tc is
+         when Var =>
+
 
 end Semantica.Assemblador;
-
-
