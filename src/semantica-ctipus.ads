@@ -56,7 +56,7 @@ package Semantica.Ctipus is
    procedure Ct_Programa
      (A : in Pnode);
 
-   --function getTn return Taula_de_noms;
+   function getTn return Taula_de_noms;
 
 
 private
