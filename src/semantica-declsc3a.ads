@@ -237,7 +237,7 @@ package Semantica.Declsc3a is
         function Fi_Fitxer return Boolean;
 
         --Función auxiliar para ver el contenido de las tablas
-        procedure imprime_Tablas;
+        procedure imprimeix_Taules;
 
 private
 

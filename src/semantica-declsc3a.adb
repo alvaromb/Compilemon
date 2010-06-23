@@ -106,9 +106,9 @@ procedure Novavar
 
 begin
 
-   	Nomvar(Nomvar'First + 4):='_';
+   	Nomvar(Nomvar'First + 4):='_'; 
    	Posa_Id(Tn, Idn, Nomvar);
-   	Ip:=Consulta(Tp, Idpr);
+   	Ip:=Consulta(Tp, Idpr); 	
    	Iv:=(Id       => Idn,
          Np       => Idpr,
          Ocup     => Integer'Size / 8,
@@ -133,7 +133,7 @@ procedure Novaconst
       Idc :    out num_var) is
 
    	Idn      : Id_Nom;
-   	Ip       : Info_Proc;
+   	--Ip       : Info_Proc;
    	E        : Boolean;
    	Iv       : Info_Var;
    	D        : Descrip;
@@ -153,11 +153,11 @@ begin
    	end if;
 
    	Posa_Id(Tn, Idn, Nomconst);
-   	Ip:=Consulta(Tp, Idpr); -- No se emplea en ningun sitio
+   	--Ip:=Consulta(Tp, Idpr); -- No se emplea en ningun sitio
 
    	Iv:=(Id       => Idn,
          Np       => Idpr,
-         Ocup     => Integer'Size / 8,
+         Ocup     => Integer'Size / 8,-- what? Ocup
        	 Desp     => 0,
          Tsub     => Tsub,
          Param    => False,
@@ -389,7 +389,7 @@ end Fi_Fitxer;
 
 
 
-procedure imprime_Tablas is 
+procedure imprimeix_Taules is 
 begin
 
 	--if Debug then
@@ -418,9 +418,9 @@ begin
 		    Put_Line("     const:" & Tv.Tv(I).Const'Img);
 		    Put_Line("     valconst:" & Tv.Tv(I).Valconst'Img);
 
-		    --if Tv.Tv(I).Tsub=TSARR and Tv.Tv(I).Const then
-		    	--Put_Line("          " & Cons_str(Tn, Id_Str(Tv.Tv(I).Valconst)));
-		    --end if;
+		    if Tv.Tv(I).Tsub=TSARR and Tv.Tv(I).Const then
+		    	Put_Line("          " & Cons_str(Tn,  rang_tcar(Tv.Tv(I).Valconst)));
+		    end if;
 
 		end loop;
 
@@ -434,7 +434,7 @@ begin
 
 	--end if;
 
-end imprime_Tablas;
+end imprimeix_Taules;
 
 
 end semantica.declsc3a;
