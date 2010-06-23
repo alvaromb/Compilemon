@@ -270,10 +270,10 @@ begin
 end Obrir_Fitxer;
 
 
-procedure Tancar_Fitxer is 
+procedure Tanca_Fitxer is 
 begin
 	Close(F3as);
-end Tancar_Fitxer;
+end Tanca_Fitxer;
 
 
 procedure Llegir_Fitxer

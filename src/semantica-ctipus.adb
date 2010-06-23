@@ -82,13 +82,13 @@ package body Semantica.Ctipus is
       Posa(Ts, Idb, D, E);
 
       Posa_Id(Tn, Idt, "true");
-      Nv := Nv + 1;
+      --Nv := Nv + 1;
       --D := (Dconst, Idb, -1, Nv);
       D := (Dconst, Idb, -1);
       Posa(Ts, Idt, D, E);
 
       Posa_Id(Tn, Idf, "false");
-      Nv := Nv + 1;
+      --Nv := Nv + 1;
       --D := (Dconst, Idb, 0, Nv);
       D := (Dconst, Idb, 0);
       Posa(Ts, Idf, D, E);

@@ -231,7 +231,7 @@ package Semantica.Declsc3a is
         --Fitxers
         procedure Crea_Fitxer(Nom_Fitxer: in String);
         procedure Obrir_Fitxer(Nom_Fitxer: in String);
-        procedure Tancar_Fitxer;
+        procedure Tanca_Fitxer;
         procedure Llegir_Fitxer(Instruccio : out c3a);
         procedure Escriure_Fitxer(Instruccio : in c3a);
         function Fi_Fitxer return Boolean;
