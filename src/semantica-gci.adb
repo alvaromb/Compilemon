@@ -403,34 +403,10 @@ package body semantica.gci is
      (Tesq, Tdret : in Tipussubjacent;
       Idesq, Iddret : in Id_Nom;
       T : out Tipussubjacent;
-      Idtipus : out Id_Nom;
-      L, C : in out Natural) is
+      Idtipus : out Id_Nom) is
 
    begin
-      if Tesq /= Tsbool then
-         Error(Tsub_No_Bool, L, C, "esquerra");
-         Esem := True;
-      end if;
 
-      if Tdret /= Tsbool then
-         Error(Tsub_No_Bool, L, C, "dret");
-         Esem := True;
-      end if;
-
-      if Idesq /= Id_Nul and Iddret /= Id_Nul then
-         if Idesq /= Iddret then
-            Error(Tops_Diferents, L, C, "");
-            Esem := True;
-         end if;
-      end if;
-
-      if Idesq = Id_Nul then
-         Idtipus := Iddret;
-      else
-         Idtipus := Idesq;
-      end if;
-
-      T := Tsbool;
 
    end gci_Exp_Logica;
 
