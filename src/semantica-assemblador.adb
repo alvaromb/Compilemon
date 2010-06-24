@@ -65,10 +65,11 @@ package body Semantica.Assemblador is
       Dst : in String) is
 
       Ivar : Info_Var;
-      Vconst : Valor;
       Prof_Var : Nprof;
-      W : Integer;
       Vc : Valor;
+
+      Dpa : Integer;
+      Da : Despl renames Ivar.Desp;
 
    begin
       case Org.Tc is
@@ -87,12 +88,12 @@ package body Semantica.Assemblador is
                -- 'a' es parametre local
                if Ivar.Param then
                   Comentari("LD parametre local");
-                  Instr_2_Op("movl", Ivar.Desp'Img & "(%ebp)", "%esi");
+                  Instr_2_Op("movl", Da'Img & "(%ebp)", "%esi");
                   Instr_2_Op("movl", "(%esi)", Dst);
                -- 'a' es variable local
                else
                   Comentari("LD variable local");
-                  Instr_2_Op("movl", Ivar.Desp'Img & "(%ebp)", Dst);
+                  Instr_2_Op("movl", Da'Img & "(%ebp)", Dst);
                end if;
             -- 'a' es global
             elsif Prof_Var < Prof_Actual then
@@ -100,17 +101,17 @@ package body Semantica.Assemblador is
                if Ivar.Param then
                   Comentari("LD parametre global");
                   Instr_2_Op("movl", "$DISP", "%esi");
-                  W := 4*Integer(Prof_Var);
-                  Instr_2_Op("addl", "$" & W'Img, "%esi");
-                  Instr_2_Op("movl", Ivar.Desp'Img & "(%esi)", "%esi");
+                  Dpa := 4*Integer(Prof_Var);
+                  Instr_2_Op("addl", "$" & Dpa'Img, "%esi");
+                  Instr_2_Op("movl", Da'Img & "(%esi)", "%esi");
                   Instr_2_Op("movl", "(%esi)", Dst);
                -- 'a' es variable global
                else
                   Comentari("LD variable global");
                   Instr_2_Op("movl", "$DISP", "%esi");
-                  W := 4*Integer(Prof_Var);
-                  Instr_2_Op("addl", "$" & W'Img, "%esi");
-                  Instr_2_Op("movl", Ivar.Desp'Img & "(%esi)", Dst);
+                  Dpa := 4*Integer(Prof_Var);
+                  Instr_2_Op("addl", "$" & Dpa'Img, "%esi");
+                  Instr_2_Op("movl", Da'Img & "(%esi)", Dst);
                end if;
             else
                raise Error_Assemblador;
@@ -125,6 +126,71 @@ package body Semantica.Assemblador is
             raise Error_Assemblador;
       end case;
    end Ld;
+
+
+   -- ST %eax, a
+   procedure St
+     (Org : in String;
+      Dst : in Camp) is
+
+      Prof_Var : Nprof;
+      Idst : Info_Var;
+
+      Dpa : Integer;
+      Da : Despl renames Idst.Desp;
+
+   begin
+      if Dst.Tc /= Var then
+         raise Error_Assemblador;
+      end if;
+
+      Idst := Consulta(Tv, Dst.Idv);
+      Prof_Var := Consulta(Tp, Idst.Np).Prof;
+      -- 'a' es local
+      if Prof_Var = Prof_Actual then
+         -- 'a' es una variable local
+         if not Idst.Param then
+            Comentari("ST a una variable local");
+            Instr_2_Op("movl", Org, Da'Img & "(%ebp)");
+         -- 'a' es un parametre local
+         else
+            Comentari("ST a un parametre local");
+            Instr_2_Op("movl", Da'Img & "(%ebp)", "%edi");
+            Instr_2_Op("movl", Org, "(%edi)");
+         end if;
+      -- 'a' es global
+      elsif Prof_Var < Prof_Actual then
+         -- 'a' es una variable global
+         if not Idst.Param then
+            Comentari("ST a una variable global");
+            Instr_2_Op("movl", "$DISP", "%esi");
+            Dpa := 4*Integer(Prof_Var);
+            Instr_2_Op("addl", "$" & Dpa'Img, "%esi");
+            Instr_2_Op("movl", "(%esi)", "%edi");
+            Instr_2_Op("movl", Org, Da'Img & "(%edi)");
+         -- 'a' es un parametre global
+         else
+            Comentari("ST a un parametre global");
+            Instr_2_Op("movl", "$DISP", "%esi");
+            Dpa := 4*Integer(Prof_Var);
+            Instr_2_Op("addl", "$" & Dpa'Img, "%esi");
+            Instr_2_Op("movl", "(%esi)", "%esi");
+            Instr_2_Op("movl", Da'Img & "(%esi)", "%edi");
+            Instr_2_Op("movl", Org, "(%edi)");
+         end if;
+      else
+         raise Error_Assemblador;
+      end if;
+   end St;
+
+
+   -- LDA a, %eax
+   procedure Ldaddr
+     (Org : in Camp;
+      Dst : in String) is
+   begin
+      Put_Line("LDADDR");
+   end Ldaddr;
 
 
    procedure Genera_Assemblador is
