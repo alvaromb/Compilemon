@@ -114,21 +114,25 @@ package Semantica.Declsc3a is
                 Valconst : valor;
     end record;
 
-        Info_Var_Nul : Info_Var := (Id       => Id_Nul,
-                                Np       => proc_nul,
-                                                                Ocup     => 0,
-                                                                Desp     => 0,
-                                                                Tsub     => Tsnul,
-                                                                Param    => False,
-                                                                Const    => False,
-                                                                Valconst => 0);
+        Info_Var_Nul : Info_Var :=
+          (Id       => Id_Nul,
+           Np       => proc_nul,
+           Ocup     => 0,
+           Desp     => 0,
+           Tsub     => Tsnul,
+           Param    => False,
+           Const    => False,
+           Valconst => 0);
 
         type taula_v is array (num_var) of Info_Var;
 
         type T_Vars is record
-                Tv : taula_v;
-        Nv : num_var;
-    end record;
+
+           Tv : taula_v;
+
+           Nv : num_var;
+
+        end record;
 
         Tv : T_Vars;
 
