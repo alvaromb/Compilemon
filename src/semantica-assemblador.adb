@@ -102,7 +102,7 @@ package body Semantica.Assemblador is
                   Comentari("LD parametre global");
                   Instr_2_Op("movl", "$DISP", "%esi");
                   Dpa := 4*Integer(Prof_Var);
-                  Instr_2_Op("addl", "$" & Dpa'Img, "%esi");
+                  Instr_2_Op("movl", Dpa'Img & "(%esi)", "%esi");
                   Instr_2_Op("movl", Da'Img & "(%esi)", "%esi");
                   Instr_2_Op("movl", "(%esi)", Dst);
                -- 'a' es variable global
@@ -110,7 +110,7 @@ package body Semantica.Assemblador is
                   Comentari("LD variable global");
                   Instr_2_Op("movl", "$DISP", "%esi");
                   Dpa := 4*Integer(Prof_Var);
-                  Instr_2_Op("addl", "$" & Dpa'Img, "%esi");
+                  Instr_2_Op("movl", Dpa'Img & "(%esi)", "%esi");
                   Instr_2_Op("movl", Da'Img & "(%esi)", Dst);
                end if;
             else
@@ -188,8 +188,66 @@ package body Semantica.Assemblador is
    procedure Ldaddr
      (Org : in Camp;
       Dst : in String) is
+
+      Ivar : Info_Var;
+      Prof_Var : Nprof;
+
+      Dpa : Integer;
+      Da : Despl renames Ivar.Desp;
+
    begin
-      Put_Line("LDADDR");
+      Ivar := Consulta(Tv, Org.Idv);
+      case Org.Tc is
+         -- 'a' es constant
+         when Const =>
+            Comentari("LDADDR amb a constant" & Org.Idc'Img & ", " & Dst);
+            Instr_2_Op("movl", "$" & Cons_Nom(Tn, Ivar.Id), Dst);
+
+         -- 'a' es una variable
+         when Var =>
+            Prof_Var := Consulta(Tp, Ivar.Np).Prof;
+            -- 'a' es una variable constant
+            if Ivar.Const then
+               Comentari("LDADDR amb var. constant" & Org.Idc'Img &
+                           ", " & Dst);
+               Instr_2_Op("movl", "$" & Cons_Nom(Tn, Ivar.Id), Dst);
+
+            -- 'a' es local
+            elsif Prof_Var = Prof_Actual then
+               -- 'a' es una variable local
+               if not Ivar.Param then
+                  Comentari("LDADDR amb variable local");
+                  Instr_2_Op("leal", Da'Img & "(%ebp)", Dst);
+               -- 'a' es un parametre local
+               else
+                  Comentari("LDADDR amb parametre local");
+                  Instr_2_Op("movl", Da'Img & "(%ebp)", Dst);
+               end if;
+
+            -- 'a' es global
+            elsif Prof_Var < Prof_Actual then
+               -- 'a' es una variable global
+               if not Ivar.Param then
+                  Comentari("LDADDR amb variable global");
+                  Instr_2_Op("movl", "$DISP", "%esi");
+                  Dpa := 4*Integer(Prof_Var);
+                  Instr_2_Op("movl", Dpa'Img & "(%esi)", "%esi");
+                  Instr_2_Op("leal", Da'Img & "(%esi)", Dst);
+               -- 'a' es un parametre global
+               else
+                  Comentari("LDADDR amb parametre global");
+                  Instr_2_Op("movl", "$DISP", "%esi");
+                  Dpa := 4*Integer(Prof_Var);
+                  Instr_2_Op("movl", Dpa'Img & "(%esi)", "%esi");
+                  Instr_2_Op("movl", Da'Img & "(%esi)", Dst);
+               end if;
+            else
+               raise Error_Assemblador;
+            end if;
+
+         when others =>
+            raise Error_Assemblador;
+      end case;
    end Ldaddr;
 
 
