@@ -8,6 +8,9 @@ package Semantica.gci is
     	Base, Despl : num_Var;
    	end record;
 
+	package Pila_Proc is new Pilas (num_Proc);
+	use Pila_Proc;
+
 
 	package Pila_Param is new Pilas (T_Param);
 	use Pila_Param;
