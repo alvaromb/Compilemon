@@ -16,20 +16,20 @@ package Decls.Dtnode is
       Entrasurt);
 
    type Operacio is
-     (Suma, --
-      Resta, --
-      Mult, --
-      Div, --
-      Menor, --
-      Menorig, --
-      Major, --
-      Majorig, --
-      Igual, --
-      Distint, --
-      Modul, --
-      Unio, --
-      Interseccio, --
-      Negacio); --
+     (Suma, 
+      Resta, 
+      Mult, 
+      Div, 
+      Menor, 
+      Menorig, 
+      Major, 
+      Majorig, 
+      Igual, 
+      Distint, 
+      Modul, 
+      Unio, 
+      Interseccio, 
+      Negacio); 
 
 
    type Node;
@@ -37,31 +37,31 @@ package Decls.Dtnode is
    type Pnode is access Node;
 
    type Tipusnode is
-     (Programa, --
-      Repeticio, --
-      CondicionalS, --
-      CondicionalC, --
-      Expressio, --
+     (Programa, 
+      Repeticio, 
+      CondicionalS, 
+      CondicionalC, 
+      Expressio, 
       ExpressioUnaria, -- Not E, -E
       Pencap,
       Procediment, -- Fe = encap, Fc = declaracions, Fd = bloc
-      Dvariable, --
-      Dconstant, --
-      Dcoleccio, --
-      Dregistre, --
-      Dencapregistre, --
-      Dsubrang, --
+      Dvariable, 
+      Dconstant, 
+      Dcoleccio, 
+      Dregistre, 
+      Dencapregistre, 
+      Dsubrang, 
       Identificador,
-      Const, --
-      Declaracions, --
+      Const, 
+      Declaracions, 
       Bloc,
       Assignacio,
-      Referencia, --
+      Referencia, 
       Pri,
       Param,
-      Pcoleccio, --
-      Pdimcoleccio, --
-      Declmultvar, --
+      Pcoleccio, 
+      Pdimcoleccio, 
+      Declmultvar, 
       Tnul,
       Mode,
       Encappri,
