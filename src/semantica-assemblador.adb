@@ -54,14 +54,20 @@ package body Semantica.Assemblador is
       Dst : in String) is
       Ivar : Info_Var;
       Vconst : Valor;
+      Prof_Var : Nprof;
    begin
       case Org.Tc is
          when Var =>
             Ivar := Consulta(Tv, Org.Idv);
+            Prof_Var := Consulta(Tp, Ivar.Np).Prof;
             -- 'a' es un valor constant
             if Ivar.Const then
                Instruccio_2_Op
                  ("movl", "$" & Ivar.Valconst'Img, Dst);
+            -- 'a' es local
+            else if (Prof_Var=Prof_Actual) then
+
+
             end if;
             --  ^
             --  |

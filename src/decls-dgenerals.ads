@@ -20,22 +20,24 @@ package Decls.Dgenerals is
     max_var : constant integer := 1000;
     type num_var is new natural
       range 0 .. max_var;
-	var_nul : num_var := 0;
+        var_nul : num_var := 0;
 
     max_proc : constant integer := 100;
     type num_proc is new natural
       range 0 .. max_proc;
-	proc_nul : num_proc := 0;
-	
-	max_etiquetes : constant integer := 4000;
-	type num_etiq is new Integer range 0 .. max_etiquetes;
-	etiq_nul : num_etiq := 0;
+    proc_nul : num_proc := 0;
 
-	type tipus_etiq is (etiq_num, etiq_proc);
+    Max_Etiquetes : constant integer := 4000;
+    type Num_Etiq is new Integer
+      range 0 .. Max_Etiquetes;
+    Etiq_Nul : Num_Etiq := 0;
 
-	
+    type Tipus_Etiq is
+      (Etiq_Num,
+       Etiq_Proc);
+
     type valor is new Integer
-      range integer'First.. integer'Last;
+      range integer'First..integer'Last;
 
     type tipus_atribut is
       (atom,
