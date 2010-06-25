@@ -21,7 +21,7 @@ package Decls.Dtdesc is
     --pragma pure;
 
     -- Representa tambit
-    max_nprof : constant integer := 10;
+    max_nprof : constant integer := 25;
     type nprof is new integer
       range 0 .. max_nprof;
     nul_nprof : constant nprof := 0;

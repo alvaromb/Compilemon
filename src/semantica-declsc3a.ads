@@ -150,7 +150,7 @@ package Semantica.Declsc3a is
    Te : T_Etiqs;
 
 --procediments i funcions
-   --Inicializar las tablas
+   --Inicializar las tablas --OJO A ESTE NOMBRE!!!!
    procedure Noves_taules
      (Tp : out T_Procs;
       Tv : out T_Vars;

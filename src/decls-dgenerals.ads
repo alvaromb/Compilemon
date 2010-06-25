@@ -20,7 +20,7 @@ package Decls.Dgenerals is
     max_var : constant integer := 1000;
     type num_var is new natural
       range 0 .. max_var;
-        var_nul : num_var := 0;
+    var_nul : num_var := 0;
 
     max_proc : constant integer := 100;
     type num_proc is new natural
