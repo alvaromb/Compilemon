@@ -251,9 +251,168 @@ package body Semantica.Assemblador is
    end Ldaddr;
 
 
+   --Mirar si cambiar el nombre (Inicialitza) por si no le gusta al Tito
+   procedure Gce_Inicialitza is
+   	   Iv : Info_Var;
+   begin
+
+   	   Create(Fitxer_Asmbl, Out_File, Nom_Fitxer & ".s");
+	   Obrir_Fitxer(Nom_Fitxer); --dc3a
+
+	   --3 pasos a realizar (visto en apuntes):
+	     --1º Guardar constantes (.section .data) 
+         --2º Guardar Variables comunes (.section .bss)
+		 --3º Instrucciones (.section .text)
+
+	   --1º) Constantes
+   	   Put_Line(Fitxer_Asmbl, ".section .data");
+   	   for I in Num_Var range 1..Tv.Nv loop
+          Iv := Consulta(Tv, I);
+       	  if Iv.Const then
+          	 if Iv.Tsub=Tsarr then
+			    --Si es un String
+             	--str_x : .asciz "xxx"
+            	Put_Line(Fitxer_Asmbl, Tab & 
+                	Cons_Nom(Tn, Iv.Id) & " : .asciz """ & --(En los apuntes pone .asciiz)
+                	Cons_Nom(Tn, rang_tcar(Iv.Valconst)) & """");
+          	 else
+				--Si es un entero (en los apuntes pone .long)
+             	--nombre_x : .int valor_v
+             	Put_Line(Fitxer_Asmbl, Tab & Cons_Nom(Tn, Iv.Id) &
+                	" : .int " & Iv.Valconst'Img);
+          	 end if;
+          end if;
+
+   	   end loop;
+
+	   --2º) Variables comunes
+   	   New_Line(Fitxer_Asmbl);
+  	   Put_Line(Fitxer_Asmbl, ".section .bss");
+   	   Put_Line(Fitxer_Asmbl, Tab & ".common DISP, 100");
+
+	   --3º) Instrucciones
+   	   New_Line(Fitxer_Asmbl);
+	   Put_Line(Fitxer_Asmbl, ".section .text");
+
+   end Gce_Inicialitza;
+
+
+
+
+   procedure Gce_Genera is
+   	  Ic3a : c3a;
+   	  Txt : String (1..10);
+      Tmp : Integer;
+      Ide : Num_Etiq;
+      Ipr : Info_Proc;
+   begin
+      
+	  while not Fi_Fitxer loop
+	  	 --Para cada instruccion c3a la tratamos
+		 Ipr := Info_Proc_Nul;
+		 Ide := Etiq_Nul;
+		 Llegir_Fitxer(Ic3a);
+		 Txt := (others => ' ');
+		 Tmp := 0;
+
+		 case Ic3a.Instr is
+
+			-- 1 Operand
+		 	when Global => 
+
+		 	when Rtn => 
+
+		 	when Call => 
+
+		 	when Preamb => 
+
+		 	when Params => 
+
+		 	when Etiqueta => 
+
+		 	when Branc_Inc => 
+
+			
+			-- 2 Operands
+			when Negacio => 
+	
+			when Op_Not =>
+
+			when Copia =>
+
+			when Paramc =>
+
+
+			-- 3 Operands
+			when Suma =>
+
+			when Resta =>
+
+			when Producte =>
+
+			when Divisio =>
+
+			when Modul =>
+
+			when Op_And =>
+
+			when Op_Or =>
+
+			when Consindex =>
+
+			when Asigindex =>
+
+			when Menor =>
+
+			when Menorigual =>
+
+			when Igual =>
+
+			when Majorigual =>
+
+			when Major =>
+
+			when Diferent =>
+
+
+			when others => 
+	            raise Error_Assemblador;
+
+		 end case;
+
+      end loop;
+
+
+   end Gce_Genera;
+
+
+
+
+   procedure Gce_Finalitza is
+   begin
+   	  Tanca_Fitxer; --dc3a
+   	  Close(Fitxer_Asmbl);
+   exception
+      when others=>
+         null; --Mirar si poner alguna excepcion
+   end Gce_Finalitza;
+
+
+
+
    procedure Genera_Assemblador is
    begin
       Put_Line("TODO: genera assemblador");
+
+	  --PONER EL ERROR CORRESPONDIENTE DE COMPROBACION DE TIPO (Esem???)
+	  --if Stop_Generar_Codigo then 
+   	  --	raise Error_Assemblador;
+	  --end if;
+
+	  --Gce_Inicializa;
+	  --Gce_Genera;
+      --Gce_Finalitza;
+
    exception
       when Error_Assemblador =>
          Comentari("Error assemblador");
