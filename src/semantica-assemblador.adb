@@ -253,312 +253,373 @@ package body Semantica.Assemblador is
 
    --Mirar si cambiar el nombre (Inicialitza) por si no le gusta al Tito
    procedure Gce_Inicialitza is
-   	   Iv : Info_Var;
+      Iv : Info_Var;
    begin
+      Create(Fitxer_Asmbl, Out_File, Nom_Fitxer & ".s");
+      Obrir_Fitxer(Nom_Fitxer); --dc3a
 
-   	   Create(Fitxer_Asmbl, Out_File, Nom_Fitxer & ".s");
-	   Obrir_Fitxer(Nom_Fitxer); --dc3a
 
-	   --3 pasos a realizar (visto en apuntes):
-	     --1º Guardar constantes (.section .data) 
-         --2º Guardar Variables comunes (.section .bss)
-		 --3º Instrucciones (.section .text)
+      --3 pasos a realizar (visto en apuntes):
+      --1º Guardar constantes (.section .data)
+      --2º Guardar Variables comunes (.section .bss)
+      --3º Instrucciones (.section .text)
 
-	   --1º) Constantes
-   	   Put_Line(Fitxer_Asmbl, ".section .data");
-   	   for I in Num_Var range 1..Tv.Nv loop
-          Iv := Consulta(Tv, I);
-       	  if Iv.Const then
-          	 if Iv.Tsub=Tsarr then
-			    --Si es un String
-             	--str_x : .asciz "xxx"
-            	Put_Line(Fitxer_Asmbl, Tab & 
-                	Cons_Nom(Tn, Iv.Id) & " : .asciz """ & --(En los apuntes pone .asciiz)
-                	Cons_Nom(Tn, rang_tcar(Iv.Valconst)) & """");
-          	 else
-				--Si es un entero (en los apuntes pone .long)
-             	--nombre_x : .int valor_v
-             	Put_Line(Fitxer_Asmbl, Tab & Cons_Nom(Tn, Iv.Id) &
-                	" : .int " & Iv.Valconst'Img);
-          	 end if;
-          end if;
+      --1º) Constants
+      Put_Line(Fitxer_Asmbl, ".section .data");
+      for I in Num_Var range 1..Tv.Nv loop
+         Iv := Consulta(Tv, I);
+         if Iv.Const then
+            if Iv.Tsub = Tsarr then
+               --Si es un String
+               --s1 : .asciiz "El nombde de a's es"
+               Put_Line(Fitxer_Asmbl, Tab &
+                          Cons_Nom(Tn, Iv.Id) & " : .asciiz """ &
+                          Cons_Str(Tn, rang_tcar(Iv.Valconst)) & """");
+            elsif Iv.Tsub = Tsent then
+               --Si es un numeric
+               --c3 : .long 3
+               Put_Line(Fitxer_Asmbl, Tab &
+                          Cons_Nom(Tn, Iv.Id) & " : .long " &
+                          Iv.Valconst'Img);
+            else
+               --Si es un caracter
+               --cc2 : .ascii "A"
+               Put_Line(Fitxer_Asmbl, Tab &
+                          Cons_Nom(Tn, Iv.Id) & " : .ascii """ &
+                          Iv.Valconst'Img & """");
+            end if;
+         end if;
+      end loop;
 
-   	   end loop;
+      --2º) Variables comunes
+      New_Line(Fitxer_Asmbl);
+      Put_Line(Fitxer_Asmbl, ".section .bss");
+      Put_Line(Fitxer_Asmbl, Tab & ".comm DISP, 100");
 
-	   --2º) Variables comunes
-   	   New_Line(Fitxer_Asmbl);
-  	   Put_Line(Fitxer_Asmbl, ".section .bss");
-   	   Put_Line(Fitxer_Asmbl, Tab & ".common DISP, 100");
-
-	   --3º) Instrucciones
-   	   New_Line(Fitxer_Asmbl);
-	   Put_Line(Fitxer_Asmbl, ".section .text");
+      --3º) Instrucciones
+      New_Line(Fitxer_Asmbl);
+      Put_Line(Fitxer_Asmbl, ".section .text");
 
    end Gce_Inicialitza;
 
 
-
-
    procedure Gce_Genera is
-   	  Ic3a : c3a;
-   	  Txt : String (1..10);
-      Tmp : Integer;
+
+      Ic3a : c3a;
+      Txt : String (1..10);
+      Dpn : Integer;
       Ide : Num_Etiq;
       Ipr : Info_Proc;
+
    begin
-      
-	  while not Fi_Fitxer loop
-	  	 --Para cada instruccion c3a la tratamos
-		 Ipr := Info_Proc_Nul;
-		 Ide := Etiq_Nul;
-		 Llegir_Fitxer(Ic3a);
-		 Txt := (others => ' ');
-		 Tmp := 0;
+      while not Fi_Fitxer loop
+         --Para cada instruccion c3a la tratamos
+         Ipr := Info_Proc_Nul;
+         Ide := Etiq_Nul;
+         Llegir_Fitxer(Ic3a);
+         Txt := (others => ' ');
+         Dpn := 0;
 
-		 case Ic3a.Instr is
+         case Ic3a.Instr is
+            -- 1 Operand
+            when Global =>
+               if Ic3a.Camp1.Tc /= Etiq then
+                  raise Error_Assemblador;
+               end if;
+               New_Line(Fitxer_Asmbl);
+               Comentari("Global " & Ic3a.Camp1.Ide'Img);
+               Ide := Ic3a.Camp1.Ide;
+               Put_Line(Fitxer_Asmbl, ".globl " & Etiqueta(Te, Ide));
 
-			-- 1 Operand
-		 	when Global => 
-				if Ic3a.Camp1.Tc /= Etiq then
-				   raise Error_Assemblador;
-				end if;
-				New_Line(Fitxer_Asmbl);
-				Comentari("Global" & Ic3a.Camp1.Ide'Img);
-				Ide := Ic3a.Camp1.Ide;
-				Put_Line(Fitxer_Asmbl, ".global " & Etiqueta(Te, Ide));
+            when Rtn =>
+               if Ic3a.Camp1.Tc /= Proc then
+                  raise Error_Assemblador;
+               end if;
+               New_Line(Fitxer_Asmbl);
+               Comentari("Return " & Ic3a.Camp1.Idp'Img);
+               Ipr := Consulta(Tp, Ic3a.Camp1.Idp);
+               Instr_2_Op("movl", "%ebp", "%esp");
+               Instr_1_Op("popl", "%ebp");
+               Instr_2_Op("movl", "$DISP", "%edi");
+               Dpn := 4*Integer(Ipr.Prof);
+               Instr_1_Op("popl", Dpn'Img & "(%edi)");
+               Instr_0_Op("ret");
 
-		 	when Rtn => 
+            when Call =>
+               if Ic3a.Camp1.Tc /= Proc then
+                  raise Error_Assemblador;
+               end if;
+               New_Line(Fitxer_Asmbl);
+               Comentari("Call " & Ic3a.Camp1.Idp'Img);
+               Ipr := Consulta(Tp, Ic3a.Camp1.Idp);
+               Instr_1_Op("call", Etiqueta(Te, Ipr.Etiq));
+               -- Mirar el tema de si hay que *4
+               Instr_2_Op("addl", "$" & Ipr.Ocup_Param'Img, "%esp");
 
-		 	when Call => 
-				if Ic3a.Camp1.Tc /= Proc then
-				   raise Error_Assemblador;
-				end if;
-				New_Line(Fitxer_Asmbl);
-				Comentari("--Call" & Ic3a.Camp1.Idp'Img & " --" & Tab & "#");
-				Ipr := Consulta(Tp, Ic3a.Camp1.Idp);
-				Instr_1_Op("call", Etiqueta(Te, Ipr.Etiq));
-				Instr_2_Op("addl", "$" & Ipr.Ocup_Param'Img, "%esp"); --Mirar el tema de si hay que *4
+            when Preamb =>
+               if Ic3a.Camp1.Tc /= Proc then
+                  raise Error_Assemblador;
+               end if;
+               New_Line(Fitxer_Asmbl);
+               Comentari("Preambul "& Ic3a.Camp1.Idp'Img);
+               Ipr:=Consulta (Tp, Ic3a.Camp1.Idp);
+               Prof_Actual := Ipr.Prof;
+               Etiqueta(Etiqueta(Te, Ipr.Etiq));
+               Instr_2_Op("movl", "$DISP", "%esi");
+               Dpn := 4*Integer(Ipr.Prof);
+               Instr_1_Op("pushl", Dpn'Img & "(%esi)");
+               Instr_1_Op("pushl", "%ebp");
+               Instr_2_Op("movl", "%esp", "%ebp");
+               Instr_2_Op("movl", "%ebp", Dpn'Img & "(%esi)");
+               Instr_2_Op("subl", "$" & Ipr.Ocup_Var'Img, "%esp");
 
+            when Params =>
+               New_Line(Fitxer_Asmbl);
+               Comentari("Parametre Simple");
+               Ldaddr(Ic3a.Camp1, "%eax");
+               Instr_1_Op("pushl", "%eax");
 
-		 	when Preamb => 
-				if Ic3a.Camp1.Tc /= Proc then
-				   raise Error_Assemblador;
-				end if;
-				New_Line(Fitxer_Asmbl);
-				Comentari("--Preambulo"& Ic3a.Campo1.Idp'Img & " --" & Tab & "#");
-				Dpr:=Consulta (Tp, Ic3a.Campo1.Idp);
-				Prof_Actual:=Dpr.Prof;
-				Etiqueta (Etiqueta(Te, Dpr.Etiq));
-				Instruc2 (
-				   Inst => "movl",
-				   Oper1 => "$DISP",
-				   Oper2 => "%esi"
-				   );
-				Tmp:=4*Integer(Dpr.Prof);
-				Instruc2 (
-				   Inst => "addl",
-				   Oper1 => "$" & Elimina_Espacio_Inicial (Tmp'Img),
-				   Oper2 => "%esi"
-				   );
-				Instruc1 (
-				   Inst => "pushl",
-				   Oper1 => "(%esi)"
-				   );
-				Instruc1 (
-				   Inst => "pushl",
-				   Oper1 => "%ebp"
-				   );
-				Instruc2 (
-				   Inst => "movl",
-				   Oper1 => "%esp",
-				   Oper2 => "%ebp"
-				   );
-				Instruc2 (
-				   Inst => "movl",
-				   Oper1 => "%ebp",
-				   Oper2 => "(%esi)"
-				   );
-				Tmp:=4*Integer(Dpr.Prof);
-				Instruc2 (
-				   Inst => "subl",
-				   Oper1 => "$" & Elimina_Espacio_Inicial
-					  (Dpr.Ocup_Varl'Img),
-				   Oper2 => "%esp"
-				   );
+            when Etiqueta =>
+               if Ic3a.Camp1.Tc /= Etiq then
+                  raise Error_Assemblador;
+               end if;
+               New_Line(Fitxer_Asmbl);
+               Comentari("Etiqueta " & Ic3a.Camp1.Ide'Img);
+               Etiqueta(Etiqueta(Te, Ic3a.Camp1.Ide));
 
+            when Branc_Inc =>
+               if Ic3a.Camp1.Tc /= Etiq then
+                  raise Error_Assemblador;
+               end if;
+               New_Line(Fitxer_Asmbl);
+               Comentari("Brancament Incondicional " & Ic3a.Camp1.Ide'Img);
+               Instr_1_Op("jmp", Etiqueta(Te, Ic3a.Camp1.Ide));
 
-		 	when Params => 
-				New_Line(Fitxer_Asmbl);
-				Comentari("Parametre Simple");
-				Ldaddr(Ic3a.Camp1, "%eax");
-				Instr_1_Op("pushl", "%eax");
+            -- 2 Operands
+            when Negacio =>
+               New_Line(Fitxer_Asmbl);
+               Comentari("Negacio");
+               Instr_2_Op("xorl", "%eax", "%eax");
+               Ld(Ic3a.Camp2, "%ebx");
+               Instr_2_Op("subl", "%ebx", "%eax");
+               St("%eax", Ic3a.Camp1);
 
-		 	when Etiqueta => 
+               --JUANMA
+               --New_Line(Fitxer_Asmbl);
+               --Comentari("--Negacio--"& Tab &"#");
+               --Ld(Ic3a.Camp2, "%eax");
+               --Instr_2_Op("xorl", "%ebx", "%eax");
+               --Instr_2_Op("subl", "%eax", "%ebx");
+               --St("%ebx", Ic3a.Camp1);
 
-		 	when Branc_Inc => 
-				if Ic3a.Camp1.Tc /= Etiq then
-				   raise Error_Assemblador;
-				end if;
-				New_Line(Fitxer_Asmbl);
-				Comentari("--Salto Incondicional" & Ic3a.Camp1.Ide'Img & " --" & Tab & "#");
-				Instr_1_Op("jmp", Etiqueta(Te, Ic3a.Camp1.Ide));
-			
-			-- 2 Operands
-			when Negacio => 
-				--TITO
-				New_Line(Fitxer_Asmbl);
-				Comentari("--Negacio--"& Tab &"#");
-				Instr_2_Op("xorl", "%eax", "%eax");
-				Ld(Ic3a.Camp2, "%ebx");
-				Instr_2_Op("subl", "%ebx", "%eax");
-				St("%eax", Ic3a.Camp1);
+            when Op_Not =>
+               New_Line(Fitxer_Asmbl);
+               Comentari("Not");
+               Ld(Ic3a.Camp2, "%eax");
+               --notl per not
+               Instr_1_Op("notl", "%eax");
+               St("%eax", Ic3a.Camp1);
 
-				--JUANMA
-				--New_Line(Fitxer_Asmbl);
-				--Comentari("--Negacio--"& Tab &"#");
-				--Ld(Ic3a.Camp2, "%eax");
-				--Instr_2_Op("xorl", "%ebx", "%eax");
-				--Instr_2_Op("subl", "%eax", "%ebx");
-				--St("%ebx", Ic3a.Camp1);
-
-	
-			when Op_Not =>
-				New_Line(Fitxer_Asmbl);
-				Comentari("--Not--"& Tab &"#");
-				Ld(Ic3a.Camp2, "%eax");
-				Instr_1_Op("not", "%eax");
-				St("%eax", Ic3a.Camp1);
+            when Copia => --a:=b
+               New_Line(Fitxer_Asmbl);
+               Comentari("Copia");
+               Ld(Ic3a.Camp2, "%eax");
+               St("%eax", Ic3a.Camp1);
 
 
-			when Copia => --a:=b
-				New_Line(Fitxer_Asmbl);
-		        Comentari("--Copia--"& Tab &"#");
-				Ld(Ic3a.Camp2, "%eax");
-				St("%eax", Ic3a.Camp1);
+            when Paramc =>
+               New_Line(Fitxer_Asmbl);
+               Comentari("Parametre Compost");
+               Ldaddr(Ic3a.Camp1, "%eax");
+               Ld(Ic3a.Camp2, "%ebx");
+               Instr_2_Op("addl", "%ebx", "%eax");
+               Instr_1_Op("pushl", "%eax");
 
-			when Paramc =>
-				New_Line(Fitxer_Asmbl);
-				Comentari("Parametre Compost");
-				Ldaddr(Ic3a.Camp1, "%eax");
-				Ld(Ic3a.Camp2, "%ebx");
-				Instr_2_Op("addl", "%ebx", "%eax");
-				Instr_1_Op("pushl", "%eax");
+            -- 3 Operands
+            when Suma =>
+               New_Line(Fitxer_Asmbl);
+               Comentari("Suma");
+               Ld(Ic3a.Camp2, "%eax");
+               Ld(Ic3a.Camp3, "%ebx");
+               Instr_2_Op("addl", "%eax", "%ebx");
+               St("%ebx", Ic3a.Camp1);
 
+            when Resta =>
+               New_Line(Fitxer_Asmbl);
+               Comentari("Resta");
+               Ld(Ic3a.Camp2, "%eax");
+               Ld(Ic3a.Camp3, "%ebx");
+               Instr_2_Op("subl", "%ebx", "%eax");
+               St("%eax", Ic3a.Camp1);
 
-			-- 3 Operands
-			when Suma =>
-				New_Line(Fitxer_Asmbl);
-				Comentari("Suma");
-				Ld(Ic3a.Camp2, "%eax");
-				Ld(Ic3a.Camp3, "%ebx");
-				Instr_2_Op("addl", "%ebx", "%eax");
-				St("%eax", Ic3a.Camp1);
+            when Producte =>
+               New_Line(Fitxer_Asmbl);
+               Comentari("Producte");
+               Ld(Ic3a.Camp2, "%eax");
+               Ld(Ic3a.Camp3, "%ebx");
+               Instr_2_Op("imull", "%eax", "%ebx");
+               St("%ebx", Ic3a.Camp1);
 
-			when Resta =>
-				New_Line(Fitxer_Asmbl);
-				Comentari("Resta");
-				Ld(Ic3a.Camp2, "%eax");
-				Ld(Ic3a.Camp3, "%ebx");
-				Instr_2_Op("subl", "%ebx", "%eax");
-				St("%eax", Ic3a.Camp1);
+            when Divisio =>
+               New_Line(Fitxer_Asmbl);
+               Comentari("Divisio");
+               Ld(Ic3a.Camp2, "%eax");
+               Instr_2_Op("movl", "%eax", "%edx");
+               Instr_2_Op("sarl", "$31", "%edx"); --EL TITO pone eax
+               Ld(Ic3a.Camp3, "%ebx");
+               Instr_1_Op("idivl", "%ebx");
+               St("%eax", Ic3a.Camp1);
 
-			when Producte =>
-				New_Line(Fitxer_Asmbl);
-				Comentari("--Producto--"& Tab &"#");
-				Ld(Ic3a.Camp2, "%eax");
-				Ld(Ic3a.Camp3, "%ebx");
-				Instr_2_Op("imull", "%ebx", "%eax");
-				St("%eax", Ic3a.Camp1);
+            when Modul =>
+               New_Line(Fitxer_Asmbl);
+               Comentari("Modul");
+               Ld(Ic3a.Camp2, "%eax");
+               Instr_2_Op("movl", "%eax", "%edx");
+               Instr_2_Op("sarl", "$31", "%edx"); --EL TITO pone eax
+               Ld(Ic3a.Camp3, "%ebx");
+               Instr_1_Op("idivl", "%ebx");
+               St("%edx", Ic3a.Camp1);
 
-			when Divisio =>
-				New_Line(Fitxer_Asmbl);
-				Comentari("--Divisio--"& Tab &"#");
-				Ld(Ic3a.Camp2, "%eax");
-				Instr_2_Op("movl", "%eax", "%edx");
-				Instr_2_Op("sarl", "$31", "%edx"); --EL TITO pone eax
-				Ld(Ic3a.Camp3, "%ebx");
-				Instr_1_Op("idivl", "%ebx");
-				St("%eax", Ic3a.Camp1);
+            when Op_And =>
+               New_Line(Fitxer_Asmbl);
+               Comentari("AND");
+               Ld(Ic3a.Camp2, "%eax");
+               Ld(Ic3a.Camp3, "%ebx");
+               -- andl per and
+               Instr_2_Op("andl", "%ebx", "%eax");
+               St("%eax", Ic3a.Camp1);
 
-			when Modul =>
-				New_Line(Fitxer_Asmbl);
-				Comentari("--Modul--"& Tab &"#");
-				Ld(Ic3a.Camp2, "%eax");
-				Instr_2_Op("movl", "%eax", "%edx");
-				Instr_2_Op("sarl", "$31", "%edx"); --EL TITO pone eax
-				Ld(Ic3a.Camp3, "%ebx");
-				Instr_1_Op("idivl", "%ebx");
-				St("%edx", Ic3a.Camp1);
+            when Op_Or =>
+               New_Line(Fitxer_Asmbl);
+               Comentari("OR");
+               Ld(Ic3a.Camp2, "%eax");
+               Ld(Ic3a.Camp3, "%ebx");
+               Instr_2_Op("orl", "%ebx", "%eax");
+               St("%eax", Ic3a.Camp1);
 
-			when Op_And =>
-				New_Line(Fitxer_Asmbl);
-				Comentari("--AND--"& Tab &"#");
-				Ld(Ic3a.Camp2, "%eax");
-				Ld(Ic3a.Camp3, "%ebx");
-				Instr_2_Op("and", "%ebx", "%eax");
-				St("%eax", Ic3a.Camp1);
+            when Consindex =>
+               New_Line(Fitxer_Asmbl);
+               Comentari("Consulta index");
+               Ldaddr(Ic3a.Camp2, "%esi");
+               Ld(Ic3a.Camp3, "%eax");
+               Instr_2_Op("addl", "%eax", "%esi");
+               Instr_2_Op("movl", "(%esi)", "%eax");
+               St("%eax", Ic3a.Camp1);
 
-			when Op_Or =>
-				New_Line(Fitxer_Asmbl);
-				Comentari("--OR--"& Tab &"#");
-				Ld(Ic3a.Camp2, "%eax");
-				Ld(Ic3a.Camp3, "%ebx");
-				Instr_2_Op("or", "%ebx", "%eax");
-				St("%eax", Ic3a.Camp1);
+            when Asigindex =>
+               New_Line(Fitxer_Asmbl);
+               Comentari("Assignacio d'index");
+               Ldaddr(Ic3a.Camp1, "%edi");
+               Ld(Ic3a.Camp2, "%eax");
+               Instr_2_Op("addl", "%eax", "%edi");
+               Ld(Ic3a.Camp3, "%eax");
+               Instr_2_Op("movl", "%eax","(%edi)");
 
-			when Consindex => 
+            when Menor =>
+               if Ic3a.Camp3.Tc /= Etiq then
+                  raise Error_Assemblador;
+               end if;
+               Comentari("IF Menor");
+               Ide := Nova_Etiq;
+               Ld(Ic3a.Camp1, "%eax");
+               Ld(Ic3a.Camp2, "%ebx");
+               Instr_2_Op("cmpl", "%ebx", "%eax");
+               Instr_1_Op("jge", Etiqueta(Te, Ide));
+               Instr_1_Op("jmp", Etiqueta(Te, Ic3a.Camp3.Ide));
+               Etiqueta(Etiqueta(Te, Ide));
 
-			when Asigindex => 
+            when Menorigual =>
+               if Ic3a.Camp3.Tc /= Etiq then
+                  raise Error_Assemblador;
+               end if;
+               Comentari("IF Menor o Igual");
+               Ide := Nova_Etiq;
+               Ld(Ic3a.Camp1, "%eax");
+               Ld(Ic3a.Camp2, "%ebx");
+               Instr_2_Op("cmpl", "%ebx", "%eax");
+               Instr_1_Op("jg", Etiqueta(Te, Ide));
+               Instr_1_Op("jmp", Etiqueta(Te, Ic3a.Camp3.Ide));
+               Etiqueta(Etiqueta(Te, Ide));
 
-			when Menor =>
+            when Igual =>
+               if Ic3a.Camp3.Tc /= Etiq then
+                  raise Error_Assemblador;
+               end if;
+               Comentari("IF Igual");
+               Ide := Nova_Etiq;
+               Ld(Ic3a.Camp1, "%eax");
+               Ld(Ic3a.Camp2, "%ebx");
+               Instr_2_Op("cmpl", "%ebx", "%eax");
+               Instr_1_Op("jne", Etiqueta(Te, Ide));
+               Instr_1_Op("jmp", Etiqueta(Te, Ic3a.Camp3.Ide));
+               Etiqueta(Etiqueta(Te, Ide));
 
-			when Menorigual =>
+            when Majorigual =>
+               if Ic3a.Camp3.Tc /= Etiq then
+                  raise Error_Assemblador;
+               end if;
+               Comentari("IF Major o Igual");
+               Ide := Nova_Etiq;
+               Ld(Ic3a.Camp1, "%eax");
+               Ld(Ic3a.Camp2, "%ebx");
+               Instr_2_Op("cmpl", "%ebx", "%eax");
+               Instr_1_Op("jl", Etiqueta(Te, Ide));
+               Instr_1_Op("jmp", Etiqueta(Te, Ic3a.Camp3.Ide));
+               Etiqueta(Etiqueta(Te, Ide));
 
-			when Igual =>
+            when Major =>
+               if Ic3a.Camp3.Tc /= Etiq then
+                  raise Error_Assemblador;
+               end if;
+               Comentari("IF Major");
+               Ide := Nova_Etiq;
+               Ld(Ic3a.Camp1, "%eax");
+               Ld(Ic3a.Camp2, "%ebx");
+               Instr_2_Op("cmpl", "%ebx", "%eax");
+               Instr_1_Op("jle", Etiqueta(Te, Ide));
+               Instr_1_Op("jmp", Etiqueta(Te, Ic3a.Camp3.Ide));
+               Etiqueta(Etiqueta(Te, Ide));
 
-			when Majorigual =>
+            when Diferent =>
+               if Ic3a.Camp3.Tc /= Etiq then
+                  raise Error_Assemblador;
+               end if;
+               Comentari("IF Diferent");
+               Ide := Nova_Etiq;
+               Ld(Ic3a.Camp1, "%eax");
+               Ld(Ic3a.Camp2, "%ebx");
+               Instr_2_Op("cmpl", "%ebx", "%eax");
+               Instr_1_Op("je", Etiqueta(Te, Ide));
+               Instr_1_Op("jmp", Etiqueta(Te, Ic3a.Camp3.Ide));
+               Etiqueta(Etiqueta(Te, Ide));
 
-			when Major =>
-
-			when Diferent =>
-
-
-			when others => 
-	            raise Error_Assemblador;
-
-		 end case;
-
+            when others =>
+               raise Error_Assemblador;
+         end case;
       end loop;
-
 
    end Gce_Genera;
 
 
-
-
    procedure Gce_Finalitza is
    begin
-   	  Tanca_Fitxer; --dc3a
-   	  Close(Fitxer_Asmbl);
+      Tanca_Fitxer; --dc3a
+      Close(Fitxer_Asmbl);
    exception
       when others=>
          null; --Mirar si poner alguna excepcion
    end Gce_Finalitza;
 
 
-
-
    procedure Genera_Assemblador is
    begin
-      Put_Line("TODO: genera assemblador");
+      if esem then
+         raise Error_Assemblador;
+      end if;
 
-	  if esem then 
-   	  	raise Error_Assemblador;
-	  end if;
-
-	  Gce_Inicializa;
-	  --Gce_Genera;
-      --Gce_Finalitza;
+      Gce_Inicialitza;
+      Gce_Genera;
+      Gce_Finalitza;
 
    exception
       when Error_Assemblador =>
