@@ -15,19 +15,19 @@ package body semantica.gci is
 
 
 
-   procedure Ct_Programa
+   procedure gci_Programa
      (A : in Pnode) is
    begin
       --Entrabloc(Ts);
-      Ct_Decprocediment(A);
+      gci_Decprocediment(A);
 
       --Surtbloc(Ts);
 	 
       Tanca_Fitxer;
-   end Ct_Programa;
+   end gci_Programa;
 
 
-   procedure Ct_Decprocediment
+   procedure gci_Decprocediment
      (A : in Pnode) is
 
       Encap : Pnode renames A.Fe5;
@@ -36,21 +36,82 @@ package body semantica.gci is
       Id : Pnode renames A.Fid5;
       Id_Proc : Id_Nom renames A.Fid5.Id12;
 
+	  eip : num_etiq;
+	  C1 : camp;
+
    begin
       Put_line("CT_Decprocediment");
-      Ct_Encap(Encap, Id_Proc);
+      gci_Encap(Encap, Id_Proc);
 
       if Decls.Tipus = Declaracions then
-         Ct_Declaracions(Decls);
+         gci_Declaracions(Decls); --pendent, arrays, vars i constants
       end if;
+	
 
-      Ct_Bloc(Bloc);
+	  eip := Nova_Etiq;
+	  C1 := (Tc => Etiq, Ide => eip);
+	  Genera(Etiqueta, C1);
+
+
+
+
+----------%%%%%%%%%%%%%%%%%%%%%
+	C3:=(
+	   Tc => Etiq,
+	   Ide => Efi
+	);
+	Genera(Branc_Inc, C3);
+
+	C3.Ide:=Emig;
+	Genera(Etiqueta, C3);
+
+	C2.Idc:=Menosuno;
+	Genera(Copia, C1, C2);
+
+	C3.Ide:=Efi;
+	Genera(Etiqueta, C3);
+----------%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+
+
+      gci_Bloc(Bloc);
       Surtbloc(Ts);
 
-   end Ct_Decprocediment;
 
 
-   procedure Ct_Encap
+--->>>><<<<<<<<<
+
+	   C1             : Campo;
+	   Idprinvocador,
+	   Idprinvocat    : Id_Proc;
+	begin
+
+	   Cima(Pproc, Idprinvocat);
+	   Desapilar(Pproc);
+	   Cima(Pproc, Idprinvocador);
+	   C1:=(
+		  Tc => Proc,
+		  Idp => Idprinvocat
+		  );
+	   Genera(Rtn,C1);
+	   if Idprinvocador=Id_Proc_Nul then
+		  C1:=(
+		     Tc => Etiq,
+		     Ide => Tp.Tp (Idprinvocat).Etiq
+		     );
+		  Genera(Global, C1);
+	   end if;
+
+
+
+
+
+   end gci_Decprocediment;
+
+
+   procedure gci_Encap
      (A : in Pnode;
       I : in Id_Nom) is
 
@@ -60,11 +121,11 @@ package body semantica.gci is
       Put_line("CT_ENCAP");
 	  dproc:=Cons(Ts, I);
 	  empilar(Pproc, dproc.Np);
-   end Ct_Encap;
+   end gci_Encap;
 
 
 
-   procedure Ct_Bloc
+   procedure gci_Bloc
      (A : in Pnode) is
 
       D : Descrip;
@@ -76,18 +137,22 @@ package body semantica.gci is
       Idexp : Id_Nom;
       Tsvar : Tipussubjacent;
       Idvar : Id_Nom;
-      L, C : Natural := 0;
+
+      Idres, 
+	  Iddesp,
+	  Idr,
+	  Idd: num_var;
 
    begin
       case (A.Tipus) is
          when Bloc =>
-            Ct_Bloc(A.Fe1);
-            Ct_Bloc(A.Fd1);
+            gci_Bloc(A.Fe1);
+            gci_Bloc(A.Fd1);
          when Repeticio =>
-            Ct_Srep(A);
+            ct_Srep(A);
          when Identificador => --crida a procediment sense parametres
             Put_Line("CT_Bloc : IDENTIFICADOR");
-            gci_idproc(A);
+            gci_identificador(A, Idres, Iddesp, Idtipus);
 
          when Fireferencia =>
             gci_Referencia_Proc(A, T, Idbase);
@@ -96,48 +161,80 @@ package body semantica.gci is
          when condicionalC =>
             Ct_Scondc(A);
          when Assignacio =>
-            Ct_Referencia_Var(A.Fe1, Tsvar, Idvar);
-            Ct_Expressio(A.Fd1, Tsexp, Idexp, L, C);
-            if Tsvar /= Tsexp then
-               Error(Assig_Tipus_Diferents, L, C, "");
-               Esem := True;
-            end if;
-            if Idexp /= Id_Nul and Idexp /= Idvar then
-               Error(Assig_Tipus_Diferents, L, C, "");
-               Esem := True;
-            end if;
-         when others =>
-            Put_Line("blocothers"&A.Tipus'img);
-            Esem := True;
+            gci_Referencia_Var(A.Fe1,Idr, Idd);
+            gci_Expressio(A.Fd1, Idres, Iddesp);
+			gci_Assignacio(Idr, Idd, Idres, Iddesp);
+         when others => null;
       end case;
-   end Ct_Bloc;
+   end gci_Bloc;
+
+	
+   procedure gci_Assignacio(
+	  Idref, 
+	  Iddref,
+	  Idrexp,
+	  Iddexp: in num_var) is
+
+	   C1,
+	   C2,
+	   C3,
+	   C4,
+	   C5 : Camp;
+	   T : Num_Var;
+   begin
+
+	   C1:=(
+		   Tc => Var,
+		   Idv => Idref
+		   );
+	   C2:=(
+		   Tc => Var,
+		   Idv => Iddref
+		   );
+	   C3:=(
+		   Tc => Var,
+		   Idv => Idrexp
+		   );
+	   C4:=(
+	   		Tc => Var,
+	   		Idv => Iddexp
+	   	   );
+
+
+		cim(pproc, idproc);
+		Novavar(Tv, idproc, T);
+		C5:=(
+		   Tc => Var,
+		   Idv => T
+		   );
+
+
+		if Iddref = Var_Nul then
+		   if Iddexp = Var_Nul then
+			  Genera(Copia, C1, C3);
+		   else
+			  Genera(Consindex, C1, C3, C4);
+		   end if;
+		else
+		   if Iddexp = Var_Nul then
+			  Genera(Asigindex, C1, C2, C3);
+		   else
+			  Genera(Consindex, C5, C3, C4);
+			  Genera(Asigindex, C1, C2, C5);
+		   end if;
+		end if;
+
+   end gci_Assignacio;
 
 
 
 
-	procedure gci_idproc(A: in Pnode) is
-		Id_Proc : Id_Nom renames A.Fid5.Id12;
-		dproc : Descrip;
-		c1 : camp;
-	begin
-		dproc:=cons(ts, id_proc);
-		c1:=(
-		     Tc => Proc,
-             Idp => Dproc.Np
-   			);
-		genera(Call, c1);
-	end gci_idproc;
-
-
-
-
-   procedure gci_Referencia_Proc --Complet
+	--Procediments
+   procedure gci_Referencia_Proc --InComplet
      (A : in Pnode;
-      T : out Tipussubjacent;
-      Id : out Id_Nom) is
+      Idproc : out num_proc) is
 
       	Tipus : Tipusnode renames A.Tipus;
-
 		dproc : Descrip;
 
 		Prm : T_Param;
@@ -145,12 +242,13 @@ package body semantica.gci is
 
    begin
       case Tipus is
-         when Identificador =>
-            --Ct_Identificador(A, T, Id);
-			Id := A.Fid5.Id12;			
+         when Identificador => --R -> id
+		 			
+			dproc := cons(ts, A.Fid5.Id12);
+			Idproc := dproc.np;
 
-         when Fireferencia =>
-            gci_Ref_Pri(A.F6, T);
+         when Fireferencia => -- R -> pri)
+            gci_Ref_Pri(A.F6);
 			
 			while not es_buida(pparam) loop
 				cim(pparam, prm);
@@ -176,7 +274,7 @@ package body semantica.gci is
 
 			c1:=(
 		     	Tc => Proc,
-             	Idp => Dproc.Np
+             	Idp => Idproc
    			);
 			genera(Call, c1);
 
@@ -189,42 +287,36 @@ package body semantica.gci is
    end gci_Referencia_Proc;
 
 
-	--Procediments
-   procedure gci_Ref_Pri --pendent d'acabar expressions
+
+   procedure gci_Ref_Pri 
      (A : in Pnode;
-      T : out Tipussubjacent;
-      It_Arg : out Cursor_Arg) is
+	  Idproc : out num_proc) is
 
       Tipus : Tipusnode renames A.Tipus;
       Fesq : Pnode renames A.Fe1;
       Fdret : Pnode renames A.Fd1;
-      Tsub : Tipussubjacent;
-      Id : Id_Nom;
 
-      Tsref : Tipussubjacent;
-      Idref : Id_Nom;
-
-      Id_Cursor : Id_Nom;
-      Dparam : Descrip;
-      Dtipoarg : Descrip;
-      Dbase : Descrip;
-
-
+		Idres, Iddesp : num_var;
+		prm:  T_Param;
    begin
       case Tipus is
-         when Pri =>
+         when Pri => --pri -> pri,E
             Put_Line("CT-ref_pri: pri");
-            gci_Ref_Pri(Fesq, T, It_Arg);
-            gci_Expressio(Fdret, Tsref, Idref);
+            gci_Ref_Pri(Fesq,IdProc);
+            gci_Expressio(Fdret, Idres, Iddesp);
 			
+			prm.base := Idres;
+			prm.despl := Iddesp;
 			pbuida(pparam);
-			--empilar(pparam, );
+			empilar(pparam, prm);
 
-         when Encappri =>
+         when Encappri => -- pri -> R(E
             Put_Line("CT-ref_pri: encappri");
-            Ct_Referencia_Proc(Fesq, Tsub, Id);
-            Ct_Expressio(Fdret, Tsref, Idref);
-           
+            gci_Referencia_Proc(Fesq, Idproc);
+            gci_Expressio(Fdret, Idres, Iddesp);
+			prm.base := Idres;	
+		    prm.despl := Iddesp;
+            empilar(pparam, prm);
          when others =>
             Put_Line("ERROR (DEBUG) gci-ref_pri: tipus no "&
                        "reconegut");
@@ -235,9 +327,10 @@ package body semantica.gci is
 
 	
 
-   procedure gci_Identificador -- falta fer el proc , var i const correcte
+   procedure gci_Identificador -- correcte
      (A : in Pnode;
-      Idres, Iddesp, Idtipus : out Id_Nom) is
+      Idres, Iddesp: out num_var;
+      Idtipus : out Id_Nom) is
 
       Id : Id_Nom renames A.Id12;
       D : Descrip;
@@ -248,15 +341,15 @@ package body semantica.gci is
 	  idv : num_var := var_nul;
 	  idproc : num_proc := proc_nul;
 	  c1, c2: camp;
-
+		
    begin
       put_line(" CT_ID : "&Id'img);
       D := Cons(Ts, Id);
 
       case Desc is
-         when Dvar =>
+         when Dvar => -- R -> id
 			Idres := d.nv;
-			Iddesp := id_nul;
+			Iddesp := var_nul;
 			Idtipus := d.tr;
 
          when Dconst =>
@@ -265,7 +358,7 @@ package body semantica.gci is
 
 			C1:=(
 			     Tc => Var,
-			     Idv => Idvar
+			     Idv => Idv
 			);
 
 			C2:=(
@@ -276,17 +369,17 @@ package body semantica.gci is
 			genera(copia, c1, c2);
 
 			Idres:= idv;
-			Iddesp:= id_nul;
+			Iddesp:= var_nul;
 			Idtipus:= d.tc;
 
-         when Dproc => --No tocado
-            --Carg := Primer_Arg(Ts, Id);
-            --if Arg_Valid(Carg) then
-            --   T := Tsarr;
-            --else
-            --   T := Tsnul;
-            --end if;
-            Idres := Id;
+         when Dproc => 
+
+			D:=cons(ts, id);
+			c1:=(
+			 Tc => Proc,
+		     Idp => D.Np
+	   		);
+			genera(Call, c1);
 
          when others =>
 			null;
@@ -295,31 +388,59 @@ package body semantica.gci is
 
       Put_line("gci_id: Tipus: "&Idtipus'img);
 
-   end gci_Identificador;
+	end gci_Identificador;
 
+	
+   procedure gci_Constant
+     (A : in Pnode;
+      Idres : out Num_var) is
+
+      Tatr : Tipus_Atribut renames A.Tconst;
+      idproc : num_proc;
+      D : Descrip;
+	  T1 : num_var;
+
+   begin
+		Put_line("CT_CONSTANT");
+
+		cim(pproc, idproc);
+     
+      case (Tatr) is
+         when A_Lit_C =>
+            T := Tscar;
+         when A_Lit_N =>
+            T := Tsent;
+         when others => null;
+	  end case;
+
+	  Novaconst(Tv, Tatr.val, T, idproc, Idres);
+
+   end gci_Constant;	
 
 
    procedure gci_Expressio
      (A : in Pnode;
-      IdR, IdD: out Id_Nom) is
+      Idr, Idd: out num_var) is
 
       Tipus : Tipusnode renames A.Tipus;
-      Tps : Tipussubjacent;
-      Id : Id_Nom;
+      Idtipus : Id_Nom;
 
    begin
+	  Idd := var_nul;
+
       Put_line("CT_EXP: "&Tipus'img );
       case Tipus is
          when Expressio =>
-            gci_Expressioc(A, Tps, Id);
+            gci_Expressioc(A, Idr, Idd);
          when ExpressioUnaria =>
-            Ct_Expressiou(A, Tps, Id);
+           gci_Expressiou(A, Idr, Idd);
          when Identificador =>
-            Ct_Identificador(A, Tps, Id);
+            gci_Identificador(A, Idr, Idd, Idtipus); --Idtipus??
          when Const =>
-            Ct_Constant(A, Tps, Id);
+            gci_Constant(A, Idr);
+
          when Fireferencia | Referencia =>
-            Ct_Referencia_Var(A, Tps, Id); 
+            gci_Referencia_Var(A, Idr, Idd); 
          when others =>
             Put_Line("ERROR (DEBUG) gci-exp: tipus expressio no "&
                        "trobat :S "&Tipus'Img);
@@ -328,77 +449,174 @@ package body semantica.gci is
    end gci_Expressio;
 
 
-
-   procedure gci_Operand_Exp
-     (A : in Pnode;
-      T : out Tipussubjacent;
-      Idtipus : out Id_Nom) is
-
-      Tipus : Tipusnode renames A.Tipus;
-
-   begin
-      case Tipus is
-         when Expressio =>
-            gci_Expressioc(A, T, Idtipus);
-         when ExpressioUnaria =>
-            Ct_Expressiou(A, T, Idtipus);
-         when Referencia | Fireferencia=>
-            Ct_Referencia_var(A, T, IdTipus);
-         when Const =>
-            Ct_Constant(A, T, Idtipus);
-            Put_line("gci_EXP_COMP const: "&Idtipus'img);
-         when Identificador =>
-            Ct_Identificador(A, T, Idtipus);
-            Put_line("gci_EXP_COMP Id: "&Idtipus'img);
-         when others =>
-            null;
-      end case;
-
-   end gci_Operand_Exp;
-
-
-
-
    procedure gci_Expressioc --comprovar parametres
      (A : in Pnode;
-      T : out Tipussubjacent;
-      Idtipus : out Id_Nom) is
+      Idres,Idresdesp: out num_var) is
 
       Fesq : Pnode renames A.Fe3;
       Fdret : Pnode renames A.Fd3;
       Op : Operacio renames A.Op3;
 
-      Idesq : Id_Nom;
-      Iddret : Id_Nom;
-	  Ires : Id_Nom;
+      Idesq,
+      Iddret,
+	  IddespE,
+	  IddespD : num_var;
 
    begin
       Put_line("gci_EXPRESSIOC");
       --Analitzam l'operand esquerra
-      Ct_Operand_Exp(Fesq, Idesq);
+      gci_Expressio(Fesq, Idesq,IddespE);
       --Analitzam l'operand dret
-      Ct_Operand_Exp(Fdret, Iddret);
+      gci_Expressio(Fdret, Iddret,IddespD);
       -- Comparam els tipus
       case Op is
 
          when Unio | Interseccio =>
-            Ct_Exp_Logica(Idesq, Iddret, Ires, Op);
+            gci_Exp_Logica(Idesq, Iddret, IddespE, IddespD, Idres, Idresdesp, Op);
+
          when Menor | Menorig | Major | Majorig
            | Igual | Distint =>
-            Ct_Exp_Relacional(Idesq, Iddret, Ires, Op);
+            gci_Exp_Relacional(Idesq, Iddret, IddespE, IddespD, Idres, Idresdesp, Op);
+
          when Suma | Resta | Mult | Div | Modul =>
-            Ct_Exp_Aritmetica(Idesq, Iddret, Ires, Op);
+            gci_Exp_Aritmetica(Idesq, Iddret, IddespE, IddespD, Idres, Idresdesp, Op);
+
          when others =>
             null;
       end case;
 
-   end gci_Expressioc;
+	end gci_Expressioc;
+	
 
 
+procedure gci_Exp_Relacional --manca acabar d'entendre el final
+     (IdResE, IdResD, IddespE, IddespD : in num_var;
+	  IdResultExp, IddespExp :   out num_var;
+      Op : in Operacio) is
 
-   procedure gci_Exp_Logica  --manca tocar
-     (Idesq, Iddret : in Id_Nom;
-	  IddespE,IddespD : in out num_var;
+		T1,
+		T2,
+		T3 : num_Var := Var_Nul;
+
+		Emig,
+		Efi : num_Etiq;
+
+		C1,
+		C2,
+		C3 : Camp;
+
+	  	idproc : num_proc := proc_nul;
+
+begin
+   
+	   if IddespE = Var_Nul then
+		  T1:= IdResE;
+	   else
+		  cim(pproc, idproc);
+		  Novavar(Tv, idproc, T1);
+			
+		  C1:=(
+		     Tc => Var,
+		     Idv => T1
+		     );
+		  C2:=(
+		     Tc => Var,
+		     Idv => IdResE
+		     );
+		  C3:=(
+		     Tc => Var,
+		     Idv => IddespE
+		     );
+		  Genera(Consindex,C1,C2,C3);
+
+	   end if;
+
+	   if IddespD = Var_Nul then
+		  T2 := IdResD;
+	   else
+		  cim(pproc, idproc);
+		  Novavar(Tv, idproc, T2);
+		  C1:=(
+		     Tc  => Var,
+		     Idv => T2
+		     );
+		  C2:=(
+		     Tc  => Var,
+		     Idv => IdResD
+		     );
+		  C3:=(
+		     Tc  => Var,
+		     Idv => IddespD);
+		  Genera(Consindice,C1,C2,C3);
+	   end if;
+
+		Emig:=Nova_Etiq;
+		Efi:=Nova_Etiq;
+
+		C1:=(
+		   Tc => Var,
+		   Idv => T1
+		   );
+		C2:=(
+		   Tc => Var,
+		   Idv => T2
+		   );
+		C3:=( --Al loro, puesto de nuestra manera. C3 va la etiqueta
+		   Tc => Etiq,
+		   Ide => Emig
+		   );
+
+	case Op is
+		when Menor => Genera(Menor,C1,C2,C3);
+		when Menorigual => Genera(Menorigual,C1,C2,C3);
+		when Igual => Genera(Igual,C1,C2,C3);
+		when Majorigual => Genera(Majorigual,C1,C2,C3);
+		when Major => Genera(Major,C1,C2,C3);
+		when Diferent => Genera(Diferent,C1,C2,C3);
+		when others => null;
+	end case;
+
+    cim(pproc, idproc);
+	Novavar(Tv, Idproc, T3);
+
+	C1:=(
+	   Tc => Var,
+	   Idv => T3
+	   );
+	C2:=(
+	   Tc => Const,
+	   Idc => Cero
+	   );
+
+	Genera(Copia, C1, C2);
+
+
+	C3:=(
+	   Tc => Etiq,
+	   Ide => Efi
+	);
+	Genera(Branc_Inc, C3);
+
+	C3.Ide:=Emig;
+	Genera(Etiqueta, C3);
+
+	C2.Idc:=Menosuno;
+	Genera(Copia, C1, C2);
+
+	C3.Ide:=Efi;
+	Genera(Etiqueta, C3);
+
+	IdResultExp:=T3;
+	IddespExp:=Var_Nul;
+
+
+end gci_Exp_Relacional;
+	
+
+
+procedure gci_Exp_Logica 
+     (IdResE, IdResD, IddespE, IddespD : in num_var;
+	  IdResultExp, IddespExp :   out num_var;
       Op : in Operacio) is
 
 		T1,
@@ -407,73 +625,307 @@ package body semantica.gci is
 		C1,
 		C2,
 		C3 : Camp;
+	  idproc : num_proc := proc_nul;
 
-   begin
-
-	   if Idesq.Idvdespexp = Var_Nul then
-		  T1:=Valor1.Idvbaseexp;
+begin
+	   
+	   if IddespE = Var_Nul then
+		  T1:= IdResE;
 	   else
-		  Novavar(Tv, Idproc_Actual, T1);
+		  cim(pproc, idproc);
+		  Novavar(Tv, idproc, T1);
+			
 		  C1:=(
 		     Tc => Var,
 		     Idv => T1
 		     );
 		  C2:=(
 		     Tc => Var,
-		     Idv => Valor1.Idvbaseexp
+		     Idv => IdResE
 		     );
 		  C3:=(
 		     Tc => Var,
-		     Idv => Valor1.Idvdespexp
+		     Idv => IddespE
 		     );
-		  Genera(Consindice,C1,C2,C3);
+		  Genera(Consindex,C1,C2,C3);
+
 	   end if;
-	   if Valor2.Idvdespexp=Id_Var_Nul then
-		  T2:=Valor2.Idvbaseexp;
+
+	   if IddespD = Var_Nul then
+		  T2 := IdResD;
 	   else
-		  Novavar(Tv, Idproc_Actual, T2);
+		  cim(pproc, idproc);
+		  Novavar(Tv, idproc, T2);
 		  C1:=(
-		     Tc => Var,
+		     Tc  => Var,
 		     Idv => T2
 		     );
 		  C2:=(
+		     Tc  => Var,
+		     Idv => IdResD
+		     );
+		  C3:=(
+		     Tc  => Var,
+		     Idv => IddespD);
+		Genera(Consindice,C1,C2,C3);
+	   end if;
+
+	 cim(pproc, idproc);
+	 Novavar(Tv, idproc, T3);
+	 C1:=(
+	      Tc => Var,
+	      Idv => T3
+	      );
+	 C2:=(
+	      Tc => Var,
+	      Idv => T1
+	      );
+	  C3:=(
+	      Tc => Var,
+	      Idv => T2
+	      );
+
+	case Op is
+		when  Unio => Genera(Op_Or,C1,C2,C3);
+		when  Interseccio => Genera(Op_And,C1,C2,C3);
+		when others => null;
+	end case;
+	
+	IdResultExp := T3;
+	IddespExp := Var_Nul;
+
+   end gci_Exp_Logica;
+
+
+procedure gci_Exp_Aritmetica 
+     (IdResE, IdResD, IddespE, IddespD : in num_var;
+	  IdResultExp, IddespExp : out num_var;
+      Op : in Operacio) is
+
+		T1,
+		T2,
+		T3 : num_Var := Var_Nul;
+		C1,
+		C2,
+		C3 : Camp;
+	  idproc : num_proc := proc_nul;
+
+begin
+	   
+	   if IddespE = Var_Nul then
+		  T1:= IdResE;
+	   else
+		  cim(pproc, idproc);
+		  Novavar(Tv, idproc, T1);
+			
+		  C1:=(
 		     Tc => Var,
-		     Idv => Valor2.Idvbaseexp
+		     Idv => T1
+		     );
+		  C2:=(
+		     Tc => Var,
+		     Idv => IdResE
 		     );
 		  C3:=(
 		     Tc => Var,
-		     Idv => Valor2.Idvdespexp);
-		Genera(Consindice,C1,C2,C3);
-		end if;
-	Novavar(Tv, Idproc_Actual, T3);
-	C1:=(
-	   Tc => Var,
-	   Idv => T3
-	   );
-	C2:=(
-	   Tc => Var,
-	   Idv => T1
-	   );
-	C3:=(
-	   Tc => Var,
-	   Idv => T2
-	   );
-	case Op is
-	when  Unio =>
-	when  Interseccio =>
-	when others => null;
-	end case;
-	Genera(Op_And,C1,C2,C3);
-	Result.Idvbaseexp:=T3;
-	Result.Idvdespexp:=Id_Var_Nul;
+		     Idv => IddespE
+		     );
+		  Genera(Consindex,C1,C2,C3);
 
-   end gci_Exp_Logica;
+	   end if;
+
+	   if IddespD = Var_Nul then
+		  T2 := IdResD;
+	   else
+		  cim(pproc, idproc);
+		  Novavar(Tv, idproc, T2);
+		  C1:=(
+		     Tc  => Var,
+		     Idv => T2
+		     );
+		  C2:=(
+		     Tc  => Var,
+		     Idv => IdResD
+		     );
+		  C3:=(
+		     Tc  => Var,
+		     Idv => IddespD);
+		  Genera(Consindice,C1,C2,C3);
+	   end if;
+
+	 cim(pproc, idproc);
+	 Novavar(Tv, idproc, T3);
+	 C1:=(
+	      Tc => Var,
+	      Idv => T3
+	      );
+	 C2:=(
+	      Tc => Var,
+	      Idv => T1
+	      );
+	  C3:=(
+	      Tc => Var,
+	      Idv => T2
+	      );
+
+	case Op is
+		when Suma => Genera(Suma,C1,C2,C3);
+		when Resta => Genera(Resta,C1,C2,C3);
+		when Producte => Genera(Producte,C1,C2,C3);
+		when Divisio => Genera(Divisio,C1,C2,C3);
+		when Modul => Genera(Modul,C1,C2,C3);
+		when others => null;
+	end case;
+	
+	IdResultExp := T3;
+	IddespExp := Var_Nul;
+
+   end gci_Exp_Aritmetica;
+
+
+
+   procedure gci_Expressiou
+     (A : in Pnode;
+      Idr, Idd : out num_var) is
+
+      Fdret : Pnode renames A.F4;
+      Op : Operacio renames A.Op4;
+      Tdret : Tipussubjacent;
+      Iddret : Id_Nom;
+
+   begin
+      Put_line("CT_EXPRESSIOU");
+      gci_Expressio(Fdret, Idr, Idd);
+      case Op is
+         when Resta =>
+            gci_Exp_Negacio(Tdret, Iddret, T, Idtipus);
+         when Negacio =>
+            gci_Exp_Neglogica(Tdret, Iddret, T, Idtipus);
+         when others =>
+            null;
+      end case;
+
+   end gci_Expressiou;
+
+
+   procedure gci_Exp_Negacio
+     (idRes, Iddesp : in num_var;
+	  IdresultExp, IddespExp : out num_var) is
+
+		T1,
+		T2 : num_Var := Var_Nul;
+		C1,
+		C2,
+		C3 : Camp;
+	    idproc : num_proc := proc_nul;
+
+	begin
+	   
+	   if Iddesp = Var_Nul then
+		  T1:= IdRes;
+	   else
+		  cim(pproc, idproc);
+		  Novavar(Tv, idproc, T1);
+			
+		  C1:=(
+		     Tc => Var,
+		     Idv => T1
+		     );
+		  C2:=(
+		     Tc => Var,
+		     Idv => IdRes
+		     );
+		  C3:=(
+		     Tc => Var,
+		     Idv => Iddesp
+		     );
+
+		  Genera(Consindex, C1, C2, C3);
+
+	   end if;
+
+
+		Novavar(Tv, idproc, T2);
+		C1:=(
+		   Tc => Var,
+		   Idv => T2
+		   );
+		C2:=(
+		   Tc => Var,
+		   Idv => T1
+		   );
+
+
+	   Genera(Negacio, C1, C2);
+
+	   IdResultExp := T2;
+	   IddespExp := Var_Nul;
+
+   end gci_Exp_Negacio;
+
+
+   procedure gci_Exp_Neglogica
+     (idRes, Iddesp : in num_var;
+	  IdresultExp, IddespExp : out num_var) is
+
+		T1,
+		T2 : num_Var := Var_Nul;
+		C1,
+		C2,
+		C3 : Camp;
+	    idproc : num_proc := proc_nul;
+
+	begin
+	   
+	   if Iddesp = Var_Nul then
+		  T1:= IdRes;
+	   else
+		  cim(pproc, idproc);
+		  Novavar(Tv, idproc, T1);
+			
+		  C1:=(
+		     Tc => Var,
+		     Idv => T1
+		     );
+		  C2:=(
+		     Tc => Var,
+		     Idv => IdRes
+		     );
+		  C3:=(
+		     Tc => Var,
+		     Idv => Iddesp
+		     );
+
+		  Genera(Consindex, C1, C2, C3);
+
+	   end if;
+
+
+		Novavar(Tv, idproc, T2);
+		C1:=(
+		   Tc => Var,
+		   Idv => T2
+		   );
+		C2:=(
+		   Tc => Var,
+		   Idv => T1
+		   );
+
+	   Genera(Op_Not, C1, C2);
+
+	   IdResultExp := T2;
+	   IddespExp := Var_Nul;
+
+   end gci_Exp_Neglogica;
+
+
 
 
    procedure gci_Referencia_Var --Fet xo amb errors al enccapri (da.b no
 	--existeix a la practica)
      (A : in Pnode;
-      Idres, Iddesp, Idtipus : out Id_Nom) is
+      Idres, Iddesp: out Num_var; 
+	  Idtipus : out Id_Nom) is
 
       Tipus : Tipusnode renames A.Tipus;
       Idbase : Id_Nom;
@@ -519,7 +971,7 @@ package body semantica.gci is
    				);
 				Genera (Resta, C1, C2, C3);
 				C2.Idv:=T2;
-				C3.Idc:=dtc.dt.ocup; --aqui pot petar...
+				C3.Idc:=dtc.td.ocup; 
 				Genera (Producte, C2, C1, C3);
 				
 				if Idbase = Id_nul then
@@ -546,25 +998,24 @@ package body semantica.gci is
 					
 				end if;
 	
-         when others =>
-            Put_Line("ERROR CT-referencia: node no "&
-                       "reconegut");
-            Esem := True;
+         when others => null;
       end case;
 
    end gci_Referencia_Var;
 
+
 --Arrays
-   procedure gci_Ref_Pri --Correcte : dubte entre el tipus de prm) i r->id
+   procedure gci_Ref_Pri --"Correcte"
      (A : in Pnode;
-      Idres, Iddesp, Idtipus, Idbase : out Id_Nom;
+      Idres, Iddesp, Idbase : out Num_var;
+	   Idtipus : out Id_Nom;
       It_Idx : out Cursor_Idx) is
 
       Tipus : Tipusnode renames A.Tipus;
       Fesq : Pnode renames A.Fe1;
       Fdret : Pnode renames A.Fd1;
 
-      IdresE, iddespE : Id_Nom := id_nul;
+      IdresE, iddespE : Num_var := Var_Nul;
 
    	  T0,T1,T2,T3 : num_Var := Var_Nul;
 	  C1, C2, C3 : Camp;
@@ -697,7 +1148,8 @@ package body semantica.gci is
 
    procedure gci_Ref_Rec --correcte
      (A : in Pnode;
-      Idres, Iddesp, Idtipus : out Id_Nom) is
+      Idres, Iddesp: out num_var;
+	  Idtipus : out Id_Nom) is
 
       Fesq : Pnode renames A.Fe1;
       Tesq : Tipussubjacent;

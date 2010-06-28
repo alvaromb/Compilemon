@@ -143,7 +143,7 @@ package body Decls.Dtsimbols is
         idespl1 := ts.tambit(ts.prof);
         ts.prof := ts.prof - 1;
         idespl2 := ts.tambit(ts.prof) + 1;
-        for idespl in reverse idespl1 .. idespl2 loop
+        for idespl in reverse idespl2 .. idespl1 loop
             if ts.texp(idespl).np > 0 then
                 id := ts.texp(idespl).id;
                 ts.tdesc(id).d := ts.texp(idespl).d;
