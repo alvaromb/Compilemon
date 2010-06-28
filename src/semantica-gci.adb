@@ -131,7 +131,7 @@ package body semantica.gci is
 
 
 
-   procedure gci_Referencia_Proc
+   procedure gci_Referencia_Proc --Complet
      (A : in Pnode;
       T : out Tipussubjacent;
       Id : out Id_Nom) is
@@ -142,8 +142,6 @@ package body semantica.gci is
 
 		Prm : T_Param;
 		c1, c2 : camp;
-	
-
 
    begin
       case Tipus is
@@ -192,7 +190,7 @@ package body semantica.gci is
 
 
 	--Procediments
-   procedure gci_Ref_Pri
+   procedure gci_Ref_Pri --pendent d'acabar expressions
      (A : in Pnode;
       T : out Tipussubjacent;
       It_Arg : out Cursor_Arg) is
@@ -235,70 +233,9 @@ package body semantica.gci is
 
 
 
-	--Arrays
-   procedure Ct_Ref_Pri
-     (A : in Pnode;
-      Idres, Iddesp, Idtipus, Idbase : out Id_Nom;
-      It_Idx : out Cursor_Idx) is
+	
 
-      Tipus : Tipusnode renames A.Tipus;
-      Fesq : Pnode renames A.Fe1;
-      Fdret : Pnode renames A.Fd1;
-
-      IdresE, iddespE : Id_Nom := id_nul;
-
-   	  T1 : num_Var := Var_Nul;
-	  C1, C2, C3 : Camp;
-
-
-   begin
-      case Tipus is
-         when Pri =>
-            Put_Line("CT-ref_pri: pri");
-
-
-         when Encappri =>
-            Put_Line("CT-ref_pri: encappri");
-
-		    gci_Referencia_Var(Fesq, Idres, Idbase, Idtipus);
-            gci_Expressio(Fdret, IdresE, IddespE);			
-
-			It_Idx := primer_idx(ts, Idtipus); ------------
-			
-			if IddespE = id_nul then
-				Iddesp:= idresE;				
-			else
-				cim(pproc, idproc);
-			 	Novavar(Tv, idproc, T1);
-		
-				C1:=(
-				   	Tc => Var,
-			   		Idv => T1
-				   	);
-				C2:=(
-				   Tc => Var,
-				   Idv => IdresE
-				   );
-				C3:=(
-				   Tc => Var,
-				   Idv => IddespE
-				   );
-
-				Genera(Suma, C1, C2, C3);
-				Iddesp:=T1;
-
-			end if;
-
-         when others =>
-            Put_Line("ERROR (DEBUG) gci-ref_pri: tipus no "&
-                       "reconegut");
-      end case;
-
-   end Ct_Ref_Pri;
-
-
-
-   procedure gci_Identificador
+   procedure gci_Identificador -- falta fer el proc , var i const correcte
      (A : in Pnode;
       Idres, Iddesp, Idtipus : out Id_Nom) is
 
@@ -406,9 +343,7 @@ package body semantica.gci is
          when ExpressioUnaria =>
             Ct_Expressiou(A, T, Idtipus);
          when Referencia | Fireferencia=>
-            --falta L i C
             Ct_Referencia_var(A, T, IdTipus);
-            Put_Line("refe");
          when Const =>
             Ct_Constant(A, T, Idtipus);
             Put_line("gci_EXP_COMP const: "&Idtipus'img);
@@ -424,7 +359,7 @@ package body semantica.gci is
 
 
 
-   procedure gci_Expressioc
+   procedure gci_Expressioc --comprovar parametres
      (A : in Pnode;
       T : out Tipussubjacent;
       Idtipus : out Id_Nom) is
@@ -461,9 +396,9 @@ package body semantica.gci is
 
 
 
-   procedure gci_Exp_Logica
+   procedure gci_Exp_Logica  --manca tocar
      (Idesq, Iddret : in Id_Nom;
-	  Ires : in out Id_nom;
+	  IddespE,IddespD : in out num_var;
       Op : in Operacio) is
 
 		T1,
@@ -523,6 +458,11 @@ package body semantica.gci is
 	   Tc => Var,
 	   Idv => T2
 	   );
+	case Op is
+	when  Unio =>
+	when  Interseccio =>
+	when others => null;
+	end case;
 	Genera(Op_And,C1,C2,C3);
 	Result.Idvbaseexp:=T3;
 	Result.Idvdespexp:=Id_Var_Nul;
@@ -530,14 +470,18 @@ package body semantica.gci is
    end gci_Exp_Logica;
 
 
-   procedure gci_Referencia_Var
+   procedure gci_Referencia_Var --Fet xo amb errors al enccapri (da.b no
+	--existeix a la practica)
      (A : in Pnode;
       Idres, Iddesp, Idtipus : out Id_Nom) is
 
       Tipus : Tipusnode renames A.Tipus;
-      Idtipus : Id_Nom;
+      Idbase : Id_Nom;
       It_Idx : Cursor_Idx;
-      D : Descrip;
+      da,dtc : Descrip;
+	  T1,T2,T3,T4,T5: num_Var := Var_Nul;
+	  idproc : num_proc := proc_nul;
+	  c1, c2, c3: camp;
 
    begin
       case Tipus is
@@ -545,23 +489,63 @@ package body semantica.gci is
             gci_Identificador(A, Idres, Iddesp, Idtipus);
 
 
-         when Referencia =>
+         when Referencia => -- r -> r.id
             gci_Ref_Rec(A, Idres, Iddesp, Idtipus);
 
-         when Fireferencia =>
-            gci_Ref_Pri(A.F6, T, Id, It_Idx);
-            if Idx_Valid(It_Idx) then
-               --falta L i C
-               Error(Falta_Param_Array, L, C, "");
-               Esem := True;
-            end if;
-            if T = Tsarr then
-               D := Cons(Ts, Id);
-               Id := D.Dt.Tcamp;
-               D := Cons(Ts, Id);
-               T := D.Dt.Tt;
-            end if;
+         when Fireferencia => --r -> ref_pri)
 
+            gci_Ref_Pri(A.F6,Idres,Iddesp,Idtipus,Idbase,It_Idx);
+
+			da := cons(ts,Idtipus);
+			Idtipus := da.tr;
+			dtc := cons(ts,da.tr);
+			
+			cim(pproc, idproc);
+		    Novavar(Tv, idproc, T1);
+			Novavar(Tv, idproc, T2);
+	        Novaconst(Tv,da.b , Tsent, idproc, T3); -- da.b no existeix encara
+			-- i a mes haurem de omplirla a les decls!!!
+			C1:=(
+   				Tc => Var,
+              	Idv => T1
+   				);
+			C2:=(
+   				Tc  => Var,
+   				Idv => Iddesp
+  				);
+			C3:=(
+ 				Tc  => Const,
+   				Idc => T3
+   				);
+				Genera (Resta, C1, C2, C3);
+				C2.Idv:=T2;
+				C3.Idc:=dtc.dt.ocup; --aqui pot petar...
+				Genera (Producte, C2, C1, C3);
+				
+				if Idbase = Id_nul then
+
+					Iddesp := T2;
+
+				else
+					Novavar(Tv, idproc, T4);
+					Novaconst(Tv,Idbase, Tsent, idproc, T5);
+
+					C1:=(
+   						Tc => Var,
+              			Idv => T4
+   						);
+					C2:=(
+   						Tc  => Const,
+   						Idv => T5
+  						);
+					C3:=(
+ 						Tc  => Var,
+   						Idc => T2
+   						);
+					Genera (Suma, C1, C2, C3);
+					
+				end if;
+	
          when others =>
             Put_Line("ERROR CT-referencia: node no "&
                        "reconegut");
@@ -570,9 +554,148 @@ package body semantica.gci is
 
    end gci_Referencia_Var;
 
+--Arrays
+   procedure gci_Ref_Pri --Correcte : dubte entre el tipus de prm) i r->id
+     (A : in Pnode;
+      Idres, Iddesp, Idtipus, Idbase : out Id_Nom;
+      It_Idx : out Cursor_Idx) is
+
+      Tipus : Tipusnode renames A.Tipus;
+      Fesq : Pnode renames A.Fe1;
+      Fdret : Pnode renames A.Fd1;
+
+      IdresE, iddespE : Id_Nom := id_nul;
+
+   	  T0,T1,T2,T3 : num_Var := Var_Nul;
+	  C1, C2, C3 : Camp;
+      idproc : num_proc := proc_nul;
+	  di : Id_nom;
+	  dti: descrip;
+
+   begin
+      case Tipus is
+         when Pri => --pri -> pri ,E
+            --Put_Line("CT-ref_pri: pri");
+			gci_Ref_Pri(Fesq, Idres, Iddesp, Idtipus, Idbase, It_Idx);
+            gci_Expressio(Fdret, IdresE, IddespE);
+			
+			It_Idx := Succ_Idx(Ts, It_Idx);
+			
+			di := cons_idx(ts, It_idx);
+			dti := cons(ts,di);
+			ni := dti.dt.lsup - dti.dt.linf + 1;
+            
+			cim(pproc, idproc);
+		    Novaconst(Tv,ni , Tsent, idproc, T0);
+			Novavar(Tv, idproc, T1);
+		
+			C1:=(
+			   	Tc => Var,
+				Idv => T1
+			);
+			C2:=(
+			   Tc => Var,
+			   Idv => Iddesp
+			);
+			C3:=(
+			   Tc  => Const,
+			   Idc => T0 
+			);
+
+			Genera(Producte, C1, C2, C3);
+			Novavar(Tv, idproc, T2);
+			if IddespE = id_nul then
+				
+				C1:=(
+				   	Tc => Var,
+			   		Idv => T2
+				   	);
+				C2:=(
+				   Tc => Var,
+				   Idv => T1
+				   );
+				C3:=(
+				   Tc => Var,
+				   Idv => IdresE
+				   );
+
+				Genera(Suma, C1, C2, C3);
+						
+			else
+
+			 	Novavar(Tv, idproc, T1);
+		
+				C1:=(
+				   Tc => Var,
+			   	   Idv => T3
+				   	);
+				C2:=(
+				   Tc => Var,
+				   Idv => IdresE
+				   );
+				C3:=(
+				   Tc => Var,
+				   Idv => IddespE
+				   );
+
+				Genera(Suma, C1, C2, C3);
+				
+				C1:=(
+				   	Tc => Var,
+			   		Idv => T2
+				   	);
+				C2:=(
+				   Tc => Var,
+				   Idv => T1
+				   );
+				C3:=(
+				   Tc => Var,
+				   Idv => T3
+				   );
+
+				Genera(Suma, C1, C2, C3);
+			end if;
+			Iddesp:=T2;
+
+         when Encappri => -- encappri --> R(E
+    
+		    gci_Referencia_Var(Fesq, Idres, Idbase, Idtipus);
+            gci_Expressio(Fdret, IdresE, IddespE);			
+
+			It_Idx := primer_idx(ts, Idtipus); ------------
+			
+			if IddespE = id_nul then
+				Iddesp:= idresE;				
+			else
+				cim(pproc, idproc);
+			 	Novavar(Tv, idproc, T1);
+		
+				C1:=(
+				   	Tc => Var,
+			   		Idv => T1
+				   	);
+				C2:=(
+				   Tc => Var,
+				   Idv => IdresE
+				   );
+				C3:=(
+				   Tc => Var,
+				   Idv => IddespE
+				   );
+
+				Genera(Suma, C1, C2, C3);
+				Iddesp:=T1;
+			end if;
+
+         when others =>
+            Put_Line("ERROR (DEBUG) gci-ref_pri: tipus no "&
+                       "reconegut");
+      end case;
+   end gci_Ref_Pri;
 
 
-   procedure gci_Ref_Rec
+
+   procedure gci_Ref_Rec --correcte
      (A : in Pnode;
       Idres, Iddesp, Idtipus : out Id_Nom) is
 
