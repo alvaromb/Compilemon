@@ -125,13 +125,13 @@ package body Decls.Dtsimbols is
 
     -- VERSIO 2: Normal, llenguatge amb blocs estil
     -- Pascal.
-    procedure entrabloc
-      (ts : in out tsimbols) is
+    procedure Entrabloc
+      (Ts : in out Tsimbols) is
     begin
-        ts.prof := ts.prof + 1;
-        ts.tambit(ts.prof) := ts.tambit(ts.prof - 1);
+        Ts.Prof := Ts.Prof + 1;
+        Ts.Tambit(Ts.Prof) := Ts.Tambit(Ts.Prof - 1);
         Put_Line("entraBLOCMACANUDO");
-    end entrabloc;
+    end Entrabloc;
 
 
     procedure surtbloc

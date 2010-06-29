@@ -27,17 +27,17 @@ package Decls.Dtsimbols is
 
     --pragma pure;
 
-    type tsimbols is limited private;
+    type Tsimbols is limited private;
 
     --Serveix per al joc de proves
-    type cursor_idx is new Rang_despl;
-    type cursor_arg is new Rang_despl;
+    type Cursor_Idx is new Rang_Despl;
+    type Cursor_Arg is new Rang_Despl;
 
     -- Operacions
     -- VERSIO 1: llenguatge simple sense estructura
     -- de blocs estil Fortran.
-    procedure printts
-      (ts : in tsimbols);
+    procedure Printts
+      (Ts : in Tsimbols);
 
     procedure tbuida
       (ts : out tsimbols);
