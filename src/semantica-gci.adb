@@ -14,6 +14,363 @@ package body semantica.gci is
 
 
 
+   procedure inici_gci is
+
+   		Iv : Info_Var;
+		Ip : Info_Proc;
+		Ie : Info_Etiq;
+
+		idv : num_var;
+		idpr : num_proc;
+		ide : num_etiq;
+
+		Idn, IdBool, Idchar, Idint, Idstr, Ida : Id_Nom;
+
+		D : descrip;
+		dt : descriptipus;
+
+		Error : Boolean;
+
+   begin
+
+   		Crea_Fitxer(Nom_Fitxer); --c3a
+		Pila_Buida(Pproc);
+		Empilar(Pproc, Proc_Nul);
+
+
+		--constants inicials
+		Posa_Id(Tn, Idn, "_zero");
+		Iv:=(
+		   Id       => Idn,
+		   Np       => Tp.Np,
+		   Ocup     => Integer'Size / 8,
+		   Desp     => 0,
+		   Tsub     => Tsent,
+		   Param    => False,
+		   Const    => True,
+		   Valconst => 0
+		   );
+		Posa(Tv, Iv, Zero);
+
+
+		--Posa_Id(Tn, "_uno", Idn);
+		--Iv:=(
+		--   Id       => Idn,
+		--   Np       => Tp.Np,
+		--   Ocup     => Integer'Size / 8,
+		--   Desp     => 0,
+		--   Tsub     => Tsent,
+		--   Param    => False,
+		--   Const    => True,
+		--   Valconst => 1
+		--   );
+		--Posa(Tv, Iv, Uno);
+
+
+		Posa_Id(Tn, Idn, "_menysu");
+		Iv:=(
+		   Id       => Idn,
+		   Np       => Tp.Np,
+		   Ocup     => Integer'Size / 8,
+		   Desp     => 0,
+		   Tsub     => Tsent,
+		   Param    => False,
+		   Const    => True,
+		   Valconst => -1
+		   );
+		Posa(Tv, Iv, MenysU);
+
+
+
+		--boolean
+		Posa_Id(Tn, IdBool, "boolean");
+		Dt:=(
+		   Tsbool,
+		   Ocup => Integer'Size / 8,
+		   Linf => -1,
+		   Lsup => 0
+		   );
+
+		D:=(
+		   Td => Dtipo,
+		   Dt => Dt
+		   );
+		Posa(Ts, Idbool, D, Error);
+
+
+		--true
+		Posa_Id(Tn, Idn, "true");
+		Iv:=(
+		   Id       => Idn,
+		   Np       => Tp.Np,
+		   Ocup     => Integer'Size / 8,
+		   Desp     => 0,
+		   Tsub     => Tsbool,
+		   Param    => False,
+		   Const    => True,
+		   Valconst => - 1
+		   );
+		Posa(Tv, Iv, Idv);
+
+		D:=(
+		   Td => Dconst,
+		   Tc => Idbool,
+		   Vc => Idv
+		   );
+		Posa(Ts, Idn, D, Error);
+
+		--false
+		Posa_Id(Tn, Idn, "false");
+		Iv.Id := Idn;
+		Dv.Valconst := 0;
+		Posa(Tv, Iv, Idv);
+		D.Vc := Idv;
+		Posa(Ts, Idn, D, Error);
+
+
+
+		--character
+		Posa_Id(Tn, Idchar, "character");
+		Dt:=(
+		   Ts   => Tscar,
+		   Ocup => Integer'Size / 8,
+		   Linf => Character'Pos (Character'First),
+		   Lsup => Character'Pos (Character'Last)
+		   );
+
+		D:=(
+		   Td => Dtipo,
+		   Dt => Dt
+		   );
+		Posa(Ts, Idchar, D, Error);
+
+
+		--integer
+		Posa_Id(Tn, Idint, "integer");
+		Dt:=(
+		   Ts   => Tsent,
+		   Ocup => Integer'Size / 8,
+		   Linf => Valor_Const (Integer'First),
+		   Lsup => Valor_Const (Integer'Last)
+		   );
+
+		D:=(
+		   Td => Dtipo,
+		   Dt => Dt
+		   );
+		Posa(Ts, Idint, D, Error);
+
+
+		--string
+		Posa_Id(Tn, Idstr, "string");
+		Dt:=(
+		   Ts    => Tsarr,
+		   Ocup  => 32 * Integer'Size,
+		   --256 caracteres maximo:
+		   --(256/8)*integer'size
+		   TCamp => Idchar,
+		   Base  => 0
+		   );
+
+		D:=(
+		   Td => Dtipo,
+		   Dt => Dt
+		   );
+		Posa (Ts, Idstr, D, Error);
+
+
+
+		-- FUNCIONES
+		--puti
+		Posa_Id(Tn, Idn, "puti");
+		Ipr:=(
+		   Idn         => Idn,
+		   Prof        => 0,
+		   Ocup_Var    => 0,
+		   Ocup_Param  => 4,
+		   Etiq        => Etiq_Nul
+		   );
+		Posa(Tp, Ipr, Idpr);
+
+		Ie:=(
+		   TipE => Etiq_Proc,
+		   Idpr     => Idpr
+		   );
+		Posa(Te, Ie, Ide);
+		Ipr.Etiq := Ide;
+
+		Modif_Descripcio(Tp, Idpr, Ipr);
+		D:=(
+		   Td => Dproc,
+		   Np => Idpr
+		   );
+		Posa(Ts, Idn, D, Error);
+
+		Posa_Id(Tn, Ida, "_arg_puti");
+		Dv:=(
+		   Id        => Ida,
+		   Np        => Idpr,
+		   Ocup      => Integer'Size / 8,
+		   Desp      => Ipr.Ocup_Param,
+		   Tsub      => Tsent,
+		   Param     => True,
+		   Const     => False,
+		   Valconst => 0
+		   );
+		Posa(Tv, Iv, Idv);
+		D:=(
+		   Td   => Darg,
+		   Targ => Idint,
+		   Narg => Idv
+		   );
+
+		Posa(Ts, Ida, D, Error);
+		Posa_Arg(Ts, Idn, Ida, D, Error);
+		Ipr.Ocup_Param := Ipr.Ocup_Param + Iv.Ocup;
+
+	
+
+		--geti
+		Posa_Id(Tn, Idn, "geti");
+		Ipr:=(
+		   Idn        => Idn,
+		   Prof       => 0,
+		   Ocup_Var   => 0,
+		   Ocup_Param => 4,
+		   Etiq       => Ide
+		   );
+		Posa(Tp, Ipr, Idpr);
+		Ie:=(
+		   TipE => Etiq_Proc,
+		   Idpr => Idpr
+		   );
+		Posa(Te, Ie, Ide);
+		Ipr.Etiq:=Ide;
+		Modif_Descripcio(Tp, Idpr, Ipr);
+		D:=(
+		   Td => Dproc,
+		   Np => Idpr
+		   );
+		Posa(Ts, Idn, D, Error);
+		Posa_Id(Tn, Ida, "_arg_geti");
+		Iv:=(
+		   Id        => Ida,
+		   Np        => Idpr,
+		   Ocup      => Integer'Size / 8,
+		   Desp      => Ipr.Ocup_Param,
+		   Tsub      => Tsent,
+		   Param     => True,
+		   Const     => False,
+		   Valconst => 0
+		   );
+		Posa(Tv, Iv, Idv);
+		D:=(
+		   Td   => Darg,
+		   Targ => Idint,
+		   Narg => Idv
+		   );
+		Posa(Ts, Ida, D, Error);
+		Posa_Arg(Ts, Idn, Ida, D, Error);
+		Ipr.Ocup_Param := Ipr.Ocup_Param + Iv.Ocup;
+
+
+		--putc
+		Posa_Id(Tn, Idn, "putc");
+		Ipr:=(
+		   Idn        => Idn,
+		   Prof       => 0,
+		   Ocup_Var   => 0,
+		   Ocup_Param => 4,
+		   Etiq       => Ide
+		   );
+		Posa(Tp, Ipr, Idpr);
+		Ie:=(
+		   TipE => Etiq_Proc,
+		   Idpr => Idpr
+		   );
+		Posa(Te, Ie, Ide);
+		Ipr.Etiq := Ide;
+		Modif_Descripcio(Tp, Idpr, Ipr);
+		D:=(
+		   Td => Dproc,
+		   Np => Idpr
+		   );
+		Posa(Ts, Idn, D, Error);
+		Posa_Id(Tn, Ida, "_arg_putc");
+		Iv:=(
+		   Id       => Ida,
+		   Np       => Idpr,
+		   Ocup     => Integer'Size / 8,
+		   Desp     => Ipr.Ocup_Param,
+		   Tsub     => Tscar,
+		   Param    => True,
+		   Const    => False,
+		   Valconst => 0
+		   );
+		Posa(Tv, Iv, Idv);
+		D:=(
+		   Td   => Darg,
+		   Targ => Idchar,
+		   Narg => Idv
+		   );
+		Posa(Ts, Ida, D, Error);
+		Posa_Arg(Ts, Idn, Ida, D, Error);
+		Ipr.Ocup_Param := Ipr.Ocup_Param + Iv.Ocup;
+
+
+
+		--getc
+		Posa_Id(Tn, Idn, "getc");
+		Ipr:=(
+		   Idn        => Idn,
+		   Prof       => 0,
+		   Ocup_Var   => 0,
+		   Ocup_Param => 4,
+		   Etiq       => Ide
+		   );
+		Posa(Tp, Ipr, Idpr);
+		Ie:=(
+		   TipE => Etiq_Proc,
+		   Idpr => Idpr
+		   );
+		Posa(Te, Ie, Ide);
+		Ipr.Etiq:=Ide;
+		Modif_Descripcio(Tp, Idpr, Ipr);
+		D:=(
+		   Td => Dproc,
+		   Np => Idpr
+		   );
+		Posa(Ts, Idn, D, Error);
+		Posa_Id(Tn, Ida, "_arg_getc");
+		Iv:=(
+		   Id       => Ida,
+		   Np       => Idpr,
+		   Ocup     => Integer'Size / 8,
+		   Desp     => Ipr.Ocup_Param,
+		   Tsub     => Tscar,
+		   Param    => True,
+		   Const    => False,
+		   Valconst => 0
+		   );
+		Posa(Tv, Iv, Idv);
+		D:=(
+		   Td   => Darg,
+		   Targ => Idchar,
+		   Narg => Idv
+		   );
+		Posa(Ts, Ida, D, Error);
+		Posa_Arg(Ts, Idn, Ida, D, Error);
+		Ipr.Ocup_Param := Ipr.Ocup_Param + Iv.Ocup;
+
+
+
+
+
+
+   end inici_gci;
+
+
+
 
    procedure gci_Programa
      (A : in Pnode) is
@@ -39,6 +396,12 @@ package body semantica.gci is
 	  eip : num_etiq;
 	  C1 : camp;
 
+	  Ipr : Info_Proc;
+      dproc : Descrip;
+
+	  Idprinvocador,
+	  Idprinvocat : Num_Proc;
+
    begin
       Put_line("CT_Decprocediment");
       gci_Encap(Encap, Id_Proc);
@@ -47,65 +410,42 @@ package body semantica.gci is
          gci_Declaracions(Decls); --pendent, arrays, vars i constants
       end if;
 	
-
+	  --Necesario? PRMB
 	  eip := Nova_Etiq;
 	  C1 := (Tc => Etiq, Ide => eip);
 	  Genera(Etiqueta, C1);
 
+	  dproc:=Cons(Ts, Id_Proc);
+	  C1:=(
+		Tc => Proc,
+		Idp => dproc.np);
 
+	  Ipr := Consulta(Tp, dproc.np);
+	  Genera(Preamb, C1);
 
-
-----------%%%%%%%%%%%%%%%%%%%%%
-	C3:=(
-	   Tc => Etiq,
-	   Ide => Efi
-	);
-	Genera(Branc_Inc, C3);
-
-	C3.Ide:=Emig;
-	Genera(Etiqueta, C3);
-
-	C2.Idc:=Menosuno;
-	Genera(Copia, C1, C2);
-
-	C3.Ide:=Efi;
-	Genera(Etiqueta, C3);
-----------%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-
-
-
-
+	  --
       gci_Bloc(Bloc);
       Surtbloc(Ts);
+	  --
 
+	  --RTN
+	  Cim(Pproc, Idprinvocat);
+	  C1:=(
+		 Tc => Proc,
+		 Idp => Idprinvocat
+	  );
+	  Genera(Rtn, C1);
 
+	  Desempilar(Pproc);
+	  Cim(Pproc, Idprinvocador);
 
---->>>><<<<<<<<<
-
-	   C1             : Campo;
-	   Idprinvocador,
-	   Idprinvocat    : Id_Proc;
-	begin
-
-	   Cima(Pproc, Idprinvocat);
-	   Desapilar(Pproc);
-	   Cima(Pproc, Idprinvocador);
-	   C1:=(
-		  Tc => Proc,
-		  Idp => Idprinvocat
-		  );
-	   Genera(Rtn,C1);
-	   if Idprinvocador=Id_Proc_Nul then
-		  C1:=(
-		     Tc => Etiq,
-		     Ide => Tp.Tp (Idprinvocat).Etiq
-		     );
-		  Genera(Global, C1);
-	   end if;
-
-
-
+	  if Idprinvocador = Proc_Nul then
+	  	C1:=(
+		  Tc => Etiq,
+		  Ide => Tp.Tp(Idprinvocat).Etiq
+		);
+		Genera(Global, C1);
+	  end if;
 
 
    end gci_Decprocediment;
@@ -122,7 +462,6 @@ package body semantica.gci is
 	  dproc:=Cons(Ts, I);
 	  empilar(Pproc, dproc.Np);
    end gci_Encap;
-
 
 
    procedure gci_Bloc
@@ -149,17 +488,16 @@ package body semantica.gci is
             gci_Bloc(A.Fe1);
             gci_Bloc(A.Fd1);
          when Repeticio =>
-            ct_Srep(A);
+            gci_Srep(A);
          when Identificador => --crida a procediment sense parametres
             Put_Line("CT_Bloc : IDENTIFICADOR");
             gci_identificador(A, Idres, Iddesp, Idtipus);
-
          when Fireferencia =>
             gci_Referencia_Proc(A, T, Idbase);
          when condicionalS =>
-            Ct_Sconds(A);
+            gci_Sconds(A);
          when condicionalC =>
-            Ct_Scondc(A);
+            gci_Scondc(A);
          when Assignacio =>
             gci_Referencia_Var(A.Fe1,Idr, Idd);
             gci_Expressio(A.Fd1, Idres, Iddesp);
@@ -227,8 +565,6 @@ package body semantica.gci is
    end gci_Assignacio;
 
 
-
-
 	--Procediments
    procedure gci_Referencia_Proc --InComplet
      (A : in Pnode;
@@ -287,7 +623,6 @@ package body semantica.gci is
    end gci_Referencia_Proc;
 
 
-
    procedure gci_Ref_Pri 
      (A : in Pnode;
 	  Idproc : out num_proc) is
@@ -323,9 +658,6 @@ package body semantica.gci is
       end case;
    end gci_Ref_Pri;
 
-
-
-	
 
    procedure gci_Identificador -- correcte
      (A : in Pnode;
@@ -402,7 +734,6 @@ package body semantica.gci is
 
    begin
 		Put_line("CT_CONSTANT");
-
 		cim(pproc, idproc);
      
       case (Tatr) is
@@ -489,7 +820,7 @@ package body semantica.gci is
 	
 
 
-procedure gci_Exp_Relacional --manca acabar d'entendre el final
+	procedure gci_Exp_Relacional --manca acabar d'entendre el final
      (IdResE, IdResD, IddespE, IddespD : in num_var;
 	  IdResultExp, IddespExp :   out num_var;
       Op : in Operacio) is
@@ -507,7 +838,7 @@ procedure gci_Exp_Relacional --manca acabar d'entendre el final
 
 	  	idproc : num_proc := proc_nul;
 
-begin
+	begin
    
 	   if IddespE = Var_Nul then
 		  T1:= IdResE;
@@ -567,12 +898,12 @@ begin
 		   );
 
 	case Op is
-		when Menor => Genera(Menor,C1,C2,C3);
-		when Menorigual => Genera(Menorigual,C1,C2,C3);
+		when Menor => Genera(Menor, C1, C2, C3);
+		when Menorigual => Genera(Menorigual, C1, C2, C3);
 		when Igual => Genera(Igual,C1,C2,C3);
-		when Majorigual => Genera(Majorigual,C1,C2,C3);
-		when Major => Genera(Major,C1,C2,C3);
-		when Diferent => Genera(Diferent,C1,C2,C3);
+		when Majorigual => Genera(Majorigual, C1, C2, C3);
+		when Major => Genera(Major, C1, C2, C3);
+		when Diferent => Genera(Diferent, C1, C2, C3);
 		when others => null;
 	end case;
 
@@ -585,11 +916,10 @@ begin
 	   );
 	C2:=(
 	   Tc => Const,
-	   Idc => Cero
+	   Idc => Zero
 	   );
 
 	Genera(Copia, C1, C2);
-
 
 	C3:=(
 	   Tc => Etiq,
@@ -600,7 +930,7 @@ begin
 	C3.Ide:=Emig;
 	Genera(Etiqueta, C3);
 
-	C2.Idc:=Menosuno;
+	C2.Idc:=MenysU;
 	Genera(Copia, C1, C2);
 
 	C3.Ide:=Efi;
@@ -610,11 +940,11 @@ begin
 	IddespExp:=Var_Nul;
 
 
-end gci_Exp_Relacional;
+	end gci_Exp_Relacional;
 	
 
 
-procedure gci_Exp_Logica 
+	procedure gci_Exp_Logica 
      (IdResE, IdResD, IddespE, IddespD : in num_var;
 	  IdResultExp, IddespExp :   out num_var;
       Op : in Operacio) is
@@ -627,7 +957,7 @@ procedure gci_Exp_Logica
 		C3 : Camp;
 	  idproc : num_proc := proc_nul;
 
-begin
+	begin
 	   
 	   if IddespE = Var_Nul then
 		  T1:= IdResE;
@@ -686,8 +1016,8 @@ begin
 	      );
 
 	case Op is
-		when  Unio => Genera(Op_Or,C1,C2,C3);
-		when  Interseccio => Genera(Op_And,C1,C2,C3);
+		when Unio => Genera(Op_Or,C1,C2,C3);
+		when Interseccio => Genera(Op_And,C1,C2,C3);
 		when others => null;
 	end case;
 	
@@ -697,7 +1027,7 @@ begin
    end gci_Exp_Logica;
 
 
-procedure gci_Exp_Aritmetica 
+	procedure gci_Exp_Aritmetica 
      (IdResE, IdResD, IddespE, IddespD : in num_var;
 	  IdResultExp, IddespExp : out num_var;
       Op : in Operacio) is
@@ -710,7 +1040,7 @@ procedure gci_Exp_Aritmetica
 		C3 : Camp;
 	  idproc : num_proc := proc_nul;
 
-begin
+	begin
 	   
 	   if IddespE = Var_Nul then
 		  T1:= IdResE;
@@ -783,7 +1113,6 @@ begin
    end gci_Exp_Aritmetica;
 
 
-
    procedure gci_Expressiou
      (A : in Pnode;
       Idr, Idd : out num_var) is
@@ -843,7 +1172,6 @@ begin
 		  Genera(Consindex, C1, C2, C3);
 
 	   end if;
-
 
 		Novavar(Tv, idproc, T2);
 		C1:=(
@@ -917,8 +1245,6 @@ begin
 	   IddespExp := Var_Nul;
 
    end gci_Exp_Neglogica;
-
-
 
 
    procedure gci_Referencia_Var --Fet xo amb errors al enccapri (da.b no
@@ -1055,7 +1381,7 @@ begin
 
 			Genera(Producte, C1, C2, C3);
 			Novavar(Tv, idproc, T2);
-			if IddespE = id_nul then
+			if IddespE = var_nul then
 				
 				C1:=(
 				   	Tc => Var,
@@ -1200,6 +1526,235 @@ begin
 
    end gci_Ref_Rec;
 
+
+   procedure gci_Sconds
+     (A : in Pnode) is
+
+      Cond : Pnode renames A.Fe1;
+      Bloc : Pnode renames A.fd1;
+
+      Idres, Iddesp : num_var;
+
+	  C1, C2, C3 : camp;
+	  efals: num_etiq;
+
+	  idproc : num_proc;
+   	  T1 : num_Var := Var_Nul;
+
+   begin
+
+	  efals := nova_etiq;
+
+      gci_Expressio(Cond, Idres, Iddesp);
+
+	  if Iddesp = Var_Nul then
+	  	C2:=(
+		  	Tc => Var,
+		  	Idv => Idres
+		);
+	  else
+	  	cim(pproc, idproc);
+	   	Novavar(Tv, idproc, T1);
+	   	C1:=(
+		  Tc => Var,
+		  Idv => T1
+		  );
+	   	C2:=(
+		  Tc => Var,
+		  Idv => Idres
+		  );
+	    C3:=(
+		  Tc => Var,
+		  Idv => Iddesp
+		  );
+	    Genera(Consindex, C1, C2, C3);
+	    C2:=(
+		  Tc => Var,
+		  Idv => T1
+		  );
+	  end if;
+
+		-- if C1 = C2 then Efals 
+		C3:=(
+		   Tc => Etiq,
+		   Ide => Efals
+		   );
+		C1:=(
+		   Tc => Const,
+		   Idc => Zero
+		   );
+		Genera(Igual, C2, C1, C3);
+	
+      gci_Bloc(Bloc);
+
+
+	  C1:=(
+		 Tc => Etiq,
+		 Ide => efals
+		 );
+	  Genera(Etiqueta, C1);
+
+   end gci_Sconds;
+
+
+  procedure gci_Scondc
+     (A : in Pnode) is
+
+      Cond : Pnode renames A.Fe2;
+      Bloc : Pnode renames A.fc2;
+      Blocelse : Pnode renames A.fd2;
+
+      Idres, Iddesp : num_var;
+
+	  C1, C2, C3 : camp;
+	  efals, efinal: num_etiq;
+
+	  idproc : num_proc;
+   	  T1 : num_Var := Var_Nul;
+
+   begin
+
+	  efals := nova_etiq;
+	  efinal := nova_etiq;
+
+      Ct_Expressio(Cond, Idres, Iddesp); ----
+
+	  if Iddesp = Var_Nul then
+	  	C2:=(
+		  	Tc => Var,
+		  	Idv => Idres
+		);
+	  else
+	  	cim(pproc, idproc);
+	   	Novavar(Tv, idproc, T1);
+	   	C1:=(
+		  Tc => Var,
+		  Idv => T1
+		  );
+	   	C2:=(
+		  Tc => Var,
+		  Idv => Idres
+		  );
+	    C3:=(
+		  Tc => Var,
+		  Idv => Iddesp
+		  );
+	    Genera(Consindex, C1, C2, C3);
+	    C2:=(
+		  Tc => Var,
+		  Idv => T1
+		  );
+	  end if;
+
+		-- if C1 = C2 then Efals 
+		C3:=(
+		   Tc => Etiq,
+		   Ide => Efals
+		   );
+		C1:=(
+		   Tc => Const,
+		   Idc => Zero
+		   );
+		Genera(Igual, C2, C1, C3);
+
+      Ct_Bloc(Bloc); ------
+
+	  C1:=(
+   	  	Tc => Etiq,
+   		Ide => efinal
+   		);
+	  Genera(Branc_Inc, C1);
+
+	  C1.Ide:=efals;
+	  Genera(Etiqueta, C);
+
+      Ct_Bloc(Blocelse); ----
+
+	  C1:=(
+	    Tc => Etiq,
+	    Ide => efinal
+	    );
+	  Genera(Etiqueta, C1);
+
+   end gci_Scondc;
+
+
+   procedure gci_Srep
+     (A : in Pnode) is
+
+      Exp : Pnode renames A.Fe1;
+      Bloc : Pnode renames A.fd1;
+
+      Idres, Iddesp : num_var;
+
+	  C1, C2, C3 : camp;
+	  einicial, efinal: num_etiq;
+
+	  idproc : num_proc;
+   	  T1 : num_Var := Var_Nul;
+
+   begin
+
+	  einicial : nova_etiq;
+	  efinal : nova_etiq;
+
+	  C1:=(
+   		Tc => Etiq,
+   		Ide => einicial
+   		);
+	  Genera(Etiqueta, C1);
+
+      gci_Expressio(Exp, Idres, Iddesp); ------
+
+		C1:=(
+		   Tc => Etiq,
+		   Ide => efinal
+		   );
+
+		if Iddesp = Var_Nul then
+		   C2:=(
+			  Tc => Var,
+			  Idv => Idres
+			  );
+		else
+		   cim(pproc, idproc);
+		   Novavar(Tv, idproc, T1);
+		   C1:=(
+			  Tc => Var,
+			  Idv => T1
+			  );
+		   C2:=(
+			  Tc => Var,
+			  Idv => idres
+			  );
+		   C3:=(
+			  Tc => Var,
+			  Idv => iddesp
+			  );
+		   Genera(ConsIndex, C1, C2, C3);
+		   C2:=(
+			  Tc => Var,
+			  Idv => T1
+			  );
+		end if;
+
+		C3:=(
+		   Tc => Const,
+		   Idc => Zero
+		   );
+		Genera(Igual, C2, C3, C1);  --if exp = 0 then etiqueta
+
+      gci_Bloc(Bloc);  -----------
+
+	  C1 := (
+		 Tc => Etiq,
+		 Ide => einicial
+	    );
+	  Genera(Branc_Inc, C1);
+	  C1.Ide := efinal;
+	  Genera(Etiqueta, C1);
+
+   end gci_Srep;
 
 end semantica.gci;
 

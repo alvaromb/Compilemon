@@ -4,9 +4,9 @@ package Semantica.gci is
 
 	Campo_Nul : constant Camp := (Tc => Const, Idc => Var_Nul);
 
-	Cero,
+	Zero,
 	Uno,
-	Menosuno : Id_Var;
+	MenysU : num_Var;
 
 
 	type T_Param is record

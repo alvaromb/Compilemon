@@ -508,7 +508,7 @@ package body Semantica.Ctipus is
          end if;
 
       elsif (A.Tipus = Pdimcoleccio) then
-         Dtarray := (Tsarr, 0, Idtipus_Array);
+         Dtarray := (Tsarr, 0, Idtipus_Array, 0);
          Darray := (Dtipus, Dtarray);
          Idarray := Fesq.Id12;
          Posa(Ts, Idarray, Darray, E);

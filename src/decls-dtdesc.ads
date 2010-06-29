@@ -57,6 +57,7 @@ package Decls.Dtdesc is
                 when tsbool | tscar | tsent =>
                    linf, lsup : valor;
                 when tsarr  => tcamp : id_nom;
+							   base : despl;
                 when tsrec | tsnul  => null;
             end case;
         end record;
