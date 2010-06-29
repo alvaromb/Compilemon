@@ -108,6 +108,7 @@ package body Semantica.Ctipus is
       Posa(Ts, Idn, D, E);
    end Inicia_Caracter;
 
+	
 
    procedure Inicia_analisi(nomFitxer: in String) is
    begin
