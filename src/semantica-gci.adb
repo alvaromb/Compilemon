@@ -569,6 +569,135 @@ package body semantica.gci is
    end gci_Encap;
 
 
+   procedure gci_Declaracions
+     (A : in Pnode) is
+
+      Decl : Pnode renames A.Fd1;
+      Decls : Pnode renames A.Fe1;
+      Tnode : Tipusnode;
+      Idrec : Id_Nom;
+      Ocup  : Despl;
+
+   begin
+      Put_line("CT_DECLARACIONS");
+      if Decls.Tipus = Declaracions then
+         Ct_Declaracions(Decls);
+      end if;
+
+      case Decl.Tipus is
+         when Dvariable   =>
+            gci_Decvar(Decl);
+         when Dconstant   =>
+            gci_Decconst(Decl);
+         when Dcoleccio   =>
+			null;
+         when Dregistre | Dencapregistre | Firecord =>
+            Ocup := 0;
+            Ct_Decregistre(Decl, Idrec,Ocup);
+         when Dsubrang    =>
+			null;
+         when Procediment =>
+            gci_Decprocediment(Decl);
+         when others =>
+            Put_Line("ERROR CT_Declaracions:(DEBUG)tipus "&
+                       "declarat inexistent "&Tnode'Img);
+            Esem := True;
+      end case;
+
+   end gci_Declaracions;
+
+
+   procedure gci_Decvar
+     (A : in Pnode) is
+
+      Dvariable : Pnode renames A.Fd1;
+      Id : Id_Nom renames A.Fe1.Id12;
+	  Ivar : Info_Var := Info_Var_Nul;
+      desc,desctipus : Descrip;
+	  idproc : num_proc; 
+
+   begin
+	gci_Declsvar(Dvariable);
+	cim(pproc, idproc);
+	desc:= cons(ts,Id);
+	desctipus := cons(ts,desc.tr);
+		
+	Ivar := (Id,
+      		 idproc,
+      		 desctipus.td.ocup,
+      		 0,
+      		 desctipus.td.tt,
+      		 False,
+      		 False,
+      		 0);
+	modifica_descripcio(tv,descrip.nv,Ivar);
+
+   end gci_Decvar;
+
+   procedure gci_Declsvar
+	(A : in Pnode) is
+
+      Tnode : Tipusnode renames A.Tipus;
+      Ivar : Info_Var := Info_Var_Nul;
+       desc,desctipus : Descri
+	  idproc : num_proc; 
+
+   begin
+   
+     if Tnode = Declmultvar then
+         Ct_Declsvar(A.Fd1);
+         --Posa_Idvar(A.Fd1.Id12, Idtipus, A.Fd1.L1, A.Fd1.C1, E);
+		 cim(pproc, idproc);
+		 desc:= cons(ts,A.Fd1.Id12);
+	
+		desctipus := cons(ts,desc.tr);
+		
+		Ivar := (A.Fd1.Id12,
+      		 idproc,
+      		 desctipus.td.ocup,
+      		 0,
+      		 desctipus.td.tt,
+      		 False,
+      		 False,
+      		 0);
+
+		modifica_descripcio(tv,descrip.nv,Ivar);
+		 
+      end if;
+
+   end gci_Declsvar;
+
+	   procedure gci_Decconst
+     (A : in Pnode) is
+
+      Id : Id_Nom renames A.Fe2.Id12;
+      Val : Pnode renames A.Fd2;
+	  Iconst : Info_Var := Info_Var_Nul;
+      desc, desctipus : Descrip;
+	  idproc : num_proc; 
+
+   begin
+	
+	 cim(pproc, idproc);
+	 desc:= cons(ts,A.Fd1.Id12);
+	
+	 desctipus := cons(ts,desc.tr);
+		
+	 Iconst := (Id,
+      		 idproc,
+      		 desctipus.td.ocup,
+      		 0,
+      		 desctipus.td.tt,
+      		 False,
+      		 True,--no n'estic 100% segur
+      		 Val);
+	 modifica_descripcio(tv,descrip.nv,Iconst);
+
+   end gci_Decconst;
+
+
+
+
    procedure gci_Bloc
      (A : in Pnode) is
 
