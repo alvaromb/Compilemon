@@ -181,6 +181,7 @@ package body semantica.gci is
 
 
 		-- FUNCIONES
+		-- Enteros
 		--puti
 		Posa_Id(Tn, Idn, "puti");
 		Ipr:=(
@@ -273,7 +274,7 @@ package body semantica.gci is
 		Posa_Arg(Ts, Idn, Ida, D, Error);
 		Ipr.Ocup_Param := Ipr.Ocup_Param + Iv.Ocup;
 
-
+		--Caracteres
 		--putc
 		Posa_Id(Tn, Idn, "putc");
 		Ipr:=(
@@ -316,8 +317,6 @@ package body semantica.gci is
 		Posa(Ts, Ida, D, Error);
 		Posa_Arg(Ts, Idn, Ida, D, Error);
 		Ipr.Ocup_Param := Ipr.Ocup_Param + Iv.Ocup;
-
-
 
 		--getc
 		Posa_Id(Tn, Idn, "getc");
@@ -362,10 +361,116 @@ package body semantica.gci is
 		Posa_Arg(Ts, Idn, Ida, D, Error);
 		Ipr.Ocup_Param := Ipr.Ocup_Param + Iv.Ocup;
 
+		--Strings
+		--Puts
+		Posa_Id(Tn, Idn, "puts");
+		Ipr:=(
+		   Idn         => Idn,
+		   Prof        => 0,
+		   Ocup_Var => 0,
+		   Ocup_Param => 4,
+		   Etiq        => Ide
+		   );
+		Posa(Tp, Ipr, Idpr);
+		Ie:=(
+		   TipE => Etiq_Proc,
+		   Idpr    => Idpr
+		   );
+		Posa(Te, Ie, Ide);
+		Ipr.Etiq := Ide;
+		Modif_Descripcio(Tp, Idpr, Ipr);
+		D:=(
+		   Td => Dproc,
+		   Np => Idpr
+		   );
+		Posa(Ts, Idn, D, Error);
+		Posa(Tn, "_arg_puts", Ida);
+		Iv:=(
+		   Id        => Ida,
+		   Np        => Idpr,
+		   Ocup      => 32 * Integer'Size,
+		   Desp      => Ipr.Ocup_Param,
+		   Tsub      => Tsarr,
+		   Param     => True,
+		   Const     => False,
+		   Valconst => 0
+		   );
+		Posa(Tv, Iv, Idv);
+		D:=(
+		   Td   => Darg,
+		   Targ => Idstr,
+		   Narg => Idv
+		   );
+		Posa(Ts, Ida, D, Error);
+		Posa_Arg(Ts, Idn, Ida, D, Error);
+		Ipr.Ocup_Param := Ipr.Ocup_Param + Dv.Ocup;
+
+		--gets
+		Posa_Id(Tn, Idn, "gets");
+		Ipr:=(
+		   Idn         => Idn,
+		   Prof        => 0,
+		   Ocup_Var => 0,
+		   Ocup_Param => 4,
+		   Etiq        => Ide
+		   );
+		Posa(Tp, Ipr, Idpr);
+		Ie:=(
+		   TipE => Etiq_Proc,
+		   Idpr    => Idpr
+		   );
+		Posa (Te, Ie, Ide);
+		Ipr.Etiq:=Ide;
+		Modif_Descripcio(Tp, Idpr, Ipr);
+		D:=(
+		   Td => Dproc,
+		   Np => Idpr
+		   );
+		Posa(Ts, Idn, D, Error);
+		Posa_Id(Tn, Ida, "_arg_gets");
+		Iv:=(
+		   Id        => Ida,
+		   Np        => Idpr,
+		   Ocup      => 32 * Integer'Size,
+		   Desp      => Ipr.Ocup_Param,
+		   Tsub      => Tsarr,
+		   Param     => True,
+		   Const     => False,
+		   Valconst  => 0
+		   );
+		Posa(Tv, Iv, Idv);
+		D:=(
+		   Td   => Darg,
+		   Targ => Idstr,
+		   Narg => Idv
+		   );
+		Posa(Ts, Ida, D, Error);
+		Posa_Arg(Ts, Idn, Ida, D, Error);
+		Ipr.Ocup_Param := Ipr.Ocup_Param + Iv.Ocup;
 
 
-
-
+		--new line
+		Posa_(Tn, Idn, "new_line");
+		Ipr:=(
+		   Idn        => Idn,
+		   Prof       => 0,
+		   Ocup_Var   => 0,
+		   Ocup_Param => 0,
+		   Etiq       => Ide
+		   );
+		Posa(Tp, Ipr, Idpr);
+		Ie:=(
+		   TipE => Etiq_Proc,
+		   Idpr    => Idpr
+		   );
+		Posa(Te, Ie, Ide);
+		Ipr.Etiq:=Ide;
+		Modif_Descripcio(Tp, Idpr, Ipr);
+		D:=(
+		   Td => Dproc,
+		   Np => Idpr
+		   );
+		Posa(Ts, Idn, D, Error);
 
    end inici_gci;
 

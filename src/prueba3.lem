@@ -18,18 +18,20 @@ procedure provaid is
 			--h := 1;
 		--end provaid;
 		procedure prova1(b: out boolean) is
-		a: boolean;
+		--a: boolean;
 		--procedure provaid is
 		--begin
 			--h := 1;
 		--end provaid;
 		begin
 			--h := 1;
+			a:=8;
 			b:= true;
 		end prova1;
 	begin
 		--h := 1;
-		b:= true;
+		b:= 8;
+		--a := 7;
 	end prova;
 
     --proaid : integer;
