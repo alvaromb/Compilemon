@@ -254,6 +254,16 @@ package body Semantica.Ctipus is
       Posa_Arg(Ts, Idn, Ida, D, E);
       Ipr.Ocup_Param := Ipr.Ocup_Param + Iv.Ocup;
 
+      -- nova linea
+      Posa_Id(Tn, Idn, "new_line");
+      Ipr := (Idn, 0, 0, 0, Etiq_Nul);
+      Posa(Tp, Ipr, Idpr);
+      Ie := (Etiq_Proc, Idpr);
+      Posa(Te, Ie, Ide);
+      Ipr.Etiq := Ide;
+      Modif_Descripcio(Tp, Idpr, Ipr);
+      D := (Dproc, Idpr);
+      Posa(Ts, Idn, D, E);
    end Inicia_Caracter;
 
 
