@@ -1091,10 +1091,7 @@ package body Semantica.Gci is
             cim(pproc, idproc);
             Novavar(Tv, idproc, T1);
             Novavar(Tv, idproc, T2);
-            --da.b no existeix encara
-            --i a mes haurem de
-            --omplirla a les decls!!!
-            Novaconst(Tv, da.b , Tsent, idproc, T3);
+            Novaconst(Tv, da.Dt.Base , Tsent, idproc, T3);
 
             C1:=(
                  Tc => Var,
