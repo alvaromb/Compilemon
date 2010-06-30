@@ -1,6 +1,9 @@
 procedure provaid is
 
 	b, c, a: integer;
+	type bi is new integer range 2..5;
+
+	type pepe is array(bi, bi, bi, bi) of integer;
 
 begin
 	b:=2;

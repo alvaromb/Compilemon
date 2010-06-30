@@ -50,10 +50,8 @@ package body Semantica.Ctipus is
          s : in string;
          a : out atribut) is
    begin
-       a := (A_Lit_N, l, c, valor(Integer'value(s)));
-   end mt_numero;
-
-
+      A := (A_Lit_N, L, C, Valor(Integer'Value(S)));
+   end Mt_Numero;
 
 
    -- Taula de simbols
@@ -94,13 +92,13 @@ package body Semantica.Ctipus is
              Tsent, True, False, 0);
       Posa(Tv, Iv, Idv);
       D := (Dargc, Idv, Idint);
-      --Posa(Ts, Ida, D, Error);
+      Posa(Ts, Ida, D, E);
       Posa_Arg(Ts, Idn, Ida, D, E);
       Ipr.Ocup_Param := Ipr.Ocup_Param + Iv.Ocup;
 
       -- "geti"
       Posa_Id(Tn, Idn, "geti");
-      Ipr := (Idn, 0, 0, 4, Ide);
+      Ipr := (Idn, 0, 0, 4, Etiq_Nul);
       Posa(Tp, Ipr, Idpr);
 
       Ie := (Etiq_Proc, Idpr);
@@ -139,14 +137,14 @@ package body Semantica.Ctipus is
       Iv := (Idt, Tp.Np, Integer'Size/8, 0, Tsbool, False,
              True, -1);
       Posa(Tv, Iv, Idv);
-      --D := (Dconst, Idb, Idv); --REPASAR ESTO!!!
+      D := (Dconst, Idt, -1); --REPASAR ESTO!!!
       Posa(Ts, Idt, D, E);
 
       Posa_Id(Tn, Idf, "false");
       Iv.Id := Idf;
       Iv.Valconst := 0;
       Posa(Tv, Iv, Idv);
-      --D := (Dconst, Idb, Idv); --REPASAR ESTO!!!
+      D := (Dconst, Idf, 0); --REPASAR ESTO!!!
       Posa(Ts, Idf, D, E);
    end Inicia_Boolea;
 
@@ -154,32 +152,48 @@ package body Semantica.Ctipus is
    procedure Inicia_Caracter is
       D : Descrip;
       Dt : Descriptipus;
-      Idn, Idstring : Id_Nom;
+      Idn, Idstring, Ida, Idchar : Id_Nom;
       E : Boolean;
+      Ipr : Info_Proc;
+      Ide : Num_Etiq;
+      Idpr : Num_Proc;
+      Ie : Info_Etiq;
+      Iv : Info_Var;
+      Idv : Num_Var;
    begin
-      Posa_Id(Tn, Idn, "character");
+      Posa_Id(Tn, Idchar, "character");
       Dt := (Tscar, 4, Valor(Character'Pos(Character'First)),
              Valor(Character'Pos(Character'Last)));
       D := (Dtipus, Dt);
-      Posa(Ts, Idn, D, E);
+      Posa(Ts, Idchar, D, E);
 
       -- "string"
       Posa_Id(Tn, Idstring, "string");
-      Dt := (Tsarr, 32*Integer'Size, Idn, 0); --0 es la base
+      Dt := (Tsarr, 32*Integer'Size, Idchar, 0); --0 es la base
       D := (Dtipus, Dt);
       Posa(Ts, Idstring, D, E);
+
+      -- putc
+      Posa_Id(Tn, Idn, "putc");
+      Ipr := (Idn, 0, 0, 4, Etiq_Nul);
+      Posa(Tp, Ipr, Idpr);
+      Ie := (Etiq_Proc, Idpr);
+      Posa(Te, Ie, Ide);
+      Ipr.Etiq := Ide;
+      Modif_Descripcio(Tp, Idpr, Ipr);
+      D := (Dproc, Idpr);
+      Posa(Ts, Idn, D, E);
+
+      -- _arg_putc
+      Posa_Id(Tn, Ida, "_arg_putc");
+      Iv := (Ida, Idpr, Integer'Size/8, Ipr.Ocup_Param, Tscar,
+             True, False, 0);
+      Posa(Tv, Iv, Idv);
+      D := (Dargc, Idv, Idchar);
+      Posa(Ts, Ida, D, E);
+      Posa_Arg(Ts, Idn, Ida, D, E);
+      Ipr.Ocup_Param := Ipr.Ocup_Param + Iv.Ocup;
    end Inicia_Caracter;
-
-
-   --procedure Inicia_String is
-   --   D : Descrip;
-   --   Dt : Descriptipus;
-   --   Idn : Id_Nom;
-   --begin
-   --	 null;
-   --end Inicia_String;
-
-
 
 
    procedure Inicia_analisi(nomFitxer: in String) is
@@ -583,6 +597,7 @@ package body Semantica.Ctipus is
          end if;
 
       elsif (A.Tipus = Pdimcoleccio) then
+         Put_Line("josemariabuadessssssssssssssssssssssssss!");
          Dtarray := (Tsarr, 0, Idtipus_Array, 0);
          Darray := (Dtipus, Dtarray);
          Idarray := Fesq.Id12;
