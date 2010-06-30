@@ -7,39 +7,39 @@ package body Semantica.Ctipus is
 
    procedure mt_atom
      (l, c : in natural;
-         a : out atribut) is
+      a : out atribut) is
    begin
-       a := (atom, l, c);
+      a := (atom, l, c);
    end mt_atom;
 
 
    procedure mt_identificador
      (l, c : in natural;
-         s : in string;
-         a : out atribut) is
+      s : in string;
+      a : out atribut) is
       id : id_nom;
    begin
-       id := id_nul;
-       posa_id(tn, id, s);
-       a := (a_ident, l, c, id);
+      id := id_nul;
+      posa_id(tn, id, s);
+      a := (a_ident, l, c, id);
    end mt_identificador;
 
 
    procedure mt_string
      (l, c : in natural;
-         s : in string;
-         a : out atribut) is
-       id : rang_tcar;
+      s : in string;
+      a : out atribut) is
+      id : rang_tcar;
    begin
-       posa_str(tn, id, s);
-       a := (A_Lit_S, l, c, valor(id));
+      posa_str(tn, id, s);
+      a := (A_Lit_S, l, c, valor(id));
    end mt_string;
 
 
    procedure mt_caracter
      (l, c : in natural;
-       car : in string;
-         a : out atribut) is
+      car : in string;
+      a : out atribut) is
    begin
       a := (A_Lit_C, l, c, valor(car'First+1));
    end mt_caracter;
@@ -47,8 +47,8 @@ package body Semantica.Ctipus is
 
    procedure mt_numero
      (l, c : in natural;
-         s : in string;
-         a : out atribut) is
+      s : in string;
+      a : out atribut) is
    begin
       A := (A_Lit_N, L, C, Valor(Integer'Value(S)));
    end Mt_Numero;
@@ -170,7 +170,7 @@ package body Semantica.Ctipus is
 
       -- "string"
       Posa_Id(Tn, Idstring, "string");
-      Dt := (Tsarr, 32*Integer'Size, Idchar, 0); --0 es la base
+      Dt := (Tsstr, 32*Integer'Size, Idchar, 0); --0 es la base
       D := (Dtipus, Dt);
       Posa(Ts, Idstring, D, E);
 
@@ -226,7 +226,7 @@ package body Semantica.Ctipus is
       Posa(Ts, Idn, D, E);
 
       Posa_Id(Tn, Ida, "_arg_puts");
-      Iv := (Ida, Idpr, 32*Integer'Size, Ipr.Ocup_Param, Tsarr,
+      Iv := (Ida, Idpr, 32*Integer'Size, Ipr.Ocup_Param, Tsstr,
              True, False, 0);
       Posa(Tv, Iv, Idv);
       D := (Dargc, Idv, Idstring);
@@ -246,7 +246,7 @@ package body Semantica.Ctipus is
       Posa(Ts, Idn, D, E);
 
       Posa_Id(Tn, Ida, "_arg_gets");
-      Iv := (Ida, Idpr, 32*Integer'Size, Ipr.Ocup_Param, Tsarr,
+      Iv := (Ida, Idpr, 32*Integer'Size, Ipr.Ocup_Param, Tsstr,
              True, False, 0);
       Posa(Tv, Iv, Idv);
       D := (Dargc, Idv, Idstring);
@@ -583,24 +583,30 @@ package body Semantica.Ctipus is
             Esem := True;
          end if;
 
-		 if (Tsubj /= Tsarr) then
-		     if (Val.Val < Tdecl.Dt.Linf) or
-		       (Val.Val > Tdecl.Dt.Lsup) then
-		        Error(rang_sobrepassat, A.Fe2.l1, A.Fe2.c1,
-		              cons_nom(tn, Id));
-		        Esem := True;
-		     end if;
-		 end if;		 
+         if (Tdecl.Dt.Tt > Tsent) then
+            Error(Tsub_No_Escalar, A.Fc2.L1, A.Fc2,C1,
+                  Cons_Nom(Tn, Idtipus));
+            Esem := True;
+         end if;
 
-		 Tconst := (dconst, IdTipus, Val.val);
-		 Posa(Ts, Id, Tconst, E);
-		 Put_Line("CT_CONST: (DEBUG)El valor de la "&
-		                "constant es: "&Val.val'img);
-		 if E then
-		 	Error(id_existent, A.Fe2.l1, A.Fe2.c1,
-		    cons_nom(tn, Id));
-		    Esem := True;
-		 end if;
+         if (Tsubj /= Tssrt) then
+            if (Val.Val < Tdecl.Dt.Linf) or
+              (Val.Val > Tdecl.Dt.Lsup) then
+               Error(rang_sobrepassat, A.Fe2.l1, A.Fe2.c1,
+                     cons_nom(tn, Id));
+               Esem := True;
+            end if;
+         end if;
+
+         Tconst := (dconst, IdTipus, Val.val);
+         Posa(Ts, Id, Tconst, E);
+         Put_Line("CT_CONST: (DEBUG)El valor de la "&
+                    "constant es: "&Val.val'img);
+         if E then
+            Error(id_existent, A.Fe2.l1, A.Fe2.c1,
+                  cons_nom(tn, Id));
+            Esem := True;
+         end if;
 
       end if;
 
@@ -1172,8 +1178,8 @@ package body Semantica.Ctipus is
             T := Tscar;
          when A_Lit_N =>
             T := Tsent;
-		 when A_Lit_S =>
-			T := Tsarr;
+         when A_Lit_S =>
+            T := Tsarr;
          when others =>
             Put_Line("ERROR CT-constant: tipus constant "&
                        "erroni");
