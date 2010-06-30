@@ -13,8 +13,8 @@ package body Semantica.Missatges is
    procedure Impressio
      (Msj : in String) is
    begin
-      put_line(log_file, msj);
-      put_line(msj);
+      put_line(log_file, "ERROR CompiLEMON: " & msj);
+      put_line("ERROR CompiLEMON: " & msj);
    end impressio;
 
    procedure Error

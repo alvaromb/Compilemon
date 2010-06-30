@@ -7,7 +7,7 @@ procedure provaid is
 
 	p : constant bi := 3;
 
-	alf : constant string:= "hola";
+	alf : constant pepe := "hola";
 
 begin
 	b:=2;

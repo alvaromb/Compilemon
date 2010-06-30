@@ -584,12 +584,12 @@ package body Semantica.Ctipus is
          end if;
 
          if (Tdecl.Dt.Tt > Tsent) then
-            Error(Tsub_No_Escalar, A.Fc2.L1, A.Fc2,C1,
+            Error(Tsub_No_Escalar, A.Fc2.L1, A.Fc2.C1,
                   Cons_Nom(Tn, Idtipus));
             Esem := True;
          end if;
 
-         if (Tsubj /= Tssrt) then
+         if (Tsubj = Tsent or Tsubj = Tsbool or Tsubj = Tscar) then
             if (Val.Val < Tdecl.Dt.Linf) or
               (Val.Val > Tdecl.Dt.Lsup) then
                Error(rang_sobrepassat, A.Fe2.l1, A.Fe2.c1,
