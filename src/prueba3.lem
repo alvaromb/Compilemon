@@ -3,12 +3,16 @@ procedure provaid is
 	b, c, a: integer;
 	type bi is new integer range 2..5;
 
-	type pepe is array(bi, bi, bi, bi) of integer;
+	type pepe is array(bi) of integer;
+
+	p : constant bi := 3;
 
 	alf : constant string:= "hola";
 
 begin
 	b:=2;
 	--b:=b+1;
+
+
 
 end provaid;

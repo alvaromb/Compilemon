@@ -45,6 +45,7 @@ package Decls.Dtdesc is
     type tipussubjacent is
       (tsbool,
        tscar,
+	   tsstr,
        tsent,
        tsrec,
        tsarr,
@@ -56,8 +57,8 @@ package Decls.Dtdesc is
             case tt is
                 when tsbool | tscar | tsent =>
                    linf, lsup : valor;
-                when tsarr  => tcamp : id_nom;
-							   base : valor;
+                when tsarr | tsstr => tcamp : id_nom;
+							   		   base : valor;
                 when tsrec | tsnul  => null;
             end case;
         end record;
