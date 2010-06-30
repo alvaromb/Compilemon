@@ -1,4 +1,5 @@
 with Decls.Dgenerals,
+  Semantica,
   Decls.Dtdesc,
   Ada.Sequential_Io,
   Ada.Text_Io,
@@ -6,150 +7,14 @@ with Decls.Dgenerals,
   Semantica.Ctipus;
 
 use Decls.Dgenerals,
+  Semantica,
   Decls.Dtdesc,
   Decls.D_Taula_De_Noms,
   Semantica.Ctipus;
 
 package Semantica.Declsc3a is
 
---Definicions basiques
-   type tInstruccio is
-     (--1 operand
-      Global, --modificacion sobre los apuntes
-      --.global .etiq_principal
-      Rtn,
-      Call,
-      Preamb,
-      Params,
-      Etiqueta,
-      Branc_Inc,
-      -- 2 operands
-      Negacio,
-      Op_Not,
-      Copia,
-      Paramc,
-      --3 operands
-      Suma,
-      Resta,
-      Producte,
-      Divisio,
-      Modul,
-      Op_And,
-      Op_Or,
-      Consindex,
-      Asigindex,
-      Menor,
-      Menorigual,
-      Igual,
-      Majorigual,
-      Major,
-      Diferent);
-
-   type tCamp is
-     (Proc,
-      Var,
-      Etiq,
-      Const);
-
-   type Camp(tc : tCamp:=Const) is record
-      case Tc is
-         when Proc   => Idp : num_Proc;
-         when Var    => Idv : num_var;
-         when Etiq   => Ide : num_etiq;
-         when Const  => Idc : num_var;
-         when others => null;
-      end case;
-   end record;
-
-   type c3a is record
-      Instr : tInstruccio;
-      Camp1 : Camp;
-      Camp2 : Camp;
-      Camp3 : Camp;
-   end record;
-
-
---Taula de procediments (es necessari el nprof i despl que es troba decls-dtdesc
---i aixo hauria d'anar a dgenerals)
-
-   type Info_Proc is record
-      Idn        : Id_Nom;
-      Prof       : nprof;
-      Ocup_Var   : Despl;
-      Ocup_Param : Despl;
-      Etiq       : num_etiq;
-   end record;
-
-   Info_Proc_Nul : Info_Proc :=
-     (Idn => Id_Nul,
-      Prof => 0,
-      Ocup_Var   => 0,
-      Ocup_Param => 0,
-      Etiq => etiq_nul);
-
-   type Taula_P is array
-     (Num_Proc) of Info_Proc;
-
-   type T_Procs is record
-      Tp : Taula_P;
-      Np : Num_Proc;
-   end record;
-
-   Tp : T_Procs;
-
-
---Taula de variables
-
-   type Info_Var is record
-      Id       : Id_Nom;
-      Np       : num_proc;
-      Ocup     : Despl;
-      Desp     : Despl;
-      Tsub     : Tipussubjacent;
-      Param    : Boolean;
-      Const    : Boolean;
-      Valconst : valor;
-   end record;
-
-   Info_Var_Nul : Info_Var :=
-     (Id       => Id_Nul,
-      Np       => proc_nul,
-      Ocup     => 0,
-      Desp     => 0,
-      Tsub     => Tsnul,
-      Param    => False,
-      Const    => False,
-      Valconst => 0);
-
-   type taula_v is array
-     (Num_Var) of Info_Var;
-
-   type T_Vars is record
-      Tv : taula_v;
-      Nv : num_var;
-   end record;
-   Tv : T_Vars;
-
--- Taula d'Etiquetes
-   type Info_Etiq (TipE:Tipus_Etiq := Etiq_Num) is record
-      case TipE is
-         when Etiq_Num =>
-            N:Integer;
-         when Etiq_Proc =>
-            Idpr: num_Proc;
-      end case;
-   end record;
-
-   type Taula_E is array
-     (num_Etiq) of Info_Etiq;
-
-   type T_Etiqs is record
-      Te : Taula_E;
-      Ne : num_Etiq;
-   end record;
-   Te : T_Etiqs;
-
---procediments i funcions
+   --procediments i funcions
    --Inicializar las tablas --OJO A ESTE NOMBRE!!!!
    procedure Noves_taules
      (Tp : out T_Procs;
@@ -185,7 +50,7 @@ package Semantica.Declsc3a is
      (Tv  : in T_Vars;
       Idv : in num_var) return Info_Var;
 
-   procedure Modifica_Descripcion
+   procedure Modif_Descripcio
      (Tv  : in out T_Vars;
       Idv : in num_var;
       Iv  : in Info_Var);

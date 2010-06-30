@@ -51,6 +51,8 @@ package Semantica.Ctipus is
    -- Taula de simbols
    procedure Inicia_Enter;
    procedure Inicia_Boolea;
+   procedure Inicia_Caracter;
+   procedure Inicia_String;
 
    -- Comprovacio de tipus
    procedure Inicia_analisi(nomFitxer: in String);
@@ -61,7 +63,7 @@ package Semantica.Ctipus is
 private
 
    Ts : Tsimbols;
-   --Tn : Taula_De_Noms;	
+   --Tn : Taula_De_Noms;
    --nv : num_var;
    --np : num_proc;
 

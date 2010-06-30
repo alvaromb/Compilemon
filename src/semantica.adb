@@ -3,7 +3,7 @@ package body Semantica is
    procedure Abuit
      (P : out pnode) is
    begin
-       p := null;
+      p := null;
    end abuit;
 
 
@@ -33,7 +33,7 @@ package body Semantica is
      (p : out atribut;
       fe,fc,fd : in atribut;
       tn : in Tipusnode) is
-        paux : pnode;
+      paux : pnode;
    begin
       paux := new node(tn);
       paux.fe2 := fe.a;
@@ -45,10 +45,10 @@ package body Semantica is
 
    procedure creaNode
      (p : out atribut;
-     fe, fd : in atribut;
-     op : in operacio;
-     tn : in Tipusnode) is
-       paux : pnode;
+      fe, fd : in atribut;
+      op : in operacio;
+      tn : in Tipusnode) is
+      paux : pnode;
    begin
       paux := new node(tn);
       paux.fe3 := fe.a;
@@ -61,9 +61,9 @@ package body Semantica is
    procedure CreaNode
      (p : out atribut;
       f : in atribut;
-     op : in operacio;
-     tn : in Tipusnode) is
-       paux : pnode;
+      op : in operacio;
+      tn : in Tipusnode) is
+      paux : pnode;
    begin
       paux := new node(tn);
       paux.f4 := f.a;
@@ -73,100 +73,162 @@ package body Semantica is
 
 
    procedure CreaNode
-      (p : out atribut;
-       fe, fce, fc, fd : in atribut;
-       tn : in Tipusnode) is
-        paux : pnode;
-    begin
-       paux := new node(tn);
-       paux.fe5 := fe.a;
-       paux.fc5 := fce.a;
-       paux.fd5 := fc.a;
-       paux.fid5 := fd.a;
-       p := (nodeArbre, 0, 0, paux);
-    end creaNode;
+     (p : out atribut;
+      fe, fce, fc, fd : in atribut;
+      tn : in Tipusnode) is
+      paux : pnode;
+   begin
+      paux := new node(tn);
+      paux.fe5 := fe.a;
+      paux.fc5 := fce.a;
+      paux.fd5 := fc.a;
+      paux.fid5 := fd.a;
+      p := (nodeArbre, 0, 0, paux);
+   end creaNode;
 
-    procedure creaNode
+   procedure creaNode
      (p : out atribut;
       f : in atribut;
       tn : in Tipusnode) is
-        paux : pnode;
-    begin
-       paux := new node(tn);
-       paux.f6 := f.a;
-       p := (nodeArbre, 0, 0, paux);
-    end creaNode;
+      paux : pnode;
+   begin
+      paux := new node(tn);
+      paux.f6 := f.a;
+      p := (nodeArbre, 0, 0, paux);
+   end creaNode;
 
-    -- Crea node per identificadors
-    procedure CreaNode_ID
-      (p : out atribut;
+   -- Crea node per identificadors
+   procedure CreaNode_ID
+     (p : out atribut;
       id : in atribut;
       tn : in Tipusnode) is
-       paux : pnode;
-    begin
-       paux := new node(tn);
-       paux.id12 := id.idn;
-       paux.l1 := id.lin;
-       paux.c1 := id.col;
-       p := (nodeArbre, 0, 0, paux);
-    end CreaNode_ID;
+      paux : pnode;
+   begin
+      paux := new node(tn);
+      paux.id12 := id.idn;
+      paux.l1 := id.lin;
+      paux.c1 := id.col;
+      p := (nodeArbre, 0, 0, paux);
+   end CreaNode_ID;
 
 
-    procedure CreaNode_VAL
-      (p : out atribut;
-       a : in atribut;
+   procedure CreaNode_VAL
+     (p : out atribut;
+      a : in atribut;
       tn : in Tipusnode;
-       S : in Valor) is
-       paux : pnode;
-    begin
-       paux := new node(tn);
-       if S = 0 then
-          paux.val := A.Val*(-1);
-       else
-          Paux.Val := A.Val;
-       end if;
-       Paux.Tconst := A.T;
-       paux.l2 := a.lin;
-       paux.c2 := a.col;
-       p := (nodeArbre, 0, 0, paux);
-    end CreaNode_VAL;
+      S : in Valor) is
+      paux : pnode;
+   begin
+      paux := new node(tn);
+      if S = 0 then
+         paux.val := A.Val*(-1);
+      else
+         Paux.Val := A.Val;
+      end if;
+      Paux.Tconst := A.T;
+      paux.l2 := a.lin;
+      paux.c2 := a.col;
+      p := (nodeArbre, 0, 0, paux);
+   end CreaNode_VAL;
 
 
-    procedure Creanode_MODE
-      (P : out Atribut;
-       M : in mmode;
-       Tn : in Tipusnode) is
-       Paux : Pnode;
-    begin
-       Paux := new Node(Tn);
-       Paux.M12 := M;
-       P := (NodeArbre, 0, 0, Paux);
-    end Creanode_Mode;
-
-
-    procedure creaNode
-      (P : out Atribut;
+   procedure Creanode_MODE
+     (P : out Atribut;
+      M : in mmode;
       Tn : in Tipusnode) is
       Paux : Pnode;
-    begin
+   begin
+      Paux := new Node(Tn);
+      Paux.M12 := M;
+      P := (NodeArbre, 0, 0, Paux);
+   end Creanode_Mode;
+
+
+   procedure creaNode
+     (P : out Atribut;
+      Tn : in Tipusnode) is
+      Paux : Pnode;
+   begin
       Paux := new Node(tn);
       P := (NodeArbre, 0, 0, Paux);
-    end creaNode;
+   end creaNode;
 
 
-    procedure Remunta
-      (P : out Atribut;
-       A : in Atribut) is
-    begin
-       P := A;
-    end Remunta;
+   procedure Remunta
+     (P : out Atribut;
+      A : in Atribut) is
+   begin
+      P := A;
+   end Remunta;
 
 
-    procedure Cons_Tnode
-      (P : in Pnode;
+   procedure Cons_Tnode
+     (P : in Pnode;
       Tn : out Tipusnode) is
-    begin
-       Tn := P.Tipus;
-    end Cons_Tnode;
+   begin
+      Tn := P.Tipus;
+   end Cons_Tnode;
+
+   -- Procediments per a les Taules
+   procedure Noves_taules
+     (Tp : out T_Procs;
+      Tv : out T_Vars;
+      Te : out T_Etiqs) is
+   begin
+      --null;
+      -- Hem de crear un proc inicialitzador de cada taula on posem l'index
+      -- a 0
+      --Tbuida(Tp);
+      --Tbuida(Tv);
+      --Tbuida(Te);
+      --TP
+      Tp.Np:=0;
+      --TV
+      Tv.Nv:=0;
+      --Te
+      Te.Ne:=0;
+   end Noves_taules;
+
+   -- Procediments per Taula de Procediments
+   procedure Posa
+     (Tp  : in out T_Procs;
+      Ip  : in Info_Proc;
+      Idp : out num_Proc) is
+   begin
+      Tp.Np:=Tp.Np+1;
+      Tp.Tp(Tp.Np):=Ip;
+      Idp:=Tp.Np;
+   end Posa;
+
+   procedure Modif_Descripcio
+     (Tp  : in out T_Procs;
+      Idp : in Num_Proc;
+      Ip  : in Info_Proc) is
+   begin
+      Tp.Tp(Idp) := Ip;
+   end Modif_Descripcio;
+
+   -- Procediments per a la Taula de Variables
+   procedure Posa
+     (Tv : in out T_Vars;
+      Iv : in Info_Var;
+      Idv : out Num_Var) is
+   begin
+      Tv.Nv := Tv.Nv+1;
+      Tv.Tv(Tv.Nv) := Iv;
+      Idv := Tv.Nv;
+   end Posa;
+
+   -- Procediments per a la Taula d'Etiquetes
+   procedure Posa
+     (Te  : in out T_Etiqs;
+      Ie  : in Info_Etiq;
+      Ide : out Num_Etiq) is
+   begin
+      Te.Ne := Te.Ne+1;
+      Ide := Te.Ne;
+      Te.Te(Ide) := Ie;
+   end Posa;
+
 
 end Semantica;
