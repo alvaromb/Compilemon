@@ -1117,7 +1117,7 @@ package body Semantica.Gci is
 
             else
                Novavar(Tv, idproc, T4);
-               Novaconst(Tv,Idbase, Tsent, idproc, T5);
+               Novaconst(Tv, Idbase, Tsent, idproc, T5);
 
                C1:=(
                     Tc => Var,
@@ -1131,7 +1131,7 @@ package body Semantica.Gci is
                     Tc  => Var,
                     Idc => T2
                    );
-               Genera (Suma, C1, C2, C3);
+               Genera(Suma, C1, C2, C3);
 
             end if;
 
@@ -1159,6 +1159,7 @@ package body Semantica.Gci is
       idproc : num_proc := proc_nul;
       di : Id_nom;
       dti: descrip;
+	  ni : despl;
 
    begin
       case Tipus is
@@ -1301,6 +1302,8 @@ package body Semantica.Gci is
       C1,
       C2,
       C3 : Camp;
+	
+	  Idproc : num_proc;
 
    begin
 
@@ -1477,7 +1480,7 @@ package body Semantica.Gci is
       Genera(Branc_Inc, C1);
 
       C1.Ide:=efals;
-      Genera(Etiqueta, C);
+      Genera(Etiqueta, C1);
 
       Gci_Bloc(Blocelse); ----
 
