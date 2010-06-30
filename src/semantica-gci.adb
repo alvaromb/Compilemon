@@ -649,13 +649,13 @@ package body semantica.gci is
    
      if Tnode = Declmultvar then
          gci_Declsvar(A.Fd1);
-         --Posa_Idvar(A.Fd1.Id12, Idtipus, A.Fd1.L1, A.Fd1.C1, E);
+  
 		 cim(pproc, idproc);
-		 desc:= cons(ts,A.Fd1.Id12);
+		 desc:= cons(ts,A.Fe1.Id12);
 	
 		desctipus := cons(ts,desc.tr);
 		
-		Ivar := (A.Fd1.Id12,
+		Ivar := (A.Fe1.Id12,
       		 idproc,
       		 desctipus.td.ocup,
       		 0,
@@ -670,7 +670,7 @@ package body semantica.gci is
 
    end gci_Declsvar;
 
-	   procedure gci_Decconst
+   procedure gci_Decconst
      (A : in Pnode) is
 
       Id : Id_Nom renames A.Fe2.Id12;
@@ -698,7 +698,54 @@ package body semantica.gci is
 
    end gci_Decconst;
 
+	
+   procedure gci_Deccol
+     (A : in Pnode) is
 
+      Darray : Descrip;
+      Fesq : Pnode renames A.Fe1;
+      Idarray : Id_Nom;
+	  base : valor := 0;
+
+   begin  --p_dcoleccio s_parentesitancat pc_of id
+       
+	gci_Pcoleccio(Fesq,base,Idarray);
+		
+	Darray := cons(ts,Idarray);
+	Darray.td.dt.tt.base := base;
+	actualitza(ts, Idarray, Darray);
+
+   end gci_Deccol;
+
+
+   procedure gci_Pcoleccio
+     (A : in Pnode;
+	  base: in out valor
+	  Idarray : out Id_nom) is
+
+      Fesq : Pnode renames A.Fe1;
+      Id   : Id_Nom renames A.Fd1.Id12;
+     
+      Dtcamp : Descrip;
+
+   begin
+      if (A.Tipus = Pcoleccio) then--p_dcoleccio s_coma id 
+        
+		gci_Pcoleccio(Fesq, base, Idarray);
+		
+		Dtcamp := cons(ts,Id);
+		ncomp :=  dtcamp.td.dt.tt.lsup - dtcamp.td.dt.tt.linf + 1; 
+  	  	base := (base * ncomp) + dtcamp.td.dt.tt.linf;
+
+      elsif (A.Tipus = Pdimcoleccio) then --pc_type id pc_is pc_array s_parentesiobert id
+        
+		Dtcamp := cons(ts,Id);
+		Idarray := Fesq.Id12;
+  	  	base := dtcamp.td.dt.tt.linf;
+
+      end if;
+
+   end Ct_Pcoleccio;
 
 
    procedure gci_Bloc
