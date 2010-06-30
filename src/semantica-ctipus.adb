@@ -583,22 +583,25 @@ package body Semantica.Ctipus is
             Esem := True;
          end if;
 
-         if (Val.Val < Tdecl.Dt.Linf) or
-           (Val.Val > Tdecl.Dt.Lsup) then
-            Error(rang_sobrepassat, A.Fe2.l1, A.Fe2.c1,
-                  cons_nom(tn, Id));
-            Esem := True;
-         end if;
+		 if (Tsubj /= Tsarr) then
+		     if (Val.Val < Tdecl.Dt.Linf) or
+		       (Val.Val > Tdecl.Dt.Lsup) then
+		        Error(rang_sobrepassat, A.Fe2.l1, A.Fe2.c1,
+		              cons_nom(tn, Id));
+		        Esem := True;
+		     end if;
+		 end if;		 
 
-         Tconst := (dconst, IdTipus, Val.val);
-         Posa(Ts, Id, Tconst, E);
-         Put_Line("CT_CONST: (DEBUG)El valor de la "&
-                    "constant es: "&Val.val'img);
-         if E then
-            Error(id_existent, A.Fe2.l1, A.Fe2.c1,
-                  cons_nom(tn, Id));
-            Esem := True;
-         end if;
+		 Tconst := (dconst, IdTipus, Val.val);
+		 Posa(Ts, Id, Tconst, E);
+		 Put_Line("CT_CONST: (DEBUG)El valor de la "&
+		                "constant es: "&Val.val'img);
+		 if E then
+		 	Error(id_existent, A.Fe2.l1, A.Fe2.c1,
+		    cons_nom(tn, Id));
+		    Esem := True;
+		 end if;
+
       end if;
 
    end Ct_Decconst;
@@ -1169,6 +1172,8 @@ package body Semantica.Ctipus is
             T := Tscar;
          when A_Lit_N =>
             T := Tsent;
+		 when A_Lit_S =>
+			T := Tsarr;
          when others =>
             Put_Line("ERROR CT-constant: tipus constant "&
                        "erroni");

@@ -5,6 +5,8 @@ procedure provaid is
 
 	type pepe is array(bi, bi, bi, bi) of integer;
 
+	alf : constant string:= "hola";
+
 begin
 	b:=2;
 	--b:=b+1;
