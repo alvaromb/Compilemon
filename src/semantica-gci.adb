@@ -481,6 +481,7 @@ package body semantica.gci is
      (A : in Pnode) is
    begin
       --Entrabloc(Ts);
+	  --Tv.nv := nv;
       gci_Decprocediment(A);
 
       --Surtbloc(Ts);
@@ -592,8 +593,9 @@ package body semantica.gci is
          when Dcoleccio   =>
 			null;
          when Dregistre | Dencapregistre | Firecord =>
-            Ocup := 0;
-            Ct_Decregistre(Decl, Idrec,Ocup);
+           -- Ocup := 0;
+           -- Ct_Decregistre(Decl, Idrec,Ocup);
+		   null;
          when Dsubrang    =>
 			null;
          when Procediment =>
@@ -618,6 +620,7 @@ package body semantica.gci is
 
    begin
 	gci_Declsvar(Dvariable);
+
 	cim(pproc, idproc);
 	desc:= cons(ts,Id);
 	desctipus := cons(ts,desc.tr);
@@ -645,7 +648,7 @@ package body semantica.gci is
    begin
    
      if Tnode = Declmultvar then
-         Ct_Declsvar(A.Fd1);
+         gci_Declsvar(A.Fd1);
          --Posa_Idvar(A.Fd1.Id12, Idtipus, A.Fd1.L1, A.Fd1.C1, E);
 		 cim(pproc, idproc);
 		 desc:= cons(ts,A.Fd1.Id12);
