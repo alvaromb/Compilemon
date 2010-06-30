@@ -109,7 +109,8 @@ package Semantica.gci is
 
    procedure gci_Referencia_Var
      (A : in Pnode;
-      Idres, Iddesp: out Num_Var);
+      Idres, Iddesp: out Num_Var;
+      Idtipus : out Id_Nom);
 
    --Arrays
    procedure gci_Ref_Pri --"Correcte"

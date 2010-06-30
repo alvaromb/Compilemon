@@ -316,7 +316,7 @@ package body Semantica.Gci is
          when condicionalC =>
             gci_Scondc(A);
          when Assignacio =>
-            gci_Referencia_Var(A.Fe1, Idr, Idd);
+            gci_Referencia_Var(A.Fe1, Idr, Idd, Idtipus);
             gci_Expressio(A.Fd1, Idres, Iddesp);
             gci_Assignacio(Idr, Idd, Idres, Iddesp);
          when others => null;
@@ -582,7 +582,7 @@ package body Semantica.Gci is
             gci_Constant(A, Idr);
 
          when Fireferencia | Referencia =>
-            gci_Referencia_Var(A, Idr, Idd);
+            gci_Referencia_Var(A, Idr, Idd, Idtipus);
          when others =>
             Put_Line("ERROR (DEBUG) gci-exp: tipus expressio no "&
                        "trobat :S "&Tipus'Img);
@@ -1061,7 +1061,7 @@ package body Semantica.Gci is
 
    procedure gci_Referencia_Var
      (A : in Pnode;
-      Idres, Iddesp: out Num_var;
+      Idres, Iddesp: out Num_Var;
       Idtipus : out Id_Nom) is
 
       Tipus : Tipusnode renames A.Tipus;
@@ -1076,14 +1076,13 @@ package body Semantica.Gci is
    begin
       case Tipus is
          when Identificador =>
-            gci_Identificador(A, Idres, Iddesp, Idtipus);
-
+            Gci_Identificador(A, Idres, Iddesp, Idtipus);
 
          when Referencia => -- r -> r.id
-            gci_Ref_Rec(A, Idres, Iddesp, Idtipus);
+            Gci_Ref_Rec(A, Idres, Iddesp, Idtipus);
 
          when Fireferencia => --r -> ref_pri)
-            gci_Ref_Pri(A.F6, Idres, Iddesp, Idbase, Idtipus, It_Idx);
+            Gci_Ref_Pri(A.F6, Idres, Iddesp, Idbase, Idtipus, It_Idx);
 
             da := cons(ts,Idtipus);
             Idtipus := da.tr;
