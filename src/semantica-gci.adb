@@ -403,7 +403,7 @@ package body Semantica.Gci is
             while not es_buida(pparam) loop
                cim(pparam, prm);
                Desempilar(Pparam);
-
+               -- Camviar infovar : argument a TRUE, calcular despl
                C1:=(
                     Tc => Var,
                     Idv => Prm.Base
@@ -1065,12 +1065,13 @@ package body Semantica.Gci is
       Idtipus : out Id_Nom) is
 
       Tipus : Tipusnode renames A.Tipus;
-      Idbase : Id_Nom;
+      --Idbase : Id_Nom;
+      Idbase : Num_Var;
       It_Idx : Cursor_Idx;
-      da,dtc : Descrip;
+      Da, Dtc : Descrip;
       T1,T2,T3,T4,T5: num_Var := Var_Nul;
       idproc : num_proc := proc_nul;
-      c1, c2, c3: camp;
+      C1, C2, C3: Camp;
 
    begin
       case Tipus is
@@ -1082,8 +1083,7 @@ package body Semantica.Gci is
             gci_Ref_Rec(A, Idres, Iddesp, Idtipus);
 
          when Fireferencia => --r -> ref_pri)
-
-            gci_Ref_Pri(A.F6,Idres,Iddesp,Idtipus,Idbase,It_Idx);
+            gci_Ref_Pri(A.F6, Idres, Iddesp, Idbase, Idtipus, It_Idx);
 
             da := cons(ts,Idtipus);
             Idtipus := da.tr;
@@ -1092,8 +1092,11 @@ package body Semantica.Gci is
             cim(pproc, idproc);
             Novavar(Tv, idproc, T1);
             Novavar(Tv, idproc, T2);
-            Novaconst(Tv,da.b , Tsent, idproc, T3); -- da.b no existeix encara
-                                                    -- i a mes haurem de omplirla a les decls!!!
+            --da.b no existeix encara
+            --i a mes haurem de
+            --omplirla a les decls!!!
+            Novaconst(Tv, da.b , Tsent, idproc, T3);
+
             C1:=(
                  Tc => Var,
                  Idv => T1
@@ -1106,15 +1109,13 @@ package body Semantica.Gci is
                  Tc  => Const,
                  Idc => T3
                 );
-            Genera (Resta, C1, C2, C3);
-            C2.Idv:=T2;
-            C3.Idc:=dtc.td.ocup;
+            Genera(Resta, C1, C2, C3);
+            C2.Idv := T2;
+            C3.Idc := Dtc.Dt.Ocup;
             Genera (Producte, C2, C1, C3);
 
             if Idbase = Id_nul then
-
                Iddesp := T2;
-
             else
                Novavar(Tv, idproc, T4);
                Novaconst(Tv, Idbase, Tsent, idproc, T5);
@@ -1125,11 +1126,11 @@ package body Semantica.Gci is
                    );
                C2:=(
                     Tc  => Const,
-                    Idv => T5
+                    Idc => T5
                    );
                C3:=(
                     Tc  => Var,
-                    Idc => T2
+                    Idv => T2
                    );
                Genera(Suma, C1, C2, C3);
 
@@ -1159,13 +1160,13 @@ package body Semantica.Gci is
       idproc : num_proc := proc_nul;
       di : Id_nom;
       dti: descrip;
-	  ni : despl;
+          ni : despl;
 
    begin
       case Tipus is
          when Pri => --pri -> pri ,E
                      --Put_Line("CT-ref_pri: pri");
-            gci_Ref_Pri(Fesq, Idres, Iddesp, Idtipus, Idbase, It_Idx);
+            Gci_Ref_Pri(Fesq, Idres, Iddesp, Idtipus, Idbase, It_Idx);
             gci_Expressio(Fdret, IdresE, IddespE);
 
             It_Idx := Succ_Idx(Ts, It_Idx);
@@ -1302,8 +1303,8 @@ package body Semantica.Gci is
       C1,
       C2,
       C3 : Camp;
-	
-	  Idproc : num_proc;
+
+          Idproc : num_proc;
 
    begin
 
@@ -1314,7 +1315,7 @@ package body Semantica.Gci is
       Idtipus:= dcamp.tcamp;
 
       cim(pproc, idproc);
-      Novaconst(Tv, dcamp.despl, Tsent, Idproc, numconstant);
+      Novaconst(Tv, Dcamp.Dsp, Tsent, Idproc, numconstant);
 
       if Iddesp = id_nul then
          Iddesp:=numconstant;
