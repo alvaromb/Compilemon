@@ -161,6 +161,7 @@ package body Semantica.Ctipus is
       Iv : Info_Var;
       Idv : Num_Var;
    begin
+      -- "character"
       Posa_Id(Tn, Idchar, "character");
       Dt := (Tscar, 4, Valor(Character'Pos(Character'First)),
              Valor(Character'Pos(Character'Last)));
@@ -184,7 +185,6 @@ package body Semantica.Ctipus is
       D := (Dproc, Idpr);
       Posa(Ts, Idn, D, E);
 
-      -- _arg_putc
       Posa_Id(Tn, Ida, "_arg_putc");
       Iv := (Ida, Idpr, Integer'Size/8, Ipr.Ocup_Param, Tscar,
              True, False, 0);
@@ -193,6 +193,67 @@ package body Semantica.Ctipus is
       Posa(Ts, Ida, D, E);
       Posa_Arg(Ts, Idn, Ida, D, E);
       Ipr.Ocup_Param := Ipr.Ocup_Param + Iv.Ocup;
+
+      -- getc
+      Posa_Id(Tn, Idn, "getc");
+      Ipr := (Idn, 0, 0, 4, Etiq_Nul);
+      Posa(Tp, Ipr, Idpr);
+      Ie := (Etiq_Proc, Idpr);
+      Posa(Te, Ie, Ide);
+      Ipr.Etiq := Ide;
+      Modif_Descripcio(Tp, Idpr, Ipr);
+      D := (Dproc, Idpr);
+      Posa(Ts, Idn, D, E);
+
+      Posa_Id(Tn, Ida, "_arg_getc");
+      Iv := (Ida, Idpr, Integer'Size/8, Ipr.Ocup_Param, Tscar,
+             True, False, 0);
+      Posa(Tv, Iv, Idv);
+      D := (Dargc, Idv, Idchar);
+      Posa(Ts, Ida, D, E);
+      Posa_Arg(Ts, Idn, Ida, D, E);
+      Ipr.Ocup_Param := Ipr.Ocup_Param + Iv.Ocup;
+
+      -- puts
+      Posa_Id(Tn, Idn, "puts");
+      Ipr := (Idn, 0, 0, 4, Etiq_Nul);
+      Posa(Tp, Ipr, Idpr);
+      Ie := (Etiq_Proc, Idpr);
+      Posa(Te, Ie, Ide);
+      Ipr.Etiq := Ide;
+      Modif_Descripcio(Tp, Idpr, Ipr);
+      D := (Dproc, Idpr);
+      Posa(Ts, Idn, D, E);
+
+      Posa_Id(Tn, Ida, "_arg_puts");
+      Iv := (Ida, Idpr, 32*Integer'Size, Ipr.Ocup_Param, Tsarr,
+             True, False, 0);
+      Posa(Tv, Iv, Idv);
+      D := (Dargc, Idv, Idstring);
+      Posa(Ts, Ida, D, E);
+      Posa_Arg(Ts, Idn, Ida, D, E);
+      Ipr.Ocup_Param := Ipr.Ocup_Param + Iv.Ocup;
+
+      -- gets
+      Posa_Id(Tn, Idn, "gets");
+      Ipr := (Idn, 0, 0, 4, Etiq_Nul);
+      Posa(Tp, Ipr, Idpr);
+      Ie := (Etiq_Proc, Idpr);
+      Posa(Te, Ie, Ide);
+      Ipr.Etiq := Ide;
+      Modif_Descripcio(Tp, Idpr, Ipr);
+      D := (Dproc, Idpr);
+      Posa(Ts, Idn, D, E);
+
+      Posa_Id(Tn, Ida, "_arg_gets");
+      Iv := (Ida, Idpr, 32*Integer'Size, Ipr.Ocup_Param, Tsarr,
+             True, False, 0);
+      Posa(Tv, Iv, Idv);
+      D := (Dargc, Idv, Idstring);
+      Posa(Ts, Ida, D, E);
+      Posa_Arg(Ts, Idn, Ida, D, E);
+      Ipr.Ocup_Param := Ipr.Ocup_Param + Iv.Ocup;
+
    end Inicia_Caracter;
 
 
@@ -597,7 +658,6 @@ package body Semantica.Ctipus is
          end if;
 
       elsif (A.Tipus = Pdimcoleccio) then
-         Put_Line("josemariabuadessssssssssssssssssssssssss!");
          Dtarray := (Tsarr, 0, Idtipus_Array, 0);
          Darray := (Dtipus, Dtarray);
          Idarray := Fesq.Id12;
