@@ -54,6 +54,8 @@ package body Semantica.Ctipus is
    end mt_numero;
 
 
+
+
    -- Taula de simbols
    procedure Inicia_Enter is
       D : Descrip;
@@ -92,7 +94,7 @@ package body Semantica.Ctipus is
              Tsent, True, False, 0);
       Posa(Tv, Iv, Idv);
       D := (Dargc, Idv, Idint);
-      Posa(Ts, Ida, D, Error);
+      --Posa(Ts, Ida, D, Error);
       Posa_Arg(Ts, Idn, Ida, D, E);
       Ipr.Ocup_Param := Ipr.Ocup_Param + Iv.Ocup;
 
@@ -137,14 +139,14 @@ package body Semantica.Ctipus is
       Iv := (Idt, Tp.Np, Integer'Size/8, 0, Tsbool, False,
              True, -1);
       Posa(Tv, Iv, Idv);
-      D := (Dconst, Idb, Idv); --REPASAR ESTO!!!
+      --D := (Dconst, Idb, Idv); --REPASAR ESTO!!!
       Posa(Ts, Idt, D, E);
 
       Posa_Id(Tn, Idf, "false");
       Iv.Id := Idf;
       Iv.Valconst := 0;
       Posa(Tv, Iv, Idv);
-      D := (Dconst, Idb, Idv); --REPASAR ESTO!!!
+      --D := (Dconst, Idb, Idv); --REPASAR ESTO!!!
       Posa(Ts, Idf, D, E);
    end Inicia_Boolea;
 
@@ -169,12 +171,15 @@ package body Semantica.Ctipus is
    end Inicia_Caracter;
 
 
-   procedure Inicia_String is
-      D : Descrip;
-      Dt : Descriptipus;
-      Idn : Id_Nom;
-   begin
-   end Inicia_String;
+   --procedure Inicia_String is
+   --   D : Descrip;
+   --   Dt : Descriptipus;
+   --   Idn : Id_Nom;
+   --begin
+   --	 null;
+   --end Inicia_String;
+
+
 
 
    procedure Inicia_analisi(nomFitxer: in String) is
@@ -456,8 +461,8 @@ package body Semantica.Ctipus is
          Ct_Declsvar(A.Fd1, Idtipus);
          Put_Line("CT_DECLSVAR:(DEBUG) diferents "&
                     "variables amb mateix tipus...");
-         Posa_Idvar(A.Fd1.Id12, Idtipus, A.Fd1.L1,
-                    A.Fd1.C1, E);
+         Posa_Idvar(A.Fe1.Id12, Idtipus, A.Fe1.L1,
+                    A.Fe1.C1, E);
       end if;
 
    end Ct_Declsvar;

@@ -1,60 +1,9 @@
 procedure provaid is
 
-	--h:integer;
-	--type num is new integer range 0..2;
-	--type bili is array (h, num) of integer;
-
-	--procedure provaid(pepe : in integer; bili : in out integer) is
-	--begin
-	--	h := 1;
-	--end provaid;
-
-
-
-	procedure prova(b: out integer) is
-		a: integer;
-		--procedure provaid is
-		--begin
-			--h := 1;
-		--end provaid;
-		procedure prova1(b: out boolean) is
-		--a: boolean;
-		--procedure provaid is
-		--begin
-			--h := 1;
-		--end provaid;
-		begin
-			--h := 1;
-			a:=8;
-			b:= true;
-		end prova1;
-	begin
-		--h := 1;
-		b:= 8;
-		--a := 7;
-	end prova;
-
-    --proaid : integer;
-
-	--type p is record
-	--	m : boolean;
-	--	l : integer;
-	--end record;
-
-	--e : boolean;
-
-	
-	c:character;
+	b, c, a: integer;
 
 begin
-
-	--h:=0;
-	--e := false;
-	--if (e) then
-	--e := true;
-	--end if;
-		--h:=false;
-
-	c:='a';
+	b:=2;
+	--b:=b+1;
 
 end provaid;

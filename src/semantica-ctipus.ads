@@ -48,11 +48,6 @@ package Semantica.Ctipus is
          s : in string;
          a : out atribut);
 
-   -- Taula de simbols
-   procedure Inicia_Enter;
-   procedure Inicia_Boolea;
-   procedure Inicia_Caracter;
-   procedure Inicia_String;
 
    -- Comprovacio de tipus
    procedure Inicia_analisi(nomFitxer: in String);

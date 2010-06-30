@@ -3,14 +3,16 @@ with Decls.Dgenerals,
   Decls.D_Taula_De_Noms,
   Decls.D_Atribut,
   Decls.dtsimbols,
-  Ada.Text_Io;
+  Ada.Text_Io,
+  Decls.dtdesc;
 
 use Decls.Dgenerals,
   Decls.Dtnode,
   Decls.D_Taula_De_Noms,
   Decls.D_Atribut,
   Decls.dtsimbols,
-  Ada.Text_Io;
+  Ada.Text_Io,
+  Decls.dtdesc;
 
 package Semantica is
 
