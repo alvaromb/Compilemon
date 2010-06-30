@@ -1,34 +1,135 @@
+with Semantica.Declsc3a,
+  Pilas,
+  Decls.Dgenerals;
 
+use Semantica.Declsc3a;
 
 package Semantica.gci is
 
-	Campo_Nul : constant Camp := (Tc => Const, Idc => Var_Nul);
+   Camp_Nul : constant Camp := (Tc => Const, Idc => Var_Nul);
 
-	Zero,
-	Uno,
-	MenysU : num_Var;
+   type T_Param is record
+      Base, Despl : num_Var;
+   end record;
 
+   procedure Genera
+     (Instr : in tInstruccio;
+      C1    : in Camp := Camp_Nul;
+      C2    : in Camp := Camp_Nul;
+      C3    : in Camp := Camp_Nul);
 
-	type T_Param is record
-    	Base, Despl : num_Var;
-   	end record;
-
-	package Pila_Proc is new Pilas (num_Proc);
-	use Pila_Proc;
-	pproc : Pila_proc.Pilas;
-
-	package Pila_Param is new Pilas (T_Param);
-	use Pila_Param;
-	Pparam : Pila_Param.Pilas;
-
-	procedure Genera (
-      Instr : in     tInstruccio;
-      C1    : in     Camp;
-      C2    : in     Camp;
-      C3    : in     Camp)
-
-   procedure Ct_Decprocediment
+   procedure Gci_Decprocediment
      (A : in Pnode);
 
+   procedure gci_Programa
+     (A : in Pnode);
+
+   procedure Gci_Encap
+     (A : in Pnode;
+      I : in Id_Nom);
+
+   procedure gci_Declaracions
+     (A : in Pnode);
+
+   procedure gci_Decvar
+     (A : in Pnode);
+
+   procedure gci_Declsvar
+     (A : in Pnode);
+
+   procedure gci_Decconst
+     (A : in Pnode);
+
+   procedure gci_Deccol
+     (A : in Pnode);
+
+   procedure gci_Pcoleccio
+     (A : in Pnode;
+      base: in out Valor;
+      Idarray : out Id_nom);
+
+   procedure gci_Bloc
+     (A : in Pnode);
+
+   procedure Gci_Assignacio
+     (Idref, Iddref, Idrexp, Iddexp: in num_var);
+
+   --Procediments
+   procedure gci_Referencia_Proc --InComplet
+     (A : in Pnode;
+      Idproc : out num_proc);
+
+   procedure gci_Ref_Pri
+     (A : in Pnode;
+      Idproc : out num_proc);
+
+   procedure gci_Identificador -- correcte
+     (A : in Pnode;
+      Idres, Iddesp: out num_var;
+      Idtipus : out Id_Nom);
+
+   procedure gci_Constant
+     (A : in Pnode;
+      Idres : out Num_var);
+
+   procedure gci_Expressio
+     (A : in Pnode;
+      Idr, Idd: out num_var);
+
+   procedure gci_Expressioc --comprovar parametres
+     (A : in Pnode;
+      Idres,Idresdesp: out num_var);
+
+   procedure gci_Exp_Relacional --manca acabar d'entendre el final
+     (IdResE, IdResD, IddespE, IddespD : in num_var;
+      IdResultExp, IddespExp :   out num_var;
+      Op : in Operacio);
+
+   procedure gci_Exp_Logica
+     (IdResE, IdResD, IddespE, IddespD : in num_var;
+      IdResultExp, IddespExp :   out num_var;
+      Op : in Operacio);
+
+   procedure gci_Exp_Aritmetica
+     (IdResE, IdResD, IddespE, IddespD : in num_var;
+      IdResultExp, IddespExp : out num_var;
+      Op : in Operacio);
+
+   procedure gci_Expressiou
+     (A : in Pnode;
+      Idr, Idd : out num_var);
+
+   procedure gci_Exp_Negacio
+     (idRes, Iddesp : in num_var;
+      IdresultExp, IddespExp : out num_var);
+
+   procedure gci_Exp_Neglogica
+     (idRes, Iddesp : in num_var;
+      IdresultExp, IddespExp : out num_var);
+
+   procedure gci_Referencia_Var
+     (A : in Pnode;
+      Idres, Iddesp: out Num_Var);
+
+   --Arrays
+   procedure gci_Ref_Pri --"Correcte"
+     (A : in Pnode;
+      Idres, Iddesp, Idbase : out Num_var;
+      Idtipus : out Id_Nom;
+      It_Idx : out Cursor_Idx);
+
+   procedure gci_Ref_Rec --correcte
+     (A : in Pnode;
+      Idres, Iddesp: out num_var;
+      Idtipus : out Id_Nom);
+
+   procedure gci_Sconds
+     (A : in Pnode);
+
+   procedure gci_Scondc
+     (A : in Pnode);
+
+   procedure gci_Srep
+     (A : in Pnode);
 
 end Semantica.gci;

@@ -68,6 +68,17 @@ package body Semantica.Ctipus is
       Iv : Info_Var;
       Idv : Num_Var;
    begin
+      -- Constants inicials
+      Posa_Id(Tn, Idn, "_zero");
+      Iv := (Idn, Tp.Np, Integer'Size/8, 0, Tsent,
+             False, True, 0);
+      Posa(Tv, Iv, Zero);
+
+      Posa_Id(Tn, Idn, "_menysu");
+      Iv := (Idn, Tp.Np, Integer'Size/8, 0, Tsent,
+             False, True, -1);
+      Posa(Tv, Iv, Menysu);
+
       -- "Integer"
       Posa_Id(Tn, Idint, "integer");
       Dt := (Tsent, Integer'Size/8, Valor(Integer'First),

@@ -155,6 +155,13 @@ package Semantica is
 
    Arbre : Pnode;
 
+   -- Per els brancaments
+   Zero,
+   --Uno,
+   MenysU : num_Var;
+
+
+
    -- Procediments
    procedure Abuit
      (P : out pnode);
