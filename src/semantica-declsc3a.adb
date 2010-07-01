@@ -141,7 +141,7 @@ package body semantica.declsc3a is
       Nomproc : String := Cons_nom(Tn, Consulta(Tp, Idpr).Idn);
 
    begin
-      return "_" & Nomproc;
+      return "_" & Trim(Nomproc, Both);
    end Etiqueta;
    ---
 
@@ -150,7 +150,7 @@ package body semantica.declsc3a is
       Text : String := "_etq" & Integer'Image (N);
    begin
       Text(Text'First+4):='_';
-      return Text;
+      return Trim(Text, Both);
    end Etiqueta;
 
    ---
@@ -173,9 +173,9 @@ package body semantica.declsc3a is
    begin
       case Ipr.Tp is
          when Intern =>
-            return "_etq_" & Ipr.Etiq'Img;
+            return "_etq_" & Trim(Ipr.Etiq'Img, Both);
          when Extern =>
-            return "_" & Cons_Nom(Tn, Ipr.Etiq_Extern);
+            return "_" & Trim(Cons_Nom(Tn, Ipr.Etiq_Extern), Both);
       end case;
    end Etiqueta;
 

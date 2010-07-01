@@ -1,6 +1,12 @@
-with Ada.Text_Io;
+with Ada.Text_Io,
+  Ada.Strings,
+  Ada.Strings.Fixed,
+  Ada.Strings.Maps;
 
-use Ada.Text_Io;
+use Ada.Text_Io,
+  Ada.Strings,
+  Ada.Strings.Fixed,
+  Ada.Strings.Maps;
 
 package Semantica.Assemblador is
    Error_Assemblador : exception;

@@ -4,13 +4,19 @@ with Decls.Dgenerals,
   Ada.Sequential_Io,
   Ada.Text_Io,
   Decls.D_Taula_De_Noms,
-  Semantica.Ctipus;
+  Semantica.Ctipus,
+  Ada.Strings,
+  Ada.Strings.Fixed,
+  Ada.Strings.Maps;
 
 use Decls.Dgenerals,
   Semantica,
   Decls.Dtdesc,
   Decls.D_Taula_De_Noms,
-  Semantica.Ctipus;
+  Semantica.Ctipus,
+  Ada.Strings,
+  Ada.Strings.Fixed,
+  Ada.Strings.Maps;
 
 package Semantica.Declsc3a is
 

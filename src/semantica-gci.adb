@@ -1713,7 +1713,7 @@ package body Semantica.Gci is
          end if;
       end loop;
 
-        end Calcula_Despls;
+   end Calcula_Despls;
 
 
 end semantica.gci;

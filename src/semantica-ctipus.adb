@@ -67,6 +67,7 @@ package body Semantica.Ctipus is
       --Ide : Num_Etiq;
       Iv : Info_Var;
       Idv : Num_Var;
+
    begin
       -- Constants inicials
       Posa_Id(Tn, Idn, "_zero");
@@ -127,6 +128,7 @@ package body Semantica.Ctipus is
       Posa(Ts, Ida, D, E);
       Posa_Arg(Ts, Idn, Ida, D, E);
       Ipr.Ocup_Extern := Ipr.Ocup_Extern + Iv.Ocup;
+
    end Inicia_Enter;
 
 
@@ -149,7 +151,7 @@ package body Semantica.Ctipus is
              True, -1);
       Posa(Tv, Iv, Idv);
           Nv:=Nv+1;
-      D := (Dconst, Idt, -1, Nv); --REPASAR ESTO!!!
+      D := (Dconst, Idb, -1, Nv); --REPASAR ESTO!!!
       Posa(Ts, Idt, D, E);
 
       Posa_Id(Tn, Idf, "false");
@@ -157,7 +159,7 @@ package body Semantica.Ctipus is
       Iv.Valconst := 0;
       Posa(Tv, Iv, Idv);
            Nv:=Nv+1;
-      D := (Dconst, Idf, 0, Nv); --REPASAR ESTO!!!
+      D := (Dconst, Idb, 0, Nv); --REPASAR ESTO!!!
       Posa(Ts, Idf, D, E);
    end Inicia_Boolea;
 

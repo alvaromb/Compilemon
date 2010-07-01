@@ -56,7 +56,7 @@ package body Semantica.Assemblador is
    procedure Etiqueta
      (Etiqueta : in String) is
    begin
-      Put_Line(Fitxer_Asmbl, Etiqueta & ": nop");
+      Put_Line(Fitxer_Asmbl, Trim(Etiqueta, Both) & ": nop");
    end Etiqueta;
 
    -- LD a, %eax
@@ -81,7 +81,7 @@ package body Semantica.Assemblador is
             if Ivar.Const then
                Comentari("LD variable constant" & Org.Idv'Img &
                     ", " & Dst);
-               Instr_2_Op("movl", "$" & Ivar.Valconst'Img, Dst);
+               Instr_2_Op("movl", "$" & Trim(Ivar.Valconst'Img, Both), Dst);
 
             -- 'a' es local
             elsif Prof_Var = Prof_Actual then
@@ -93,7 +93,7 @@ package body Semantica.Assemblador is
                -- 'a' es variable local
                else
                   Comentari("LD variable local");
-                  Instr_2_Op("movl", Da'Img & "(%ebp)", Dst);
+                  Instr_2_Op("movl", Trim(Da'Img, Both) & "(%ebp)", Dst);
                end if;
             -- 'a' es global
             elsif Prof_Var < Prof_Actual then
@@ -102,16 +102,16 @@ package body Semantica.Assemblador is
                   Comentari("LD parametre global");
                   Instr_2_Op("movl", "$DISP", "%esi");
                   Dpa := 4*Integer(Prof_Var);
-                  Instr_2_Op("movl", Dpa'Img & "(%esi)", "%esi");
-                  Instr_2_Op("movl", Da'Img & "(%esi)", "%esi");
+                  Instr_2_Op("movl", Trim(Dpa'Img, Both) & "(%esi)", "%esi");
+                  Instr_2_Op("movl", Trim(Da'Img, Both) & "(%esi)", "%esi");
                   Instr_2_Op("movl", "(%esi)", Dst);
                -- 'a' es variable global
                else
                   Comentari("LD variable global");
                   Instr_2_Op("movl", "$DISP", "%esi");
                   Dpa := 4*Integer(Prof_Var);
-                  Instr_2_Op("movl", Dpa'Img & "(%esi)", "%esi");
-                  Instr_2_Op("movl", Da'Img & "(%esi)", Dst);
+                  Instr_2_Op("movl", Trim(Dpa'Img, Both) & "(%esi)", "%esi");
+                  Instr_2_Op("movl", Trim(Da'Img, Both) & "(%esi)", Dst);
                end if;
             else
                raise Error_Assemblador;
@@ -121,7 +121,7 @@ package body Semantica.Assemblador is
             -- 'a' es una constant
             Comentari("LD es una constant" & Org.Idc'Img & ", " & Dst);
             Vc := Consulta(Tv, Org.Idc).Valconst;
-            Instr_2_Op("movl", "$" & Vc'Img, Dst);
+            Instr_2_Op("movl", "$" & Trim(Vc'Img, Both), Dst);
          when others =>
             raise Error_Assemblador;
       end case;
@@ -151,11 +151,11 @@ package body Semantica.Assemblador is
          -- 'a' es una variable local
          if not Idst.Param then
             Comentari("ST a una variable local");
-            Instr_2_Op("movl", Org, Da'Img & "(%ebp)");
+            Instr_2_Op("movl", Org, Trim(Da'Img, Both) & "(%ebp)");
          -- 'a' es un parametre local
          else
             Comentari("ST a un parametre local");
-            Instr_2_Op("movl", Da'Img & "(%ebp)", "%edi");
+            Instr_2_Op("movl", Trim(Da'Img, Both) & "(%ebp)", "%edi");
             Instr_2_Op("movl", Org, "(%edi)");
          end if;
       -- 'a' es global
@@ -165,17 +165,17 @@ package body Semantica.Assemblador is
             Comentari("ST a una variable global");
             Instr_2_Op("movl", "$DISP", "%esi");
             Dpa := 4*Integer(Prof_Var);
-            Instr_2_Op("addl", "$" & Dpa'Img, "%esi");
+            Instr_2_Op("addl", "$" & Trim(Dpa'Img, Both), "%esi");
             Instr_2_Op("movl", "(%esi)", "%edi");
-            Instr_2_Op("movl", Org, Da'Img & "(%edi)");
+            Instr_2_Op("movl", Org, Trim(Da'Img, Both) & "(%edi)");
          -- 'a' es un parametre global
          else
             Comentari("ST a un parametre global");
             Instr_2_Op("movl", "$DISP", "%esi");
             Dpa := 4*Integer(Prof_Var);
-            Instr_2_Op("addl", "$" & Dpa'Img, "%esi");
+            Instr_2_Op("addl", "$" & Trim(Dpa'Img, Both), "%esi");
             Instr_2_Op("movl", "(%esi)", "%esi");
-            Instr_2_Op("movl", Da'Img & "(%esi)", "%edi");
+            Instr_2_Op("movl", Trim(Da'Img, Both) & "(%esi)", "%edi");
             Instr_2_Op("movl", Org, "(%edi)");
          end if;
       else
@@ -201,7 +201,7 @@ package body Semantica.Assemblador is
          -- 'a' es constant
          when Const =>
             Comentari("LDADDR amb a constant" & Org.Idc'Img & ", " & Dst);
-            Instr_2_Op("movl", "$" & Cons_Nom(Tn, Ivar.Id), Dst);
+            Instr_2_Op("movl", "$" & Trim(Cons_Nom(Tn, Ivar.Id), Both), Dst);
 
          -- 'a' es una variable
          when Var =>
@@ -210,18 +210,19 @@ package body Semantica.Assemblador is
             if Ivar.Const then
                Comentari("LDADDR amb var. constant" & Org.Idc'Img &
                            ", " & Dst);
-               Instr_2_Op("movl", "$" & Cons_Nom(Tn, Ivar.Id), Dst);
+               Instr_2_Op("movl", "$" & Trim(Cons_Nom(Tn, Ivar.Id), Both),
+                          Dst);
 
             -- 'a' es local
             elsif Prof_Var = Prof_Actual then
                -- 'a' es una variable local
                if not Ivar.Param then
                   Comentari("LDADDR amb variable local");
-                  Instr_2_Op("leal", Da'Img & "(%ebp)", Dst);
+                  Instr_2_Op("leal", Trim(Da'Img, Both) & "(%ebp)", Dst);
                -- 'a' es un parametre local
                else
                   Comentari("LDADDR amb parametre local");
-                  Instr_2_Op("movl", Da'Img & "(%ebp)", Dst);
+                  Instr_2_Op("movl", Trim(Da'Img, Both) & "(%ebp)", Dst);
                end if;
 
             -- 'a' es global
@@ -231,15 +232,15 @@ package body Semantica.Assemblador is
                   Comentari("LDADDR amb variable global");
                   Instr_2_Op("movl", "$DISP", "%esi");
                   Dpa := 4*Integer(Prof_Var);
-                  Instr_2_Op("movl", Dpa'Img & "(%esi)", "%esi");
-                  Instr_2_Op("leal", Da'Img & "(%esi)", Dst);
+                  Instr_2_Op("movl", Trim(Dpa'Img, Both) & "(%esi)", "%esi");
+                  Instr_2_Op("leal", Trim(Da'Img, Both) & "(%esi)", Dst);
                -- 'a' es un parametre global
                else
                   Comentari("LDADDR amb parametre global");
                   Instr_2_Op("movl", "$DISP", "%esi");
                   Dpa := 4*Integer(Prof_Var);
-                  Instr_2_Op("movl", Dpa'Img & "(%esi)", "%esi");
-                  Instr_2_Op("movl", Da'Img & "(%esi)", Dst);
+                  Instr_2_Op("movl", Trim(Dpa'Img, Both) & "(%esi)", "%esi");
+                  Instr_2_Op("movl", Trim(Da'Img, Both) & "(%esi)", Dst);
                end if;
             else
                raise Error_Assemblador;
@@ -275,19 +276,20 @@ package body Semantica.Assemblador is
                --s1 : .asciiz "El nombde de a's es"
                Put_Line(Fitxer_Asmbl, Tab &
                           Cons_Nom(Tn, Iv.Id) & " : .asciz """ &
-                          Cons_Str(Tn, rang_tcar(Iv.Valconst)) & """");
+                          Trim(Cons_Str(Tn, rang_tcar(Iv.Valconst)), Both)
+                          & """");
             elsif Iv.Tsub = Tsent then
                --Si es un numeric
                --c3 : .long 3
                Put_Line(Fitxer_Asmbl, Tab &
                           Cons_Nom(Tn, Iv.Id) & " : .long " &
-                          Iv.Valconst'Img);
+                          Trim(Iv.Valconst'Img, Both));
             else
                --Si es un caracter
                --cc2 : .ascii "A"
                Put_Line(Fitxer_Asmbl, Tab &
                           Cons_Nom(Tn, Iv.Id) & " : .ascii """ &
-                          Iv.Valconst'Img & """");
+                          Trim(Iv.Valconst'Img, Both) & """");
             end if;
          end if;
       end loop;
@@ -335,7 +337,7 @@ package body Semantica.Assemblador is
                Comentari("Global " & Ic3a.Camp1.Ide'Img);
                Ide := Ic3a.Camp1.Ide;
                --Put_Line(Fitxer_Asmbl, ".globl " & Etiqueta(Ide));
-               Put_Line(Fitxer_Asmbl, ".globl _etq_" & Ide'Img);
+               Put_Line(Fitxer_Asmbl, ".globl _etq_" & Trim(Ide'Img, Both));
 
             when Rtn =>
                if Ic3a.Camp1.Tc /= Proc then
@@ -349,7 +351,7 @@ package body Semantica.Assemblador is
                Instr_1_Op("popl", "%ebp");
                Instr_2_Op("movl", "$DISP", "%edi");
                Dpn := 4*Integer(Ipr.Prof);
-               Instr_1_Op("popl", Dpn'Img & "(%edi)");
+               Instr_1_Op("popl", Trim(Dpn'Img, Both) & "(%edi)");
                Instr_0_Op("ret");
 
             when Call =>
@@ -359,9 +361,10 @@ package body Semantica.Assemblador is
                New_Line(Fitxer_Asmbl);
                Comentari("Call " & Ic3a.Camp1.Idp'Img);
                Ipr := Consulta(Tp, Ic3a.Camp1.Idp);
-               Instr_1_Op("call", Etiqueta(Ipr));
+               Instr_1_Op("call", Trim(Etiqueta(Ipr), Both));
                -- Mirar el tema de si hay que *4
-               Instr_2_Op("addl", "$" & Ipr.Ocup_Param'Img, "%esp");
+               Instr_2_Op("addl", "$" & Trim(Ipr.Ocup_Param'Img, Both),
+                          "%esp");
 
             when Preamb =>
                if Ic3a.Camp1.Tc /= Proc then
@@ -375,11 +378,12 @@ package body Semantica.Assemblador is
                Etiqueta(Etiqueta(Ipr));
                Instr_2_Op("movl", "$DISP", "%esi");
                Dpn := 4*Integer(Ipr.Prof);
-               Instr_1_Op("pushl", Dpn'Img & "(%esi)");
+               Instr_1_Op("pushl", Trim(Dpn'Img, Both) & "(%esi)");
                Instr_1_Op("pushl", "%ebp");
                Instr_2_Op("movl", "%esp", "%ebp");
-               Instr_2_Op("movl", "%ebp", Dpn'Img & "(%esi)");
-               Instr_2_Op("subl", "$" & Ipr.Ocup_Var'Img, "%esp");
+               Instr_2_Op("movl", "%ebp", Trim(Dpn'Img, Both) & "(%esi)");
+               Instr_2_Op("subl", "$" & Trim(Ipr.Ocup_Var'Img, Both),
+                          "%esp");
 
             when Params =>
                New_Line(Fitxer_Asmbl);
@@ -393,7 +397,7 @@ package body Semantica.Assemblador is
                end if;
                New_Line(Fitxer_Asmbl);
                Comentari("Etiqueta " & Ic3a.Camp1.Ide'Img);
-               Etiqueta("_etq_" & Ic3a.Camp1.Ide'Img);
+               Etiqueta("_etq_" & Trim(Ic3a.Camp1.Ide'Img, Both));
 
             when Branc_Inc =>
                if Ic3a.Camp1.Tc /= Etiq then
@@ -401,7 +405,7 @@ package body Semantica.Assemblador is
                end if;
                New_Line(Fitxer_Asmbl);
                Comentari("Brancament Incondicional " & Ic3a.Camp1.Ide'Img);
-               Instr_1_Op("jmp", "_etq_" & Ic3a.Camp1.Ide'Img);
+               Instr_1_Op("jmp", "_etq_" & Trim(Ic3a.Camp1.Ide'Img, Both));
 
             -- 2 Operands
             when Negacio =>
@@ -531,10 +535,10 @@ package body Semantica.Assemblador is
                Ld(Ic3a.Camp1, "%eax");
                Ld(Ic3a.Camp2, "%ebx");
                Instr_2_Op("cmpl", "%ebx", "%eax");
-               Instr_1_Op("jge", "_etiq_" & Ide'Img);
+               Instr_1_Op("jge", "_etiq_" & Trim(Ide'Img, Both));
                --Instr_1_Op("jmp", Etiqueta(Te, Ic3a.Camp3.Ide));
-               Instr_1_Op("jmp", "_etq_" & Ic3a.Camp3.Ide'Img);
-               Etiqueta("_etq_" & Ide'Img);
+               Instr_1_Op("jmp", "_etq_" & Trim(Ic3a.Camp3.Ide'Img, Both));
+               Etiqueta("_etq_" & Trim(Ide'Img, Both));
 
             when Menorigual =>
                if Ic3a.Camp3.Tc /= Etiq then
@@ -545,10 +549,10 @@ package body Semantica.Assemblador is
                Ld(Ic3a.Camp1, "%eax");
                Ld(Ic3a.Camp2, "%ebx");
                Instr_2_Op("cmpl", "%ebx", "%eax");
-               Instr_1_Op("jg", "_etq_" & Ide'Img);
+               Instr_1_Op("jg", "_etq_" & Trim(Ide'Img, Both));
                --Instr_1_Op("jmp", Etiqueta(Te, Ic3a.Camp3.Ide));
-               Instr_1_Op("jmp", "_etq_" & Ic3a.Camp3.Ide'Img);
-               Etiqueta("_etq_" & Ide'Img);
+               Instr_1_Op("jmp", "_etq_" & Trim(Ic3a.Camp3.Ide'Img, Both));
+               Etiqueta("_etq_" & Trim(Ide'Img, Both));
 
             when Igual =>
                if Ic3a.Camp3.Tc /= Etiq then
@@ -559,10 +563,10 @@ package body Semantica.Assemblador is
                Ld(Ic3a.Camp1, "%eax");
                Ld(Ic3a.Camp2, "%ebx");
                Instr_2_Op("cmpl", "%ebx", "%eax");
-               Instr_1_Op("jne", "_etq_" & Ide'Img);
+               Instr_1_Op("jne", "_etq_" & Trim(Ide'Img, Both));
                --Instr_1_Op("jmp", Etiqueta(Te, Ic3a.Camp3.Ide));
-               Instr_1_Op("jmp", "_etq_" & Ic3a.Camp3.Ide'Img);
-               Etiqueta("_etq_" & Ide'Img);
+               Instr_1_Op("jmp", "_etq_" & Trim(Ic3a.Camp3.Ide'Img, Both));
+               Etiqueta("_etq_" & Trim(Ide'Img, Both));
 
             when Majorigual =>
                if Ic3a.Camp3.Tc /= Etiq then
@@ -573,10 +577,10 @@ package body Semantica.Assemblador is
                Ld(Ic3a.Camp1, "%eax");
                Ld(Ic3a.Camp2, "%ebx");
                Instr_2_Op("cmpl", "%ebx", "%eax");
-               Instr_1_Op("jl", "_etq_" & Ide'Img);
+               Instr_1_Op("jl", "_etq_" & Trim(Ide'Img, Both));
                --Instr_1_Op("jmp", Etiqueta(Te, Ic3a.Camp3.Ide));
-               Instr_1_Op("jmp", "_etq_" & Ic3a.Camp3.Ide'Img);
-               Etiqueta("_etq_" & Ide'Img);
+               Instr_1_Op("jmp", "_etq_" & Trim(Ic3a.Camp3.Ide'Img, Both));
+               Etiqueta("_etq_" & Trim(Ide'Img, Both));
 
             when Major =>
                if Ic3a.Camp3.Tc /= Etiq then
@@ -587,10 +591,10 @@ package body Semantica.Assemblador is
                Ld(Ic3a.Camp1, "%eax");
                Ld(Ic3a.Camp2, "%ebx");
                Instr_2_Op("cmpl", "%ebx", "%eax");
-               Instr_1_Op("jle", "_etq_" & Ide'Img);
+               Instr_1_Op("jle", "_etq_" & Trim(Ide'Img, Both));
                --Instr_1_Op("jmp", Etiqueta(Te, Ic3a.Camp3.Ide));
-               Instr_1_Op("jmp", "_etq_" & Ic3a.Camp3.Ide'Img);
-               Etiqueta("_etq_" & Ide'Img);
+               Instr_1_Op("jmp", "_etq_" & Trim(Ic3a.Camp3.Ide'Img, Both));
+               Etiqueta("_etq_" & Trim(Ide'Img, Both));
 
             when Diferent =>
                if Ic3a.Camp3.Tc /= Etiq then
@@ -601,10 +605,10 @@ package body Semantica.Assemblador is
                Ld(Ic3a.Camp1, "%eax");
                Ld(Ic3a.Camp2, "%ebx");
                Instr_2_Op("cmpl", "%ebx", "%eax");
-               Instr_1_Op("je", "_etq_" & Ide'Img);
+               Instr_1_Op("je", "_etq_" & Trim(Ide'Img, Both));
                --Instr_1_Op("jmp", Etiqueta(Te, Ic3a.Camp3.Ide));
-               Instr_1_Op("jmp", "_etq_" & Ic3a.Camp3.Ide'Img);
-               Etiqueta("_etq_" & Ide'Img);
+               Instr_1_Op("jmp", "_etq_" & Trim(Ic3a.Camp3.Ide'Img, Both));
+               Etiqueta("_etq_" & Trim(Ide'Img, Both));
 
             when others =>
                raise Error_Assemblador;
