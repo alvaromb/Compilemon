@@ -1,12 +1,13 @@
+
 package body Semantica.Gci is
 
    package Pila_Proc is new Pilas (num_Proc);
    use Pila_Proc;
-   Pproc : Pila_proc.Pilas;
+   Pproc : Pila_proc.Pila;
 
    package Pila_Param is new Pilas (T_Param);
    use Pila_Param;
-   Pparam : Pila_Param.Pilas;
+   Pparam : Pila_Param.Pila;
 
    procedure Genera
      (Instr : in tInstruccio;
@@ -124,7 +125,8 @@ package body Semantica.Gci is
          when Dvariable   =>
             gci_Decvar(Decl);
          when Dconstant   =>
-            gci_Decconst(Decl);
+            --gci_Decconst(Decl);
+			null; -- No utilitzam perque ho farem mes tard
          when Dcoleccio   =>
             null;
          when Dregistre | Dencapregistre | Firecord =>
@@ -239,13 +241,19 @@ package body Semantica.Gci is
       Fesq : Pnode renames A.Fe1;
       Idarray : Id_Nom;
       base : valor := 0;
+	  idproc : num_proc;
+	  T1 : num_var;
 
    begin  --p_dcoleccio s_parentesitancat pc_of id
 
       gci_Pcoleccio(Fesq,base,Idarray);
 
       Darray := cons(ts,Idarray);
-      Darray.Dt.Base := base;
+
+      cim(pproc, idproc);
+	  Novaconst(Tv, base, Tsent, idproc, T1);
+
+      Darray.Dt.Base := T1;
       actualitza(ts, Idarray, Darray);
 
    end gci_Deccol;
@@ -402,7 +410,7 @@ package body Semantica.Gci is
 
             while not es_buida(pparam) loop
                cim(pparam, prm);
-               Desempilar(Pparam);
+               Desempilar(Pparam); --Generar desplazamiento
                -- Camviar infovar : argument a TRUE, calcular despl
                C1:=(
                     Tc => Var,
@@ -499,7 +507,10 @@ package body Semantica.Gci is
 
          when Dconst =>
             cim(pproc, idproc);
-            Novavar(Tv, idproc, Idv);
+            ------Novavar(Tv, idproc, Idv);
+			--modifica_var de id
+			--Crear var temporal
+			--Generar copia de var de id a var temporal
 
             C1:=(
                  Tc => Var,
@@ -1091,7 +1102,7 @@ package body Semantica.Gci is
             cim(pproc, idproc);
             Novavar(Tv, idproc, T1);
             Novavar(Tv, idproc, T2);
-            Novaconst(Tv, da.Dt.Base , Tsent, idproc, T3);
+            Novaconst(Tv, valor(dtc.dt.ocup), Tsent, idproc, T3);
 
             C1:=(
                  Tc => Var,
@@ -1107,14 +1118,15 @@ package body Semantica.Gci is
                 );
             Genera(Resta, C1, C2, C3);
             C2.Idv := T2;
-            C3.Idc := Dtc.Dt.Ocup;
-            Genera (Producte, C2, C1, C3);
+            C3.Idc := Dtc.Dt.Base;
+            Genera(Producte, C2, C1, C3);
 
-            if Idbase = Id_nul then
+            if Idbase = var_nul then
                Iddesp := T2;
             else
                Novavar(Tv, idproc, T4);
-               Novaconst(Tv, Idbase, Tsent, idproc, T5);
+               --Novaconst(Tv, Idbase, Tsent, idproc, T5);
+			   Novaconst(Tv, valor(dtc.dt.ocup), Tsent, idproc, T5);
 
                C1:=(
                     Tc => Var,
@@ -1156,13 +1168,13 @@ package body Semantica.Gci is
       idproc : num_proc := proc_nul;
       di : Id_nom;
       dti: descrip;
-          ni : despl;
+      ni : valor;
 
    begin
       case Tipus is
          when Pri => --pri -> pri ,E
                      --Put_Line("CT-ref_pri: pri");
-            Gci_Ref_Pri(Fesq, Idres, Iddesp, Idtipus, Idbase, It_Idx);
+            Gci_Ref_Pri(Fesq, Idres, Iddesp, Idbase, Idtipus, It_Idx);
             gci_Expressio(Fdret, IdresE, IddespE);
 
             It_Idx := Succ_Idx(Ts, It_Idx);
@@ -1172,7 +1184,7 @@ package body Semantica.Gci is
             ni := dti.dt.lsup - dti.dt.linf + 1;
 
             cim(pproc, idproc);
-            Novaconst(Tv,ni , Tsent, idproc, T0);
+            Novaconst(Tv, ni, Tsent, idproc, T0);
             Novavar(Tv, idproc, T1);
 
             C1:=(
@@ -1250,7 +1262,7 @@ package body Semantica.Gci is
 
             It_Idx := primer_idx(ts, Idtipus); ------------
 
-            if IddespE = id_nul then
+            if IddespE = var_nul then
                Iddesp:= idresE;
             else
                cim(pproc, idproc);
@@ -1311,9 +1323,9 @@ package body Semantica.Gci is
       Idtipus:= dcamp.tcamp;
 
       cim(pproc, idproc);
-      Novaconst(Tv, Dcamp.Dsp, Tsent, Idproc, numconstant);
+      Novaconst(Tv, valor(Dcamp.Dsp), Tsent, Idproc, numconstant);
 
-      if Iddesp = id_nul then
+      if Iddesp = var_nul then
          Iddesp:=numconstant;
       else
          Novavar(Tv, Idproc, T1);
