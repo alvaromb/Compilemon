@@ -66,7 +66,7 @@ package body Semantica.Gci is
 	  nproc : Num_Proc;
 
    begin
-      Put_line("CT_Decprocediment");
+  
       Gci_Encap(Encap, Id_Proc);
 
       if Decls.Tipus = Declaracions then
@@ -145,7 +145,7 @@ package body Semantica.Gci is
       idproc : num_proc;
 	 
    begin
-      Put_line("CT_pencap: ");
+   
       if Fesq.Tipus = Identificador then -- id(param
 	  	 cim(pproc, idproc);
       	 Dproc := Cons(tts(idproc), Fesq.Id12); 
@@ -168,7 +168,7 @@ package body Semantica.Gci is
 	  Iv : Info_Var;
 
    begin
-      Put_line("CT_Param");
+    
       cim(pproc, idproc);
       d := cons(tts(idproc), idPar);
 	  
@@ -389,7 +389,7 @@ package body Semantica.Gci is
          when Repeticio =>
             gci_Srep(A);
          when Identificador => --crida a procediment sense parametres
-            Put_Line("CT_Bloc : IDENTIFICADOR");
+          
             gci_identificador(A, Idres, Iddesp, Idtipus);
          when Fireferencia =>
             gci_Referencia_Proc(A, Idbase);
@@ -512,8 +512,7 @@ package body Semantica.Gci is
             genera(Call, c1);
 
          when others =>
-            Put_Line("ERROR (DEBUG) gci-referencia: node "&
-                       "no reconegut");
+            Put_Line("ERROR (DEBUG)");
 
       end case;
 
@@ -533,7 +532,7 @@ package body Semantica.Gci is
    begin
       case Tipus is
          when Pri => --pri -> pri,E
-            Put_Line("CT-ref_pri: pri");
+           
             gci_Ref_Pri(Fesq,IdProc);
             gci_Expressio(Fdret, Idres, Iddesp);
 
@@ -543,20 +542,19 @@ package body Semantica.Gci is
             empilar(pparam, prm);
 
          when Encappri => -- pri -> R(E
-            Put_Line("CT-ref_pri: encappri");
+            
             gci_Referencia_Proc(Fesq, Idproc);
             gci_Expressio(Fdret, Idres, Iddesp);
             prm.base := Idres;
             prm.despl := Iddesp;
             empilar(pparam, prm);
          when others =>
-            Put_Line("ERROR (DEBUG) gci-ref_pri: tipus no "&
-                       "reconegut");
+            Put_Line("ERROR (DEBUG)");
       end case;
    end gci_Ref_Pri;
 
 
-   procedure gci_Identificador -- correcte
+   procedure gci_Identificador 
      (A : in Pnode;
       Idres, Iddesp: out num_var;
       Idtipus : out Id_Nom) is
@@ -577,11 +575,13 @@ package body Semantica.Gci is
 
       case Desc is
          when Dvar => -- R -> id
+			put_line("Es un dvar a gci_Identificador");
             Idres := d.nv;
             Iddesp := var_nul;
             Idtipus := d.tr;
 
          when Dconst =>
+			put_line("Es un dconst a gci_Identificador");
 	        DescConst := Cons(Tts(idproc), D.tc);			
 
          	Iv := (Id,
@@ -592,8 +592,8 @@ package body Semantica.Gci is
                   	False,
                   	True,
                   	D.Vc);
-
-         	modif_descripcio(Tv, D.Nv, Iv);
+			put_line("valor variable: "&D.nvc'img);
+         	modif_descripcio(Tv, D.Nvc, Iv);
 
 			Novavar(Tv, idproc, T1);
 
@@ -604,12 +604,12 @@ package body Semantica.Gci is
 
             C2:=(
                  Tc => Const,
-                 Idc => D.nv
+                 Idc => D.nvc
                 );
 
             genera(copia, c1, c2);
 
-            Idres:= idv;
+            Idres:= t1;
             Iddesp:= var_nul;
             Idtipus:= d.tc;
 
@@ -623,11 +623,11 @@ package body Semantica.Gci is
             genera(Call, c1);
 
          when others =>
-            null;
+            put_line("Es un altre tipus al gci identificador");
 
       end case;
 
-      Put_line("gci_id: Tipus: "&Idtipus'img);
+    --Put_line("gci_id: Tipus: "&Idtipus'img);
 
    end gci_Identificador;
 
@@ -640,7 +640,7 @@ package body Semantica.Gci is
       idproc : num_proc;
       T : Tipussubjacent;
    begin
-      Put_line("CT_CONSTANT");
+   
       cim(pproc, idproc);
 
       case (Tatr) is
@@ -666,22 +666,23 @@ package body Semantica.Gci is
    begin
       Idd := var_nul;
 
-      Put_line("CT_EXP: "&Tipus'img );
+      
       case Tipus is
          when Expressio =>
             gci_Expressioc(A, Idr, Idd);
          when ExpressioUnaria =>
             gci_Expressiou(A, Idr, Idd);
          when Identificador =>
+			
             gci_Identificador(A, Idr, Idd, Idtipus); --Idtipus??
+			put_line("Es un identificador: "&Idr'img&", "&Idd'img);
          when Const =>
             gci_Constant(A, Idr);
 
          when Fireferencia | Referencia =>
             gci_Referencia_Var(A, Idr, Idd, Idtipus);
          when others =>
-            Put_Line("ERROR (DEBUG) gci-exp: tipus expressio no "&
-                       "trobat :S "&Tipus'Img);
+            Put_Line("ERROR (DEBUG)");
       end case;
 
    end gci_Expressio;
@@ -700,8 +701,8 @@ package body Semantica.Gci is
       IddespE,
       IddespD : num_var;
 
-   begin
-      Put_line("gci_EXPRESSIOC");
+   begin 
+    
       --Analitzam l'operand esquerra
       gci_Expressio(Fesq, Idesq,IddespE);
       --Analitzam l'operand dret
@@ -1172,8 +1173,9 @@ package body Semantica.Gci is
    begin
       case Tipus is
          when Identificador =>
+			
             Gci_Identificador(A, Idres, Iddesp, Idtipus);
-
+			put_line("Es un identificador:"&Idres'img);
          when Referencia => -- r -> r.id
             Gci_Ref_Rec(A, Idres, Iddesp, Idtipus);
 
@@ -1373,8 +1375,7 @@ package body Semantica.Gci is
             end if;
 
          when others =>
-            Put_Line("ERROR (DEBUG) gci-ref_pri: tipus no "&
-                       "reconegut");
+            Put_Line("ERROR (DEBUG)");
       end case;
    end gci_Ref_Pri;
 

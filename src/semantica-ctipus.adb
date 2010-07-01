@@ -148,14 +148,16 @@ package body Semantica.Ctipus is
       Iv := (Idt, Tp.Np, Integer'Size/8, 0, Tsbool, False,
              True, -1);
       Posa(Tv, Iv, Idv);
-      D := (Dconst, Idt, -1); --REPASAR ESTO!!!
+	  Nv:=Nv+1;
+      D := (Dconst, Idt, -1,Nv); --REPASAR ESTO!!!
       Posa(Ts, Idt, D, E);
 
       Posa_Id(Tn, Idf, "false");
       Iv.Id := Idf;
       Iv.Valconst := 0;
       Posa(Tv, Iv, Idv);
-      D := (Dconst, Idf, 0); --REPASAR ESTO!!!
+	   Nv:=Nv+1;
+      D := (Dconst, Idf, 0,Nv); --REPASAR ESTO!!!
       Posa(Ts, Idf, D, E);
    end Inicia_Boolea;
 
@@ -613,8 +615,8 @@ package body Semantica.Ctipus is
                Esem := True;
             end if;
          end if;
-
-         Tconst := (dconst, IdTipus, Val.val);
+          Nv:=Nv+1;
+         Tconst := (dconst, IdTipus, Val.val,Nv);
          Posa(Ts, Id, Tconst, E);
          Put_Line("CT_CONST: (DEBUG)El valor de la "&
                     "constant es: "&Val.val'img);

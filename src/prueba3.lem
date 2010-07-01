@@ -1,7 +1,19 @@
 procedure provaid is
 
-	a : integer;
+	a,b,d : integer;
+	
+	c : constant integer:= 4;
 
 begin
-	a := 2;
+	a := c;
+	b := c;
+	d := a+b;
+	
+	if d > 6 then
+
+		a := 10;
+
+	end if;
+	
+	
 end provaid;

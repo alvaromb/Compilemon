@@ -79,8 +79,8 @@ package body semantica.declsc3a is
       Iv       : Info_Var;
       D        : Descrip;
       Ocup     : Despl;
-      Nconst   : Integer := Integer (Tv.Nv) + 1;
-      Nomconst : String  := "_cnt" & Integer'Image(Nconst);
+      Nconst   : num_var := Tv.Nv + 1;
+      Nomconst : String  := "_cnt" & Nconst'img;
 
    begin
 
@@ -109,7 +109,8 @@ package body semantica.declsc3a is
 
       D:=(Dconst,
           Id_Nul,
-          Vc);
+          Vc,
+		  Nconst);
 
       Posa(Ts, Idn, D, E);
 
