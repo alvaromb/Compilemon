@@ -325,11 +325,13 @@ package body semantica.declsc3a is
       Put_Line("Contenido de la tabla de procedimientos:");
 
       for I in num_Proc range 1..Tp.Np loop
-         Put_Line("Procediment: " & I'Img);
-         Put_Line("     prof: " & Tp.Tp(I).Prof'Img);
-         Put_Line("     ocup varl: " & Tp.Tp(I).Ocup_Var'Img);
-         Put_Line("     ocup param: " & Tp.Tp(I).Ocup_Param'Img);
-         Put_Line("     etiqueta: " & Tp.Tp(I).Etiq'Img);
+         if Tp.Tp(I).Tp = Intern then
+            Put_Line("Procediment: " & I'Img);
+            Put_Line("     prof: " & Tp.Tp(I).Prof'Img);
+            Put_Line("     ocup varl: " & Tp.Tp(I).Ocup_Var'Img);
+            Put_Line("     ocup param: " & Tp.Tp(I).Ocup_Param'Img);
+            Put_Line("     etiqueta: " & Tp.Tp(I).Etiq'Img);
+         end if;
       end loop;
 
       Put_Line("-------------------------------------------------");
