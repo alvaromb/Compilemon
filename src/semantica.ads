@@ -262,6 +262,8 @@ package Semantica is
 
 private
 
+   Esem : Boolean := False;
+
    Ts : Tsimbols;
    Tts: Ttsimbols;
    Tn : Taula_De_Noms;

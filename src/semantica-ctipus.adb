@@ -278,7 +278,7 @@ package body Semantica.Ctipus is
    end Inicia_Caracter;
 
 
-   procedure Inicia_analisi(nomFitxer: in String) is
+   procedure Inicia_analisi(nomFitxer : in String) is
    begin
       Nv := 0;
       Np := 0;
@@ -291,6 +291,8 @@ package body Semantica.Ctipus is
       Inicia_Caracter;
       Obre_Fitxer(nomFitxer);
    end Inicia_analisi;
+
+
 
 
    -- Procediments interns
@@ -327,6 +329,7 @@ package body Semantica.Ctipus is
          Esem := True;
       end if;
 
+	  tts(proc_nul) := ts;
       Tanca_Fitxer;
    end Ct_Programa;
 
@@ -358,7 +361,8 @@ package body Semantica.Ctipus is
          Ct_Declaracions(Decls);
       end if;
       Ct_Bloc(Bloc);
-      Surtbloc(Ts,np_propi);
+	  tts(np_propi) := ts;--afegit per la nova ts
+      Surtbloc(Ts);
 
    end Ct_Decprocediment;
 
@@ -419,7 +423,7 @@ package body Semantica.Ctipus is
       if Fesq.Tipus = Identificador then
          np := np + 1;
          Tproc := (Dproc, np);
-         --entrablock
+         --entrabloc
          Posa(Ts, Fesq.Id12, Tproc, E);
          Put_Line("posam un procediment amb param");
          Entrabloc(Ts);

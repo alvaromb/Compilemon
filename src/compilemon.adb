@@ -45,38 +45,26 @@ use Ada.Text_IO,
 
 
 procedure Compilemon is
-        --PROVISIONAL PRUEBA TABLAS
-        --auxNP :       num_Proc;
-        --auxNV :       num_Var;
-        --auxNE : num_etiq;
-    --Info_Proc_Aux : Info_Proc;
-    --Info_Var_Aux : Info_Var := Info_var_NUl;
-        --Info_etiq_Aux : Info_Etiq;
+
 begin
    Open_Input(Argument(1));
 
    --PROVISIONAL
    Inicia_analisi(Argument(1));
-
    yyparse;
+  
+   
    Ct_Programa(Arbre);
+
+
+   Inicia_Generacio(Argument(1));    
+
+   gci_Programa(Arbre);
+   Tanca_Fitxer;
+   
+
    Close_Input;
 
----PRUEBAS TABLAS
---      noves_Taules(Tp, tv, te);
-
---      nouproc(tp, auxNP);
---      Put_Line("AuxNP = " &auxNP'img);
-
-
---      Novavar(Tv, Auxnp, Auxnv);
---      Put_Line("AuxNV = " &auxNV'img);
-
-
---      Posa(Te,info_Etiq_aux, auxNE);
---      Put_Line("AuxNE = " &auxNE'img);
-
---      imprimeix_taules;
 
    exception
       when Syntax_Error =>

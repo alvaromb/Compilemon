@@ -62,7 +62,7 @@ private
    --nv : num_var;
    --np : num_proc;
 
-   Esem : Boolean := False;
+   --Esem : Boolean := False;
 
    procedure Ct_Decprocediment
      (A : in Pnode);

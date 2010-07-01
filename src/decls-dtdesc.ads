@@ -26,7 +26,7 @@ package Decls.Dtdesc is
       range 0 .. max_nprof;
     nul_nprof : constant nprof := 0;
 
-    type despl is new natural;
+    type despl is new integer;
 
     -- Representa texpansio
     type rang_despl is new integer

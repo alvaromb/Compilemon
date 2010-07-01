@@ -18,6 +18,8 @@ package Semantica.gci is
       C2    : in Camp := Camp_Nul;
       C3    : in Camp := Camp_Nul);
 
+   procedure Inicia_Generacio(nomFitxer : in String);
+
    procedure Gci_Decprocediment
      (A : in Pnode);
 
@@ -27,6 +29,12 @@ package Semantica.gci is
    procedure Gci_Encap
      (A : in Pnode;
       I : in Id_Nom);
+
+   procedure gci_Pencap
+     (A : in Pnode);
+
+   procedure gci_Param
+     (A : in Pnode);
 
    procedure gci_Declaracions
      (A : in Pnode);
@@ -132,5 +140,7 @@ package Semantica.gci is
 
    procedure gci_Srep
      (A : in Pnode);
+
+   procedure Calcula_Despls;
 
 end Semantica.gci;

@@ -19,6 +19,33 @@ package body Semantica.Gci is
    end Genera;
 
 
+
+   procedure Inicia_Generacio(nomFitxer : in String) is
+   begin
+   	  --Ct_Programa(Arbre);
+
+	  if not esem then
+      	Crea_Fitxer(nomFitxer);--c3a
+		Pila_Buida(Pproc);
+		Empilar(Pproc, Proc_Nul);
+	  end if;
+
+   end Inicia_Generacio;
+
+
+   procedure gci_Programa
+     (A : in Pnode) is
+   begin
+      
+	  empilar(pproc, proc_nul);
+      Tv.nv := nv;
+      gci_Decprocediment(A);
+      
+	  Calcula_Despls;
+      Tanca_Fitxer;
+   end gci_Programa;
+
+
    procedure Gci_Decprocediment
      (A : in Pnode) is
 
@@ -35,7 +62,8 @@ package body Semantica.Gci is
       dproc : Descrip;
 
       Idprinvocador,
-      Idprinvocat : Num_Proc;
+      Idprinvocat,
+	  nproc : Num_Proc;
 
    begin
       Put_line("CT_Decprocediment");
@@ -50,7 +78,8 @@ package body Semantica.Gci is
       C1 := (Tc => Etiq, Ide => eip);
       Genera(Etiqueta, C1);
 
-      dproc:=Cons(Ts, Id_Proc); -------------marccuuuuuuuuuuuuuuuuuuuuuuuuuuuusss
+      cim(Pproc, nproc);
+      dproc:=Cons(TTs(nproc), Id_Proc); -------------marccuuuuuuuuuuuuuuuuuuuuuuuuuuuusss
       C1:=(
            Tc => Proc,
            Idp => dproc.np);
@@ -84,26 +113,77 @@ package body Semantica.Gci is
    end gci_Decprocediment;
 
 
-   procedure gci_Programa
-     (A : in Pnode) is
-   begin
-      --tEntrabloc(Ts);
-      Tv.nv := nv;
-      gci_Decprocediment(A);
-
-      --Surtbloc(Ts);
-      Tanca_Fitxer;
-   end gci_Programa;
 
 
    procedure Gci_Encap
      (A : in Pnode;
       I : in Id_Nom) is
       Dproc : Descrip;
+	  idproc : num_proc;
    begin
-      Dproc := Cons(TTs(Ts), I); --marcuuuuuuuuuuuuuuuuuuuuuuussssssssssssssssssssss
+	
+	if A.Tipus = Pencap then
+	
+		gci_Pencap(A);
+
+	else
+	  cim(pproc, idproc);
+      Dproc := Cons(tts(idproc), I); 
       Empilar(Pproc, dproc.Np);
+
+	end if;
+	  
    end gci_Encap;
+
+
+   procedure gci_Pencap
+     (A : in Pnode) is
+
+      Param : Pnode renames A.Fd1;
+      Fesq : Pnode renames A.Fe1;
+      Dproc : Descrip;
+      idproc : num_proc;
+	 
+   begin
+      Put_line("CT_pencap: ");
+      if Fesq.Tipus = Identificador then -- id(param
+	  	 cim(pproc, idproc);
+      	 Dproc := Cons(tts(idproc), Fesq.Id12); 
+      	 Empilar(Pproc, dproc.Np);
+		 gci_Param(Param);
+      else
+         gci_Pencap(Fesq);
+	 	 gci_Param(Param);
+      end if;
+
+   end gci_Pencap;
+
+
+	procedure gci_Param
+     (A : in Pnode) is
+
+      idPar : id_nom renames A.Fe2.id12;
+      d : Descrip;
+      idproc : num_proc;
+	  Iv : Info_Var;
+
+   begin
+      Put_line("CT_Param");
+      cim(pproc, idproc);
+      d := cons(tts(idproc), idPar);
+	  
+      Iv := (idPar,
+             idproc,
+             D.Dt.ocup,
+             0,
+             D.Dt.tt,
+             True,
+             False,
+             0);
+
+      modif_descripcio(Tv, D.Nv, Iv);
+ 
+   end gci_Param;
 
 
    procedure gci_Declaracions
@@ -111,9 +191,6 @@ package body Semantica.Gci is
 
       Decl : Pnode renames A.Fd1;
       Decls : Pnode renames A.Fe1;
-      Tnode : Tipusnode;
-      Idrec : Id_Nom;
-      Ocup  : Despl;
 
    begin
       if Decls.Tipus = Declaracions then
@@ -267,8 +344,12 @@ package body Semantica.Gci is
       Id   : Id_Nom renames A.Fd1.Id12;
       Ncomp : Valor;
       Dtcamp : Descrip;
+	  idproc : num_proc;
 
    begin
+
+	  cim(pproc, idproc);
+
       if (A.Tipus = Pcoleccio) then--p_dcoleccio s_coma id
 
          gci_Pcoleccio(Fesq, base, Idarray);
@@ -292,14 +373,8 @@ package body Semantica.Gci is
      (A : in Pnode) is
 
       D : Descrip;
-      T : Tipussubjacent;
       Idbase : Num_Proc;
       Idtipus : Id_Nom;
-
-      Tsexp : Tipussubjacent;
-      Idexp : Id_Nom;
-      Tsvar : Tipussubjacent;
-      Idvar : Id_Nom;
 
       Idres,
       Iddesp,
@@ -398,10 +473,12 @@ package body Semantica.Gci is
       c1, c2 : camp;
 
    begin
+	  
       case Tipus is
          when Identificador => --R -> id
-
-            dproc := cons(ts, A.Fid5.Id12);--marcuuuuuuuuuuuuuuuussssssssssssssssssssss
+			idproc:= proc_nul;
+			cim(pproc,idproc);
+            dproc := cons(tts(idproc), A.Fid5.Id12);
             Idproc := dproc.np;
 
          when Fireferencia => -- R -> pri)
@@ -409,8 +486,7 @@ package body Semantica.Gci is
 
             while not es_buida(pparam) loop
                cim(pparam, prm);
-               Desempilar(Pparam); --Generar desplazamiento
-               -- Camviar infovar : argument a TRUE, calcular despl
+               Desempilar(Pparam);
                C1:=(
                     Tc => Var,
                     Idv => Prm.Base
@@ -485,15 +561,15 @@ package body Semantica.Gci is
       Idres, Iddesp: out num_var;
       Idtipus : out Id_Nom) is
 
+      D , descConst: Descrip;
       Id : Id_Nom renames A.Id12;
-      D : Descrip;
       Desc : Tdescrip renames D.Td;
 
-      Carg : Cursor_Arg;
-
-      idv : num_var := var_nul;
+      idv, T1 : num_var := var_nul;
       idproc : num_proc := proc_nul;
       c1, c2: camp;
+
+	  iv : Info_Var;
 
    begin
 	  cim(pproc, idproc);
@@ -506,20 +582,29 @@ package body Semantica.Gci is
             Idtipus := d.tr;
 
          when Dconst =>
-           
-            ------Novavar(Tv, idproc, Idv);
-			--modifica_var de id
-			--Crear var temporal
-			--Generar copia de var de id a var temporal
+	        DescConst := Cons(Tts(idproc), D.tc);			
+
+         	Iv := (Id,
+                  	idproc,
+                  	DescConst.Dt.ocup,
+                  	0,
+                  	DescConst.Dt.tt,
+                  	False,
+                  	True,
+                  	D.Vc);
+
+         	modif_descripcio(Tv, D.Nv, Iv);
+
+			Novavar(Tv, idproc, T1);
 
             C1:=(
                  Tc => Var,
-                 Idv => Idv
+                 Idv => t1
                 );
 
             C2:=(
                  Tc => Const,
-                 Idc => 69    ---AACHTUNNG!!!!!! ALARM; ERROR; CORREGIR!
+                 Idc => D.nv
                 );
 
             genera(copia, c1, c2);
@@ -1301,8 +1386,6 @@ package body Semantica.Gci is
       Idtipus : out Id_Nom) is
 
       Fesq : Pnode renames A.Fe1;
-      Tesq : Tipussubjacent;
-      Idbase_Esq : Id_Nom;
       Dcamp : Descrip;
       Dtcamp : Descrip;
       Idcamp : Id_Nom renames A.Fd1.Id12;
@@ -1580,6 +1663,35 @@ package body Semantica.Gci is
       Genera(Etiqueta, C1);
 
    end gci_Srep;
+
+
+   -- Calcula desplaçaments
+   procedure Calcula_Despls is
+   		Idpr     : Num_Proc;
+	    Ocup_Var : Despl;
+   begin
+
+	   for P in Num_Proc loop
+		  Tp.Tp(P).Ocup_Var := 0;
+	   end loop;
+
+	   for V in Num_Var range 1..Tv.Nv loop
+		  if Tv.Tv(V).Param then --param
+		     Tv.Tv(V).Desp := Tv.Tv(V).Desp + 12;
+		     --[+ 4*( @RTN, DISP(prof), BP llamante)]
+		  else
+		     if Tv.Tv(V).Desp = 0 then
+		         Idpr := Tv.Tv(V).Np;
+		         Ocup_Var := Tv.Tv(V).Ocup;
+		         Tv.Tv(V).Desp := Despl(Tp.Tp(Idpr).Ocup_Var);
+		         Tp.Tp(Idpr).Ocup_Var := Tp.Tp(Idpr).Ocup_Var + Ocup_Var;
+		         Tv.Tv(V).Desp := (Tv.Tv(V).Desp+4)*(-1);
+		     end if;
+		  end if;
+	   end loop;
+
+	end Calcula_Despls;
+
 
 end semantica.gci;
 

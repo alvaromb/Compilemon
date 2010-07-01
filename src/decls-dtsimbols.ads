@@ -28,7 +28,9 @@ package Decls.Dtsimbols is
     --pragma pure;
 
     type Tsimbols is private;
-	type Ttsimbols is private;
+--	type Ttsimbols is private;	
+    type ttsimbols is array
+	  (num_proc) of tsimbols;	
 
     --Serveix per al joc de proves
     type Cursor_Idx is new Rang_Despl;
@@ -59,8 +61,7 @@ package Decls.Dtsimbols is
       (ts : in out tsimbols);
 
     procedure surtbloc
-      (ts : in out tsimbols;
-	   np : in num_proc);
+      (ts : in out tsimbols);
 
     -- VERSIO 3: Blocs mes records.
     procedure posacamp
@@ -162,8 +163,8 @@ private
      tambit : taula_ambits;
        prof : nprof;
    end record;
-	
-   type ttsimbols is array
-	(num_proc) of tsimbols;	
+
+--   type ttsimbols is array
+--	(num_proc) of tsimbols;	
 
 end Decls.Dtsimbols;
