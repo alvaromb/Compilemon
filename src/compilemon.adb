@@ -25,7 +25,8 @@ with Ada.Text_IO,
   Decls.Dtnode,
   Semantica.Ctipus,
   Semantica.Declsc3a,
-  Semantica.Gci;
+  Semantica.Gci,
+  Semantica.Assemblador;
 
 use Ada.Text_IO,
   Ada.Command_Line,
@@ -41,7 +42,8 @@ use Ada.Text_IO,
   Decls.Dtnode,
   Semantica.Ctipus,
   Semantica.Declsc3a,
-  Semantica.Gci;
+  Semantica.Gci,
+  Semantica.Assemblador;
 
 
 procedure Compilemon is
@@ -52,25 +54,25 @@ begin
    --PROVISIONAL
    Inicia_analisi(Argument(1));
    yyparse;
-  
-   
+
+
+   -- Comprovacio de tipus
    Ct_Programa(Arbre);
 
-
-   Inicia_Generacio(Argument(1));    
-
-   gci_Programa(Arbre);
+   -- Generacio de codi intermedi
+   Inicia_Generacio(Argument(1));
+   Gci_Programa(Arbre);
    --Tanca_Fitxer;
 
-   --Obrir_Fitxer(Argument(1));   
+   -- Generacio de codi assemblador
+   Genera_Assemblador(Argument(1));
 
    Close_Input;
 
-
-   exception
-      when Syntax_Error =>
-         Put_Line("ERROR: Error a la linea "
-                    &yy_line_number'img&
-                    " i columna "&yy_begin_column'img);
+exception
+   when Syntax_Error =>
+      Put_Line("ERROR: Error a la linea "
+                 &yy_line_number'img&
+                 " i columna "&yy_begin_column'img);
 
 end compilemon;

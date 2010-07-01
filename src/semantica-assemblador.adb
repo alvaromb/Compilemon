@@ -252,7 +252,8 @@ package body Semantica.Assemblador is
 
 
    --Mirar si cambiar el nombre (Inicialitza) por si no le gusta al Tito
-   procedure Gce_Inicialitza is
+   procedure Gce_Inicialitza
+     (Nom_Fitxer : in String) is
       Iv : Info_Var;
    begin
       Create(Fitxer_Asmbl, Out_File, Nom_Fitxer & ".s");
@@ -611,13 +612,14 @@ package body Semantica.Assemblador is
    end Gce_Finalitza;
 
 
-   procedure Genera_Assemblador is
+   procedure Genera_Assemblador
+     (Nom_Fitxer : in String) is
    begin
-      if esem then
+      if Esem then
          raise Error_Assemblador;
       end if;
 
-      Gce_Inicialitza;
+      Gce_Inicialitza(Nom_Fitxer);
       Gce_Genera;
       Gce_Finalitza;
 
