@@ -60,8 +60,9 @@ begin
    Inicia_Generacio(Argument(1));    
 
    gci_Programa(Arbre);
-   Tanca_Fitxer;
-   
+   --Tanca_Fitxer;
+
+   --Obrir_Fitxer(Argument(1));   
 
    Close_Input;
 
