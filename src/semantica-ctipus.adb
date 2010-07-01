@@ -931,8 +931,6 @@ package body Semantica.Ctipus is
       T := Tps;
       Idtipus := Id;
 
-      Put_Line("expressio: tsub: "&T'Img&" id: "&
-                 Idtipus'Img);
    end Ct_Expressio;
 
 
@@ -1005,9 +1003,6 @@ package body Semantica.Ctipus is
             Esem := True;
             null;
       end case;
-
-      Put_Line("ESQ: ts: "&Tesq'Img&" id: "&Idesq'Img);
-      Put_Line("DRT: ts: "&Tdret'Img&" id: "&Iddret'Img);
 
    end Ct_Expressioc;
 

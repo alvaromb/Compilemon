@@ -79,7 +79,7 @@ package body Semantica.Gci is
       Genera(Etiqueta, C1);
 
       cim(Pproc, nproc);
-      dproc:=Cons(TTs(nproc), Id_Proc); -------------marccuuuuuuuuuuuuuuuuuuuuuuuuuuuusss
+      dproc:=Cons(TTs(nproc), Id_Proc);
       C1:=(
            Tc => Proc,
            Idp => dproc.np);
@@ -87,9 +87,8 @@ package body Semantica.Gci is
       Ipr := Consulta(Tp, dproc.np);
       Genera(Preamb, C1);
 
-      --
       gci_Bloc(Bloc);
-      --
+      
 
       --RTN
       Cim(Pproc, Idprinvocat);
@@ -639,6 +638,9 @@ package body Semantica.Gci is
       Tatr : Tipus_Atribut renames A.Tconst;
       idproc : num_proc;
       T : Tipussubjacent;
+	  T1 : num_Var;
+	  C1,
+      C2 : Camp;
    begin
    
       cim(pproc, idproc);
@@ -651,7 +653,20 @@ package body Semantica.Gci is
          when others => null;
       end case;
 
-      Novaconst(Tv, A.Val, T, idproc, Idres);
+      Novaconst(Tv, A.Val, T, idproc, T1);
+	  Novavar(Tv, idproc, Idres);
+
+	  C1:=(
+           Tc => Const,
+           Idc => T1
+      );
+      C2:=(
+      Tc => Var,
+            Idv => Idres
+      );
+		
+	  Genera(Copia, C2, C1);
+	
 
    end gci_Constant;
 
@@ -669,6 +684,7 @@ package body Semantica.Gci is
       
       case Tipus is
          when Expressio =>
+			put_line("Es una expressio composta");
             gci_Expressioc(A, Idr, Idd);
          when ExpressioUnaria =>
             gci_Expressiou(A, Idr, Idd);
@@ -708,6 +724,8 @@ package body Semantica.Gci is
       --Analitzam l'operand dret
       gci_Expressio(Fdret, Iddret,IddespD);
       -- Comparam els tipus
+
+	  put_line("Idesq: "&Idesq'img&" Iddret: "&Iddret'img);
       case Op is
 
          when Unio | Interseccio =>
@@ -1456,6 +1474,8 @@ package body Semantica.Gci is
 
       gci_Expressio(Cond, Idres, Iddesp);
 
+	  put_line("IDres: "&Idres'img&", Iddesp"&Iddesp'img);
+
       if Iddesp = Var_Nul then
          C2:=(
               Tc => Var,
@@ -1497,11 +1517,11 @@ package body Semantica.Gci is
       gci_Bloc(Bloc);
 
 
-      C1:=(
-           Tc => Etiq,
-           Ide => efals
-          );
-      Genera(Etiqueta, C1);
+    --  C1:=(
+    --       Tc => Etiq,
+    --       Ide => efals
+    --      );
+      Genera(Etiqueta, C3);
 
    end gci_Sconds;
 

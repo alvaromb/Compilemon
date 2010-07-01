@@ -298,7 +298,7 @@ package body semantica.declsc3a is
             when Const =>
                Put_Line(F3at, Instruccio.Camp3.Idc'Img);
             when Etiq =>
-               Put_Line(F3at, Instruccio.Camp1.Ide'Img); --?
+               Put_Line(F3at, Instruccio.Camp3.Ide'Img); --tocat, abans camp1
             when others =>
                null;
          end case;

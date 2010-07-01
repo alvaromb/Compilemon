@@ -66,7 +66,7 @@ begin
    --Tanca_Fitxer;
 
    -- Generacio de codi assemblador
-   Genera_Assemblador(Argument(1));
+   --Genera_Assemblador(Argument(1));
 
    Close_Input;
 
