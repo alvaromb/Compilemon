@@ -65,7 +65,7 @@ package Semantica is
       end case;
    end record;
 
-   type c3a is record
+   type C3a is record
       Instr : tInstruccio;
       Camp1 : Camp;
       Camp2 : Camp;
@@ -77,21 +77,27 @@ package Semantica is
    --que es troba decls-dtdesc
    --i aixo hauria d'anar a dgenerals)
 
-   type Info_Proc is record
-      Idn        : Id_Nom;
-      Prof       : nprof;
-      Ocup_Var   : Despl;
-      Ocup_Param : Despl;
-      Etiq       : num_etiq;
-   end record;
-	--en llamosi diu que hem de distinguir si es un proc intern i extern
-	--i en l'extern nomes importa tenir un etiq : Idnom
-   Info_Proc_Nul : Info_Proc :=
-     (Idn => Id_Nul,
-      Prof => 0,
-      Ocup_Var   => 0,
-      Ocup_Param => 0,
-      Etiq => etiq_nul);
+   type Tprocediment is
+     (Intern,
+      Extern);
+
+   type Info_Proc (Tp : Tprocediment := Intern) is
+      record
+         case Tp is
+            when Intern =>
+               Idn        : Id_Nom;
+               Prof       : nprof;
+               Ocup_Var   : Despl;
+               Ocup_Param : Despl;
+               Etiq : Num_Etiq;
+            when Extern =>
+               Etiq_extern : Id_Nom;
+               Ocup_Extern : Despl;
+         end case;
+      end record;
+   --en llamosi diu que hem de distinguir si es un proc intern i extern
+   --i en l'extern nomes importa tenir un etiq : Idnom
+   Info_Proc_Nul : Info_Proc := (Intern, Id_Nul, 0, 0, 0, Etiq_Nul);
 
    type Taula_P is array
      (Num_Proc) of Info_Proc;
@@ -135,24 +141,25 @@ package Semantica is
    end record;
    Tv : T_Vars;
 
-   -- Taula d'Etiquetes
-   type Info_Etiq (TipE:Tipus_Etiq := Etiq_Num) is record
-      case TipE is
-         when Etiq_Num =>
-            N:Integer;
-         when Etiq_Proc =>
-            Idpr: num_Proc;
-      end case;
-   end record;
+   --  -- Taula d'Etiquetes
+   Ne : Num_Etiq := 0;
+   --  type Info_Etiq (TipE:Tipus_Etiq := Etiq_Num) is record
+   --     case TipE is
+   --        when Etiq_Num =>
+   --           N : Integer;
+   --        when Etiq_Proc =>
+   --           Idpr : Num_Proc;
+   --     end case;
+   --  end record;
 
-   type Taula_E is array
-     (num_Etiq) of Info_Etiq;
+   --  type Taula_E is array
+   --    (num_Etiq) of Info_Etiq;
 
-   type T_Etiqs is record
-      Te : Taula_E;
-      Ne : num_Etiq;
-   end record;
-   Te : T_Etiqs;
+   --  type T_Etiqs is record
+   --     Te : Taula_E;
+   --     Ne : num_Etiq;
+   --  end record;
+   --  Te : T_Etiqs;
 
    Arbre : Pnode;
 
@@ -234,8 +241,7 @@ package Semantica is
    -- Procediments per a les Taules
    procedure Noves_taules
      (Tp : out T_Procs;
-      Tv : out T_Vars;
-      Te : out T_Etiqs);
+      Tv : out T_Vars);
 
    -- Procediments per Taula de Procediments
    procedure Posa
@@ -255,10 +261,10 @@ package Semantica is
       Idv : out num_var);
 
    -- Procediments per a la Taula d'Etiquetes
-   procedure Posa
-     (Te  : in out T_Etiqs;
-      Ie  : in Info_Etiq;
-      Ide : out num_Etiq);
+   --  procedure Posa
+   --    (Te  : in out T_Etiqs;
+   --     Ie  : in Info_Etiq;
+   --     Ide : out num_Etiq);
 
 private
 

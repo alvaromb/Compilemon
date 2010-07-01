@@ -8,5 +8,6 @@ package Semantica.Assemblador is
      (Nom_Fitxer : in String);
 
 private
+   Nproc : Num_Proc := 0;
    Fitxer_Asmbl : File_Type;
 end Semantica.Assemblador;

@@ -172,8 +172,7 @@ package body Semantica is
    -- Procediments per a les Taules
    procedure Noves_taules
      (Tp : out T_Procs;
-      Tv : out T_Vars;
-      Te : out T_Etiqs) is
+      Tv : out T_Vars) is
    begin
       --null;
       -- Hem de crear un proc inicialitzador de cada taula on posem l'index
@@ -185,8 +184,6 @@ package body Semantica is
       Tp.Np:=0;
       --TV
       Tv.Nv:=0;
-      --Te
-      Te.Ne:=0;
    end Noves_taules;
 
    -- Procediments per Taula de Procediments
@@ -220,15 +217,26 @@ package body Semantica is
    end Posa;
 
    -- Procediments per a la Taula d'Etiquetes
-   procedure Posa
-     (Te  : in out T_Etiqs;
-      Ie  : in Info_Etiq;
-      Ide : out Num_Etiq) is
+   --  procedure Posa
+   --    (Te  : in out T_Etiqs;
+   --     Ie  : in Info_Etiq;
+   --     Ide : out Num_Etiq) is
+   --  begin
+   --     Te.Ne := Te.Ne+1;
+   --     Ide := Te.Ne;
+   --     Te.Te(Ide) := Ie;
+   --  end Posa;
+   function Nova_Etiq return Num_Etiq is
+      --ie : Info_Etiq;
    begin
-      Te.Ne := Te.Ne+1;
-      Ide := Te.Ne;
-      Te.Te(Ide) := Ie;
-   end Posa;
+      Ne := Ne+1;
+--      Ie := (TipE => Etiq_Num,
+--             N    => Integer (Te.Ne));
+--      Te.Te(Te.Ne):=ie;
+
+      return Ne;
+   end Nova_Etiq;
+
 
 
 end Semantica;

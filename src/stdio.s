@@ -27,7 +27,7 @@
       movl   8(%ebp), %eax   # %eax:= adr. de n
       pushl  (%eax)          # 2on paràmetre: valor de n
       pushl  $LP_INT         # 1er paràmetre: adr. de "%d"
-      call   _printf         
+      call   printf         
       addl   $16, %esp       # 8 pels dos paràmetres + 8 de manies.
 
       movl   %ebp, %esp
@@ -42,7 +42,7 @@
       movl   8(%ebp), %eax   # %eax:= adr. de c
       pushl  (%eax)          # 2on paràmetre: valor de c
       pushl  $LP_CHR         # 1er paràmetre: adr. de "%c"
-      call   _printf         
+      call   printf         
       addl   $16, %esp       # 8 pels dos paràmetres + 8 de manies.
 
       movl   %ebp, %esp
@@ -55,7 +55,7 @@
 
       subl   $12, %esp       # Manies del C
       pushl  8(%ebp)         # paràmetre (únic): adr. de "%d"
-      call   _printf         
+      call   printf         
       addl   $16, %esp       # 4 pel paràmetre + 12 de manies.
 
       movl   %ebp, %esp
@@ -68,7 +68,7 @@
 
       subl   $12, %esp       # Manies del C
       pushl  $L_NL           # paràmetre (únic): adr. de "\n"
-      call   _printf
+      call   printf
       addl   $16, %esp       # 4 pel paràmetre + 12 de manies.
 
       movl   %ebp, %esp
@@ -82,7 +82,7 @@
       subl   $8, %esp        # Manies del C
       pushl  8(%ebp)         # 2on paràmetre: adr. de n
       pushl  $LP_INT         # 1er paràmetre: adr. de "%d"
-      call   _scanf
+      call   scanf
       addl   $16, %esp       # 8 pels dos paràmetres + 8 de manies.
 
       movl   %ebp, %esp
@@ -100,7 +100,7 @@
       subl   $8, %esp        # Manies del C
       pushl  %eax            # 2on paràmetre: adr. de c
       pushl  $LP_CHR         # 1er paràmetre: adr. de "%c"
-      call   _scanf          # sobreescr. el 1er dels 4 bytes posats a 0
+      call   scanf          # sobreescr. el 1er dels 4 bytes posats a 0
       addl   $16, %esp       # 8 pels dos paràmetres + 8 de manies.
 
       movl   %ebp, %esp
@@ -114,7 +114,7 @@
       subl   $8, %esp        # Manies del C
       pushl  8(%ebp)         # 2on paràmetre: adr. de c
       pushl  $LP_CHR         # 1er paràmetre: adr. de "%c"
-      call   _scanf          # c:= caràcter llegit (1 byte)
+      call   scanf          # c:= caràcter llegit (1 byte)
       addl   $16, %esp       # 8 pels dos paràmetres + 8 de manies.
 
       movl   %ebp, %esp

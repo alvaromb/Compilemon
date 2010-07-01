@@ -75,13 +75,12 @@ package Semantica.Declsc3a is
    --   Ie  : in Info_Etiq;
    --   Ide : out num_Etiq);
 
-   function Consulta
-     (Te  : in T_Etiqs;
-      Ide : in num_Etiq) return Info_Etiq;
+   --  function Consulta
+   --    (Te  : in T_Etiqs;
+   --     Ide : in num_Etiq) return Info_Etiq;
 
    function Etiqueta
-     (Te  : in T_Etiqs;
-      Ide : in num_Etiq) return String;
+     (Ipr : in Info_Proc) return String;
 
    --Fitxers
    procedure Crea_Fitxer

@@ -110,7 +110,7 @@ package body semantica.declsc3a is
       D:=(Dconst,
           Id_Nul,
           Vc,
-		  Nconst);
+                  Nconst);
 
       Posa(Ts, Idn, D, E);
 
@@ -119,30 +119,20 @@ package body semantica.declsc3a is
 
 
    --taula d'etiquetes
-
-   function Nova_Etiq return num_Etiq is
-      ie : Info_Etiq;
+   function Nova_Etiq return Num_Etiq is
    begin
-
-      Te.Ne:=Te.Ne+1;
-      ie:=(TipE => Etiq_Num,
-           N    => Integer (Te.Ne));
-      Te.Te(Te.Ne):=ie;
-
-      return Te.Ne;
-
+      Ne := Ne + 1;
+      return Ne;
    end Nova_Etiq;
 
 
+   --  function Consulta
+   --    (Te  : in T_Etiqs;
+   --     Ide : in num_Etiq) return Info_Etiq is
 
-
-   function Consulta
-     (Te  : in T_Etiqs;
-      Ide : in num_Etiq) return Info_Etiq is
-
-   begin
-      return Te.Te(Ide);
-   end Consulta;
+   --  begin
+   --     return Te.Te(Ide);
+   --  end Consulta;
 
    --------
    function Etiqueta
@@ -157,7 +147,6 @@ package body semantica.declsc3a is
 
    function Etiqueta
      (N : in Integer) return String is
-
       Text : String := "_etq" & Integer'Image (N);
    begin
       Text(Text'First+4):='_';
@@ -166,22 +155,28 @@ package body semantica.declsc3a is
 
    ---
 
+   --  function Etiqueta
+   --    (Ide : in Num_Etiq) return String is
+   --     Ie : Info_Etiq;
+   --  begin
+   --     Ie:=Consulta(Te, Ide);
+   --     case Ie.TipE is
+   --        when Etiq_Num =>
+   --           return Etiqueta (Ie.N);
+   --        when Etiq_Proc =>
+   --           return Etiqueta (Ie.Idpr);
+   --     end case;
+   --  end Etiqueta;
+
    function Etiqueta
-     (Te  : in T_Etiqs;
-      Ide : in num_Etiq) return String is
-
-      Ie : Info_Etiq;
-
+     (Ipr : in Info_Proc) return String is
    begin
-      Ie:=Consulta(Te, Ide);
-
-      case Ie.TipE is
-         when Etiq_Num =>
-            return Etiqueta (Ie.N);
-         when Etiq_Proc =>
-            return Etiqueta (Ie.Idpr);
+      case Ipr.Tp is
+         when Intern =>
+            return "_etq_" & Ipr.Etiq'Img;
+         when Extern =>
+            return "_" & Cons_Nom(Tn, Ipr.Etiq_Extern);
       end case;
-
    end Etiqueta;
 
 
@@ -356,13 +351,13 @@ package body semantica.declsc3a is
 
       end loop;
 
-      Put_Line("-------------------------------------------------");
-      Put_Line("Contenido de la tabla de etiquetas:");
-      for I in num_Etiq range 1..Te.Ne loop
-         Put_Line("etiqueta: " & I'Img);
-         Put_Line("     " & Etiqueta (Te, I));
-      end loop;
-      Put_Line("-------------------------------------------------");
+      --  Put_Line("-------------------------------------------------");
+      --  Put_Line("Contenido de la tabla de etiquetas:");
+      --  for I in num_Etiq range 1..Te.Ne loop
+      --     Put_Line("etiqueta: " & I'Img);
+      --     Put_Line("     " & Etiqueta (Te, I));
+      --  end loop;
+      --  Put_Line("-------------------------------------------------");
 
       --end if;
 

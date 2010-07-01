@@ -274,7 +274,7 @@ package body Semantica.Assemblador is
                --Si es un String
                --s1 : .asciiz "El nombde de a's es"
                Put_Line(Fitxer_Asmbl, Tab &
-                          Cons_Nom(Tn, Iv.Id) & " : .asciiz """ &
+                          Cons_Nom(Tn, Iv.Id) & " : .asciz """ &
                           Cons_Str(Tn, rang_tcar(Iv.Valconst)) & """");
             elsif Iv.Tsub = Tsent then
                --Si es un numeric
@@ -300,6 +300,10 @@ package body Semantica.Assemblador is
       --3º) Instrucciones
       New_Line(Fitxer_Asmbl);
       Put_Line(Fitxer_Asmbl, ".section .text");
+      Put_Line(Fitxer_Asmbl, ".global main");
+      Put_Line(Fitxer_Asmbl, "main:");
+      --jmp a l'etiqueta del programa principal
+      --etiqueta del programa principal
 
    end Gce_Inicialitza;
 
@@ -330,7 +334,8 @@ package body Semantica.Assemblador is
                New_Line(Fitxer_Asmbl);
                Comentari("Global " & Ic3a.Camp1.Ide'Img);
                Ide := Ic3a.Camp1.Ide;
-               Put_Line(Fitxer_Asmbl, ".globl " & Etiqueta(Te, Ide));
+               --Put_Line(Fitxer_Asmbl, ".globl " & Etiqueta(Ide));
+               Put_Line(Fitxer_Asmbl, ".globl _etq_" & Ide'Img);
 
             when Rtn =>
                if Ic3a.Camp1.Tc /= Proc then
@@ -338,6 +343,7 @@ package body Semantica.Assemblador is
                end if;
                New_Line(Fitxer_Asmbl);
                Comentari("Return " & Ic3a.Camp1.Idp'Img);
+               Np := Np - 1;
                Ipr := Consulta(Tp, Ic3a.Camp1.Idp);
                Instr_2_Op("movl", "%ebp", "%esp");
                Instr_1_Op("popl", "%ebp");
@@ -353,7 +359,7 @@ package body Semantica.Assemblador is
                New_Line(Fitxer_Asmbl);
                Comentari("Call " & Ic3a.Camp1.Idp'Img);
                Ipr := Consulta(Tp, Ic3a.Camp1.Idp);
-               Instr_1_Op("call", Etiqueta(Te, Ipr.Etiq));
+               Instr_1_Op("call", Etiqueta(Ipr));
                -- Mirar el tema de si hay que *4
                Instr_2_Op("addl", "$" & Ipr.Ocup_Param'Img, "%esp");
 
@@ -363,9 +369,10 @@ package body Semantica.Assemblador is
                end if;
                New_Line(Fitxer_Asmbl);
                Comentari("Preambul "& Ic3a.Camp1.Idp'Img);
-               Ipr:=Consulta (Tp, Ic3a.Camp1.Idp);
+               Nproc := Nproc + 1;
+               Ipr := Consulta(Tp, Ic3a.Camp1.Idp);
                Prof_Actual := Ipr.Prof;
-               Etiqueta(Etiqueta(Te, Ipr.Etiq));
+               Etiqueta(Etiqueta(Ipr));
                Instr_2_Op("movl", "$DISP", "%esi");
                Dpn := 4*Integer(Ipr.Prof);
                Instr_1_Op("pushl", Dpn'Img & "(%esi)");
@@ -386,7 +393,7 @@ package body Semantica.Assemblador is
                end if;
                New_Line(Fitxer_Asmbl);
                Comentari("Etiqueta " & Ic3a.Camp1.Ide'Img);
-               Etiqueta(Etiqueta(Te, Ic3a.Camp1.Ide));
+               Etiqueta("_etq_" & Ic3a.Camp1.Ide'Img);
 
             when Branc_Inc =>
                if Ic3a.Camp1.Tc /= Etiq then
@@ -394,7 +401,7 @@ package body Semantica.Assemblador is
                end if;
                New_Line(Fitxer_Asmbl);
                Comentari("Brancament Incondicional " & Ic3a.Camp1.Ide'Img);
-               Instr_1_Op("jmp", Etiqueta(Te, Ic3a.Camp1.Ide));
+               Instr_1_Op("jmp", "_etq_" & Ic3a.Camp1.Ide'Img);
 
             -- 2 Operands
             when Negacio =>
@@ -426,7 +433,6 @@ package body Semantica.Assemblador is
                Comentari("Copia");
                Ld(Ic3a.Camp2, "%eax");
                St("%eax", Ic3a.Camp1);
-
 
             when Paramc =>
                New_Line(Fitxer_Asmbl);
@@ -525,9 +531,10 @@ package body Semantica.Assemblador is
                Ld(Ic3a.Camp1, "%eax");
                Ld(Ic3a.Camp2, "%ebx");
                Instr_2_Op("cmpl", "%ebx", "%eax");
-               Instr_1_Op("jge", Etiqueta(Te, Ide));
-               Instr_1_Op("jmp", Etiqueta(Te, Ic3a.Camp3.Ide));
-               Etiqueta(Etiqueta(Te, Ide));
+               Instr_1_Op("jge", "_etiq_" & Ide'Img);
+               --Instr_1_Op("jmp", Etiqueta(Te, Ic3a.Camp3.Ide));
+               Instr_1_Op("jmp", "_etq_" & Ic3a.Camp3.Ide'Img);
+               Etiqueta("_etq_" & Ide'Img);
 
             when Menorigual =>
                if Ic3a.Camp3.Tc /= Etiq then
@@ -538,9 +545,10 @@ package body Semantica.Assemblador is
                Ld(Ic3a.Camp1, "%eax");
                Ld(Ic3a.Camp2, "%ebx");
                Instr_2_Op("cmpl", "%ebx", "%eax");
-               Instr_1_Op("jg", Etiqueta(Te, Ide));
-               Instr_1_Op("jmp", Etiqueta(Te, Ic3a.Camp3.Ide));
-               Etiqueta(Etiqueta(Te, Ide));
+               Instr_1_Op("jg", "_etq_" & Ide'Img);
+               --Instr_1_Op("jmp", Etiqueta(Te, Ic3a.Camp3.Ide));
+               Instr_1_Op("jmp", "_etq_" & Ic3a.Camp3.Ide'Img);
+               Etiqueta("_etq_" & Ide'Img);
 
             when Igual =>
                if Ic3a.Camp3.Tc /= Etiq then
@@ -551,9 +559,10 @@ package body Semantica.Assemblador is
                Ld(Ic3a.Camp1, "%eax");
                Ld(Ic3a.Camp2, "%ebx");
                Instr_2_Op("cmpl", "%ebx", "%eax");
-               Instr_1_Op("jne", Etiqueta(Te, Ide));
-               Instr_1_Op("jmp", Etiqueta(Te, Ic3a.Camp3.Ide));
-               Etiqueta(Etiqueta(Te, Ide));
+               Instr_1_Op("jne", "_etq_" & Ide'Img);
+               --Instr_1_Op("jmp", Etiqueta(Te, Ic3a.Camp3.Ide));
+               Instr_1_Op("jmp", "_etq_" & Ic3a.Camp3.Ide'Img);
+               Etiqueta("_etq_" & Ide'Img);
 
             when Majorigual =>
                if Ic3a.Camp3.Tc /= Etiq then
@@ -564,9 +573,10 @@ package body Semantica.Assemblador is
                Ld(Ic3a.Camp1, "%eax");
                Ld(Ic3a.Camp2, "%ebx");
                Instr_2_Op("cmpl", "%ebx", "%eax");
-               Instr_1_Op("jl", Etiqueta(Te, Ide));
-               Instr_1_Op("jmp", Etiqueta(Te, Ic3a.Camp3.Ide));
-               Etiqueta(Etiqueta(Te, Ide));
+               Instr_1_Op("jl", "_etq_" & Ide'Img);
+               --Instr_1_Op("jmp", Etiqueta(Te, Ic3a.Camp3.Ide));
+               Instr_1_Op("jmp", "_etq_" & Ic3a.Camp3.Ide'Img);
+               Etiqueta("_etq_" & Ide'Img);
 
             when Major =>
                if Ic3a.Camp3.Tc /= Etiq then
@@ -577,9 +587,10 @@ package body Semantica.Assemblador is
                Ld(Ic3a.Camp1, "%eax");
                Ld(Ic3a.Camp2, "%ebx");
                Instr_2_Op("cmpl", "%ebx", "%eax");
-               Instr_1_Op("jle", Etiqueta(Te, Ide));
-               Instr_1_Op("jmp", Etiqueta(Te, Ic3a.Camp3.Ide));
-               Etiqueta(Etiqueta(Te, Ide));
+               Instr_1_Op("jle", "_etq_" & Ide'Img);
+               --Instr_1_Op("jmp", Etiqueta(Te, Ic3a.Camp3.Ide));
+               Instr_1_Op("jmp", "_etq_" & Ic3a.Camp3.Ide'Img);
+               Etiqueta("_etq_" & Ide'Img);
 
             when Diferent =>
                if Ic3a.Camp3.Tc /= Etiq then
@@ -590,9 +601,10 @@ package body Semantica.Assemblador is
                Ld(Ic3a.Camp1, "%eax");
                Ld(Ic3a.Camp2, "%ebx");
                Instr_2_Op("cmpl", "%ebx", "%eax");
-               Instr_1_Op("je", Etiqueta(Te, Ide));
-               Instr_1_Op("jmp", Etiqueta(Te, Ic3a.Camp3.Ide));
-               Etiqueta(Etiqueta(Te, Ide));
+               Instr_1_Op("je", "_etq_" & Ide'Img);
+               --Instr_1_Op("jmp", Etiqueta(Te, Ic3a.Camp3.Ide));
+               Instr_1_Op("jmp", "_etq_" & Ic3a.Camp3.Ide'Img);
+               Etiqueta("_etq_" & Ide'Img);
 
             when others =>
                raise Error_Assemblador;
