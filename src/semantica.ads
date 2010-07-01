@@ -84,7 +84,8 @@ package Semantica is
       Ocup_Param : Despl;
       Etiq       : num_etiq;
    end record;
-
+	--en llamosi diu que hem de distinguir si es un proc intern i extern
+	--i en l'extern nomes importa tenir un etiq : Idnom
    Info_Proc_Nul : Info_Proc :=
      (Idn => Id_Nul,
       Prof => 0,
@@ -262,6 +263,7 @@ package Semantica is
 private
 
    Ts : Tsimbols;
+   Tts: Ttsimbols;
    Tn : Taula_De_Noms;
    Nv : Num_Var;
    Np : Num_Proc;

@@ -50,7 +50,7 @@ package body Semantica.Gci is
       C1 := (Tc => Etiq, Ide => eip);
       Genera(Etiqueta, C1);
 
-      dproc:=Cons(Ts, Id_Proc);
+      dproc:=Cons(Ts, Id_Proc); -------------marccuuuuuuuuuuuuuuuuuuuuuuuuuuuusss
       C1:=(
            Tc => Proc,
            Idp => dproc.np);
@@ -60,7 +60,6 @@ package body Semantica.Gci is
 
       --
       gci_Bloc(Bloc);
-      Surtbloc(Ts);
       --
 
       --RTN
@@ -88,7 +87,7 @@ package body Semantica.Gci is
    procedure gci_Programa
      (A : in Pnode) is
    begin
-      --Entrabloc(Ts);
+      --tEntrabloc(Ts);
       Tv.nv := nv;
       gci_Decprocediment(A);
 
@@ -102,7 +101,7 @@ package body Semantica.Gci is
       I : in Id_Nom) is
       Dproc : Descrip;
    begin
-      Dproc := Cons(Ts, I);
+      Dproc := Cons(TTs(Ts), I); --marcuuuuuuuuuuuuuuuuuuuuuuussssssssssssssssssssss
       Empilar(Pproc, dproc.Np);
    end gci_Encap;
 
@@ -157,8 +156,8 @@ package body Semantica.Gci is
       gci_Declsvar(Dvariable);
 
       cim(pproc, idproc);
-      desc:= cons(ts,Id);
-      desctipus := cons(ts,desc.tr);
+      desc:= cons(Tts(idproc),Id);
+      desctipus := cons(Tts(idproc),desc.tr);
 
       Ivar := (Id,
                idproc,
@@ -186,9 +185,9 @@ package body Semantica.Gci is
          gci_Declsvar(A.Fd1);
 
          cim(pproc, idproc);
-         desc:= cons(ts,A.Fe1.Id12);
+         desc:= cons(Tts(idproc),A.Fe1.Id12);
 
-         desctipus := cons(ts,desc.tr);
+         desctipus := cons(Tts(idproc),desc.tr);
 
          Ivar := (A.Fe1.Id12,
                   idproc,
@@ -217,9 +216,9 @@ package body Semantica.Gci is
    begin
 
       cim(pproc, idproc);
-      desc:= cons(ts,A.Fd1.Id12);
+      desc:= cons(Tts(idproc),A.Fd1.Id12);
 
-      desctipus := cons(ts,desc.tr);
+      desctipus := cons(Tts(idproc),desc.tr);
 
       Iconst := (Id,
                  idproc,
@@ -247,14 +246,14 @@ package body Semantica.Gci is
    begin  --p_dcoleccio s_parentesitancat pc_of id
 
       gci_Pcoleccio(Fesq,base,Idarray);
+	  cim(pproc, idproc);
+      Darray := cons(Tts(idproc),Idarray);
 
-      Darray := cons(ts,Idarray);
-
-      cim(pproc, idproc);
+      
 	  Novaconst(Tv, base, Tsent, idproc, T1);
 
       Darray.Dt.Base := T1;
-      actualitza(ts, Idarray, Darray);
+      actualitza(Tts(idproc), Idarray, Darray);
 
    end gci_Deccol;
 
@@ -274,13 +273,13 @@ package body Semantica.Gci is
 
          gci_Pcoleccio(Fesq, base, Idarray);
 
-         Dtcamp := cons(ts,Id);
+         Dtcamp := cons(Tts(idproc),Id);
          ncomp :=  dtcamp.dt.lsup - dtcamp.dt.linf + 1;
          base := (base * ncomp) + dtcamp.dt.linf;
 
       elsif (A.Tipus = Pdimcoleccio) then --pc_type id pc_is pc_array s_parentesiobert id
 
-         Dtcamp := cons(ts,Id);
+         Dtcamp := cons(Tts(idproc),Id);
          Idarray := Fesq.Id12;
          base := dtcamp.dt.linf;
 
@@ -402,7 +401,7 @@ package body Semantica.Gci is
       case Tipus is
          when Identificador => --R -> id
 
-            dproc := cons(ts, A.Fid5.Id12);
+            dproc := cons(ts, A.Fid5.Id12);--marcuuuuuuuuuuuuuuuussssssssssssssssssssss
             Idproc := dproc.np;
 
          when Fireferencia => -- R -> pri)
@@ -497,7 +496,8 @@ package body Semantica.Gci is
       c1, c2: camp;
 
    begin
-      D := Cons(Ts, Id);
+	  cim(pproc, idproc);
+      D := Cons(Tts(idproc), Id);
 
       case Desc is
          when Dvar => -- R -> id
@@ -506,7 +506,7 @@ package body Semantica.Gci is
             Idtipus := d.tr;
 
          when Dconst =>
-            cim(pproc, idproc);
+           
             ------Novavar(Tv, idproc, Idv);
 			--modifica_var de id
 			--Crear var temporal
@@ -530,7 +530,7 @@ package body Semantica.Gci is
 
          when Dproc =>
 
-            D:=cons(ts, id);
+            D:=cons(Tts(idproc), id);
             c1:=(
                  Tc => Proc,
                  Idp => D.Np
@@ -1094,12 +1094,11 @@ package body Semantica.Gci is
 
          when Fireferencia => --r -> ref_pri)
             Gci_Ref_Pri(A.F6, Idres, Iddesp, Idbase, Idtipus, It_Idx);
-
-            da := cons(ts,Idtipus);
+			 cim(pproc, idproc);
+            da := cons(Tts(idproc),Idtipus);
             Idtipus := da.tr;
-            dtc := cons(ts,da.tr);
+            dtc := cons(Tts(idproc),da.tr);
 
-            cim(pproc, idproc);
             Novavar(Tv, idproc, T1);
             Novavar(Tv, idproc, T2);
             Novaconst(Tv, valor(dtc.dt.ocup), Tsent, idproc, T3);
@@ -1174,16 +1173,17 @@ package body Semantica.Gci is
       case Tipus is
          when Pri => --pri -> pri ,E
                      --Put_Line("CT-ref_pri: pri");
-            Gci_Ref_Pri(Fesq, Idres, Iddesp, Idbase, Idtipus, It_Idx);
+			cim(pproc, idproc);
+            
+			Gci_Ref_Pri(Fesq, Idres, Iddesp, Idbase, Idtipus, It_Idx);
             gci_Expressio(Fdret, IdresE, IddespE);
 
-            It_Idx := Succ_Idx(Ts, It_Idx);
+            It_Idx := Succ_Idx(Tts(idproc), It_Idx);
 
-            di := cons_idx(ts, It_idx);
-            dti := cons(ts,di);
+            di := cons_idx(Tts(idproc), It_idx);
+            dti := cons(Tts(idproc),di);
             ni := dti.dt.lsup - dti.dt.linf + 1;
-
-            cim(pproc, idproc);
+            
             Novaconst(Tv, ni, Tsent, idproc, T0);
             Novavar(Tv, idproc, T1);
 
@@ -1256,16 +1256,18 @@ package body Semantica.Gci is
             Iddesp:=T2;
 
          when Encappri => -- encappri --> R(E
+			
+			cim(pproc, idproc);
 
             gci_Referencia_Var(Fesq, Idres, Idbase, Idtipus);
             gci_Expressio(Fdret, IdresE, IddespE);
 
-            It_Idx := primer_idx(ts, Idtipus); ------------
+            It_Idx := primer_idx(Tts(idproc), Idtipus); ------------
 
             if IddespE = var_nul then
                Iddesp:= idresE;
             else
-               cim(pproc, idproc);
+               
                Novavar(Tv, idproc, T1);
 
                C1:=(
@@ -1318,11 +1320,11 @@ package body Semantica.Gci is
 
       Gci_Referencia_Var(Fesq, Idres, Iddesp, Idtipus);
 
+	  cim(pproc, idproc);
 
-      Dcamp := Conscamp(Ts, Idtipus, Idcamp);
+      Dcamp := Conscamp(Tts(idproc), Idtipus, Idcamp);
       Idtipus:= dcamp.tcamp;
 
-      cim(pproc, idproc);
       Novaconst(Tv, valor(Dcamp.Dsp), Tsent, Idproc, numconstant);
 
       if Iddesp = var_nul then

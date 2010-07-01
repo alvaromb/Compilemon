@@ -130,16 +130,17 @@ package body Decls.Dtsimbols is
     begin
         Ts.Prof := Ts.Prof + 1;
         Ts.Tambit(Ts.Prof) := Ts.Tambit(Ts.Prof - 1);
-        Put_Line("entraBLOCMACANUDO");
     end Entrabloc;
 
 
     procedure surtbloc
-      (ts : in out tsimbols) is
+      (ts : in out tsimbols
+	   np : in num_proc) is
         idespl1 : rang_despl;
         idespl2 : rang_despl;
              id : id_nom;
     begin
+		tts(np) := ts;--afegit per la nova ts
         idespl1 := ts.tambit(ts.prof);
         ts.prof := ts.prof - 1;
         idespl2 := ts.tambit(ts.prof) + 1;
@@ -151,7 +152,6 @@ package body Decls.Dtsimbols is
                 ts.tdesc(id).s := ts.texp(idespl).s;
             end if;
         end loop;
-        Put_Line("surtBLOCCCCCCCCTONIJAUMECAPO");
     end surtbloc;
 
 

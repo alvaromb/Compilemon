@@ -341,11 +341,12 @@ package body Semantica.Ctipus is
       Id_Inf : Id_Nom renames A.Fid5.Id12;
       Id_Sup : Id_Nom;
       Tdecls : Tipusnode;
+	  np_propi : num_proc;
 
    begin
       Put_line("CT_Decprocediment");
       Ct_Encap(Encap, Id_Sup);
-
+	  np_propi := np;	
       if Id_Inf /= Id_Sup then
          Error(idProgDiferents, A.Fid5.l1, A.Fid5.c1,
                cons_nom(tn, Id_Sup));
@@ -357,7 +358,7 @@ package body Semantica.Ctipus is
          Ct_Declaracions(Decls);
       end if;
       Ct_Bloc(Bloc);
-      Surtbloc(Ts);
+      Surtbloc(Ts,np_propi);
 
    end Ct_Decprocediment;
 
