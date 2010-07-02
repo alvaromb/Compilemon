@@ -8,21 +8,16 @@ procedure joan is
 		  pep : entrenador;
    	end record;
 
-	bili : integer := 5;
+	bili : integer;
 	bili : character;
-	alvs : constant integer := 69;
-	txavs : constant integer := 0;
-	pepe : character := 'p';
+	alvs : constant integer := 2;
+	txavs : constant integer := 2;
+	pepe : character;
 
 	biel : string;
 
-	lluis : string := "Hola, tinc un iPhone";
-	miquel : string := "Hola ""puc fer"" webs";
-
-	procedure i(x : out fcb)is 
-	begin
-		a:=5;
-	end i;
+	lluis : string;
+	miquel : string;
 
 	type porcella is new integer range 1..345;
 	type l is array (porcella) of integer;

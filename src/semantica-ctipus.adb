@@ -242,7 +242,7 @@ package body Semantica.Ctipus is
       Iv := (Ida, Idpr, 4, Ipr.Ocup_Param, Tsstr,
              True, False, 0);
       Posa(Tv, Iv, Idv);
-                  nv:= nv +1;
+      nv:= nv +1;
       D := (Dargc, Idv, Idstring);
       Posa(Ts, Ida, D, E);
       Posa_Arg(Ts, Idn, Ida, D, E);
