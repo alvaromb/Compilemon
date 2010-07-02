@@ -1,11 +1,27 @@
 procedure provaid is
+	
+	
+	type rec is record
+	
+		c1 : integer;
+		c2 : integer;
+	end record;
 
-	s :character;
+	coleccio : rec;
+	procedure mnm(a: out integer) is
+		b : integer;
+	begin
+		--puti(a);
+		
+		puti(a);
+		a := a+3;
+	end mnm;
 
-
+	
 begin
-    
-	getc(s);
-	putc(s);
+    coleccio.c1 := 3;
+	mnm(coleccio.c1);
+	new_line;
+	puti(coleccio.c1);
 	
 end provaid;

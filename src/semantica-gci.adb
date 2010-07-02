@@ -171,7 +171,7 @@ package body Semantica.Gci is
      (A : in Pnode) is
 
       idPar : id_nom renames A.Fe2.id12;
-      d : Descrip;
+      d, dtipus: Descrip;
       idproc : num_proc;
           Iv : Info_Var;
 
@@ -179,12 +179,12 @@ package body Semantica.Gci is
 
       cim(pproc, idproc);
       d := cons(tts(idproc), idPar);
-
+	  dtipus:=cons(tts(idproc),d.tr);
       Iv := (idPar,
              idproc,
-             D.Dt.ocup,
+             Dtipus.Dt.ocup,
              0,
-             D.Dt.tt,
+             Dtipus.Dt.tt,
              True,
              False,
              0);
