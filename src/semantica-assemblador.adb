@@ -414,6 +414,7 @@ package body Semantica.Assemblador is
                Instr_2_Op("movl", "%esp", "%ebp");
                Instr_2_Op("movl", "%ebp", Trim(Dpn'Img, Both) &
                             "(%esi)");
+
                Instr_2_Op("subl", "$" & Trim(Ipr.Ocup_Var'Img,
                                              Both), "%esp");
 

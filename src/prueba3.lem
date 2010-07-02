@@ -2,28 +2,8 @@ procedure provaid is
 
 	k : integer;
 
-	procedure pepe is
-		i:integer;
-	begin
-		i:=6;
-		puti(i);
-	end pepe;
-
-
-	procedure marqui is
-	begin
-		puti(69);
-		new_line;
-	end marqui;
 
 begin
 	k:=8;
-	pepe;
-	new_line;
-
-	marqui;
-
-	puti(k);
-	new_line;
 	
 end provaid;

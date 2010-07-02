@@ -444,11 +444,7 @@ package body Semantica.Gci is
 
 
       cim(pproc, idproc);
-      Novavar(Tv, idproc, T);
-      C5:=(
-           Tc => Var,
-           Idv => T
-          );
+     
 
       if Iddref = Var_Nul then
          if Iddexp = Var_Nul then
@@ -460,6 +456,11 @@ package body Semantica.Gci is
          if Iddexp = Var_Nul then
             Genera(Asigindex, C1, C2, C3);
          else
+			 Novavar(Tv, idproc, T);
+      		 C5:=(
+         	  Tc => Var,
+           	  Idv => T
+             );
             Genera(Consindex, C5, C3, C4);
             Genera(Asigindex, C1, C2, C5);
          end if;
@@ -1729,19 +1730,22 @@ package body Semantica.Gci is
       for V in Num_Var range 1..Tv.Nv loop
 
          if Tv.Tv(V).Param then --param
-            Tv.Tv(V).Desp := Tv.Tv(V).Desp + 12;
-            --[+ 4*( @RTN, DISP(prof), BP llamante)]
+
+			Idpr := Tv.Tv(V).Np;
+			Tv.Tv(V).Desp := Tp.Tp(Idpr).Ocup_Param +12;
+			Tp.Tp(Idpr).Ocup_Param := Despl(Tp.Tp(Idpr).Ocup_Param) + 4;
+            
          else
             if Tv.Tv(V).Desp = 0 then
 
                Idpr := Tv.Tv(V).Np;
 
-                           if Tp.Tp(Idpr).Tp = Intern then
+               if Tp.Tp(Idpr).Tp = Intern then
                   Ocup_Var := Tv.Tv(V).Ocup;
-                  Tv.Tv(V).Desp := Despl(Tp.Tp(Idpr).Ocup_Var);
-                  Tp.Tp(Idpr).Ocup_Var := Tp.Tp(Idpr).Ocup_Var + Ocup_Var;
-                  Tv.Tv(V).Desp := (Tv.Tv(V).Desp+4)*(-1);
-                           end if;
+				  Tp.Tp(Idpr).Ocup_Var := Tp.Tp(Idpr).Ocup_Var + Ocup_Var;
+                  Tv.Tv(V).Desp := Despl(Tp.Tp(Idpr).Ocup_Var* (-1));
+                  
+               end if;
 
             end if;
          end if;
