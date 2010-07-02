@@ -970,6 +970,8 @@ package body Semantica.Gci is
       idproc : num_proc := proc_nul;
 
    begin
+	
+   put_line("Entra a expr aritmetica");
 
       if IddespE = Var_Nul then
          T1:= IdResE;
@@ -1199,10 +1201,8 @@ package body Semantica.Gci is
 
          when Fireferencia => --r -> ref_pri)
             Gci_Ref_Pri(A.F6, Idres, Iddesp, Idbase, Idtipus, It_Idx);
-                         cim(pproc, idproc);
-            da := cons(Tts(idproc),Idtipus);
-            Idtipus := da.tr;
-            dtc := cons(Tts(idproc),da.tr);
+            cim(pproc, idproc);
+            dtc := cons(Tts(idproc),Idtipus);
 
             Novavar(Tv, idproc, T1);
             Novavar(Tv, idproc, T2);
@@ -1220,7 +1220,7 @@ package body Semantica.Gci is
                  Tc  => Const,
                  Idc => T3
                 );
-            Genera(Resta, C1, C2, C3);
+            Genera(Resta, C1, C3, C2);
             C2.Idv := T2;
             C3.Idc := Dtc.Dt.Base;
             Genera(Producte, C2, C1, C3);
@@ -1255,7 +1255,7 @@ package body Semantica.Gci is
 
 
    --Arrays
-   procedure gci_Ref_Pri --"Correcte"
+   procedure gci_Ref_Pri
      (A : in Pnode;
       Idres, Iddesp, Idbase : out Num_var;
       Idtipus : out Id_Nom;
@@ -1362,7 +1362,7 @@ package body Semantica.Gci is
 
          when Encappri => -- encappri --> R(E
 
-                        cim(pproc, idproc);
+            cim(pproc, idproc);
 
             gci_Referencia_Var(Fesq, Idres, Idbase, Idtipus);
             gci_Expressio(Fdret, IdresE, IddespE);

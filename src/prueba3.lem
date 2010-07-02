@@ -1,11 +1,11 @@
 procedure provaid is
 	
-	a : integer;
-
+	type rang is new integer range 1..5;
+	type a is array (rang) of integer;
+	col : a;
+	idx : rang;
 begin
+	idx := 3;
+	col(idx) := 7;
 
-	while a < 10 loop
-
-		a:= a +1;
-	end loop;
 end provaid;
