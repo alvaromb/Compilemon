@@ -89,7 +89,7 @@ package body Semantica.Ctipus is
 
       -- "puti"
       Posa_Id(Tn, Idn, "puti");
-      Ipr := (Extern, Idn, 4);
+      Ipr := (Extern, 4, Idn);
       Posa(Tp, Ipr, Idpr);
       Np := Np + 1;
       --  Ie := (Etiq_Proc, Idpr);
@@ -100,17 +100,17 @@ package body Semantica.Ctipus is
       Posa(Ts, Idn, D, E);
 
       Posa_Id(Tn, Ida, "_arg_puti");
-      Iv := (Ida, Idpr, Integer'Size/8, Ipr.Ocup_Extern,
+      Iv := (Ida, Idpr, Integer'Size/8, Ipr.Ocup_Param,
              Tsent, True, False, 0);
       Posa(Tv, Iv, Idv);
       D := (Dargc, Idv, Idint);
       Posa(Ts, Ida, D, E);
       Posa_Arg(Ts, Idn, Ida, D, E);
-      Ipr.Ocup_Extern := Ipr.Ocup_Extern + Iv.Ocup;
+      Ipr.Ocup_Param := Ipr.Ocup_Param + Iv.Ocup;
 
       -- "geti"
       Posa_Id(Tn, Idn, "geti");
-      Ipr := (Extern, Idn, 4);
+      Ipr := (Extern, 4, Idn);
       Posa(Tp, Ipr, Idpr);
       Np := Np + 1;
       --  Ie := (Etiq_Proc, Idpr);
@@ -121,13 +121,13 @@ package body Semantica.Ctipus is
       Posa(Ts, Idn, D, E);
 
       Posa_Id(Tn, Ida, "_arg_geti");
-      Iv := (Ida, Idpr, Integer'Size/8, Ipr.Ocup_Extern, Tsent,
+      Iv := (Ida, Idpr, Integer'Size/8, Ipr.Ocup_Param, Tsent,
              True, False, 0);
       Posa(Tv, Iv, Idv);
       D := (Dargc, Idv, Idint);
       Posa(Ts, Ida, D, E);
       Posa_Arg(Ts, Idn, Ida, D, E);
-      Ipr.Ocup_Extern := Ipr.Ocup_Extern + Iv.Ocup;
+      Ipr.Ocup_Param := Ipr.Ocup_Param + Iv.Ocup;
 
    end Inicia_Enter;
 
@@ -191,7 +191,7 @@ package body Semantica.Ctipus is
 
       -- putc
       Posa_Id(Tn, Idn, "putc");
-      Ipr := (Extern, Idn, 4);
+      Ipr := (Extern, 4, Idn);
       Posa(Tp, Ipr, Idpr);
       Np := Np + 1;
       --  Ie := (Etiq_Proc, Idpr);
@@ -202,17 +202,17 @@ package body Semantica.Ctipus is
       Posa(Ts, Idn, D, E);
 
       Posa_Id(Tn, Ida, "_arg_putc");
-      Iv := (Ida, Idpr, Integer'Size/8, Ipr.Ocup_Extern, Tscar,
+      Iv := (Ida, Idpr, Integer'Size/8, Ipr.Ocup_Param, Tscar,
              True, False, 0);
       Posa(Tv, Iv, Idv);
       D := (Dargc, Idv, Idchar);
       Posa(Ts, Ida, D, E);
       Posa_Arg(Ts, Idn, Ida, D, E);
-      Ipr.Ocup_Extern := Ipr.Ocup_Extern + Iv.Ocup;
+      Ipr.Ocup_Param := Ipr.Ocup_Param + Iv.Ocup;
 
       -- getc
       Posa_Id(Tn, Idn, "getc");
-      Ipr := (Extern, Idn, 4);
+      Ipr := (Extern, 4, Idn);
       Posa(Tp, Ipr, Idpr);
       Np := Np + 1;
       --  Ie := (Etiq_Proc, Idpr);
@@ -223,17 +223,17 @@ package body Semantica.Ctipus is
       Posa(Ts, Idn, D, E);
 
       Posa_Id(Tn, Ida, "_arg_getc");
-      Iv := (Ida, Idpr, Integer'Size/8, Ipr.Ocup_Extern, Tscar,
+      Iv := (Ida, Idpr, Integer'Size/8, Ipr.Ocup_Param, Tscar,
              True, False, 0);
       Posa(Tv, Iv, Idv);
       D := (Dargc, Idv, Idchar);
       Posa(Ts, Ida, D, E);
       Posa_Arg(Ts, Idn, Ida, D, E);
-      Ipr.Ocup_Extern := Ipr.Ocup_Extern + Iv.Ocup;
+      Ipr.Ocup_Param := Ipr.Ocup_Param + Iv.Ocup;
 
       -- puts
       Posa_Id(Tn, Idn, "puts");
-      Ipr := (Extern, Idn, 4);
+      Ipr := (Extern, 4, Idn);
       Posa(Tp, Ipr, Idpr);
       Np := Np + 1;
       --  Ie := (Etiq_Proc, Idpr);
@@ -244,17 +244,17 @@ package body Semantica.Ctipus is
       Posa(Ts, Idn, D, E);
 
       Posa_Id(Tn, Ida, "_arg_puts");
-      Iv := (Ida, Idpr, 32*Integer'Size, Ipr.Ocup_Extern, Tsstr,
+      Iv := (Ida, Idpr, 32*Integer'Size, Ipr.Ocup_Param, Tsstr,
              True, False, 0);
       Posa(Tv, Iv, Idv);
       D := (Dargc, Idv, Idstring);
       Posa(Ts, Ida, D, E);
       Posa_Arg(Ts, Idn, Ida, D, E);
-      Ipr.Ocup_Extern := Ipr.Ocup_Extern + Iv.Ocup;
+      Ipr.Ocup_Param := Ipr.Ocup_Param + Iv.Ocup;
 
       -- gets
       Posa_Id(Tn, Idn, "gets");
-      Ipr := (Extern, Idn, 4);
+      Ipr := (Extern, 4, Idn);
       Posa(Tp, Ipr, Idpr);
       Np := Np + 1;
       --  Ie := (Etiq_Proc, Idpr);
@@ -265,17 +265,17 @@ package body Semantica.Ctipus is
       Posa(Ts, Idn, D, E);
 
       Posa_Id(Tn, Ida, "_arg_gets");
-      Iv := (Ida, Idpr, 32*Integer'Size, Ipr.Ocup_Extern, Tsstr,
+      Iv := (Ida, Idpr, 32*Integer'Size, Ipr.Ocup_Param, Tsstr,
              True, False, 0);
       Posa(Tv, Iv, Idv);
       D := (Dargc, Idv, Idstring);
       Posa(Ts, Ida, D, E);
       Posa_Arg(Ts, Idn, Ida, D, E);
-      Ipr.Ocup_Extern := Ipr.Ocup_Extern + Iv.Ocup;
+      Ipr.Ocup_Param := Ipr.Ocup_Param + Iv.Ocup;
 
       -- nova linea
       Posa_Id(Tn, Idn, "new_line");
-      Ipr := (Extern, Idn, 0);
+      Ipr := (Extern, 0, Idn);
       Posa(Tp, Ipr, Idpr);
       Np := Np + 1;
       --  Ie := (Etiq_Proc, Idpr);

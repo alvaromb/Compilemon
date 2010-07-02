@@ -39,8 +39,12 @@ package body Semantica.Assemblador is
         Operand1,
         Operand2 : in String) is
    begin
+      --Put_Line(Fitxer_Asmbl, Tab & Instruccio &
+      --           Tab & Operand1 & Tab & ", " &
+      --           Operand2);
+
       Put_Line(Fitxer_Asmbl, Tab & Instruccio &
-                 Tab & Operand1 & Tab & ", " &
+                 Tab & Operand1 & ", " &
                  Operand2);
    end Instr_2_Op;
 
@@ -302,7 +306,8 @@ package body Semantica.Assemblador is
       --3º) Instrucciones
       New_Line(Fitxer_Asmbl);
       Put_Line(Fitxer_Asmbl, ".section .text");
-      Put_Line(Fitxer_Asmbl, ".global main");
+      Put_Line(Fitxer_Asmbl, Tab & ".global main");
+      New_Line(Fitxer_Asmbl);
       Put_Line(Fitxer_Asmbl, "main:");
       --jmp a l'etiqueta del programa principal
       --etiqueta del programa principal
@@ -329,15 +334,15 @@ package body Semantica.Assemblador is
 
          case Ic3a.Instr is
             -- 1 Operand
-            when Global =>
-               if Ic3a.Camp1.Tc /= Etiq then
-                  raise Error_Assemblador;
-               end if;
-               New_Line(Fitxer_Asmbl);
-               Comentari("Global " & Ic3a.Camp1.Ide'Img);
-               Ide := Ic3a.Camp1.Ide;
+            --when Global =>
+               --if Ic3a.Camp1.Tc /= Etiq then
+               --   raise Error_Assemblador;
+               --end if;
+               --New_Line(Fitxer_Asmbl);
+               --Comentari("Global " & Ic3a.Camp1.Ide'Img);
+               --Ide := Ic3a.Camp1.Ide;
                --Put_Line(Fitxer_Asmbl, ".globl " & Etiqueta(Ide));
-               Put_Line(Fitxer_Asmbl, ".globl _etq_" & Trim(Ide'Img, Both));
+               --Put_Line(Fitxer_Asmbl, ".globl _etq_" & Trim(Ide'Img, Both));
 
             when Rtn =>
                if Ic3a.Camp1.Tc /= Proc then
@@ -476,7 +481,7 @@ package body Semantica.Assemblador is
                Comentari("Divisio");
                Ld(Ic3a.Camp2, "%eax");
                Instr_2_Op("movl", "%eax", "%edx");
-               Instr_2_Op("sarl", "$31", "%edx"); --EL TITO pone eax
+               Instr_2_Op("sarl", "$31", "%edx"); 
                Ld(Ic3a.Camp3, "%ebx");
                Instr_1_Op("idivl", "%ebx");
                St("%eax", Ic3a.Camp1);
@@ -486,7 +491,7 @@ package body Semantica.Assemblador is
                Comentari("Modul");
                Ld(Ic3a.Camp2, "%eax");
                Instr_2_Op("movl", "%eax", "%edx");
-               Instr_2_Op("sarl", "$31", "%edx"); --EL TITO pone eax
+               Instr_2_Op("sarl", "$31", "%edx"); 
                Ld(Ic3a.Camp3, "%ebx");
                Instr_1_Op("idivl", "%ebx");
                St("%edx", Ic3a.Camp1);

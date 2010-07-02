@@ -102,11 +102,12 @@ package body Semantica.Gci is
       Cim(Pproc, Idprinvocador);
 
       if Idprinvocador = Proc_Nul then
-         C1:=(
-              Tc => Etiq,
-              Ide => Tp.Tp(Idprinvocat).Etiq
-             );
-         Genera(Global, C1);
+         --C1:=(
+         --     Tc => Etiq,
+         --     Ide => Tp.Tp(Idprinvocat).Etiq
+         --    );
+         --Genera(Global, C1);
+		 Put_Line("Estamos en el MAIN");
       end if;
 
    end gci_Decprocediment;

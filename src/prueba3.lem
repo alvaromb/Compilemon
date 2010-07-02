@@ -1,15 +1,30 @@
 procedure provaid is
 	
+	type cognoms is record
+		primer : integer; 
+		segon : integer;
+	end record;
+
+
 	type dades is record
-		dni : integer;
-		home : boolean;
+		--home : boolean;
+		--dni : integer;
+		cog : cognoms;
 	end record;
 	
 	persona: dades;
-	
+	cognomcopia : cognoms;	
+
 begin
+   
+	--persona.dni := 12345;
+	--persona.home := true;
+	persona.cog.primer := 3;
+	persona.cog.segon := 4;
 
-	persona.dni := 12345;
-	persona.home := true;
-
+	cognomcopia := persona.cog;
+	puti(cognomcopia.segon);
+	new_line;
+	puti(cognomcopia.primer);
+	new_line;
 end provaid;

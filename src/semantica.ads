@@ -19,7 +19,7 @@ package Semantica is
    --Definicions basiques
    type tInstruccio is
      (--1 operand
-      Global, --modificacion sobre los apuntes
+      --Global, --modificacion sobre los apuntes
       --.global .etiq_principal
       Rtn,
       Call,
@@ -83,21 +83,20 @@ package Semantica is
 
    type Info_Proc (Tp : Tprocediment := Intern) is
       record
+         Ocup_Param : Despl;
          case Tp is
             when Intern =>
                Idn        : Id_Nom;
                Prof       : nprof;
                Ocup_Var   : Despl;
-               Ocup_Param : Despl;
                Etiq : Num_Etiq;
             when Extern =>
                Etiq_extern : Id_Nom;
-               Ocup_Extern : Despl;
          end case;
       end record;
    --en llamosi diu que hem de distinguir si es un proc intern i extern
    --i en l'extern nomes importa tenir un etiq : Idnom
-   Info_Proc_Nul : Info_Proc := (Intern, Id_Nul, 0, 0, 0, Etiq_Nul);
+   Info_Proc_Nul : Info_Proc := (Intern, 0, Id_Nul, 0, 0, Etiq_Nul);
 
    type Taula_P is array
      (Num_Proc) of Info_Proc;
