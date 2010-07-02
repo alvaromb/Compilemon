@@ -461,7 +461,7 @@ package body Semantica.Gci is
 
 
    --Procediments
-   procedure gci_Referencia_Proc --InComplet
+   procedure gci_Referencia_Proc 
      (A : in Pnode;
       Idproc : out num_proc) is
 
@@ -477,7 +477,7 @@ package body Semantica.Gci is
          when Identificador => --R -> id
                         idproc:= proc_nul;
                         cim(pproc,idproc);
-            dproc := cons(tts(idproc), A.Fid5.Id12);
+            dproc := cons(tts(idproc), A.Id12);
             Idproc := dproc.np;
 
          when Fireferencia => -- R -> pri)
@@ -1186,7 +1186,7 @@ package body Semantica.Gci is
       Idbase : Num_Var;
       It_Idx : Cursor_Idx;
       Da, Dtc : Descrip;
-      T1,T2,T3,T4,T5: num_Var := Var_Nul;
+      T1,T2,T3,T4,T5,T6,T7: num_Var := Var_Nul;
       idproc : num_proc := proc_nul;
       C1, C2, C3: Camp;
 
@@ -1203,14 +1203,13 @@ package body Semantica.Gci is
             Gci_Ref_Pri(A.F6, Idres, Iddesp, Idbase, Idtipus, It_Idx);
             cim(pproc, idproc);
             dtc := cons(Tts(idproc),Idtipus);
+			
+			Novaconst(Tv, valor(Integer'size/8), Tsent, idproc, T6);
+			Novavar(Tv,idproc, T7);
 
-            Novavar(Tv, idproc, T1);
-            Novavar(Tv, idproc, T2);
-            Novaconst(Tv, valor(dtc.dt.ocup), Tsent, idproc, T3);
-
-            C1:=(
+			 C1:=(
                  Tc => Var,
-                 Idv => T1
+                 Idv => T7
                 );
             C2:=(
                  Tc  => Var,
@@ -1218,9 +1217,27 @@ package body Semantica.Gci is
                 );
             C3:=(
                  Tc  => Const,
+                 Idc => T6
+                );
+            Genera(Producte, C1, C2, C3);
+		
+            Novavar(Tv, idproc, T1);
+            Novavar(Tv, idproc, T2);
+            Novaconst(Tv, valor(dtc.dt.ocup), Tsent, idproc, T3);
+            
+            C1:=(
+                 Tc => Var,
+                 Idv => T1
+                );
+            C2:=(
+                 Tc  => Var,
+                 Idv => T7
+                );
+            C3:=(
+                 Tc  => Const,
                  Idc => T3
                 );
-            Genera(Resta, C1, C3, C2);
+            Genera(Resta, C1, C2, C3);
             C2.Idv := T2;
             C3.Idc := Dtc.Dt.Base;
             Genera(Producte, C2, C1, C3);
@@ -1278,9 +1295,9 @@ package body Semantica.Gci is
       case Tipus is
          when Pri => --pri -> pri ,E
                      --Put_Line("CT-ref_pri: pri");
-                        cim(pproc, idproc);
+            cim(pproc, idproc);
 
-                        Gci_Ref_Pri(Fesq, Idres, Iddesp, Idbase, Idtipus, It_Idx);
+            Gci_Ref_Pri(Fesq, Idres, Iddesp, Idbase, Idtipus, It_Idx);
             gci_Expressio(Fdret, IdresE, IddespE);
 
             It_Idx := Succ_Idx(Tts(idproc), It_Idx);
@@ -1307,6 +1324,7 @@ package body Semantica.Gci is
 
             Genera(Producte, C1, C2, C3);
             Novavar(Tv, idproc, T2);
+
             if IddespE = var_nul then
 
                C1:=(
@@ -1326,7 +1344,7 @@ package body Semantica.Gci is
 
             else
 
-               Novavar(Tv, idproc, T1);
+              -- Novavar(Tv, idproc, T1);
 
                C1:=(
                     Tc => Var,
@@ -1399,7 +1417,7 @@ package body Semantica.Gci is
 
 
 
-   procedure gci_Ref_Rec --correcte
+   procedure gci_Ref_Rec
      (A : in Pnode;
       Idres, Iddesp: out num_var;
       Idtipus : out Id_Nom) is

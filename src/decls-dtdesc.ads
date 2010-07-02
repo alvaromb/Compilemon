@@ -77,7 +77,7 @@ package Decls.Dtdesc is
                 when dargc  => nvarg: num_var;
                                 targ: id_nom;
                 when dcamp  => tcamp: id_nom;
-                                 dsp: rang_despl;
+                                 dsp: despl;
             end case;
         end record;
 

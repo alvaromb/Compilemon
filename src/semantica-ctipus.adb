@@ -370,7 +370,7 @@ package body Semantica.Ctipus is
          Ct_Declaracions(Decls);
       end if;
       Ct_Bloc(Bloc);
-          tts(np_propi) := ts;--afegit per la nova ts
+      tts(np_propi) := ts;--afegit per la nova ts
       Surtbloc(Ts);
 
    end Ct_Decprocediment;
@@ -794,7 +794,7 @@ package body Semantica.Ctipus is
                cons_nom(tn, Idtcamp));
          Esem := True;
       else
-         Desc_Camp := (Dcamp, Idtcamp, Nul_Despl);
+         Desc_Camp := (Dcamp, Idtcamp, Ocup);
          Posacamp(Ts, Idrecord, Idcamp, Desc_Camp, E);
          Ocup := Ocup + Dtcamp.dt.ocup;
          if E then

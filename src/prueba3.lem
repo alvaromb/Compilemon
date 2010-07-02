@@ -1,11 +1,15 @@
 procedure provaid is
 	
-	type rang is new integer range 1..5;
-	type a is array (rang) of integer;
-	col : a;
-	idx : rang;
+	type dades is record
+		dni : integer;
+		home : boolean;
+	end record;
+	
+	persona: dades;
+	
 begin
-	idx := 3;
-	col(idx) := 7;
+
+	persona.dni := 12345;
+	persona.home := true;
 
 end provaid;
