@@ -591,7 +591,7 @@ package body Semantica.Gci is
                         False,
                         True,
                         D.Vc);
-                        put_line("valor variable: "&D.nvc'img);
+                        put_line("valor variable: "&D.vc'img);
                 modif_descripcio(Tv, D.Nvc, Iv);
 
                         Novavar(Tv, idproc, T1);
@@ -1489,7 +1489,7 @@ package body Semantica.Gci is
    begin
 
       efals := nova_etiq;
-
+	put_line("Conds");
       gci_Expressio(Cond, Idres, Iddesp);
 
           put_line("IDres: "&Idres'img&", Iddesp"&Iddesp'img);
@@ -1524,7 +1524,7 @@ package body Semantica.Gci is
       -- if C1 = C2 then Efals
       C3:=(
            Tc => Etiq,
-           Ide => Efals
+           Ide => Efals --------------------------
           );
       C1:=(
            Tc => Const,
@@ -1717,16 +1717,27 @@ package body Semantica.Gci is
       end loop;
 
       for V in Num_Var range 1..Tv.Nv loop
+		
          if Tv.Tv(V).Param then --param
             Tv.Tv(V).Desp := Tv.Tv(V).Desp + 12;
             --[+ 4*( @RTN, DISP(prof), BP llamante)]
          else
             if Tv.Tv(V).Desp = 0 then
+               --Idpr := Tv.Tv(V).Np;
+               --Ocup_Var := Tv.Tv(V).Ocup;
+               --Tv.Tv(V).Desp := Despl(Tp.Tp(Idpr).Ocup_Var);
+               --Tp.Tp(Idpr).Ocup_Var := Tp.Tp(Idpr).Ocup_Var + Ocup_Var;
+               --Tv.Tv(V).Desp := (Tv.Tv(V).Desp+4)*(-1);
+
                Idpr := Tv.Tv(V).Np;
-               Ocup_Var := Tv.Tv(V).Ocup;
-               Tv.Tv(V).Desp := Despl(Tp.Tp(Idpr).Ocup_Var);
-               Tp.Tp(Idpr).Ocup_Var := Tp.Tp(Idpr).Ocup_Var + Ocup_Var;
-               Tv.Tv(V).Desp := (Tv.Tv(V).Desp+4)*(-1);
+
+			   if Tp.Tp(Idpr).Tp = Intern then
+                  Ocup_Var := Tv.Tv(V).Ocup;
+                  Tv.Tv(V).Desp := Despl(Tp.Tp(Idpr).Ocup_Var);
+               	  Tp.Tp(Idpr).Ocup_Var := Tp.Tp(Idpr).Ocup_Var + Ocup_Var;
+                  Tv.Tv(V).Desp := (Tv.Tv(V).Desp+4)*(-1);
+			   end if;
+
             end if;
          end if;
       end loop;

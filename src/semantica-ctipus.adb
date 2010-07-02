@@ -73,13 +73,16 @@ package body Semantica.Ctipus is
       Posa_Id(Tn, Idn, "_zero");
       Iv := (Idn, Tp.Np, Integer'Size/8, 0, Tsent,
              False, True, 0);
+	  nv := nv+1;
       Posa(Tv, Iv, Zero);
+	 put_line("NUM_VAR : "&Zero'img);
 
       Posa_Id(Tn, Idn, "_menysu");
       Iv := (Idn, Tp.Np, Integer'Size/8, 0, Tsent,
              False, True, -1);
       Posa(Tv, Iv, Menysu);
-
+	  put_line("NUM_VAR : "&Menysu'img);
+	    nv := nv+1;
       -- "Integer"
       Posa_Id(Tn, Idint, "integer");
       Dt := (Tsent, Integer'Size/8, Valor(Integer'First),
@@ -103,6 +106,7 @@ package body Semantica.Ctipus is
       Iv := (Ida, Idpr, Integer'Size/8, Ipr.Ocup_Param,
              Tsent, True, False, 0);
       Posa(Tv, Iv, Idv);
+	  nv:=nv+1;
       D := (Dargc, Idv, Idint);
       Posa(Ts, Ida, D, E);
       Posa_Arg(Ts, Idn, Ida, D, E);
@@ -124,6 +128,7 @@ package body Semantica.Ctipus is
       Iv := (Ida, Idpr, Integer'Size/8, Ipr.Ocup_Param, Tsent,
              True, False, 0);
       Posa(Tv, Iv, Idv);
+	  nv := nv+1;
       D := (Dargc, Idv, Idint);
       Posa(Ts, Ida, D, E);
       Posa_Arg(Ts, Idn, Ida, D, E);
@@ -149,7 +154,9 @@ package body Semantica.Ctipus is
       Posa_Id(Tn, Idt, "true");
       Iv := (Idt, Tp.Np, Integer'Size/8, 0, Tsbool, False,
              True, -1);
+
       Posa(Tv, Iv, Idv);
+	 put_line("NUM_VAR_true : "&Idv'img);
           Nv:=Nv+1;
       D := (Dconst, Idb, -1, Nv); --REPASAR ESTO!!!
       Posa(Ts, Idt, D, E);
@@ -205,6 +212,7 @@ package body Semantica.Ctipus is
       Iv := (Ida, Idpr, Integer'Size/8, Ipr.Ocup_Param, Tscar,
              True, False, 0);
       Posa(Tv, Iv, Idv);
+	  nv:= nv +1;
       D := (Dargc, Idv, Idchar);
       Posa(Ts, Ida, D, E);
       Posa_Arg(Ts, Idn, Ida, D, E);
@@ -226,6 +234,7 @@ package body Semantica.Ctipus is
       Iv := (Ida, Idpr, Integer'Size/8, Ipr.Ocup_Param, Tscar,
              True, False, 0);
       Posa(Tv, Iv, Idv);
+	  	  nv:= nv +1;
       D := (Dargc, Idv, Idchar);
       Posa(Ts, Ida, D, E);
       Posa_Arg(Ts, Idn, Ida, D, E);
@@ -247,6 +256,7 @@ package body Semantica.Ctipus is
       Iv := (Ida, Idpr, 32*Integer'Size, Ipr.Ocup_Param, Tsstr,
              True, False, 0);
       Posa(Tv, Iv, Idv);
+	  	  nv:= nv +1;
       D := (Dargc, Idv, Idstring);
       Posa(Ts, Ida, D, E);
       Posa_Arg(Ts, Idn, Ida, D, E);
@@ -268,6 +278,7 @@ package body Semantica.Ctipus is
       Iv := (Ida, Idpr, 32*Integer'Size, Ipr.Ocup_Param, Tsstr,
              True, False, 0);
       Posa(Tv, Iv, Idv);
+		  nv:= nv +1;
       D := (Dargc, Idv, Idstring);
       Posa(Ts, Ida, D, E);
       Posa_Arg(Ts, Idn, Ida, D, E);

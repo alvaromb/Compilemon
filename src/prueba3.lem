@@ -1,22 +1,18 @@
 procedure provaid is
 
-	--a, b, r : boolean;
-	c, d : integer;
-	
-	type alf is new integer range 0..6;
-	a : alf;
+	a, b, r : boolean;
+	c : integer;
+
 
 begin
 
-	a:=0;
-	c:=1;
-	d := 0;
+	a := true;
+	b := false;
 
-	while d < 10 loop
-		puti(c);
-		d:=d+1;
-		new_line;
-		a:=a+1;
-	end loop;
-
+	if not a or b then
+		puti(3);	
+	else
+		puti(2);
+	end if;
+	
 end provaid;
