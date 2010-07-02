@@ -1210,7 +1210,7 @@ package body Semantica.Ctipus is
          when A_Lit_N =>
             T := Tsent;
          when A_Lit_S =>
-            T := Tsarr;
+            T := Tsstr;
          when others =>
             Put_Line("ERROR CT-constant: tipus constant "&
                        "erroni");
