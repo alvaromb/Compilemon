@@ -41,7 +41,7 @@ package body Semantica.Ctipus is
       car : in string;
       a : out atribut) is
    begin
-      a := (A_Lit_C, l, c, valor(car'First+1));
+      A := (A_Lit_C, L, C, Valor(Character'Pos(Car(Car'First+1))));
    end mt_caracter;
 
 

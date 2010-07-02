@@ -118,7 +118,7 @@ package Semantica is
       Tsub     : Tipussubjacent;
       Param    : Boolean;
       Const    : Boolean;
-      Valconst : valor;
+      Valconst : Valor;
    end record;
 
    Info_Var_Nul : Info_Var :=
