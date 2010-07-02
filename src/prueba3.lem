@@ -1,30 +1,32 @@
 procedure provaid is
-	
-	type cognoms is record
-		primer : integer; 
-		segon : integer;
-	end record;
 
+	type rang is new integer range 0..5;
+	type vector is array(rang) of integer;
 
-	type dades is record
-		--home : boolean;
-		--dni : integer;
-		cog : cognoms;
-	end record;
-	
-	persona: dades;
-	cognomcopia : cognoms;	
-
+	v: vector;
+	a : rang;
+	aux: integer;
 begin
    
-	--persona.dni := 12345;
-	--persona.home := true;
-	persona.cog.primer := 3;
-	persona.cog.segon := 4;
+	a:= 0;
 
-	cognomcopia := persona.cog;
-	puti(cognomcopia.segon);
-	new_line;
-	puti(cognomcopia.primer);
-	new_line;
+	while(a < 6) loop
+
+		v(a) := 3;
+		a := a+1;
+
+	end loop;
+
+	a :=0;
+	
+	while(a < 6) loop
+		
+		new_line;
+		aux := v(a);
+		puti(aux);
+		a:= a+1;
+
+	end loop;
+
+
 end provaid;

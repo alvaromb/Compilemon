@@ -442,7 +442,6 @@ package body Semantica.Gci is
            Idv => T
           );
 
-
       if Iddref = Var_Nul then
          if Iddexp = Var_Nul then
             Genera(Copia, C1, C3);
@@ -1441,7 +1440,7 @@ package body Semantica.Gci is
 
       Gci_Referencia_Var(Fesq, Idres, Iddesp, Idtipus);
 
-          cim(pproc, idproc);
+      cim(pproc, idproc);
 
       Dcamp := Conscamp(Tts(idproc), Idtipus, Idcamp);
       Idtipus:= dcamp.tcamp;
@@ -1461,7 +1460,7 @@ package body Semantica.Gci is
               Idv => Iddesp
              );
          C3:=(
-              Tc => Const, --------
+              Tc => Const,
               Idc => numconstant
              );
          Genera (Suma, C1, C2, C3);
