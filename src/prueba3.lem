@@ -1,9 +1,11 @@
 procedure provaid is
 
-	k : integer;
+	s :character;
 
 
 begin
-	k:=8;
+    
+	getc(s);
+	putc(s);
 	
 end provaid;

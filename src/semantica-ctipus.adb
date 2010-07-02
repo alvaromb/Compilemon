@@ -95,10 +95,7 @@ package body Semantica.Ctipus is
       Ipr := (Extern, 4, Idn);
       Posa(Tp, Ipr, Idpr);
       Np := Np + 1;
-      --  Ie := (Etiq_Proc, Idpr);
-      --  Posa(Te, Ie, Ide);
-      --  Ipr.Etiq := Ide;
-      --  Modif_Descripcio(Tp, Idpr, Ipr);
+
       D := (Dproc, Idpr);
       Posa(Ts, Idn, D, E);
 
@@ -117,10 +114,7 @@ package body Semantica.Ctipus is
       Ipr := (Extern, 4, Idn);
       Posa(Tp, Ipr, Idpr);
       Np := Np + 1;
-      --  Ie := (Etiq_Proc, Idpr);
-      --  Posa(Te, Ie, Ide);
-      --  Ipr.Etiq := Ide;
-      --  Modif_Descripcio(Tp, Idpr, Ipr);
+
       D := (Dproc, Idpr);
       Posa(Ts, Idn, D, E);
 
@@ -192,7 +186,7 @@ package body Semantica.Ctipus is
 
       -- "string"
       Posa_Id(Tn, Idstring, "string");
-      Dt := (Tsstr, 32*Integer'Size, Idchar, 0); --0 es la base
+      Dt := (Tsstr, 4, Idchar, 0); --0 es la base
       D := (Dtipus, Dt);
       Posa(Ts, Idstring, D, E);
 
@@ -201,10 +195,7 @@ package body Semantica.Ctipus is
       Ipr := (Extern, 4, Idn);
       Posa(Tp, Ipr, Idpr);
       Np := Np + 1;
-      --  Ie := (Etiq_Proc, Idpr);
-      --  Posa(Te, Ie, Ide);
-      --  Ipr.Etiq := Ide;
-      --  Modif_Descripcio(Tp, Idpr, Ipr);
+
       D := (Dproc, Idpr);
       Posa(Ts, Idn, D, E);
 
@@ -223,10 +214,7 @@ package body Semantica.Ctipus is
       Ipr := (Extern, 4, Idn);
       Posa(Tp, Ipr, Idpr);
       Np := Np + 1;
-      --  Ie := (Etiq_Proc, Idpr);
-      --  Posa(Te, Ie, Ide);
-      --  Ipr.Etiq := Ide;
-      --  Modif_Descripcio(Tp, Idpr, Ipr);
+
       D := (Dproc, Idpr);
       Posa(Ts, Idn, D, E);
 
@@ -246,15 +234,12 @@ package body Semantica.Ctipus is
       Posa(Tp, Ipr, Idpr);
       Np := Np + 1;
       Id_Puts := Idpr;
-      --  Ie := (Etiq_Proc, Idpr);
-      --  Posa(Te, Ie, Ide);
-      --  Ipr.Etiq := Ide;
-      --  Modif_Descripcio(Tp, Idpr, Ipr);
+
       D := (Dproc, Idpr);
       Posa(Ts, Idn, D, E);
 
       Posa_Id(Tn, Ida, "_arg_puts");
-      Iv := (Ida, Idpr, 32*Integer'Size, Ipr.Ocup_Param, Tsstr,
+      Iv := (Ida, Idpr, 4, Ipr.Ocup_Param, Tsstr,
              True, False, 0);
       Posa(Tv, Iv, Idv);
                   nv:= nv +1;
@@ -269,15 +254,12 @@ package body Semantica.Ctipus is
       Posa(Tp, Ipr, Idpr);
       Np := Np + 1;
       Id_Gets := Idpr;
-      --  Ie := (Etiq_Proc, Idpr);
-      --  Posa(Te, Ie, Ide);
-      --  Ipr.Etiq := Ide;
-      --  Modif_Descripcio(Tp, Idpr, Ipr);
+ 
       D := (Dproc, Idpr);
       Posa(Ts, Idn, D, E);
 
       Posa_Id(Tn, Ida, "_arg_gets");
-      Iv := (Ida, Idpr, 32*Integer'Size, Ipr.Ocup_Param, Tsstr,
+      Iv := (Ida, Idpr,4, Ipr.Ocup_Param, Tsstr,
              True, False, 0);
       Posa(Tv, Iv, Idv);
                   nv:= nv +1;
@@ -291,10 +273,7 @@ package body Semantica.Ctipus is
       Ipr := (Extern, 0, Idn);
       Posa(Tp, Ipr, Idpr);
       Np := Np + 1;
-      --  Ie := (Etiq_Proc, Idpr);
-      --  Posa(Te, Ie, Ide);
-      --  Ipr.Etiq := Ide;
-      --  Modif_Descripcio(Tp, Idpr, Ipr);
+
       D := (Dproc, Idpr);
       Posa(Ts, Idn, D, E);
    end Inicia_Caracter;
