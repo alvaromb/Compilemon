@@ -76,10 +76,10 @@ range  		{mt_atom(tok_begin_line, tok_begin_col,
 		yylval); return pc_range;}
 
 and		{mt_atom(tok_begin_line, tok_begin_col, 
-		yylval); return pc_or;}
+		yylval); return pc_and;}
 
 or		{mt_atom(tok_begin_line, tok_begin_col, 
-		yylval); return pc_and;}
+		yylval); return pc_or;}
 
 --Simbols 
 ":="		{mt_atom(tok_begin_line, tok_begin_col, 

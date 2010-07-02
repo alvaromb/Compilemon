@@ -1,32 +1,17 @@
 procedure provaid is
 
-	type rang is new integer range 0..5;
-	type vector is array(rang) of integer;
-
-	v: vector;
-	a : rang;
-	aux: integer;
-begin
-   
-	a:= 0;
-
-	while(a < 6) loop
-
-		v(a) := 3;
-		a := a+1;
-
-	end loop;
-
-	a :=0;
+	--a, b, r : boolean;
+	c, d : integer;
 	
-	while(a < 6) loop
-		
+begin
+
+	c:=1;
+	d := 10;
+
+	while d > 0 loop
+		puti(c);
+		d:=d-1;
 		new_line;
-		aux := v(a);
-		puti(aux);
-		a:= a+1;
-
 	end loop;
-
 
 end provaid;
