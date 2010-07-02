@@ -1,17 +1,29 @@
 procedure provaid is
 
+	k : integer;
+
 	procedure pepe is
 		i:integer;
 	begin
 		i:=6;
-		--puti(i);
+		puti(i);
 	end pepe;
 
 
-begin
+	procedure marqui is
+	begin
+		puti(69);
+		new_line;
+	end marqui;
 
-	--pepe;
-	--new_line;
-	puti(8);
+begin
+	k:=8;
+	pepe;
+	new_line;
+
+	marqui;
+
+	puti(k);
+	new_line;
 	
 end provaid;

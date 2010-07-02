@@ -36,7 +36,7 @@ package body Semantica.Gci is
    procedure gci_Programa
      (A : in Pnode) is
    begin
-		Nprofunditat := 0;
+		Nprofunditat := 1;
           empilar(pproc, proc_nul);
       Tv.nv := nv;
       gci_Decprocediment(A);
@@ -94,11 +94,9 @@ package body Semantica.Gci is
       Genera(Preamb, C1);
 
 
-
-
       gci_Bloc(Bloc);
 
-
+	  Nprofunditat := Nprofunditat - 1;
       --RTN
       Cim(Pproc, Idprinvocat);
       C1:=(
@@ -107,7 +105,6 @@ package body Semantica.Gci is
           );
       Genera(Rtn, C1);
 
-	  Nprofunditat := Nprofunditat - 1;
 
       Desempilar(Pproc);
       Cim(Pproc, Idprinvocador);

@@ -297,7 +297,7 @@ package body Semantica.Assemblador is
                           Cons_Nom(Tn, Iv.Id) & " : .asciz " &
                           Trim(Cons_Str(Tn, rang_tcar(Iv.Valconst)),
                                Both));
-            elsif Iv.Tsub = Tsent then
+            elsif Iv.Tsub = Tsent or Iv.Tsub = Tsbool then
                --Si es un numeric
                --c3 : .long 3
                Put_Line(Fitxer_Asmbl, Tab &
@@ -324,6 +324,7 @@ package body Semantica.Assemblador is
       Put_Line(Fitxer_Asmbl, Tab & ".global main");
       New_Line(Fitxer_Asmbl);
       Put_Line(Fitxer_Asmbl, "main:");
+      Put_Line(Fitxer_Asmbl, Tab & "jmp _etq_1");
       --Put_Line(Fitxer_Asmbl, "jmp "
       --jmp a l'etiqueta del programa principal
       --etiqueta del programa principal
