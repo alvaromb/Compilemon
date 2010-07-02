@@ -1,18 +1,17 @@
 procedure provaid is
 
-	a, b, r : boolean;
-	c : integer;
+	procedure pepe is
+		i:integer;
+	begin
+		i:=6;
+		--puti(i);
+	end pepe;
 
 
 begin
 
-	a := true;
-	b := false;
-
-	if not a or b then
-		puti(3);	
-	else
-		puti(2);
-	end if;
+	--pepe;
+	--new_line;
+	puti(8);
 	
 end provaid;

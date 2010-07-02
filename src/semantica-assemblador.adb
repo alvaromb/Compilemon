@@ -365,8 +365,10 @@ package body Semantica.Assemblador is
                end if;
                New_Line(Fitxer_Asmbl);
                Comentari("Call " & Ic3a.Camp1.Idp'Img);
-               Ipr := Consulta(Tp, Ic3a.Camp1.Idp);
+               Ipr := Consulta(Tp, Ic3a.Camp1.Idp); 
                Instr_1_Op("call", Trim(Etiqueta(Ipr), Both));
+
+			   --Instr_1_Op("call", Trim(Etiqueta(Ipr), Both));
                -- Mirar el tema de si hay que *4
                Instr_2_Op("addl", "$" & Trim(Ipr.Ocup_Param'Img, Both),
                           "%esp");
@@ -380,7 +382,7 @@ package body Semantica.Assemblador is
                Nproc := Nproc + 1;
                Ipr := Consulta(Tp, Ic3a.Camp1.Idp);
                Prof_Actual := Ipr.Prof;
-               Etiqueta(Etiqueta(Ipr));
+               --Etiqueta(Etiqueta(Ipr));
                Instr_2_Op("movl", "$DISP", "%esi");
                Dpn := 4*Integer(Ipr.Prof);
                Instr_1_Op("pushl", Trim(Dpn'Img, Both) & "(%esi)");

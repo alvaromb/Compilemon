@@ -143,4 +143,8 @@ package Semantica.gci is
 
    procedure Calcula_Despls;
 
+private
+
+   Nprofunditat : nprof;	
+
 end Semantica.gci;

@@ -173,6 +173,7 @@ package body semantica.declsc3a is
    begin
       case Ipr.Tp is
          when Intern =>
+			Put_Line("PEPE: "&Ipr.Etiq'Img);
             return "_etq_" & Trim(Ipr.Etiq'Img, Both);
          when Extern =>
             return "_" & Trim(Cons_Nom(Tn, Ipr.Etiq_Extern), Both);

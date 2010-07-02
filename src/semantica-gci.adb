@@ -36,7 +36,7 @@ package body Semantica.Gci is
    procedure gci_Programa
      (A : in Pnode) is
    begin
-
+		Nprofunditat := 0;
           empilar(pproc, proc_nul);
       Tv.nv := nv;
       gci_Decprocediment(A);
@@ -68,24 +68,33 @@ package body Semantica.Gci is
    begin
 
       Gci_Encap(Encap, Id_Proc);
+	
+      eip := Nova_Etiq;
+      cim(Pproc, nproc);
+      dproc:=Cons(TTs(nproc), Id_Proc);
+
+      Ipr := (Intern, 0, Id_Proc, Nprofunditat, 0, eip);
+	  Nprofunditat := Nprofunditat + 1;
+	  Modif_Descripcio(Tp, dproc.np, Ipr);
 
       if Decls.Tipus = Declaracions then
          gci_Declaracions(Decls); --pendent, arrays, vars i constants
       end if;
 
       --Necesario? PRMB
-      eip := Nova_Etiq;
+
       C1 := (Tc => Etiq, Ide => eip);
       Genera(Etiqueta, C1);
 
-      cim(Pproc, nproc);
-      dproc:=Cons(TTs(nproc), Id_Proc);
+
       C1:=(
            Tc => Proc,
            Idp => dproc.np);
 
-      Ipr := Consulta(Tp, dproc.np);
       Genera(Preamb, C1);
+
+
+
 
       gci_Bloc(Bloc);
 
@@ -97,6 +106,8 @@ package body Semantica.Gci is
            Idp => Idprinvocat
           );
       Genera(Rtn, C1);
+
+	  Nprofunditat := Nprofunditat - 1;
 
       Desempilar(Pproc);
       Cim(Pproc, Idprinvocador);
@@ -1723,11 +1734,6 @@ package body Semantica.Gci is
             --[+ 4*( @RTN, DISP(prof), BP llamante)]
          else
             if Tv.Tv(V).Desp = 0 then
-               --Idpr := Tv.Tv(V).Np;
-               --Ocup_Var := Tv.Tv(V).Ocup;
-               --Tv.Tv(V).Desp := Despl(Tp.Tp(Idpr).Ocup_Var);
-               --Tp.Tp(Idpr).Ocup_Var := Tp.Tp(Idpr).Ocup_Var + Ocup_Var;
-               --Tv.Tv(V).Desp := (Tv.Tv(V).Desp+4)*(-1);
 
                Idpr := Tv.Tv(V).Np;
 
