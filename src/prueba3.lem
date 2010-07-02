@@ -3,15 +3,20 @@ procedure provaid is
 	--a, b, r : boolean;
 	c, d : integer;
 	
+	type alf is new integer range 0..6;
+	a : alf;
+
 begin
 
+	a:=0;
 	c:=1;
-	d := 10;
+	d := 0;
 
-	while d > 0 loop
+	while d < 10 loop
 		puti(c);
-		d:=d-1;
+		d:=d+1;
 		new_line;
+		a:=a+1;
 	end loop;
 
 end provaid;

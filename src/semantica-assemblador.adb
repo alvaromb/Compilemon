@@ -540,8 +540,7 @@ package body Semantica.Assemblador is
                Ld(Ic3a.Camp1, "%eax");
                Ld(Ic3a.Camp2, "%ebx");
                Instr_2_Op("cmpl", "%ebx", "%eax");
-               Instr_1_Op("jge", "_etiq_" & Trim(Ide'Img, Both));
-               --Instr_1_Op("jmp", Etiqueta(Te, Ic3a.Camp3.Ide));
+               Instr_1_Op("jge", "_etq_" & Trim(Ide'Img, Both));
                Instr_1_Op("jmp", "_etq_" & Trim(Ic3a.Camp3.Ide'Img, Both));
                Etiqueta("_etq_" & Trim(Ide'Img, Both));
 
@@ -555,7 +554,6 @@ package body Semantica.Assemblador is
                Ld(Ic3a.Camp2, "%ebx");
                Instr_2_Op("cmpl", "%ebx", "%eax");
                Instr_1_Op("jg", "_etq_" & Trim(Ide'Img, Both));
-               --Instr_1_Op("jmp", Etiqueta(Te, Ic3a.Camp3.Ide));
                Instr_1_Op("jmp", "_etq_" & Trim(Ic3a.Camp3.Ide'Img, Both));
                Etiqueta("_etq_" & Trim(Ide'Img, Both));
 
@@ -569,7 +567,6 @@ package body Semantica.Assemblador is
                Ld(Ic3a.Camp2, "%ebx");
                Instr_2_Op("cmpl", "%ebx", "%eax");
                Instr_1_Op("jne", "_etq_" & Trim(Ide'Img, Both));
-               --Instr_1_Op("jmp", Etiqueta(Te, Ic3a.Camp3.Ide));
                Instr_1_Op("jmp", "_etq_" & Trim(Ic3a.Camp3.Ide'Img, Both));
                Etiqueta("_etq_" & Trim(Ide'Img, Both));
 
@@ -583,7 +580,6 @@ package body Semantica.Assemblador is
                Ld(Ic3a.Camp2, "%ebx");
                Instr_2_Op("cmpl", "%ebx", "%eax");
                Instr_1_Op("jl", "_etq_" & Trim(Ide'Img, Both));
-               --Instr_1_Op("jmp", Etiqueta(Te, Ic3a.Camp3.Ide));
                Instr_1_Op("jmp", "_etq_" & Trim(Ic3a.Camp3.Ide'Img, Both));
                Etiqueta("_etq_" & Trim(Ide'Img, Both));
 
@@ -597,7 +593,6 @@ package body Semantica.Assemblador is
                Ld(Ic3a.Camp2, "%ebx");
                Instr_2_Op("cmpl", "%ebx", "%eax");
                Instr_1_Op("jle", "_etq_" & Trim(Ide'Img, Both));
-               --Instr_1_Op("jmp", Etiqueta(Te, Ic3a.Camp3.Ide));
                Instr_1_Op("jmp", "_etq_" & Trim(Ic3a.Camp3.Ide'Img, Both));
                Etiqueta("_etq_" & Trim(Ide'Img, Both));
 
@@ -611,7 +606,6 @@ package body Semantica.Assemblador is
                Ld(Ic3a.Camp2, "%ebx");
                Instr_2_Op("cmpl", "%ebx", "%eax");
                Instr_1_Op("je", "_etq_" & Trim(Ide'Img, Both));
-               --Instr_1_Op("jmp", Etiqueta(Te, Ic3a.Camp3.Ide));
                Instr_1_Op("jmp", "_etq_" & Trim(Ic3a.Camp3.Ide'Img, Both));
                Etiqueta("_etq_" & Trim(Ide'Img, Both));
 
