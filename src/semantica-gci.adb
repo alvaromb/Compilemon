@@ -118,7 +118,7 @@ package body Semantica.Gci is
          --     Ide => Tp.Tp(Idprinvocat).Etiq
          --    );
          --Genera(Global, C1);
-		 Put_Line("Estamos en el MAIN");
+                 Put_Line("Estamos en el MAIN");
       end if;
 
    end gci_Decprocediment;
@@ -472,7 +472,7 @@ package body Semantica.Gci is
 
 
    --Procediments
-   procedure gci_Referencia_Proc 
+   procedure gci_Referencia_Proc
      (A : in Pnode;
       Idproc : out num_proc) is
 
@@ -661,22 +661,24 @@ package body Semantica.Gci is
             T := Tscar;
          when A_Lit_N =>
             T := Tsent;
+         when A_Lit_S =>
+            T := Tsstr;
          when others => null;
       end case;
 
       Novaconst(Tv, A.Val, T, idproc, T1);
-          Novavar(Tv, idproc, Idres);
+      Novavar(Tv, idproc, Idres);
 
-          C1:=(
+      C1:=(
            Tc => Const,
            Idc => T1
-      );
+          );
       C2:=(
-      Tc => Var,
-            Idv => Idres
-      );
+           Tc => Var,
+           Idv => Idres
+          );
 
-          Genera(Copia, C2, C1);
+      Genera(Copia, C2, C1);
 
 
    end gci_Constant;
@@ -981,7 +983,7 @@ package body Semantica.Gci is
       idproc : num_proc := proc_nul;
 
    begin
-	
+
    put_line("Entra a expr aritmetica");
 
       if IddespE = Var_Nul then
@@ -1214,11 +1216,11 @@ package body Semantica.Gci is
             Gci_Ref_Pri(A.F6, Idres, Iddesp, Idbase, Idtipus, It_Idx);
             cim(pproc, idproc);
             dtc := cons(Tts(idproc),Idtipus);
-			
-			Novaconst(Tv, valor(Integer'size/8), Tsent, idproc, T6);
-			Novavar(Tv,idproc, T7);
 
-			 C1:=(
+                        Novaconst(Tv, valor(Integer'size/8), Tsent, idproc, T6);
+                        Novavar(Tv,idproc, T7);
+
+                         C1:=(
                  Tc => Var,
                  Idv => T7
                 );
@@ -1231,11 +1233,11 @@ package body Semantica.Gci is
                  Idc => T6
                 );
             Genera(Producte, C1, C2, C3);
-		
+
             Novavar(Tv, idproc, T1);
             Novavar(Tv, idproc, T2);
             Novaconst(Tv, valor(dtc.dt.ocup), Tsent, idproc, T3);
-            
+
             C1:=(
                  Tc => Var,
                  Idv => T1
@@ -1500,7 +1502,7 @@ package body Semantica.Gci is
    begin
 
       efals := nova_etiq;
-	put_line("Conds");
+        put_line("Conds");
       gci_Expressio(Cond, Idres, Iddesp);
 
           put_line("IDres: "&Idres'img&", Iddesp"&Iddesp'img);
@@ -1728,7 +1730,7 @@ package body Semantica.Gci is
       end loop;
 
       for V in Num_Var range 1..Tv.Nv loop
-		
+
          if Tv.Tv(V).Param then --param
             Tv.Tv(V).Desp := Tv.Tv(V).Desp + 12;
             --[+ 4*( @RTN, DISP(prof), BP llamante)]
@@ -1737,12 +1739,12 @@ package body Semantica.Gci is
 
                Idpr := Tv.Tv(V).Np;
 
-			   if Tp.Tp(Idpr).Tp = Intern then
+                           if Tp.Tp(Idpr).Tp = Intern then
                   Ocup_Var := Tv.Tv(V).Ocup;
                   Tv.Tv(V).Desp := Despl(Tp.Tp(Idpr).Ocup_Var);
-               	  Tp.Tp(Idpr).Ocup_Var := Tp.Tp(Idpr).Ocup_Var + Ocup_Var;
+                  Tp.Tp(Idpr).Ocup_Var := Tp.Tp(Idpr).Ocup_Var + Ocup_Var;
                   Tv.Tv(V).Desp := (Tv.Tv(V).Desp+4)*(-1);
-			   end if;
+                           end if;
 
             end if;
          end if;

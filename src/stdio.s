@@ -1,122 +1,120 @@
-#
-# Llibreria d'operacions d'entrada-sortida bàsiques
-#                     stdio.s
-#
+	.file	"stdio.c"
+	.section	.rodata
+.LC0:
+	.string	"%i"
+.section	.text
+.global _puti
+.global _geti
+.global _getc
+.global _gets
+.global _putc
+.global _puts
+.global _new_line
+	
+	.type	_puti, @function
+_puti:
+	pushl	%ebp
+	movl	%esp, %ebp
+	subl	$8, %esp
+	movl	8(%ebp), %eax
+	movl	(%eax), %eax
+	movl	%eax, 4(%esp)
+	movl	$.LC0, (%esp)
+	call	printf
+	leave
+	ret
+	.size	_puti, .-_puti
+.global _geti
+	.type	_geti, @function
+_geti:
+	pushl	%ebp
+	movl	%esp, %ebp
+	subl	$8, %esp
+	movl	8(%ebp), %eax
+	movl	%eax, 4(%esp)
+	movl	$.LC0, (%esp)
+	call	scanf
+	leave
+	ret
+	.size	_geti, .-_geti
+	.section	.rodata
+.LC1:
+	.string	"%1s"
+	.text
+.global _getc
+	.type	_getc, @function
+_getc:
+	pushl	%ebp
+	movl	%esp, %ebp
+	subl	$8, %esp
+	movl	8(%ebp), %eax
+	movl	%eax, 4(%esp)
+	movl	$.LC1, (%esp)
+	call	scanf
+    movl    stdin, %eax
+    movl    %eax, (%esp)
+    call    fflush
+	leave
+	ret
+	.size	_getc, .-_getc
 
+.global _putc
+	.type	_putc, @function
+_putc:
+	pushl	%ebp
+	movl	%esp, %ebp
+	subl	$8, %esp
+	movl	8(%ebp), %eax
+	movzbl	(%eax), %eax
+	movsbl	%al,%eax
+	movl	%eax, (%esp)
+	call	putchar
+	leave
+	ret
+	.size	_putc, .-_putc
+	.section	.rodata
 
-.section .data
-   LP_INT: .asciz "%d"
-   LP_CHR: .asciz "%c"
-   L_NL:   .asciz "\n" 
+.LC2:
+	.string	"%s"
+	.text
+.global _puts
+	.type	_puts, @function
+_puts:
+	pushl	%ebp
+	movl	%esp, %ebp
+	subl	$8, %esp
+	movl	8(%ebp), %eax
+	movl	%eax, 4(%esp)
+	movl	$.LC2, (%esp)
+	call	printf
+	leave
+	ret
+	.size	_puts, .-_puts
 
-.section .text
-  .globl _putc
-  .globl _puti 
-  .globl _puts
-  .globl _new_line
+.global _gets
+	.type	_gets, @function
+_gets:
+	pushl	%ebp
+	movl	%esp, %ebp
+	subl	$8, %esp
+	movl	8(%ebp), %eax
+	movl	%eax, 4(%esp)
+	movl	$.LC2, (%esp)
+	call	scanf
+	leave
+	ret
+	.size	_gets, .-_gets
 
-  .globl _geti
-  .globl _getc
-  .globl _getcc
+.global _new_line
+	.type	_new_line, @function
+_new_line:
+	pushl	%ebp
+	movl	%esp, %ebp
+	subl	$8, %esp
+	movl	$10, (%esp)
+	call	putchar
+	leave
+	ret
 
-  _puti:                     # procedure puti(n: in integer);
-      pushl  %ebp
-      movl   %esp, %ebp
-
-      subl   $8, %esp        # Manies del C
-      movl   8(%ebp), %eax   # %eax:= adr. de n
-      pushl  (%eax)          # 2on paràmetre: valor de n
-      pushl  $LP_INT         # 1er paràmetre: adr. de "%d"
-      call   printf         
-      addl   $16, %esp       # 8 pels dos paràmetres + 8 de manies.
-
-      movl   %ebp, %esp
-      popl   %ebp
-      ret
-
-  _putc:                     # procedure putc(c: in character);
-      pushl  %ebp
-      movl   %esp, %ebp
-
-      subl   $8, %esp        # Manies del C
-      movl   8(%ebp), %eax   # %eax:= adr. de c
-      pushl  (%eax)          # 2on paràmetre: valor de c
-      pushl  $LP_CHR         # 1er paràmetre: adr. de "%c"
-      call   printf         
-      addl   $16, %esp       # 8 pels dos paràmetres + 8 de manies.
-
-      movl   %ebp, %esp
-      popl   %ebp
-      ret
-
-  _puts:                     # procedure puts(s: in string);
-      pushl  %ebp
-      movl   %esp, %ebp
-
-      subl   $12, %esp       # Manies del C
-      pushl  8(%ebp)         # paràmetre (únic): adr. de "%d"
-      call   printf         
-      addl   $16, %esp       # 4 pel paràmetre + 12 de manies.
-
-      movl   %ebp, %esp
-      popl   %ebp
-      ret
-
-  _new_line:                 # procedure new_line;
-      pushl  %ebp
-      movl   %esp, %ebp
-
-      subl   $12, %esp       # Manies del C
-      pushl  $L_NL           # paràmetre (únic): adr. de "\n"
-      call   printf
-      addl   $16, %esp       # 4 pel paràmetre + 12 de manies.
-
-      movl   %ebp, %esp
-      popl   %ebp
-      ret
-
-  _geti:                     # procedure geti(n: out integer);
-      pushl  %ebp
-      movl   %esp, %ebp
-
-      subl   $8, %esp        # Manies del C
-      pushl  8(%ebp)         # 2on paràmetre: adr. de n
-      pushl  $LP_INT         # 1er paràmetre: adr. de "%d"
-      call   scanf
-      addl   $16, %esp       # 8 pels dos paràmetres + 8 de manies.
-
-      movl   %ebp, %esp
-      popl   %ebp
-      ret
-
-  _getc:                     # procedure geti(c: out character);
-      pushl  %ebp            # per tipus character de 4 bytes
-      movl   %esp, %ebp
-
-      movl   8(%ebp), %eax   # %eax:= adr. c
-      xor    %ebx, %ebx      # %ebx:= nul (4 bytes)
-      movl   %ebx, (%eax)    # c:= nul (4 bytes)
-
-      subl   $8, %esp        # Manies del C
-      pushl  %eax            # 2on paràmetre: adr. de c
-      pushl  $LP_CHR         # 1er paràmetre: adr. de "%c"
-      call   scanf          # sobreescr. el 1er dels 4 bytes posats a 0
-      addl   $16, %esp       # 8 pels dos paràmetres + 8 de manies.
-
-      movl   %ebp, %esp
-      popl   %ebp
-      ret
-
-  _getcc:                    # procedure getcc(c: out character);                
-      pushl  %ebp            # per tipus character de 1 byte
-      movl   %esp, %ebp
-
-      subl   $8, %esp        # Manies del C
-      pushl  8(%ebp)         # 2on paràmetre: adr. de c
-      pushl  $LP_CHR         # 1er paràmetre: adr. de "%c"
-      call   scanf          # c:= caràcter llegit (1 byte)
-      addl   $16, %esp       # 8 pels dos paràmetres + 8 de manies.
-
-      movl   %ebp, %esp
-      popl   %ebp
-      ret
+	.ident	"GCC: (Debian 4.3.3-13) 4.3.3"
+	.section	.note.GNU-stack,"",@progbits

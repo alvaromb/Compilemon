@@ -84,8 +84,14 @@ package body Semantica.Assemblador is
             -- 'a' es una variable constant
             if Ivar.Const then
                Comentari("LD variable constant" & Org.Idv'Img &
-                    ", " & Dst);
-               Instr_2_Op("movl", "$" & Trim(Ivar.Valconst'Img, Both), Dst);
+                           ", " & Dst & " i TS " & Ivar.Tsub'Img);
+               if Ivar.Tsub = Tsstr then
+                  Instr_2_Op("movl", "$_cnt_" & Trim(Org.Idv'Img,
+                                                     Both), Dst);
+               else
+                  Instr_2_Op("movl", "$" & Trim(Ivar.Valconst'Img,
+                                                Both), Dst);
+               end if;
 
             -- 'a' es local
             elsif Prof_Var = Prof_Actual then
@@ -123,9 +129,18 @@ package body Semantica.Assemblador is
 
          when Const =>
             -- 'a' es una constant
-            Comentari("LD es una constant" & Org.Idc'Img & ", " & Dst);
-            Vc := Consulta(Tv, Org.Idc).Valconst;
-            Instr_2_Op("movl", "$" & Trim(Vc'Img, Both), Dst);
+            Ivar := Consulta(Tv, Org.Idc);
+            Vc := Ivar.Valconst;
+            if Ivar.Tsub = Tsstr then
+               Comentari("LD es una constant string" & Org.Idc'Img
+                           & ", " & Dst);
+               Instr_2_Op("movl", "$_cnt_" & Trim(Org.Idc'Img,
+                                                  Both), Dst);
+            else
+               Comentari("LD es una constant " & Org.Idc'Img
+                           & ", " & Dst);
+               Instr_2_Op("movl", "$" & Trim(Vc'Img, Both), Dst);
+            end if;
          when others =>
             raise Error_Assemblador;
       end case;
@@ -275,13 +290,13 @@ package body Semantica.Assemblador is
       for I in Num_Var range 1..Tv.Nv loop
          Iv := Consulta(Tv, I);
          if Iv.Const then
-            if Iv.Tsub = Tsarr then
+            if Iv.Tsub = Tsstr then
                --Si es un String
                --s1 : .asciiz "El nombde de a's es"
                Put_Line(Fitxer_Asmbl, Tab &
-                          Cons_Nom(Tn, Iv.Id) & " : .asciz """ &
-                          Trim(Cons_Str(Tn, rang_tcar(Iv.Valconst)), Both)
-                          & """");
+                          Cons_Nom(Tn, Iv.Id) & " : .asciz " &
+                          Trim(Cons_Str(Tn, rang_tcar(Iv.Valconst)),
+                               Both));
             elsif Iv.Tsub = Tsent then
                --Si es un numeric
                --c3 : .long 3
@@ -309,6 +324,7 @@ package body Semantica.Assemblador is
       Put_Line(Fitxer_Asmbl, Tab & ".global main");
       New_Line(Fitxer_Asmbl);
       Put_Line(Fitxer_Asmbl, "main:");
+      --Put_Line(Fitxer_Asmbl, "jmp "
       --jmp a l'etiqueta del programa principal
       --etiqueta del programa principal
 
@@ -366,12 +382,19 @@ package body Semantica.Assemblador is
                New_Line(Fitxer_Asmbl);
                Comentari("Call " & Ic3a.Camp1.Idp'Img);
                Ipr := Consulta(Tp, Ic3a.Camp1.Idp); 
+               if Ic3a.Camp1.Idp = Id_Puts or
+                 Ic3a.Camp1.Idp = Id_Gets then
+                  Comentari("Crida a 'gets' o 'puts'");
+                  Instr_1_Op("popl", "%eax");
+                  Instr_2_Op("movl", "(%eax)", "%eax");
+                  Instr_1_Op("pushl", "%eax");
+               end if;
                Instr_1_Op("call", Trim(Etiqueta(Ipr), Both));
 
 			   --Instr_1_Op("call", Trim(Etiqueta(Ipr), Both));
                -- Mirar el tema de si hay que *4
-               Instr_2_Op("addl", "$" & Trim(Ipr.Ocup_Param'Img, Both),
-                          "%esp");
+               Instr_2_Op("addl", "$" & Trim(Ipr.Ocup_Param'Img,
+                                             Both), "%esp");
 
             when Preamb =>
                if Ic3a.Camp1.Tc /= Proc then
@@ -388,9 +411,10 @@ package body Semantica.Assemblador is
                Instr_1_Op("pushl", Trim(Dpn'Img, Both) & "(%esi)");
                Instr_1_Op("pushl", "%ebp");
                Instr_2_Op("movl", "%esp", "%ebp");
-               Instr_2_Op("movl", "%ebp", Trim(Dpn'Img, Both) & "(%esi)");
-               Instr_2_Op("subl", "$" & Trim(Ipr.Ocup_Var'Img, Both),
-                          "%esp");
+               Instr_2_Op("movl", "%ebp", Trim(Dpn'Img, Both) &
+                            "(%esi)");
+               Instr_2_Op("subl", "$" & Trim(Ipr.Ocup_Var'Img,
+                                             Both), "%esp");
 
             when Params =>
                New_Line(Fitxer_Asmbl);
@@ -483,7 +507,7 @@ package body Semantica.Assemblador is
                Comentari("Divisio");
                Ld(Ic3a.Camp2, "%eax");
                Instr_2_Op("movl", "%eax", "%edx");
-               Instr_2_Op("sarl", "$31", "%edx"); 
+               Instr_2_Op("sarl", "$31", "%edx");
                Ld(Ic3a.Camp3, "%ebx");
                Instr_1_Op("idivl", "%ebx");
                St("%eax", Ic3a.Camp1);
@@ -493,7 +517,7 @@ package body Semantica.Assemblador is
                Comentari("Modul");
                Ld(Ic3a.Camp2, "%eax");
                Instr_2_Op("movl", "%eax", "%edx");
-               Instr_2_Op("sarl", "$31", "%edx"); 
+               Instr_2_Op("sarl", "$31", "%edx");
                Ld(Ic3a.Camp3, "%ebx");
                Instr_1_Op("idivl", "%ebx");
                St("%edx", Ic3a.Camp1);

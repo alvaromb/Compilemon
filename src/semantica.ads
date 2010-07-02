@@ -275,4 +275,7 @@ private
    Nv : Num_Var;
    Np : Num_Proc;
 
+   Id_Puts : Num_Proc;
+   Id_Gets : Num_Proc;
+
 end Semantica;
