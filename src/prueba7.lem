@@ -1,0 +1,54 @@
+procedure prueba7 is
+	type rang is new integer range 1..50;
+	type vector is array (rang) of integer;
+	a : vector;
+	min, max, mid : rang;
+	x : integer;
+	trobat : boolean;
+begin
+	-- Vector ordenat
+	a(1) := 1;
+	a(2) := 3;
+	a(3) := 4;
+	a(4) := 6;
+	a(5) := 7;
+	a(6) := 12;
+	a(7) := 15;
+	a(8) := 21;
+	a(9) := 30;
+	a(10) := 44;
+
+	x := 30;
+	puts("Fica el nombre a cercar 30");
+	puts("feim new line");
+	--Aqui fa un segmentation fault
+	new_line;
+	puts("anam a inicialitzar el trobat");
+	trobat := false;
+	puts("inicialitzam el trobat");
+	min := 1;
+	max := 10;
+
+	while (min <= max and not trobat) loop
+		mid := ((max-min)/2) + min;
+		puts("fa el mid");
+		new_line;
+		if a(mid) = x then
+			puts("l'hem trobat");
+			new_line;
+			trobat := true;
+		else 
+			puts("encara no l'hem trobat");
+			if x < a(mid) then
+				max := mid - 1;
+			else
+				min := mid + 1;
+			end if;
+		end if;
+	end loop;
+	
+	puts("El resultat es ");
+	--puti(x);
+	new_line;
+
+end prueba7;

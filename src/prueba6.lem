@@ -1,0 +1,45 @@
+procedure prueba6 is
+
+	type long_polla is new integer range 9..35;
+	type opc_sexual is record
+		postura_favorita : character;
+		tam_polla : integer;
+	end record;
+
+	type pepe is record
+	   nivel_fachismo : integer;
+	   nivel_sociata : integer;
+	   o : opc_sexual;
+	end record;
+
+	f : integer;
+	p : pepe;
+begin
+
+	puts("Es pepe facha? ");
+	geti(f);
+	p.nivel_fachismo := f;
+	p.nivel_sociata := 0;
+
+	p.o.postura_favorita := 'b';
+	p.o.tam_polla := 9;
+
+	if (p.nivel_fachismo /= 69) then
+		if (p.nivel_fachismo < p.nivel_sociata) then
+			puts("Pepe es sociata");
+		else
+			puts("Pepe es facha");
+		end if;
+	else
+		puts("Pepe en realidad es homofobo");
+		new_line;
+		puts(" - su postura favorita es la ");
+		putc(p.o.postura_favorita);
+		new_line;
+		puts(" - el tam. de su polla es ");
+		puti(p.o.tam_polla);
+		puts(" cm");
+		new_line;
+	end if;
+	new_line;
+end prueba6;

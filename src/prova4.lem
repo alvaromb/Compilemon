@@ -1,0 +1,8 @@
+procedure provaid is
+	s : string;
+begin
+	--s := "hola";
+	gets(s);
+	puts(s);
+	new_line;
+end provaid;
