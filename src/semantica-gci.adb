@@ -212,7 +212,7 @@ package body Semantica.Gci is
             --gci_Decconst(Decl);
                         null; -- No utilitzam perque ho farem mes tard
          when Dcoleccio   =>
-            null;
+            gci_Deccol(Decl);
          when Dregistre | Dencapregistre | Firecord =>
             -- Ocup := 0;
             -- Ct_Decregistre(Decl, Idrec,Ocup);
