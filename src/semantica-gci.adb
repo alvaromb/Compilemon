@@ -358,7 +358,7 @@ package body Semantica.Gci is
         Put_Line("BASE ARRAY = "& Base'img);
           Novaconst(Tv, base, Tsent, idproc, T1);
 
-	  --Darray.Dt.Base := T1; --Guardabamos antes el numero de variable dond esta la base.
+          --Darray.Dt.Base := T1; --Guardabamos antes el numero de variable dond esta la base.
                                                           --Ahora guardamos el numero en si
       Darray.Dt.Base := base;
         Put_Line("Darray.Dt.Base = "& Darray.Dt.Base'img);
@@ -1259,50 +1259,95 @@ package body Semantica.Gci is
 
          when Fireferencia => --r -> ref_pri)
             Gci_Ref_Pri(A.F6, Idres, Iddesp, Idbase, Idtipus, It_Idx);
-            cim(pproc, idproc);
-            dtc := cons(Tts(idproc),Idtipus);
+            --  cim(pproc, idproc);
+            --  dtc := cons(Tts(idproc),Idtipus);
 
-                        Novaconst(Tv, valor(Integer'size/8), Tsent, idproc, T6);
-                        Novavar(Tv,idproc, T7);
+            --  Novaconst(Tv, valor(Integer'size/8), Tsent, idproc, T6);
+            --  Novavar(Tv,idproc, T7);
 
-                        Put_Line("Iddesp = "& Iddesp'Img);
+            --              Put_Line("Iddesp = "& Iddesp'Img);
 
-            C1:=(
-                 Tc => Var,
-                 Idv => T7
-                );
-            C2:=(
-                 Tc  => Var,
-                 Idv => Iddesp
-                );
-            C3:=(
-                 Tc  => Const,
-                 Idc => T6
-                );
-            Genera(Producte, C1, C2, C3);
+            --  C1:=(
+            --       Tc => Var,
+            --       Idv => T7
+            --      );
+            --  C2:=(
+            --       Tc  => Var,
+            --       Idv => Iddesp
+            --      );
+            --  C3:=(
+            --       Tc  => Const,
+            --       Idc => T6
+            --      );
+            --  Genera(Producte, C1, C2, C3);
+            --  Novavar(Tv, idproc, T1);
+            --  Novaconst(Tv, valor(dtc.dt.base), Tsent, idproc, T3);
 
-            Novavar(Tv, idproc, T1);
+            --              Put_Line("----> Valor(dtc.dt.base) = "&valor(dtc.dt.base)'img);
 
-            Novaconst(Tv, valor(dtc.dt.base), Tsent, idproc, T3);
-
-                        Put_Line("----> Valor(dtc.dt.base) = "&valor(dtc.dt.base)'img);
-
-            C1:=(
-                 Tc => Var,
-                 Idv => T1
-                );
-            C2:=(
-                 Tc  => Var,
-                 Idv => T7
-                );
-            C3:=(
-                 Tc  => Const,
-                 Idc => T3
-                );
-            Genera(Resta, C1, C2, C3);
+            --  C1:=(
+            --       Tc => Var,
+            --       Idv => T1
+            --      );
+            --  C2:=(
+            --       Tc  => Var,
+            --       Idv => T7
+            --      );
+            --  C3:=(
+            --       Tc  => Const,
+            --       Idc => T3
+            --      );
+            --  Genera(Resta, C1, C2, C3);
 
 
-                        Novavar(Tv, idproc, T2);
+            --  Novavar(Tv, idproc, T2);
+
+
+            --prova
+			cim(pproc, idproc);
+              dtc := cons(Tts(idproc),Idtipus);
+
+              
+              Novavar(Tv,idproc, T7);
+			Novaconst(Tv, valor(dtc.dt.base), Tsent, idproc, T3);
+              Put_Line("Iddesp = "& Iddesp'Img);
+
+              C1:=(
+                   Tc => Var,
+                   Idv => T7
+                  );
+              C2:=(
+                   Tc  => Var,
+                   Idv => Iddesp
+                  );
+              C3:=(
+                   Tc  => Const,
+                   Idc => T3
+                  );
+
+              Genera(Resta, C1, C2, C3);
+              Novavar(Tv, idproc, T1);
+              
+				Novaconst(Tv, valor(Integer'size/8), Tsent, idproc, T6);
+                         Put_Line("----> Valor(dtc.dt.base) = "&valor(dtc.dt.base)'img);
+
+             C1:=(
+                   Tc => Var,
+                   Idv => T1
+                  );
+              C2:=(
+                   Tc  => Var,
+                   Idv => T7
+                  );
+              C3:=(
+                   Tc  => Const,
+                   Idc => T6
+                  );
+              Genera(Producte, C1, C2, C3);
+              Novavar(Tv, idproc, T2);
+            --fiprova
+
+
             --C2.Idv := T2;
             --C3.Idc := Dtc.Dt.Base;
             --Genera(Producte, C2, C1, C3);
@@ -1310,7 +1355,7 @@ package body Semantica.Gci is
 
             if Idbase = var_nul then
                --Iddesp := T2;
-                                Iddesp := T1;
+               Iddesp := T1;
             else
                Novavar(Tv, idproc, T4);
                --Novaconst(Tv, Idbase, Tsent, idproc, T5);
@@ -1409,7 +1454,7 @@ package body Semantica.Gci is
 
                Genera(Suma, C1, C2, C3);
 
-				Iddesp:=T2;
+                                Iddesp:=T2;
 
             else
 
