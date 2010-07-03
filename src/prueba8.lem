@@ -5,23 +5,27 @@ procedure prueba8 is
 	type vector2 is array (rang, rang) of integer;
 
 	a : vector2;
-	i, j:rang;
-	k:integer;
+	--i, j:rang;
+	--k:integer;
 
 begin
 
-	i:=1;
-	j:=1;
-	k:=1;
+	a(45, 45):=3;
 
-	while i < 50 loop
-		while j < 50 loop
-			a(i,j):= k;
-			j:=j+1;
-		end loop;
-		j:=1;
-		i:=i+1;
-		k:=k+1;
-	end loop;
-	puti(a(49,49));
+	--i:=1;
+	--j:=1;
+	--k:=1;
+
+	--while i < 50 loop
+	--	while j < 50 loop
+	--		a(i,j):= k;
+	--		j:=j+1;
+	--	end loop;
+	--	j:=1;
+	--	i:=i+1;
+	--	k:=k+1;
+	--end loop;
+	--puti(a(49,49));
+
+
 end prueba8;

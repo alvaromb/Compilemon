@@ -1846,7 +1846,7 @@ package body Semantica.Gci is
                if Tp.Tp(Idpr).Tp = Intern then
                   Ocup_Var := Tv.Tv(V).Ocup;
                   Tp.Tp(Idpr).Ocup_Var := Tp.Tp(Idpr).Ocup_Var + Ocup_Var;
-                  Tp.Tp(Idpr).Ocup_Var := Tp.Tp(Idpr).Ocup_Var + Ocup_Var;
+                  --Tp.Tp(Idpr).Ocup_Var := Tp.Tp(Idpr).Ocup_Var + Ocup_Var;
                   Tv.Tv(V).Desp := Despl(Tp.Tp(Idpr).Ocup_Var* (-1));
                end if;
 
