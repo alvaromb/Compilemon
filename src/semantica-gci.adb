@@ -36,7 +36,7 @@ package body Semantica.Gci is
    procedure gci_Programa
      (A : in Pnode) is
    begin
-		Nprofunditat := 1;
+                Nprofunditat := 1;
           empilar(pproc, proc_nul);
       Tv.nv := nv;
       gci_Decprocediment(A);
@@ -68,14 +68,14 @@ package body Semantica.Gci is
    begin
 
       Gci_Encap(Encap, Id_Proc);
-	
+
       eip := Nova_Etiq;
       cim(Pproc, nproc);
       dproc:=Cons(TTs(nproc), Id_Proc);
 
       Ipr := (Intern, 0, Id_Proc, Nprofunditat, 0, eip);
-	  Nprofunditat := Nprofunditat + 1;
-	  Modif_Descripcio(Tp, dproc.np, Ipr);
+          Nprofunditat := Nprofunditat + 1;
+          Modif_Descripcio(Tp, dproc.np, Ipr);
 
       if Decls.Tipus = Declaracions then
          gci_Declaracions(Decls); --pendent, arrays, vars i constants
@@ -96,7 +96,7 @@ package body Semantica.Gci is
 
       gci_Bloc(Bloc);
 
-	  Nprofunditat := Nprofunditat - 1;
+          Nprofunditat := Nprofunditat - 1;
       --RTN
       Cim(Pproc, Idprinvocat);
       C1:=(
@@ -179,7 +179,7 @@ package body Semantica.Gci is
 
       cim(pproc, idproc);
       d := cons(tts(idproc), idPar);
-	  dtipus:=cons(tts(idproc),d.tr);
+          dtipus:=cons(tts(idproc),d.tr);
       Iv := (idPar,
              idproc,
              Dtipus.Dt.ocup,
@@ -352,13 +352,14 @@ package body Semantica.Gci is
       Id   : Id_Nom renames A.Fd1.Id12;
       Ncomp : Valor;
       Dtcamp : Descrip;
-          idproc : num_proc;
+      Idproc : Num_Proc;
 
    begin
 
-          cim(pproc, idproc);
+      cim(pproc, idproc);
 
-      if (A.Tipus = Pcoleccio) then--p_dcoleccio s_coma id
+      --p_dcoleccio s_coma id
+      if (A.Tipus = Pcoleccio) then
 
          gci_Pcoleccio(Fesq, base, Idarray);
 
@@ -366,11 +367,12 @@ package body Semantica.Gci is
          ncomp :=  dtcamp.dt.lsup - dtcamp.dt.linf + 1;
          base := (base * ncomp) + dtcamp.dt.linf;
 
-      elsif (A.Tipus = Pdimcoleccio) then --pc_type id pc_is pc_array s_parentesiobert id
+      --pc_type id pc_is pc_array s_parentesiobert id
+      elsif (A.Tipus = Pdimcoleccio) then
 
-         Dtcamp := cons(Tts(idproc),Id);
+         Dtcamp := Cons(Tts(idproc), Id);
          Idarray := Fesq.Id12;
-         base := dtcamp.dt.linf;
+         Base := Dtcamp.Dt.Linf;
 
       end if;
 
@@ -444,7 +446,7 @@ package body Semantica.Gci is
 
 
       cim(pproc, idproc);
-     
+
 
       if Iddref = Var_Nul then
          if Iddexp = Var_Nul then
@@ -456,10 +458,10 @@ package body Semantica.Gci is
          if Iddexp = Var_Nul then
             Genera(Asigindex, C1, C2, C3);
          else
-			 Novavar(Tv, idproc, T);
-      		 C5:=(
-         	  Tc => Var,
-           	  Idv => T
+                         Novavar(Tv, idproc, T);
+                 C5:=(
+                  Tc => Var,
+                  Idv => T
              );
             Genera(Consindex, C5, C3, C4);
             Genera(Asigindex, C1, C2, C5);
@@ -1731,10 +1733,10 @@ package body Semantica.Gci is
 
          if Tv.Tv(V).Param then --param
 
-			Idpr := Tv.Tv(V).Np;
-			Tv.Tv(V).Desp := Tp.Tp(Idpr).Ocup_Param +12;
-			Tp.Tp(Idpr).Ocup_Param := Despl(Tp.Tp(Idpr).Ocup_Param) + 4;
-            
+                        Idpr := Tv.Tv(V).Np;
+                        Tv.Tv(V).Desp := Tp.Tp(Idpr).Ocup_Param +12;
+                        Tp.Tp(Idpr).Ocup_Param := Despl(Tp.Tp(Idpr).Ocup_Param) + 4;
+
          else
             if Tv.Tv(V).Desp = 0 then
 
@@ -1742,9 +1744,9 @@ package body Semantica.Gci is
 
                if Tp.Tp(Idpr).Tp = Intern then
                   Ocup_Var := Tv.Tv(V).Ocup;
-				  Tp.Tp(Idpr).Ocup_Var := Tp.Tp(Idpr).Ocup_Var + Ocup_Var;
+                                  Tp.Tp(Idpr).Ocup_Var := Tp.Tp(Idpr).Ocup_Var + Ocup_Var;
                   Tv.Tv(V).Desp := Despl(Tp.Tp(Idpr).Ocup_Var* (-1));
-                  
+
                end if;
 
             end if;
