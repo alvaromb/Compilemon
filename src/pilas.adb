@@ -35,6 +35,7 @@ package body pilas is
 	end Cim;
 
 
+
 	procedure Empilar 
 		(P       : in out Pila; 
 		 Element : in     Tipus_Element) is

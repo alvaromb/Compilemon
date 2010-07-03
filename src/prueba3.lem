@@ -1,11 +1,7 @@
 procedure provaid is
 	
-	
-	type rec is record
-	
-		c1 : integer;
-		c2 : integer;
-	end record;
+	type rang is new integer range 1..10;
+	type rec is array(rang) of integer;
 
 	coleccio : rec;
 	procedure mnm(a: out integer) is
@@ -19,9 +15,9 @@ procedure provaid is
 
 	
 begin
-    coleccio.c1 := 3;
-	mnm(coleccio.c1);
+    coleccio(5) := 3;
+	mnm(coleccio(1));
 	new_line;
-	puti(coleccio.c1);
+	puti(coleccio(1));
 	
 end provaid;

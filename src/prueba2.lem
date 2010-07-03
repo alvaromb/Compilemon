@@ -1,56 +1,26 @@
 
-procedure joan is
+procedure principal is
+ 
+	
+	aux :character;
+	auxx : integer;
 
-   	type FCB is record 
-		puyol : defensa;
-		 xavi : centre;
-		pique : defensa;
-		  pep : entrenador;
-   	end record;
+	procedure assig( i : out integer; i1 : out integer;i2: out integer) is
+	
+	aux : integer;
 
-	bili : integer;
-	bili : character;
-	alvs : constant integer := 2;
-	txavs : constant integer := 2;
-	pepe : character;
 
-	biel : string;
-
-	lluis : string;
-	miquel : string;
-
-	type porcella is new integer range 1..345;
-	type l is array (porcella) of integer;
-	type l is array (p) of integer;
-
+	begin
+		
+		aux := i + i1;
+		puti(aux);
+	end assig;
+   
 begin
 
-    pepe := 4;
-    --Visca Catalunya Lliure i visca la Terra Catalana
+	aux := 'd';
+	auxx := 223;
+	assig(auxx,auxx,auxx);
+ 
 
-    while a = 1 loop
-   		sa:=a+1;
-    end loop;
-
-    if (p and q) or c then
-		alvaro := no;
-	else
-		if 1 then
-			e:= -3;
-			while luis = pepe loop
-				k:=9;
-			end loop;
-		end if;
-    end if;
-
-	luis(d.t.r);
-	luis(k or 2);
-	luis(k /= 2);
-
-	pp(2,2,4);
-	pp(0-2);
-	lui(5*(3*3));
-
-    bili.s := 9;
-
-end joan;
+end principal;

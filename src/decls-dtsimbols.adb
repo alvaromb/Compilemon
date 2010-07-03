@@ -43,7 +43,7 @@ package body Decls.Dtsimbols is
 
         Put_Line("");
         Put_Line("tdesc ------------");
-        for i in 1 .. (id_nom'Last-985) loop
+        for i in 1 .. (id_nom'Last-975) loop
            Put("tdesc["&i'img&"] := (");
            Put(ts.tdesc(i).np'img&", ");
            case ts.tdesc(i).d.td is
@@ -61,7 +61,7 @@ package body Decls.Dtsimbols is
 
         New_Line;
         Put_Line("texpansio --------");
-        for i in 1 .. (rang_despl'Last-9985) loop
+        for i in 1 .. rang_despl(40) loop --rang_despl'Last-998
            Put("texp["&i'img&"] := (");
            Put(ts.texp(i).np'img&", ");
            case ts.texp(i).d.td is
@@ -310,7 +310,7 @@ package body Decls.Dtsimbols is
         ts.tambit(ts.prof) := ts.tambit(ts.prof) + 1;
         idespl := ts.tambit(ts.prof);
         ts.texp(idespl) := (nul_nprof, da, ida, 0);
-
+		put_line("El param es guarda a : "&idespl'img);
         if pp /= 0 then
            ts.texp(pp).s := idespl;
         else
@@ -334,6 +334,7 @@ package body Decls.Dtsimbols is
         if arg_valid(ca) then
            return cursor_arg(ts.texp(rang_despl(ca)).s);
         else
+		   
            return 0; --Excepcio
         end if;
     end Succ_Arg;
