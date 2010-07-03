@@ -27,7 +27,7 @@ package body Semantica.Gci is
           if not esem then
         Crea_Fitxer(nomFitxer);--c3a
                 Pila_Buida(Pproc);
-				Pila_Buida(Pparam);
+                                Pila_Buida(Pparam);
                 Empilar(Pproc, Proc_Nul);
           end if;
 
@@ -37,7 +37,7 @@ package body Semantica.Gci is
    procedure gci_Programa
      (A : in Pnode) is
    begin
-		Nprofunditat := 1;
+                Nprofunditat := 1;
           empilar(pproc, proc_nul);
       Tv.nv := nv;
       gci_Decprocediment(A);
@@ -69,14 +69,14 @@ package body Semantica.Gci is
    begin
 
       Gci_Encap(Encap, Id_Proc);
-	
+
       eip := Nova_Etiq;
       cim(Pproc, nproc);
       dproc:=Cons(TTs(nproc), Id_Proc);
 
       Ipr := (Intern, 0, Id_Proc, Nprofunditat, 0, eip);
-	  Nprofunditat := Nprofunditat + 1;
-	  Modif_Descripcio(Tp, dproc.np, Ipr);
+          Nprofunditat := Nprofunditat + 1;
+          Modif_Descripcio(Tp, dproc.np, Ipr);
 
       if Decls.Tipus = Declaracions then
          gci_Declaracions(Decls); --pendent, arrays, vars i constants
@@ -97,7 +97,7 @@ package body Semantica.Gci is
 
       gci_Bloc(Bloc);
 
-	  Nprofunditat := Nprofunditat - 1;
+          Nprofunditat := Nprofunditat - 1;
       --RTN
       Cim(Pproc, Idprinvocat);
       C1:=(
@@ -177,15 +177,15 @@ package body Semantica.Gci is
           Iv : Info_Var;
 
    begin
-	  
+
       cim(pproc, idproc);
       d := cons(tts(idproc), idPar);
-	  
-	  
-	  case d.td is
-	   when Dvar =>
+
+
+          case d.td is
+           when Dvar =>
             dtipus:=cons(tts(idproc),d.tr);
-			   Iv := (idPar,
+                           Iv := (idPar,
              idproc,
              Dtipus.Dt.ocup,
              0,
@@ -193,12 +193,12 @@ package body Semantica.Gci is
              True,
              False,
              0);
-			 modif_descripcio(Tv, D.Nv, Iv);
+                         modif_descripcio(Tv, D.Nv, Iv);
 
        when Dargc =>
-			dtipus:=cons(tts(idproc),d.targ);
-			 put_line(cons_nom(tn,idPar));
-			 Iv := (idPar,
+                        dtipus:=cons(tts(idproc),d.targ);
+                         put_line(cons_nom(tn,idPar));
+                         Iv := (idPar,
              idproc,
              Dtipus.Dt.ocup,
              0,
@@ -206,9 +206,9 @@ package body Semantica.Gci is
              True,
              False,
              0);
-			 modif_descripcio(Tv, D.Nvarg, Iv);
-       when others => 
-			put_line("ArgsGci - No es un misterio carmen??");
+                         modif_descripcio(Tv, D.Nvarg, Iv);
+       when others =>
+                        put_line("ArgsGci - No es un misterio carmen??");
 
       end case;
 
@@ -355,10 +355,13 @@ package body Semantica.Gci is
           cim(pproc, idproc);
       Darray := cons(Tts(idproc),Idarray);
 
-
+        Put_Line("BASE ARRAY = "& Base'img);
           Novaconst(Tv, base, Tsent, idproc, T1);
 
-      Darray.Dt.Base := T1;
+--      Darray.Dt.Base := T1; --Guardabamos antes el numero de variable dond esta la base.
+                                                          --Ahora guardamos el numero en si
+      Darray.Dt.Base := base;
+        Put_Line("Darray.Dt.Base = "& Darray.Dt.Base'img);
       actualitza(Tts(idproc), Idarray, Darray);
 
    end gci_Deccol;
@@ -394,6 +397,8 @@ package body Semantica.Gci is
          base := dtcamp.dt.linf;
 
       end if;
+
+        --Put_Line("BASE ARRAY = "& Base'img);
 
    end Gci_Pcoleccio;
 
@@ -465,7 +470,7 @@ package body Semantica.Gci is
 
 
       cim(pproc, idproc);
-     
+
 
       if Iddref = Var_Nul then
          if Iddexp = Var_Nul then
@@ -477,10 +482,10 @@ package body Semantica.Gci is
          if Iddexp = Var_Nul then
             Genera(Asigindex, C1, C2, C3);
          else
-			 Novavar(Tv, idproc, T);
-      		 C5:=(
-         	  Tc => Var,
-           	  Idv => T
+                         Novavar(Tv, idproc, T);
+                 C5:=(
+                  Tc => Var,
+                  Idv => T
              );
             Genera(Consindex, C5, C3, C4);
             Genera(Asigindex, C1, C2, C5);
@@ -515,8 +520,8 @@ package body Semantica.Gci is
 
             while not es_buida(pparam) loop
                cim(pparam, prm);
-               
-			   put_line(" DEsemp PARAMMMMMMMMMMMMMMMMMMMMM");
+
+                           put_line(" DEsemp PARAMMMMMMMMMMMMMMMMMMMMM");
                C1:=(
                     Tc => Var,
                     Idv => Prm.Base
@@ -532,10 +537,10 @@ package body Semantica.Gci is
                else
                   Genera(Paramc, C1, C2);
                end if;
-			   Desempilar(Pparam);
+                           Desempilar(Pparam);
             end loop;
 
-			
+
             c1:=(
                  Tc => Proc,
                  Idp => Idproc
@@ -570,16 +575,16 @@ package body Semantica.Gci is
             prm.base := Idres;
             prm.despl := Iddesp;
             empilar(pparam, prm);
-			put_line("  PARAMMMMMMMMMMMMMMMMMMMMM1");
+                        put_line("  PARAMMMMMMMMMMMMMMMMMMMMM1");
 
          when Encappri => -- pri -> R(E
-	
+
             gci_Referencia_Proc(Fesq, Idproc);
             gci_Expressio(Fdret, Idres, Iddesp);
             prm.base := Idres;
             prm.despl := Iddesp;
             empilar(pparam, prm);
-			put_line("  PARAMMMMMMMMMMMMMMMMMMMMM3");
+                        put_line("  PARAMMMMMMMMMMMMMMMMMMMMM3");
          when others =>
             Put_Line("ERROR (DEBUG)");
       end case;
@@ -644,9 +649,9 @@ package body Semantica.Gci is
             Idres:= t1;
             Iddesp:= var_nul;
             Idtipus:= d.tc;
-		 when Dargc =>
-			 Novavar(Tv, idproc, T1);
-			C1:=(
+                 when Dargc =>
+                         Novavar(Tv, idproc, T1);
+                        C1:=(
                  Tc => Var,
                  Idv => t1
                 );
@@ -657,12 +662,12 @@ package body Semantica.Gci is
                 );
 
             genera(copia, c1, c2);
-	
-			Idres := t1;
+
+                        Idres := t1;
             Iddesp := var_nul;
             Idtipus := d.targ;
-			
-			
+
+
          when Dproc =>
 
             D:=cons(Tts(idproc), id);
@@ -1260,7 +1265,9 @@ package body Semantica.Gci is
                         Novaconst(Tv, valor(Integer'size/8), Tsent, idproc, T6);
                         Novavar(Tv,idproc, T7);
 
-                         C1:=(
+                        Put_Line("Iddesp = "& Iddesp'Img);
+
+            C1:=(
                  Tc => Var,
                  Idv => T7
                 );
@@ -1275,8 +1282,10 @@ package body Semantica.Gci is
             Genera(Producte, C1, C2, C3);
 
             Novavar(Tv, idproc, T1);
-            Novavar(Tv, idproc, T2);
-            Novaconst(Tv, valor(dtc.dt.ocup), Tsent, idproc, T3);
+
+            Novaconst(Tv, valor(dtc.dt.base), Tsent, idproc, T3);
+
+                        Put_Line("----> Valor(dtc.dt.base) = "&valor(dtc.dt.base)'img);
 
             C1:=(
                  Tc => Var,
@@ -1291,16 +1300,21 @@ package body Semantica.Gci is
                  Idc => T3
                 );
             Genera(Resta, C1, C2, C3);
-            C2.Idv := T2;
-            C3.Idc := Dtc.Dt.Base;
-            Genera(Producte, C2, C1, C3);
+
+
+                        Novavar(Tv, idproc, T2);
+            --C2.Idv := T2;
+            --C3.Idc := Dtc.Dt.Base;
+            --Genera(Producte, C2, C1, C3);
+
 
             if Idbase = var_nul then
-               Iddesp := T2;
+               --Iddesp := T2;
+                                Iddesp := T1;
             else
                Novavar(Tv, idproc, T4);
                --Novaconst(Tv, Idbase, Tsent, idproc, T5);
-                           Novaconst(Tv, valor(dtc.dt.ocup), Tsent, idproc, T5);
+                  Novaconst(Tv, valor(dtc.dt.ocup), Tsent, idproc, T5);
 
                C1:=(
                     Tc => Var,
@@ -1442,6 +1456,7 @@ package body Semantica.Gci is
 
             if IddespE = var_nul then
                Iddesp:= idresE;
+                           put_line("NO ES UNMISTERIO PEPE?" & iddesp'img);
             else
 
                Novavar(Tv, idproc, T1);
@@ -1773,10 +1788,10 @@ package body Semantica.Gci is
 
          if Tv.Tv(V).Param then --param
 
-			Idpr := Tv.Tv(V).Np;
-			Tv.Tv(V).Desp := Tp.Tp(Idpr).Ocup_Param +12;
-			Tp.Tp(Idpr).Ocup_Param := Despl(Tp.Tp(Idpr).Ocup_Param) + 4;
-            
+                        Idpr := Tv.Tv(V).Np;
+                        Tv.Tv(V).Desp := Tp.Tp(Idpr).Ocup_Param +12;
+                        Tp.Tp(Idpr).Ocup_Param := Despl(Tp.Tp(Idpr).Ocup_Param) + 4;
+
          else
             if Tv.Tv(V).Desp = 0 then
 
@@ -1784,10 +1799,9 @@ package body Semantica.Gci is
 
                if Tp.Tp(Idpr).Tp = Intern then
                   Ocup_Var := Tv.Tv(V).Ocup;
-				  put_line("Ocup :"&v'img&" , "&Ocup_Var'img);
-				  Tp.Tp(Idpr).Ocup_Var := Tp.Tp(Idpr).Ocup_Var + Ocup_Var;
+                  Tp.Tp(Idpr).Ocup_Var := Tp.Tp(Idpr).Ocup_Var + Ocup_Var;
+                  Tp.Tp(Idpr).Ocup_Var := Tp.Tp(Idpr).Ocup_Var + Ocup_Var;
                   Tv.Tv(V).Desp := Despl(Tp.Tp(Idpr).Ocup_Var* (-1));
-                  
                end if;
 
             end if;

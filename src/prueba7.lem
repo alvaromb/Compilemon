@@ -1,27 +1,41 @@
 procedure prueba7 is
-	type rang is new integer range 1..10000;
+	type rang is new integer range 1..1000000;
 	type vector is array (rang) of integer;
+
+	--type vector2 is array (rang, rang, rang) of integer;
+
 	a : vector;
+	--b:vector2;
 	--min, max, mid : rang;
 	--x : integer;
 	--trobat : boolean;
 begin
 	-- Vector ordenat
+	
+	a(5) := 7;
 	a(1) := 1;
 	a(2) := 3;
 	a(3) := 4;
+
 	a(4) := 6;
+	a(9927) := 69;
 	a(5) := 7;
+	a(100000) := 87198;
+	
 	a(6) := 12;
+	a(9927) := a(5);
 	a(7) := 15;
-	a(8) := 21;
+
 	a(9) := 30;
 	a(10) := 44;
-	a(888) := 888;
-	a(9927) := 69;
+	a(888) := a(9927);
+	a(1000000) := 6;
+	a(9927) := a(1000000)+a(10)+a(5)+a(2);
+	a(11) := 39;
 
-	puti(a(888)); 
-	puti(a(9927));
+	--puti(a(888));
+	--puti(a(78));  
+	puti(a(11));
 
 	-- if a(1) = 1 then
 	-- 	puts("a1 es 1");
