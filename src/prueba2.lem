@@ -1,26 +1,35 @@
+-- Test de parametres out amb components d'un vector
+procedure test_params is
 
-procedure principal is
- 
-	
-	aux :character;
-	auxx : integer;
+	--a : character;
+  	s : string;
+   procedure fibo (n: out integer) is
+	 n1, n2 : integer;
+   	begin
+      if n < 2 then
+		 n:=n;
+	  else
+		 n1 := n-1;
+		 n2 := n-2;
+		 fibo(n1);
+		 fibo(n2);
+		 n := n1 +n2;
+	  end if;
+   end fibo;
 
-	procedure assig( i : out integer; i1 : out integer;i2: out integer) is
-	
-	aux : integer;
 
+   type rang_v is new integer range 1..10;
+   type vector is array (rang_v) of integer;
 
-	begin
-		
-		aux := i + i1;
-		puti(aux);
-	end assig;
-   
+   v: vector;
 begin
+    s := "som un string";
+	gets(s);
+	puts(s);
 
-	aux := 'd';
-	auxx := 223;
-	assig(auxx,auxx,auxx);
- 
 
-end principal;
+	--fibo(n);
+   --porcella(v(1));
+  -- puti(n);
+   new_line;
+end test_params;
