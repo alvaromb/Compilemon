@@ -358,7 +358,7 @@ package body Semantica.Gci is
         Put_Line("BASE ARRAY = "& Base'img);
           Novaconst(Tv, base, Tsent, idproc, T1);
 
---      Darray.Dt.Base := T1; --Guardabamos antes el numero de variable dond esta la base.
+	  --Darray.Dt.Base := T1; --Guardabamos antes el numero de variable dond esta la base.
                                                           --Ahora guardamos el numero en si
       Darray.Dt.Base := base;
         Put_Line("Darray.Dt.Base = "& Darray.Dt.Base'img);
@@ -380,7 +380,7 @@ package body Semantica.Gci is
 
    begin
 
-          cim(pproc, idproc);
+      cim(pproc, idproc);
 
       if (A.Tipus = Pcoleccio) then--p_dcoleccio s_coma id
 
@@ -482,7 +482,7 @@ package body Semantica.Gci is
          if Iddexp = Var_Nul then
             Genera(Asigindex, C1, C2, C3);
          else
-                         Novavar(Tv, idproc, T);
+            Novavar(Tv, idproc, T);
                  C5:=(
                   Tc => Var,
                   Idv => T
@@ -1409,6 +1409,8 @@ package body Semantica.Gci is
 
                Genera(Suma, C1, C2, C3);
 
+				Iddesp:=T2;
+
             else
 
               -- Novavar(Tv, idproc, T1);
@@ -1443,7 +1445,7 @@ package body Semantica.Gci is
 
                Genera(Suma, C1, C2, C3);
             end if;
-            Iddesp:=T2;
+            --Iddesp:=T2;
 
          when Encappri => -- encappri --> R(E
 
@@ -1456,7 +1458,6 @@ package body Semantica.Gci is
 
             if IddespE = var_nul then
                Iddesp:= idresE;
-                           put_line("NO ES UNMISTERIO PEPE?" & iddesp'img);
             else
 
                Novavar(Tv, idproc, T1);

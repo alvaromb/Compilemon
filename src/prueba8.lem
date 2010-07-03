@@ -1,6 +1,6 @@
 procedure prueba8 is
 
-	type rang is new integer range 1..6;
+	type rang is new integer range 1..5;
 
 	type vector2 is array (rang, rang) of integer;
 
@@ -10,16 +10,15 @@ procedure prueba8 is
 
 begin
 
-	i:=1;
-	j:=1;
+	--i:=1;
+	--j:=1;
 	k:=25;
 
-	a(3,4):=45;
-	puti(a(3,4));
+	a(1,2):=k;
 
-	--while i < 6 loop
+	--while i < 5 loop
 	--	j:=1;
-	--	while j < 6 loop
+	--	while j < 5 loop
 	--		a(i,j):= k;
 	--		j:=j+1;
 	--	end loop;
@@ -27,6 +26,7 @@ begin
 	--	k:=k+1;
 	--end loop;
 
-	--puti(a(2,3));
+	puti(a(1,2));
+
 
 end prueba8;
