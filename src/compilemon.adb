@@ -59,6 +59,8 @@ begin
    -- Comprovacio de tipus
    Ct_Programa(Arbre);
 
+   --if not esem then
+
    -- Generacio de codi intermedi
    Inicia_Generacio(Argument(1));
    Gci_Programa(Arbre);
@@ -67,6 +69,8 @@ begin
 
    -- Generacio de codi assemblador
    Genera_Assemblador(Argument(1));
+
+   --end if;
 
    Close_Input;
 

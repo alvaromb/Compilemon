@@ -24,12 +24,12 @@ package body Semantica.Gci is
    begin
           --Ct_Programa(Arbre);
 
-          if not esem then
-        Crea_Fitxer(nomFitxer);--c3a
-                Pila_Buida(Pproc);
-                                Pila_Buida(Pparam);
-                Empilar(Pproc, Proc_Nul);
-          end if;
+   	  if not esem then
+      	Crea_Fitxer(nomFitxer);--c3a
+      	Pila_Buida(Pproc);
+        Pila_Buida(Pparam);
+        Empilar(Pproc, Proc_Nul);
+      end if;
 
    end Inicia_Generacio;
 

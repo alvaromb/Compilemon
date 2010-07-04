@@ -659,6 +659,7 @@ package body Semantica.Assemblador is
      (Nom_Fitxer : in String) is
    begin
       if Esem then
+		 --Gce_Finalitza;	
          raise Error_Assemblador;
       end if;
 
