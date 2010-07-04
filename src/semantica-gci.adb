@@ -188,7 +188,7 @@ package body Semantica.Gci is
 
        when Dargc =>
                         dtipus:=cons(tts(idproc),d.targ);
-                       
+
                          Iv := (idPar,
              idproc,
              Dtipus.Dt.ocup,
@@ -594,17 +594,17 @@ package body Semantica.Gci is
    begin
           cim(pproc, idproc);
       D := Cons(Tts(idproc), Id);
-	
+
 
       case Desc is
          when Dvar => -- R -> id
-         
+
             Idres := d.nv;
             Iddesp := var_nul;
             Idtipus := d.tr;
 
          when Dconst =>
-                      
+
                 DescConst := Cons(Tts(idproc), D.tc);
 
                 Iv := (Id,
@@ -615,7 +615,7 @@ package body Semantica.Gci is
                         False,
                         True,
                         D.Vc);
-                      
+
                 modif_descripcio(Tv, D.Nvc, Iv);
 
                         Novavar(Tv, idproc, T1);
@@ -735,7 +735,7 @@ package body Semantica.Gci is
          when Identificador =>
 
             gci_Identificador(A, Idr, Idd, Idtipus); --Idtipus??
-                      
+
          when Const =>
             gci_Constant(A, Idr);
 
@@ -1234,6 +1234,9 @@ package body Semantica.Gci is
       idproc : num_proc := proc_nul;
       C1, C2, C3: Camp;
 
+        --debug
+        ivar : info_var;
+        ivar2 : info_var;
    begin
       case Tipus is
          when Identificador =>
@@ -1290,32 +1293,34 @@ package body Semantica.Gci is
 
 
             --prova
-			cim(pproc, idproc);
-              dtc := cons(Tts(idproc),Idtipus);
+            cim(pproc, idproc);
+            dtc := cons(Tts(idproc),Idtipus);
 
-              
-              Novavar(Tv,idproc, T7);
-			Novaconst(Tv, valor(dtc.dt.base), Tsent, idproc, T3);
-              Put_Line("Iddesp = "& Iddesp'Img);
+            put_line("r -> ref_pri)");
 
-              C1:=(
-                   Tc => Var,
-                   Idv => T7
-                  );
-              C2:=(
-                   Tc  => Var,
-                   Idv => Iddesp
-                  );
-              C3:=(
-                   Tc  => Const,
-                   Idc => T3
-                  );
+            Novavar(Tv,idproc, T7);
+            Novaconst(Tv, valor(dtc.dt.base), Tsent, idproc, T3);
 
-              Genera(Resta, C1, C2, C3);
-              Novavar(Tv, idproc, T1);
-              
-				Novaconst(Tv, valor(Integer'size/8), Tsent, idproc, T6);
-                         Put_Line("----> Valor(dtc.dt.base) = "&valor(dtc.dt.base)'img);
+            C1:=(
+                 Tc => Var,
+                 Idv => T7
+                );
+            C2:=(
+                 Tc  => Var,
+                 Idv => Iddesp
+                );
+            C3:=(
+                 Tc  => Const,
+                 Idc => T3
+                );
+            ivar := consulta(tv, iddesp);
+            ivar2 := consulta(tv, T3);
+            put_line("T7 := Iddesp("&ivar.desp'img&") - T3("&ivar2.valconst'img&")");
+            Genera(Resta, C1, C2, C3);
+            Novavar(Tv, idproc, T1);
+
+            Novaconst(Tv, valor(Integer'size/8), Tsent, idproc, T6);
+            Put_Line("----> Valor(dtc.dt.base) = "&valor(dtc.dt.base)'img);
 
              C1:=(
                    Tc => Var,
@@ -1331,8 +1336,10 @@ package body Semantica.Gci is
                   );
               Genera(Producte, C1, C2, C3);
               Novavar(Tv, idproc, T2);
-            --fiprova
-
+              --fiprova
+              Ivar := Consulta(Tv, T6);
+              Put_Line("T1 := T7 (resta anterior) * T6("&
+                         Ivar.Valconst'Img&")");
 
             --C2.Idv := T2;
             --C3.Idc := Dtc.Dt.Base;
@@ -1440,7 +1447,7 @@ package body Semantica.Gci is
 
                Genera(Suma, C1, C2, C3);
 
-                                Iddesp:=T2;
+                                --Iddesp:=T2;
 
             else
 
@@ -1476,7 +1483,7 @@ package body Semantica.Gci is
 
                Genera(Suma, C1, C2, C3);
             end if;
-            --Iddesp:=T2;
+            Iddesp:=T2;
 
          when Encappri => -- encappri --> R(E
 
