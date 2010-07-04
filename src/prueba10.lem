@@ -1,0 +1,67 @@
+procedure prueba10 is
+	i, k : integer;
+begin
+	-- i := 0;
+	-- while (i < 15) loop
+	-- 	puti(i);
+	-- 	new_line;
+	-- 	i := i + 1;
+	-- 	--k := i;
+	-- end loop;
+	-- --puti(k);
+	-- puti(i);
+
+	-- i := 0;
+	-- puti(i);
+	-- new_line;
+	-- i:=i+1;
+	-- puti(i);
+	-- new_line;
+	-- i:=i+1;
+	-- puti(i);
+	-- new_line;
+	-- i:=i+1;
+	-- puti(i);
+	-- new_line;
+	-- i:=i+1;
+	-- puti(i);
+	-- new_line;
+	-- i:=i+1;
+	-- puti(i);
+	-- new_line;
+	-- i:=i+1;
+	-- puti(i);
+	-- new_line;
+	-- i:=i+1;
+	-- puti(i);
+	-- new_line;
+	-- i:=i+1;
+	-- puti(i);
+	-- new_line;
+	-- i:=i+1;
+	-- puti(i);
+	-- new_line;
+	-- i:=i+1;
+	-- puti(i);
+	-- new_line;
+	-- i:=i+1;
+	-- puti(i);
+	-- new_line;
+	-- i:=i+1;
+	-- puti(i);
+	-- new_line;
+	-- i:=i+1;
+	-- puti(i);
+	-- new_line;
+	-- i:=i+1;
+	-- puti(i);
+	-- new_line;
+	-- i:=i+1;
+	-- puti(i);
+	-- new_line;
+	-- i:=i+1;
+
+	i := -10;
+	puti(i);
+
+end prueba10;
