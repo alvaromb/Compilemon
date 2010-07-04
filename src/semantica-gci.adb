@@ -176,7 +176,7 @@ package body Semantica.Gci is
           case d.td is
            when Dvar =>
             dtipus:=cons(tts(idproc),d.tr);
-                           Iv := (idPar,
+            Iv := (idPar,
              idproc,
              Dtipus.Dt.ocup,
              0,
@@ -184,12 +184,12 @@ package body Semantica.Gci is
              True,
              False,
              0);
-                         modif_descripcio(Tv, D.Nv, Iv);
+             modif_descripcio(Tv, D.Nv, Iv);
 
        when Dargc =>
-                        dtipus:=cons(tts(idproc),d.targ);
+             dtipus:=cons(tts(idproc),d.targ);
 
-                         Iv := (idPar,
+             Iv := (idPar,
              idproc,
              Dtipus.Dt.ocup,
              0,
@@ -221,13 +221,10 @@ package body Semantica.Gci is
          when Dvariable   =>
             gci_Decvar(Decl);
          when Dconstant   =>
-            --gci_Decconst(Decl);
-                        null; -- No utilitzam perque ho farem mes tard
+            null; 
          when Dcoleccio   =>
             gci_Deccol(Decl);
          when Dregistre | Dencapregistre | Firecord =>
-            -- Ocup := 0;
-            -- Ct_Decregistre(Decl, Idrec,Ocup);
             null;
          when Dsubrang    =>
             null;
@@ -301,7 +298,7 @@ package body Semantica.Gci is
 
    end gci_Declsvar;
 
-   procedure gci_Decconst
+   procedure gci_Decconst --no serveix per a res!!! no l'invocam
      (A : in Pnode) is
 
       Id : Id_Nom renames A.Fe2.Id12;
@@ -327,7 +324,7 @@ package body Semantica.Gci is
                  Val.Val);
       modif_descripcio(tv, Desc.Nv, Iconst);
 
-   end gci_Decconst;
+   end gci_Decconst;-----------------------------------------------------------
 
 
    procedure gci_Deccol
@@ -347,10 +344,8 @@ package body Semantica.Gci is
       Darray := cons(Tts(idproc),Idarray);
 
         Put_Line("BASE ARRAY = "& Base'img);
-          Novaconst(Tv, base, Tsent, idproc, T1);
+        Novaconst(Tv, base, Tsent, idproc, T1);
 
-          --Darray.Dt.Base := T1; --Guardabamos antes el numero de variable dond esta la base.
-                                                          --Ahora guardamos el numero en si
       Darray.Dt.Base := base;
 
         Put_Line("Darray.Dt.Base = "& Darray.Dt.Base'img);
@@ -390,8 +385,6 @@ package body Semantica.Gci is
          base := dtcamp.dt.linf;
 
       end if;
-
-        --Put_Line("BASE ARRAY = "& Base'img);
 
    end Gci_Pcoleccio;
 
@@ -522,10 +515,12 @@ package body Semantica.Gci is
                     Tc => Var,
                     Idv => Prm.Despl
                    );
-
+			   
                if Prm.Despl=Var_Nul then
+				  put_line("PARAMSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS");
                   Genera(Params, C1);
                else
+				  put_line("PARAMccccccccccccccccccccccccccccccccccc");
                   Genera(Paramc, C1, C2);
                end if;
                 Desempilar(Pparam);
@@ -1805,26 +1800,18 @@ package body Semantica.Gci is
 
          if Tv.Tv(V).Param then --param
 
-            Idpr := Tv.Tv(V).Np;
-            Tv.Tv(V).Desp := Tp.Tp(Idpr).Ocup_Param + 12;
-            Tp.Tp(Idpr).Ocup_Param := Despl(Tp.Tp(Idpr).Ocup_Param) + 4;
+	         Idpr := Tv.Tv(V).Np;
+             Tv.Tv(V).Desp := Tp.Tp(Idpr).Ocup_Param +12; --+12
+             Tp.Tp(Idpr).Ocup_Param := Despl(Tp.Tp(Idpr).Ocup_Param) + 4;
 
          else
             --if Tv.Tv(V).Desp = 0 then
-
                Idpr := Tv.Tv(V).Np;
-
                if Tp.Tp(Idpr).Tp = Intern then
                   Ocup_Var := Tv.Tv(V).Ocup;
                   Tp.Tp(Idpr).Ocup_Var := Tp.Tp(Idpr).Ocup_Var + Ocup_Var;
-                  Tv.Tv(V).Desp := Despl(Tp.Tp(Idpr).Ocup_Var* (-1));
-					if V = 11 then
-					Put_Line("-----------OCUP_VAR = "&Ocup_Var'Img);
-					Put_Line("-----------Tp.Tp(Idpr).Ocup_Var = "&Tp.Tp(Idpr).Ocup_Var'Img);
-					Put_Line("-----------Tv.Tv(V).Desp = "&Tv.Tv(V).Desp'Img);
-					end if;
+                  Tv.Tv(V).Desp := Despl(Tp.Tp(Idpr).Ocup_Var* (-1));					
                end if;
-
             --end if;
          end if;
       end loop;

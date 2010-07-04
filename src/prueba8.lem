@@ -1,71 +1,34 @@
 procedure prueba8 is
-	type rang is new integer range 1..50;
-	type vector is array (rang, rang) of integer;
-	--a : vector;
+	type rang is new integer range 1..10;
+	type vector is array (rang) of integer;
+	a : vector;
+	b : integer;
+	idx : rang;
+	i : integer;
+	procedure vparam(v: out vector) is
+		jdx : rang;
+	begin
+		jdx := 1;
+		while jdx < 11 loop
 
-	i, j: rang;
-
-	k:integer;
-
-
-	type jugadors is record
-		puyol : integer;
-		pique : integer;
-		milito : integer;
-		alves : integer;
-	end record;
-
-	type rangfcb is new integer range 1..4;	
-
-	type fcb is array (rangfcb) of jugadors;
-
-	equip : fcb;
+			puti(v(jdx));
+			new_line;
+			jdx := jdx+1;
+		end loop;
+		
+	end vparam;
 
 begin
+	idx := 0;
+	i := 1;
 
-	equip(1).puyol := 5;
-	puti(equip(1).puyol);
+	while idx < 11 loop
+	a(idx) := i;
+	i:=i+1;
+	idx := idx+1;
+	end loop;
+	vparam(a);
 	
 
-
-
-
-	--k:=1;
-
-	--a(45, 45) := 3;
-	--puti(a(45, 45));
-
-	--i:=1;
-
-	--while i <= 50 loop
-
-	--	j:=1;		
-		
-	--	while j <= 50 loop
-	--		a(i,j):= k;		
-			--puti(a(i, j));
-	--		j:=j+1;
-	--	end loop;
-
-	--	k:=k+1;
-	--	i:=i+1;
-
-	--end loop;
-	--puti(a(50, 51));
-
-	--i:=1;
-
-	--while i <= 50 loop
-
-	--	j:=1;		
-		
-	--	while j <= 50 loop
-			
-	--		j:=j+1;
-	--	end loop;
---puti(a(i, i));
-	--	i:=i+1;
-
-	--end loop;
-
+	
 end prueba8;

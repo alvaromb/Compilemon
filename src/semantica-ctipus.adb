@@ -236,7 +236,6 @@ package body Semantica.Ctipus is
 
       D := (Dproc, Idpr);
       Posa(Ts, Idn, D, E);
-
       Posa_Id(Tn, Ida, "_arg_puts");
       Iv := (Ida, Idpr, 4, Ipr.Ocup_Param, Tsstr,
              True, False, 0);
@@ -256,13 +255,13 @@ package body Semantica.Ctipus is
  
       D := (Dproc, Idpr);
       Posa(Ts, Idn, D, E);
-
+      --arg_gets
       Posa_Id(Tn, Ida, "_arg_gets");
       Iv := (Ida, Idpr,4, Ipr.Ocup_Param, Tsstr,
              True, False, 0);
       Posa(Tv, Iv, Idv);
                   nv:= nv +1;
-      D := (Dargc, Idv, Idstring);
+      D := (Dvar, Idstring, Idv);
       Posa(Ts, Ida, D, E);
       Posa_Arg(Ts, Idn, Ida, D, E);
       Ipr.Ocup_Param := Ipr.Ocup_Param + Iv.Ocup;
