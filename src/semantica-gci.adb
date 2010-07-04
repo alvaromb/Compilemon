@@ -1798,7 +1798,7 @@ package body Semantica.Gci is
          if Tv.Tv(V).Param then --param
             Idpr := Tv.Tv(V).Np;
             if Tp.Tp(Idpr).Tp = Intern then
-               Tv.Tv(V).Desp := Tp.Tp(Idpr).Ocup_Param + 12;
+               Tv.Tv(V).Desp := Tp.Tp(Idpr).Ocup_Param + 8;--abans 12
                Tp.Tp(Idpr).Ocup_Param := Despl(Tp.Tp(Idpr).Ocup_Param) + 4;
             end if;
          else
