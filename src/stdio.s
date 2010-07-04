@@ -51,9 +51,9 @@ _getc:
 	movl	%eax, 4(%esp)
 	movl	$.LC1, (%esp)
 	call	scanf
-    movl    stdin, %eax
-    movl    %eax, (%esp)
-    call    fflush
+	movl    stdin, %eax
+	movl    %eax, (%esp)
+	call    fflush
 	leave
 	ret
 	.size	_getc, .-_getc

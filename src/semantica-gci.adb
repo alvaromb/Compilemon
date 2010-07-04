@@ -1791,16 +1791,16 @@ package body Semantica.Gci is
          if Tp.Tp(P).Tp = Intern then
             Tp.Tp(P).Ocup_Var := 0;
          end if;
+         --Tp.Tp(P).Ocup_Param := 0;
       end loop;
 
       for V in Num_Var range 1..Tv.Nv loop
-
          if Tv.Tv(V).Param then --param
-
             Idpr := Tv.Tv(V).Np;
-            Tv.Tv(V).Desp := Tp.Tp(Idpr).Ocup_Param + 8;
-            Tp.Tp(Idpr).Ocup_Param := Despl(Tp.Tp(Idpr).Ocup_Param) + 4;
-
+            if Tp.Tp(Idpr).Tp = Intern then
+               Tv.Tv(V).Desp := Tp.Tp(Idpr).Ocup_Param + 12;
+               Tp.Tp(Idpr).Ocup_Param := Despl(Tp.Tp(Idpr).Ocup_Param) + 4;
+            end if;
          else
             --if Tv.Tv(V).Desp = 0 then
             Idpr := Tv.Tv(V).Np;
