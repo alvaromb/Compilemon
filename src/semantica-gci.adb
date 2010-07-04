@@ -1184,10 +1184,12 @@ package body Semantica.Gci is
 
    begin
 
+         cim(pproc, idproc);
+
       if Iddesp = Var_Nul then
          T1:= IdRes;
       else
-         cim(pproc, idproc);
+
          Novavar(Tv, idproc, T1);
 
          C1:=(

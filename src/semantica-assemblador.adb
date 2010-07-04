@@ -449,14 +449,6 @@ package body Semantica.Assemblador is
                Instr_2_Op("subl", "%ebx", "%eax");
                St("%eax", Ic3a.Camp1);
 
-               --JUANMA
-               --New_Line(Fitxer_Asmbl);
-			   --Comentari("Negacio");
-               --Ld(Ic3a.Camp2, "%eax");
-               --Instr_2_Op("xorl", "%ebx", "%eax");
-               --Instr_2_Op("subl", "%eax", "%ebx");
-               --St("%ebx", Ic3a.Camp1);
-
             when Op_Not =>
                New_Line(Fitxer_Asmbl);
                Comentari("Not");
