@@ -47,5 +47,6 @@ package Decls.Dgenerals is
        A_Lit_S,
        nodeArbre);
 
+   Esem : Boolean := False;
 
 end decls.dgenerals;

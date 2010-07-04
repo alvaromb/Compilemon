@@ -719,8 +719,7 @@ package body Semantica.Gci is
       Tipus : Tipusnode renames A.Tipus;
       Idtipus : Id_Nom;
 	  desc : descrip;
-	  idproc : num_proc;
-
+	 
    begin
       Idd := var_nul;
 

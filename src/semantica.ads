@@ -267,7 +267,7 @@ package Semantica is
 
 private
 
-   Esem : Boolean := False;
+   --Esem : Boolean := False;
 
    Ts : Tsimbols;
    Tts: Ttsimbols;

@@ -59,18 +59,18 @@ begin
    -- Comprovacio de tipus
    Ct_Programa(Arbre);
 
-   --if not esem then
+   if not esem then
 
-   -- Generacio de codi intermedi
-   Inicia_Generacio(Argument(1));
-   Gci_Programa(Arbre);
-   Imprimeix_Taules;
-   --Tanca_Fitxer;
+	   -- Generacio de codi intermedi
+	   Inicia_Generacio(Argument(1));
+	   Gci_Programa(Arbre);
+	   Imprimeix_Taules;
+	   --Tanca_Fitxer;
 
-   -- Generacio de codi assemblador
-   Genera_Assemblador(Argument(1));
+	   -- Generacio de codi assemblador
+	   Genera_Assemblador(Argument(1));
 
-   --end if;
+   end if;
 
    Close_Input;
 

@@ -1,5 +1,5 @@
-procedure compilemon is
+procedure prueba is
 	p : integer;
 begin
-	a:=a+1;
-end compilemon;
+	p:='a'; --prueba hecha para ver si funciona el tema de los errores
+end prueba;
