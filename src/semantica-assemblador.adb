@@ -383,16 +383,16 @@ package body Semantica.Assemblador is
                New_Line(Fitxer_Asmbl);
                Comentari("Call " & Ic3a.Camp1.Idp'Img);
                Ipr := Consulta(Tp, Ic3a.Camp1.Idp);
-               --if Ic3a.Camp1.Idp = Id_Puts or
-               --  Ic3a.Camp1.Idp = Id_Gets then
-               --   Comentari("Crida a 'gets' o 'puts'");
-               --   Instr_1_Op("popl", "%eax");
-               --   Instr_2_Op("movl", "(%eax)", "%eax");
-               --   Instr_1_Op("pushl", "%eax");
-               --end if;
+               if Ic3a.Camp1.Idp = Id_Puts  or
+                 Ic3a.Camp1.Idp = Id_Gets then
+                  Comentari("Crida a 'gets' o 'puts'");
+                  Instr_1_Op("popl", "%eax");
+                  Instr_2_Op("movl", "(%eax)", "%eax");
+                 Instr_1_Op("pushl", "%eax");
+               end if;
                Instr_1_Op("call", Trim(Etiqueta(Ipr), Both));
 
-                           --Instr_1_Op("call", Trim(Etiqueta(Ipr), Both));
+               --Instr_1_Op("call", Trim(Etiqueta(Ipr), Both));
                -- Mirar el tema de si hay que *4
                Instr_2_Op("addl", "$" & Trim(Ipr.Ocup_Param'Img,
                                              Both), "%esp");

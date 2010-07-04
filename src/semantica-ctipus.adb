@@ -255,8 +255,8 @@ package body Semantica.Ctipus is
 
 	  --arg_puts
       Posa_Id(Tn, Ida, "_arg_puts");
-      Iv := (Ida, Idpr, 16 * Integer'Size, Ipr.Ocup_Param, Tsstr,
-             True, False, 0);
+      Iv := (Ida, Idpr,4, Ipr.Ocup_Param, Tsstr,
+             True, False, 0);--16 * Integer'Size
       Posa(Tv, Iv, Idv);
       nv:= nv +1;
       D := (Dargc, Idv, Idstring);
@@ -275,8 +275,8 @@ package body Semantica.Ctipus is
       Posa(Ts, Idn, D, E);
       --arg_gets
       Posa_Id(Tn, Ida, "_arg_gets");
-      Iv := (Ida, Idpr, 16 * Integer'Size, Ipr.Ocup_Param, Tsstr,
-             True, False, 0);
+      Iv := (Ida, Idpr, 4, Ipr.Ocup_Param, Tsstr,
+             True, False, 0);-- 16 * Integer'Size
       Posa(Tv, Iv, Idv);
                   nv:= nv +1;
       D := (Dargc, Idv, Idstring);
@@ -1676,11 +1676,12 @@ package body Semantica.Ctipus is
                      end if;
                   end if;
                end if;
+			It_Arg := succ_arg(ts, It_Arg);
             else
                Error(Tproc_No_Param, L, C, Tsub'Img);
                Esem := True;
             end if;
-                          It_Arg := succ_arg(ts, It_Arg);
+                 
               T := Tsub;
          when others =>
             --Put_Line("ERROR CT-ref_pri: tipus no "&
