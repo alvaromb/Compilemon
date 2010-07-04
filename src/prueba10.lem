@@ -61,7 +61,8 @@ begin
 	-- new_line;
 	-- i:=i+1;
 
---	i := -10;
-	puti(-1);
+	i := -10;
+	i:= i +12;
+	--puti(i);
 
 end prueba10;

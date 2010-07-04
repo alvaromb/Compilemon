@@ -1,5 +1,13 @@
 procedure prueba is
-	p : integer;
+
+	procedure p (i : in integer) is
+		a : integer;
+	begin
+		a := i;
+	end p;
+
 begin
-	p:='a'; --prueba hecha para ver si funciona el tema de los errores
+
+	p(5);
+
 end prueba;

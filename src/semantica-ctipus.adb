@@ -144,7 +144,7 @@ package body Semantica.Ctipus is
       Posa(Ts, Idb, D, E);
 
       Posa_Id(Tn, Idt, "true");
-      Iv := (Idt, Tp.Np, Integer'Size/8, 0, Tsbool, False,
+      Iv := (Idt, 0, Integer'Size/8, 0, Tsbool, False,
              True, -1);
 
       Posa(Tv, Iv, Idv);
