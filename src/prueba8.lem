@@ -19,8 +19,11 @@ procedure prueba8 is
 	end vparam;
 
 begin
-	gets(s);
-	puts(s);
+    while i < 10 loop
+		gets(s);
+		puts(s);
+		idx := idx +1;
+	end loop;
 	
 	
 end prueba8;
