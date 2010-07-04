@@ -1,0 +1,28 @@
+-- Proves amb gets i puts
+procedure prueba12 is
+	s : string;
+	i : integer;
+begin
+	-- puts("Introdueix un string: ");
+	-- gets(s);
+	-- --new_line;
+	-- puts("Has introduit: ");
+	-- puts(s);
+
+	-- i := 0;
+	-- while i < 1000 loop
+	-- 	puts("Soc un string!");
+	-- 	new_line;
+	-- 	i := i + 1;
+	-- end loop;
+
+	s := "";
+	i := 0;
+	while i < 10 loop
+		gets(s);
+		puts(s);
+		new_line;
+		i := i + 1;
+	end loop;
+
+end prueba12;

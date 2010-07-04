@@ -1,0 +1,18 @@
+-- Proves amb char
+
+procedure prueba11 is
+	c : character;
+	i : integer;
+begin
+	--puts("Introdueix un caracter i l'imprimire ");
+	--getc(c);
+	--putc(c);
+	i := 0;
+	puts("Introdueix caracters i els imprimire");
+	while i < 10 loop
+		getc(c);
+		puts("->");
+		putc(c);
+		i := i + 1;
+	end loop;
+end prueba11;
