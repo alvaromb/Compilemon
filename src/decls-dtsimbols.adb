@@ -91,7 +91,7 @@ package body Decls.Dtsimbols is
         ts.tambit(ts.prof) := nul_despl;
         for i in 1 .. id_nom'Last loop
            ts.tdesc(i) := (nul_nprof, nul_desc,
-                           nul_despl);
+                           nul_despl); --,nul_nprof
         end loop;
     end tbuida;
 
@@ -107,6 +107,7 @@ package body Decls.Dtsimbols is
         if not e then
             ts.tambit(ts.prof) := ts.tambit(ts.prof) + 1;
             idespl := ts.tambit(ts.prof);
+		--	put_line("Posa : profunditat: "&ts.tdesc(id).np'img&" prof actual: "&ts.prof'img);
             ts.texp(idespl) := (ts.tdesc(id).np,
                                 ts.tdesc(id).d, id, 0);
             ts.tdesc(id) := (ts.prof, d, 0);
@@ -128,27 +129,32 @@ package body Decls.Dtsimbols is
     procedure Entrabloc
       (Ts : in out Tsimbols) is
     begin
+		put_line("*ENTRABLOC*");
         Ts.Prof := Ts.Prof + 1;
         Ts.Tambit(Ts.Prof) := Ts.Tambit(Ts.Prof - 1);
     end Entrabloc;
 
 
     procedure surtbloc
-      (ts : in out tsimbols) is
+      (ts : in out tsimbols;
+	   tn : in taula_de_noms) is
         idespl1 : rang_despl;
         idespl2 : rang_despl;
              id : id_nom;
     begin
+		put_line("*SURTBLOC*");
+		--Printts(Ts);
         idespl1 := ts.tambit(ts.prof);
         ts.prof := ts.prof - 1;
-        idespl2 := ts.tambit(ts.prof) + 1;
+        idespl2 := ts.tambit(ts.prof)+1;
         for idespl in reverse idespl2 .. idespl1 loop
-            if ts.texp(idespl).np > 0 then
+           if ts.texp(idespl).np > no_prof then
                 id := ts.texp(idespl).id;
+				put_line("VAR: "&cons_nom(tn,id)&" idespl:"&idespl'img);
                 ts.tdesc(id).d := ts.texp(idespl).d;
                 ts.tdesc(id).np := ts.texp(idespl).np;
                 ts.tdesc(id).s := ts.texp(idespl).s;
-            end if;
+           end if;
         end loop;
     end surtbloc;
 
@@ -180,8 +186,8 @@ package body Decls.Dtsimbols is
         if not e then
             ts.tambit(ts.prof) := ts.tambit(ts.prof) + 1;
             itdespl := ts.tambit(ts.prof);
-            ts.texp(itdespl) := (nul_nprof, d, idc,
-                                 ts.tdesc(idr).s);
+            ts.texp(itdespl) := (no_prof, d, idc,
+                                 ts.tdesc(idr).s); --nul_nprof,
             ts.tdesc(idr).s := itdespl;
         end if;
     end posacamp;
@@ -238,8 +244,8 @@ package body Decls.Dtsimbols is
 
        ts.tambit(ts.prof) := ts.tambit(ts.prof) + 1;
        idespl := ts.tambit(ts.prof);
-       ts.texp(idespl) := (nul_nprof, (td => dnula),
-                           idi, 0);
+       ts.texp(idespl) := (no_prof, (td => dnula),
+                           idi, 0); --nul_nprof,
 
        if pp /= 0 then
           ts.texp(pp).s := idespl;
@@ -309,7 +315,7 @@ package body Decls.Dtsimbols is
 
         ts.tambit(ts.prof) := ts.tambit(ts.prof) + 1;
         idespl := ts.tambit(ts.prof);
-        ts.texp(idespl) := (nul_nprof, da, ida, 0);
+        ts.texp(idespl) := (no_prof, da, ida, 0); --nul_nprof,
 		put_line("El param es guarda a : "&idespl'img);
         if pp /= 0 then
            ts.texp(pp).s := idespl;

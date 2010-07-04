@@ -75,13 +75,12 @@ package body Semantica.Ctipus is
              False, True, 0);
           nv := nv+1;
       Posa(Tv, Iv, Zero);
-         put_line("NUM_VAR : "&Zero'img);
+
 
       Posa_Id(Tn, Idn, "_menysu");
       Iv := (Idn, Tp.Np, Integer'Size/8, 0, Tsent,
              False, True, -1);
       Posa(Tv, Iv, Menysu);
-          put_line("NUM_VAR : "&Menysu'img);
             nv := nv+1;
       -- "Integer"
       Posa_Id(Tn, Idint, "integer");
@@ -150,7 +149,7 @@ package body Semantica.Ctipus is
              True, -1);
 
       Posa(Tv, Iv, Idv);
-         put_line("NUM_VAR_true : "&Idv'img);
+ 
           Nv:=Nv+1;
       D := (Dconst, Idb, -1, Nv); --REPASAR ESTO!!!
       Posa(Ts, Idt, D, E);
@@ -321,18 +320,18 @@ package body Semantica.Ctipus is
       Idproc : Id_nom renames A.Fid5.Id12;
       ida : cursor_arg;
    begin
-      --Entrabloc(Ts);
+
       Ct_Decprocediment(A);
       ida := primer_arg(Ts, Idproc);
-      --Surtbloc(Ts);
       if (arg_valid(ida)) then
          Error(paramsPprincipal, cons_nom(tn, Idproc));
          Esem := True;
       end if;
 
-          tts(proc_nul) := ts;
-      Tanca_Fitxer;
-	 printts(ts);
+	   tts(proc_nul) := ts;	
+	  Tanca_Fitxer;
+	
+	  --printts(ts);
    end Ct_Programa;
 
 
@@ -349,7 +348,7 @@ package body Semantica.Ctipus is
           np_propi : num_proc;
 
    begin
-      Put_line("CT_Decprocediment");
+      --Put_line("CT_Decprocediment");
       Ct_Encap(Encap, Id_Sup);
           np_propi := np;
       if Id_Inf /= Id_Sup then
@@ -364,7 +363,7 @@ package body Semantica.Ctipus is
       end if;
       Ct_Bloc(Bloc);
       tts(np_propi) := ts;--afegit per la nova ts
-      Surtbloc(Ts);
+      Surtbloc(Ts,tn);
 
    end Ct_Decprocediment;
 
@@ -380,15 +379,14 @@ package body Semantica.Ctipus is
       dn : descrip;
 
    begin
-      Put_line("CT_ENCAP");
+      --Put_line("CT_ENCAP");
       if A.Tipus = Pencap then
 
          Ct_Pencap(A, I);
-         
          idx_Arg := primer_arg(ts, I);
          while arg_valid(idx_Arg) loop
             cons_arg(ts, idx_arg, ida, dn);
-            posa(ts, ida, dn, e);
+            posa(ts, ida, dn, e);---------------------------------------------
             if E then
                Error(enregArg, 3, 3, cons_nom(tn, ida));
                Esem := True;
@@ -397,12 +395,12 @@ package body Semantica.Ctipus is
          end loop;
 
       else
-		  Entrabloc(Ts);
+		  
          I := A.Id12;
          np := np + 1;
          Tproc := (Dproc, np);
          Posa(Ts, I, Tproc, E);
-         Put_Line("posam un procediment");
+          Entrabloc(Ts);
          if E then
             Error(id_existent, A.l1, A.c1, cons_nom(tn, I));
             Esem := True;
@@ -423,24 +421,26 @@ package body Semantica.Ctipus is
       E : Boolean;
 
    begin
-      Put_line("CT_pencap: ");
+      --Put_line("CT_pencap: ");
       if Fesq.Tipus = Identificador then
+		 
          np := np + 1;
          Tproc := (Dproc, np);
          --entrabloc
+		 
          Posa(Ts, Fesq.Id12, Tproc, E);
-         Put_Line("posam un procediment amb param");
-         Entrabloc(Ts);
          if E then
             Error(id_existent, Fesq.l1, Fesq.c1,
                   cons_nom(tn, Fesq.Id12));
             Esem := True;
          end if;
+		 Entrabloc(Ts);
          I := fesq.Id12;
       else
          Ct_Pencap(Fesq, I);
+		  
       end if;
-      Ct_Param(Param, I);
+     	 Ct_Param(Param, I);
    end Ct_Pencap;
 
 
@@ -456,7 +456,7 @@ package body Semantica.Ctipus is
       E : boolean;
 
    begin
-      Put_line("CT_Parametre,");
+    --  Put_line("CT_Parametre: "&cons_nom(tn, idPAr));
       d := cons(ts, idtipus);
       if d.td /= dtipus then
          Error(tipusParam, A.Fd2.l1, A.Fd2.c1,
@@ -476,7 +476,7 @@ package body Semantica.Ctipus is
       end case;
 
       Posa_Arg(ts, I, idPar, dArg, E);
-      Put_Line("hem posat un posa_arg: "&cons_nom(tn,idPar));
+      Put_Line("hem posat un arg: "&cons_nom(tn,idPar));
       if E then
          Error(enregArg, A.Fe2.l1, A.Fe2.c1,
                cons_nom(tn, idPar));
@@ -496,7 +496,7 @@ package body Semantica.Ctipus is
       Ocup  : Despl;
 
    begin
-      Put_line("CT_DECLARACIONS");
+     -- Put_line("CT_DECLARACIONS");
       if Decls.Tipus = Declaracions then
          Ct_Declaracions(Decls);
       end if;
@@ -537,7 +537,7 @@ package body Semantica.Ctipus is
       E : Boolean;
 
    begin
-      Put_line("CT_DECVAR");
+      --Put_line("CT_DECVAR");
       Ct_Declsvar(Dvariable, Idtipus);
       Posa_Idvar(Id, Idtipus, L, C, E);
    end Ct_Decvar;
@@ -552,7 +552,7 @@ package body Semantica.Ctipus is
       Tdecl : Descrip;
 
    begin
-      Put_line("CT_DECLSVAR");
+      --Put_line("CT_DECLSVAR");
       if Tnode = Identificador then
          Tdecl := Cons(Ts, A.Id12);
          if (Tdecl.Td /= Dtipus) then
@@ -564,8 +564,6 @@ package body Semantica.Ctipus is
 
       elsif Tnode = Declmultvar then
          Ct_Declsvar(A.Fd1, Idtipus);
-         Put_Line("CT_DECLSVAR:(DEBUG) diferents "&
-                    "variables amb mateix tipus...");
          Posa_Idvar(A.Fe1.Id12, Idtipus, A.Fe1.L1,
                     A.Fe1.C1, E);
       end if;
@@ -620,8 +618,7 @@ package body Semantica.Ctipus is
           Nv:=Nv+1;
          Tconst := (dconst, IdTipus, Val.val,Nv);
          Posa(Ts, Id, Tconst, E);
-         Put_Line("CT_CONST: (DEBUG)El valor de la "&
-                    "constant es: "&Val.val'img);
+
          if E then
             Error(id_existent, A.Fe2.l1, A.Fe2.c1,
                   cons_nom(tn, Id));
@@ -908,7 +905,7 @@ package body Semantica.Ctipus is
       Id : Id_Nom;
 
    begin
-      Put_line("CT_EXP: "&Tipus'img );
+     
       case Tipus is
          when Expressio =>
             Ct_Expressioc(A, Tps, Id, L, C);
@@ -948,13 +945,13 @@ package body Semantica.Ctipus is
          when Referencia | Fireferencia=>
             --falta L i C
             Ct_Referencia_var(A, T, IdTipus);
-            Put_Line("refe");
+ 
          when Const =>
             Ct_Constant(A, T, Idtipus, L, C);
-            Put_line("CT_EXP_COMP const: "&Idtipus'img);
+           
          when Identificador =>
             Ct_Identificador(A, T, Idtipus, L, C);
-            Put_line("CT_EXP_COMP Id: "&Idtipus'img);
+          
          when others =>
             Esem := True;
             null;
@@ -979,7 +976,7 @@ package body Semantica.Ctipus is
       Iddret : Id_Nom;
 
    begin
-      Put_line("CT_EXPRESSIOC");
+      --Put_line("CT_EXPRESSIOC");
       --Analitzam l'operand esquerra
       Ct_Operand_Exp(Fesq, Tesq, Idesq, L, C);
       --Analitzam l'operand dret
@@ -1123,7 +1120,7 @@ package body Semantica.Ctipus is
       Iddret : Id_Nom;
 
    begin
-      Put_line("CT_EXPRESSIOU");
+      --Put_line("CT_EXPRESSIOU");
       Ct_Operand_Exp(Fdret, Tdret, Iddret, L, C);
       case Op is
          when Resta =>
@@ -1137,7 +1134,7 @@ package body Semantica.Ctipus is
             null;
       end case;
 
-      Put_Line("DRT: ts: "&T'Img&" id: "&Idtipus'Img);
+  --    Put_Line("DRT: ts: "&T'Img&" id: "&Idtipus'Img);
 
    end Ct_Expressiou;
 
@@ -1186,7 +1183,7 @@ package body Semantica.Ctipus is
       D : Descrip;
 
    begin
-      Put_line("CT_CONSTANT");
+     -- Put_line("CT_CONSTANT");
       Idtipus := Id_Nul;
       case (Tatr) is
          when A_Lit_C =>
@@ -1221,7 +1218,7 @@ package body Semantica.Ctipus is
       Carg : Cursor_Arg;
 
    begin
-      put_line(" CT_ID : "&Id'img);
+     
       D := Cons(Ts, Id);
 
       case Desc is
@@ -1254,14 +1251,15 @@ package body Semantica.Ctipus is
             end if;
             Idtipus := Id;
 		when Dargc =>
-			 Idtipus := D.Targ;
-            D := Cons(Ts, Idtipus);
-            if (D.Td = Dtipus) then
-               T := D.Dt.Tt;
+			Idtipus := D.Targ;
+           D := Cons(Ts, Idtipus);
+           if (D.Td = Dtipus) then
+              T := D.Dt.Tt;
             else
                Error(Tipus_No_Desc, L, C, D.Td'Img);
                Esem := True;
             end if;
+			
          when others =>
             Error(Id_No_Reconegut, L, C, Desc'Img);
             Esem := True;
@@ -1272,7 +1270,7 @@ package body Semantica.Ctipus is
       L := Lin;
       C := Col;
 
-      Put_line("ct_id: Tipus: "&Idtipus'img);
+
 
    end Ct_Identificador;
 
@@ -1299,7 +1297,7 @@ package body Semantica.Ctipus is
          when Repeticio =>
             Ct_Srep(A);
          when Identificador =>
-            Put_Line("CT_Bloc : IDENTIFICADOR");
+         
             Ct_Identificador(A, T, Idtipus, L, C);
             if T /= Tsnul then
                Error(Id_No_Cridaproc, L, C,
@@ -1325,7 +1323,7 @@ package body Semantica.Ctipus is
                Esem := True;
             end if;
          when others =>
-            Put_Line("blocothers"&A.Tipus'img);
+           
             Esem := True;
       end case;
    end Ct_Bloc;
@@ -1550,7 +1548,7 @@ package body Semantica.Ctipus is
             end if;
 
          when Encappri =>
-            Put_Line("CT-ref_pri: encappri");
+           -- Put_Line("CT-ref_pri: encappri");
             Ct_Referencia_Var(Fesq, Tsub, Idvar);
             Ct_Expressio(Fdret, Tsref, Idref, L, C);
             Dbase := Cons (ts, Idvar);
@@ -1611,10 +1609,9 @@ package body Semantica.Ctipus is
    begin
       case Tipus is
          when Pri => -- pri , E
-            Put_Line("CT-ref_pri: pri");
+           -- Put_Line("CT-ref_pri: pri");
             Ct_Ref_Pri(Fesq, T, It_Arg);
             Ct_Expressio(Fdret, Tsref, Idref, L, C);
-			put_line("ei que feim comprovacio de un param!!!!!!!!!2");
             if not Arg_Valid(It_Arg) then
                Error(Sobren_Parametres, L, C, "");
                Esem := True;
@@ -1646,7 +1643,7 @@ package body Semantica.Ctipus is
             end if;
 
          when Encappri => -- r(E
-            Put_Line("CT-ref_pri: encappri");
+           -- Put_Line("CT-ref_pri: encappri");
             Ct_Referencia_Proc(Fesq, Tsub, Id);
             Ct_Expressio(Fdret, Tsref, Idref, L, C);
             Dbase := Cons (ts, id);
@@ -1654,7 +1651,7 @@ package body Semantica.Ctipus is
                It_Arg := Primer_Arg(Ts, Id);
                if Arg_Valid(It_Arg) then
                   Cons_Arg(Ts, It_Arg, Id_Cursor, Dparam);
-				  put_line("Eiiiiiiiiiiiiiiiiiiiiiiiiiii: "&cons_nom(tn, Id_Cursor));
+
                   if Idref = Id_Nul then
                      Dtipoarg := Cons(ts, Dparam.targ);
                      if Dtipoarg.dt.tt /= Tsref then

@@ -61,7 +61,8 @@ package Decls.Dtsimbols is
       (ts : in out tsimbols);
 
     procedure surtbloc
-      (ts : in out tsimbols);
+      (ts : in out tsimbols;
+	   tn : in taula_de_noms);
 
     -- VERSIO 3: Blocs mes records.
     procedure posacamp

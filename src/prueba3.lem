@@ -1,23 +1,41 @@
-procedure provaid is
-	
-	type rang is new integer range 1..10;
-	type rec is array(rang) of integer;
-
-	coleccio : rec;
-	procedure mnm(a: out integer) is
-		b : integer;
-	begin
-		--puti(a);
-		
-		puti(a);
-		a := a+3;
-	end mnm;
-
-	
+procedure prova is
+  n,
+  i : integer;
+  procedure muestra_error is
+  begin
+     puts("lo sentimos.");
+     new_line;
+     puts("aparentemente, el factorial es demasiado grande");
+     puts(" y se ha salido del rango de los enteros");
+  end muestra_error;
+  procedure fact (
+         n : in      integer;
+         o :     out integer) is
+      tmp : integer;
+   begin
+      if n=1 then
+         o:=1;
+      else
+         fact(n-1, tmp);
+         o:=n*tmp;
+      end if;
+   end fact;
 begin
-    coleccio(5) := 3;
-	mnm(coleccio(1));
-	new_line;
-	puti(coleccio(1));
-	
-end provaid;
+   puts("introduzca un numero positivo para calcular su factorial.");
+   new_line;
+   geti(n);
+   if n<=0 then
+      puts("no se puede calcular factorial de numeros negativos o nulos");
+   else
+      fact(n, i);
+      puts("el factorial de ");
+      puti(n);
+      puts(" es ");
+      if i<=0 then
+         muestra_error;
+      else
+         puti(i);
+      end if;
+   end if;
+end prova;
+

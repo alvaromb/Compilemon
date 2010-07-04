@@ -3,6 +3,7 @@ procedure test_params is
 
 	--a : character;
   	s : string;
+	n : integer;
    procedure fibo (n: out integer) is
 	 n1, n2 : integer;
    	begin
@@ -23,13 +24,15 @@ procedure test_params is
 
    v: vector;
 begin
-    s := "som un string";
-	gets(s);
+	s := "Introdueix un nombre i calcularem el valor en la succ de fibonacci";
+
 	puts(s);
-
-
-	--fibo(n);
-   --porcella(v(1));
-  -- puti(n);
+	new_line;
+	geti(n);
+	new_line;
+	s:="El valor es:";
+	puts(s);
+	fibo(n);
+    puti(n);
    new_line;
 end test_params;

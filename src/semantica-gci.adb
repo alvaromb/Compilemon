@@ -37,12 +37,12 @@ package body Semantica.Gci is
    procedure gci_Programa
      (A : in Pnode) is
    begin
-                Nprofunditat := 1;
-          empilar(pproc, proc_nul);
+       Nprofunditat := 1;
+      empilar(pproc, proc_nul);
       Tv.nv := nv;
       gci_Decprocediment(A);
 
-          Calcula_Despls;
+      Calcula_Despls;
       Tanca_Fitxer;
    end gci_Programa;
 
@@ -136,7 +136,7 @@ package body Semantica.Gci is
                 gci_Pencap(A);
 
         else
-          cim(pproc, idproc);
+      cim(pproc, idproc);
       Dproc := Cons(tts(idproc), I);
       Empilar(Pproc, dproc.Np);
 
@@ -520,8 +520,6 @@ package body Semantica.Gci is
 
             while not es_buida(pparam) loop
                cim(pparam, prm);
-
-                           put_line(" DEsemp PARAMMMMMMMMMMMMMMMMMMMMM");
                C1:=(
                     Tc => Var,
                     Idv => Prm.Base
@@ -537,7 +535,7 @@ package body Semantica.Gci is
                else
                   Genera(Paramc, C1, C2);
                end if;
-                           Desempilar(Pparam);
+                Desempilar(Pparam);
             end loop;
 
 
@@ -568,23 +566,19 @@ package body Semantica.Gci is
    begin
       case Tipus is
          when Pri => --pri -> pri,E
-
             gci_Ref_Pri(Fesq,IdProc);
             gci_Expressio(Fdret, Idres, Iddesp);
-
             prm.base := Idres;
             prm.despl := Iddesp;
             empilar(pparam, prm);
-                        put_line("  PARAMMMMMMMMMMMMMMMMMMMMM1");
 
          when Encappri => -- pri -> R(E
-
             gci_Referencia_Proc(Fesq, Idproc);
             gci_Expressio(Fdret, Idres, Iddesp);
             prm.base := Idres;
             prm.despl := Iddesp;
             empilar(pparam, prm);
-                        put_line("  PARAMMMMMMMMMMMMMMMMMMMMM3");
+
          when others =>
             Put_Line("ERROR (DEBUG)");
       end case;
@@ -609,10 +603,11 @@ package body Semantica.Gci is
    begin
           cim(pproc, idproc);
       D := Cons(Tts(idproc), Id);
+	
 
       case Desc is
          when Dvar => -- R -> id
-                        put_line("Es un dvar a gci_Identificador");
+             put_line("Es un dvar a gci_Identificador");
             Idres := d.nv;
             Iddesp := var_nul;
             Idtipus := d.tr;

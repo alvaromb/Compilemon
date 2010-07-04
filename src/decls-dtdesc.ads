@@ -23,8 +23,9 @@ package Decls.Dtdesc is
     -- Representa tambit
     max_nprof : constant integer := 25;
     type nprof is new integer
-      range 0 .. max_nprof;
+      range -1 .. max_nprof;
     nul_nprof : constant nprof := 0;
+	no_prof : constant nprof := -1;
 
     type despl is new integer;
 

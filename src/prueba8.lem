@@ -1,31 +1,94 @@
-procedure prueba8 is
+procedure qsort is
 
-	type rang is new integer range 1..50;
+  type a_range is new integer range 1..10;
+  v_len : constant a_range := 10;
+  type a_value is array (a_range) of integer;
+  values : a_value;
+  s : string;
 
-	type vector2 is array (rang, rang) of integer;
+  procedure omple_vector is
+    i : a_range;
+    val : integer;
+    max : constant integer := 251;
+    tmp: integer;
+  begin
+    i := 1;
+    tmp := 19;
+    while i <= v_len loop
+      values(i) := tmp;
 
-	a : vector2;
-	--i, j:rang;
-	--k:integer;
+      tmp := tmp +50;
+      tmp := tmp*tmp;
+      tmp := tmp mod max;
+
+      i := i +1;
+    end loop;
+  end omple_vector;
+
+  procedure put_vect(vect: out a_value) is
+    i : a_range;
+  begin
+    i := 1;
+    while i <= v_len loop
+      puti(values(i));
+      puts("  ");
+      i := i+1;
+    end loop;
+  end put_vect;
+
+
+ 
+   procedure sort(inferior: in a_range; superior: in a_range) is
+     i: a_range;
+     j: a_range;
+     pivot: integer;
+     tmp: a_range;
+	   procedure swap(left: in a_range; right: in a_range) is
+     	-- ho feim sobre la variable global
+     	-- si es vol es fa sobre el vector en mode in-out
+     	tmp : integer;
+   		begin
+     		tmp := values(left);
+     		values(left) := values(right);
+     		values(right) := tmp;
+   		end swap;
+
+   begin
+     if inferior < superior then
+       tmp := (inferior + superior) / 2;
+       pivot := values(tmp);
+       swap(inferior, tmp);
+       i := inferior + 1;
+       j := superior;
+       while i <= j loop
+         if values(i) <= pivot then
+           i := i + 1;
+         else
+           swap(i, j);
+           j := j - 1;
+         end if;
+       end loop;
+       swap(inferior, j);
+       if j > inferior then
+         sort(inferior, j - 1);
+       end if;
+       if j < superior then
+         sort(j + 1, superior);
+       end if;
+     end if;
+   end sort;
 
 begin
-
-	a(45, 45):=3;
-
-	--i:=1;
-	--j:=1;
-	--k:=1;
-
-	--while i < 50 loop
-	--	while j < 50 loop
-	--		a(i,j):= k;
-	--		j:=j+1;
-	--	end loop;
-	--	j:=1;
-	--	i:=i+1;
-	--	k:=k+1;
-	--end loop;
-	--puti(a(49,49));
-
-
-end prueba8;
+  omple_vector;
+  s:= "vector desordenat";
+  puts(s);
+  new_line;
+  put_vect(values);
+  new_line;
+  sort(1, v_len);
+  s:="vector ordenat";
+  puts(s);
+  new_line;
+  put_vect(values);
+  new_line;
+end qsort;
