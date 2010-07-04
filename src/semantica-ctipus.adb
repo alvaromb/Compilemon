@@ -699,7 +699,7 @@ package body Semantica.Ctipus is
             Di := Cons(Ts, Idrang);
             if Di.td = Dtipus then
                Ncomponents := Ncomponents *
-                 Despl(Di.Dt.Lsup - Di.Dt.Linf + 1);
+                 Despl(Di.Dt.Lsup -( Di.Dt.Linf + 1));
             else
                Error(Tipusidxerroniarray, A.Fd1.L1,
                      A.Fd1.C1, Cons_Nom(Tn, Idrang));
