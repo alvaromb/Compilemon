@@ -337,13 +337,12 @@ package body Semantica.Gci is
       Fesq : Pnode renames A.Fe1;
       Idarray : Id_Nom;
       base : valor := 0;
-		NC : valor :=1;
           idproc : num_proc;
           T1 : num_var;
 
    begin  --p_dcoleccio s_parentesitancat pc_of id
 
-      gci_Pcoleccio(Fesq,base,NC,Idarray);
+      gci_Pcoleccio(Fesq,base,Idarray);
           cim(pproc, idproc);
       Darray := cons(Tts(idproc),Idarray);
 
@@ -354,8 +353,6 @@ package body Semantica.Gci is
                                                           --Ahora guardamos el numero en si
       Darray.Dt.Base := base;
 
-      Darray.dt.ocup := despl(NC*4);
-
         Put_Line("Darray.Dt.Base = "& Darray.Dt.Base'img);
       actualitza(Tts(idproc), Idarray, Darray);
 
@@ -365,7 +362,6 @@ package body Semantica.Gci is
    procedure gci_Pcoleccio
      (A : in Pnode;
       base: in out Valor;
-		NumeroComp : in out Valor;
       Idarray : out Id_nom) is
 
       Fesq : Pnode renames A.Fe1;
@@ -374,16 +370,13 @@ package body Semantica.Gci is
       Dtcamp : Descrip;
           idproc : num_proc;
 
------
-		--NumeroComp : Valor;
-
    begin
 
       cim(pproc, idproc);
 
       if (A.Tipus = Pcoleccio) then--p_dcoleccio s_coma id
 
-         gci_Pcoleccio(Fesq, base, NumeroComp, Idarray);
+         gci_Pcoleccio(Fesq, base, Idarray);
 
          Dtcamp := cons(Tts(idproc),Id);
          ncomp :=  dtcamp.dt.lsup - dtcamp.dt.linf + 1;
@@ -396,13 +389,8 @@ package body Semantica.Gci is
          Idarray := Fesq.Id12;
          base := dtcamp.dt.linf;
 
-		---
-         ncomp :=  dtcamp.dt.lsup - dtcamp.dt.linf + 1;
-
       end if;
 
-		NumeroComp := NumeroComp * ncomp;
-		Put_Line("---->>>>Numero Componentes TOTALES = "&NumeroComp'Img);
         --Put_Line("BASE ARRAY = "& Base'img);
 
    end Gci_Pcoleccio;
@@ -1262,56 +1250,21 @@ package body Semantica.Gci is
 
          when Fireferencia => --r -> ref_pri)
             Gci_Ref_Pri(A.F6, Idres, Iddesp, Idbase, Idtipus, It_Idx);
-            --  cim(pproc, idproc);
-            --  dtc := cons(Tts(idproc),Idtipus);
-
-            --  Novaconst(Tv, valor(Integer'size/8), Tsent, idproc, T6);
-            --  Novavar(Tv,idproc, T7);
-
-            --              Put_Line("Iddesp = "& Iddesp'Img);
-
-            --  C1:=(
-            --       Tc => Var,
-            --       Idv => T7
-            --      );
-            --  C2:=(
-            --       Tc  => Var,
-            --       Idv => Iddesp
-            --      );
-            --  C3:=(
-            --       Tc  => Const,
-            --       Idc => T6
-            --      );
-            --  Genera(Producte, C1, C2, C3);
-            --  Novavar(Tv, idproc, T1);
-            --  Novaconst(Tv, valor(dtc.dt.base), Tsent, idproc, T3);
-
-            --              Put_Line("----> Valor(dtc.dt.base) = "&valor(dtc.dt.base)'img);
-
-            --  C1:=(
-            --       Tc => Var,
-            --       Idv => T1
-            --      );
-            --  C2:=(
-            --       Tc  => Var,
-            --       Idv => T7
-            --      );
-            --  C3:=(
-            --       Tc  => Const,
-            --       Idc => T3
-            --      );
-            --  Genera(Resta, C1, C2, C3);
-
-
-            --  Novavar(Tv, idproc, T2);
-
-
-            --prova
+   
             cim(pproc, idproc);
             dtc := cons(Tts(idproc),Idtipus);
+			 case dtc.td is
+              when dnula => Put("dnula, ");
+              when dtipus => Put("dtipus, ");
+              when dvar => Put("dvar, ");
+              when dproc => Put("dproc, ");
+              when dconst => Put("dconst, ");
+              when dargc => Put("dargc, ");
+              when dcamp => Put("dcamp, ");
+           end case;
 
-            Put_Line("------------- ref pri) ---------");
-
+            Put_Line("------------- ref pri) ---------"&cons_nom(tn,Idtipus));
+		    Idtipus := dtc.dt.tcamp;
             Novavar(Tv,idproc, T7);
             Novaconst(Tv, valor(dtc.dt.base), Tsent, idproc, T3);
 
@@ -1557,7 +1510,7 @@ package body Semantica.Gci is
       Idtipus : out Id_Nom) is
 
       Fesq : Pnode renames A.Fe1;
-      Dcamp : Descrip;
+      Dcmp : Descrip;
       Dtcamp : Descrip;
       Idcamp : Id_Nom renames A.Fd1.Id12;
 
@@ -1576,10 +1529,11 @@ package body Semantica.Gci is
 
       cim(pproc, idproc);
 
-      Dcamp := Conscamp(Tts(idproc), Idtipus, Idcamp);
-      Idtipus:= dcamp.tcamp;
+      Dcmp := Conscamp(Tts(idproc), Idtipus, Idcamp);
 
-      Novaconst(Tv, valor(Dcamp.Dsp), Tsent, Idproc, numconstant);
+	  Idtipus:= dcmp.tcamp;
+
+      Novaconst(Tv, valor(Dcmp.Dsp), Tsent, Idproc, numconstant);
 
       if Iddesp = var_nul then
          Iddesp:=numconstant;
