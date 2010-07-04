@@ -718,6 +718,8 @@ package body Semantica.Gci is
 
       Tipus : Tipusnode renames A.Tipus;
       Idtipus : Id_Nom;
+	  desc : descrip;
+	  idproc : num_proc;
 
    begin
       Idd := var_nul;
@@ -730,8 +732,15 @@ package body Semantica.Gci is
          when ExpressioUnaria =>
             gci_Expressiou(A, Idr, Idd);
          when Identificador =>
-
+			    
             gci_Identificador(A, Idr, Idd, Idtipus); --Idtipus??
+
+			-- cim(pproc, idproc);
+			 --desc := cons(tts(idproc),Idtipus);
+			 --if (desc.td = dtipus) then	
+			 
+			
+			 --end if;
 
          when Const =>
             gci_Constant(A, Idr);
@@ -1248,17 +1257,6 @@ package body Semantica.Gci is
    
             cim(pproc, idproc);
             dtc := cons(Tts(idproc),Idtipus);
-			 case dtc.td is
-              when dnula => Put("dnula, ");
-              when dtipus => Put("dtipus, ");
-              when dvar => Put("dvar, ");
-              when dproc => Put("dproc, ");
-              when dconst => Put("dconst, ");
-              when dargc => Put("dargc, ");
-              when dcamp => Put("dcamp, ");
-           end case;
-
-            Put_Line("------------- ref pri) ---------"&cons_nom(tn,Idtipus));
 		    Idtipus := dtc.dt.tcamp;
             Novavar(Tv,idproc, T7);
             Novaconst(Tv, valor(dtc.dt.base), Tsent, idproc, T3);
@@ -1277,12 +1275,12 @@ package body Semantica.Gci is
                 );
             ivar := consulta(tv, iddesp);
             ivar2 := consulta(tv, T3);
-            put_line("T7 := Iddesp("&ivar.desp'img&") - T3("&ivar2.valconst'img&")");
+           -- put_line("T7 := Iddesp("&ivar.desp'img&") - T3("&ivar2.valconst'img&")");
             Genera(Resta, C1, C2, C3);
             Novavar(Tv, idproc, T1);
 
             Novaconst(Tv, valor(Integer'size/8), Tsent, idproc, T6);
-            Put_Line("----> Valor(dtc.dt.base) = "&valor(dtc.dt.base)'img);
+            --Put_Line("----> Valor(dtc.dt.base) = "&valor(dtc.dt.base)'img);
 
              C1:=(
                    Tc => Var,
@@ -1731,7 +1729,7 @@ package body Semantica.Gci is
           );
       Genera(Etiqueta, C1);
 
-      gci_Expressio(Exp, Idres, Iddesp); ------
+      gci_Expressio(Exp, Idres, Iddesp);
 
       C1:=(
            Tc => Etiq,
@@ -1769,9 +1767,9 @@ package body Semantica.Gci is
            Tc => Const,
            Idc => Zero
           );
-      Genera(Igual, C2, C3, C1);  --if exp = 0 then etiqueta
+      Genera(Igual, C2, C3, C1);
 
-      gci_Bloc(Bloc);  -----------
+      gci_Bloc(Bloc);
 
       C1 := (
              Tc => Etiq,
@@ -1801,7 +1799,7 @@ package body Semantica.Gci is
          if Tv.Tv(V).Param then --param
 
 	         Idpr := Tv.Tv(V).Np;
-             Tv.Tv(V).Desp := Tp.Tp(Idpr).Ocup_Param +12; --+12
+             Tv.Tv(V).Desp := Tp.Tp(Idpr).Ocup_Param + 12;
              Tp.Tp(Idpr).Ocup_Param := Despl(Tp.Tp(Idpr).Ocup_Param) + 4;
 
          else
