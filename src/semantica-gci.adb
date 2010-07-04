@@ -24,9 +24,9 @@ package body Semantica.Gci is
    begin
           --Ct_Programa(Arbre);
 
-   	  if not esem then
-      	Crea_Fitxer(nomFitxer);--c3a
-      	Pila_Buida(Pproc);
+          if not esem then
+        Crea_Fitxer(nomFitxer);--c3a
+        Pila_Buida(Pproc);
         Pila_Buida(Pparam);
         Empilar(Pproc, Proc_Nul);
       end if;
@@ -221,7 +221,7 @@ package body Semantica.Gci is
          when Dvariable   =>
             gci_Decvar(Decl);
          when Dconstant   =>
-            null; 
+            null;
          when Dcoleccio   =>
             gci_Deccol(Decl);
          when Dregistre | Dencapregistre | Firecord =>
@@ -515,12 +515,12 @@ package body Semantica.Gci is
                     Tc => Var,
                     Idv => Prm.Despl
                    );
-			   
+
                if Prm.Despl=Var_Nul then
-				  put_line("PARAMSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS");
+                                  put_line("PARAMSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS");
                   Genera(Params, C1);
                else
-				  put_line("PARAMccccccccccccccccccccccccccccccccccc");
+                                  put_line("PARAMccccccccccccccccccccccccccccccccccc");
                   Genera(Paramc, C1, C2);
                end if;
                 Desempilar(Pparam);
@@ -718,8 +718,8 @@ package body Semantica.Gci is
 
       Tipus : Tipusnode renames A.Tipus;
       Idtipus : Id_Nom;
-	  desc : descrip;
-	 
+          desc : descrip;
+
    begin
       Idd := var_nul;
 
@@ -731,15 +731,15 @@ package body Semantica.Gci is
          when ExpressioUnaria =>
             gci_Expressiou(A, Idr, Idd);
          when Identificador =>
-			    
+
             gci_Identificador(A, Idr, Idd, Idtipus); --Idtipus??
 
-			-- cim(pproc, idproc);
-			 --desc := cons(tts(idproc),Idtipus);
-			 --if (desc.td = dtipus) then	
-			 
-			
-			 --end if;
+                        -- cim(pproc, idproc);
+                         --desc := cons(tts(idproc),Idtipus);
+                         --if (desc.td = dtipus) then
+
+
+                         --end if;
 
          when Const =>
             gci_Constant(A, Idr);
@@ -1253,10 +1253,10 @@ package body Semantica.Gci is
 
          when Fireferencia => --r -> ref_pri)
             Gci_Ref_Pri(A.F6, Idres, Iddesp, Idbase, Idtipus, It_Idx);
-   
+
             cim(pproc, idproc);
             dtc := cons(Tts(idproc),Idtipus);
-		    Idtipus := dtc.dt.tcamp;
+                    Idtipus := dtc.dt.tcamp;
             Novavar(Tv,idproc, T7);
             Novaconst(Tv, valor(dtc.dt.base), Tsent, idproc, T3);
 
@@ -1523,7 +1523,7 @@ package body Semantica.Gci is
 
       Dcmp := Conscamp(Tts(idproc), Idtipus, Idcamp);
 
-	  Idtipus:= dcmp.tcamp;
+          Idtipus:= dcmp.tcamp;
 
       Novaconst(Tv, valor(Dcmp.Dsp), Tsent, Idproc, numconstant);
 
@@ -1797,18 +1797,18 @@ package body Semantica.Gci is
 
          if Tv.Tv(V).Param then --param
 
-	         Idpr := Tv.Tv(V).Np;
-             Tv.Tv(V).Desp := Tp.Tp(Idpr).Ocup_Param + 12;
-             Tp.Tp(Idpr).Ocup_Param := Despl(Tp.Tp(Idpr).Ocup_Param) + 4;
+            Idpr := Tv.Tv(V).Np;
+            Tv.Tv(V).Desp := Tp.Tp(Idpr).Ocup_Param + 8;
+            Tp.Tp(Idpr).Ocup_Param := Despl(Tp.Tp(Idpr).Ocup_Param) + 4;
 
          else
             --if Tv.Tv(V).Desp = 0 then
-               Idpr := Tv.Tv(V).Np;
-               if Tp.Tp(Idpr).Tp = Intern then
-                  Ocup_Var := Tv.Tv(V).Ocup;
-                  Tp.Tp(Idpr).Ocup_Var := Tp.Tp(Idpr).Ocup_Var + Ocup_Var;
-                  Tv.Tv(V).Desp := Despl(Tp.Tp(Idpr).Ocup_Var* (-1));					
-               end if;
+            Idpr := Tv.Tv(V).Np;
+            if Tp.Tp(Idpr).Tp = Intern then
+               Ocup_Var := Tv.Tv(V).Ocup;
+               Tp.Tp(Idpr).Ocup_Var := Tp.Tp(Idpr).Ocup_Var + Ocup_Var;
+               Tv.Tv(V).Desp := Despl(Tp.Tp(Idpr).Ocup_Var* (-1));
+            end if;
             --end if;
          end if;
       end loop;

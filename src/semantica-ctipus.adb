@@ -100,8 +100,9 @@ package body Semantica.Ctipus is
       Iv := (Ida, Idpr, Integer'Size/8, Ipr.Ocup_Param,
              Tsent, True, False, 0);
       Posa(Tv, Iv, Idv);
-          nv:=nv+1;
+      nv:=nv+1;
       D := (Dargc, Idv, Idint);
+      --D := (Dvar, Idint, Idv);
       Posa(Ts, Ida, D, E);
       Posa_Arg(Ts, Idn, Ida, D, E);
       Ipr.Ocup_Param := Ipr.Ocup_Param + Iv.Ocup;
@@ -147,7 +148,7 @@ package body Semantica.Ctipus is
              True, -1);
 
       Posa(Tv, Iv, Idv);
- 
+
           Nv:=Nv+1;
       D := (Dconst, Idb, -1, Nv); --REPASAR ESTO!!!
       Posa(Ts, Idt, D, E);
@@ -250,7 +251,7 @@ package body Semantica.Ctipus is
       Posa(Tp, Ipr, Idpr);
       Np := Np + 1;
       Id_Gets := Idpr;
- 
+
       D := (Dproc, Idpr);
       Posa(Ts, Idn, D, E);
       --arg_gets
@@ -325,8 +326,8 @@ package body Semantica.Ctipus is
          Esem := True;
       end if;
 
-	  tts(proc_nul) := ts;	
-	  Tanca_Fitxer;
+          tts(proc_nul) := ts;
+          Tanca_Fitxer;
 
    end Ct_Programa;
 
@@ -375,7 +376,7 @@ package body Semantica.Ctipus is
       dn : descrip;
 
    begin
-      
+
       if A.Tipus = Pencap then
 
          Ct_Pencap(A, I);
@@ -391,7 +392,7 @@ package body Semantica.Ctipus is
          end loop;
 
       else
-		  
+
          I := A.Id12;
          np := np + 1;
          Tproc := (Dproc, np);
@@ -401,7 +402,7 @@ package body Semantica.Ctipus is
             Error(id_existent, A.l1, A.c1, cons_nom(tn, I));
             Esem := True;
          end if;
-        
+
       end if;
 
    end Ct_Encap;
@@ -419,7 +420,7 @@ package body Semantica.Ctipus is
    begin
 
       if Fesq.Tipus = Identificador then
-		 
+
          np := np + 1;
          Tproc := (Dproc, np);
          Posa(Ts, Fesq.Id12, Tproc, E);
@@ -428,13 +429,13 @@ package body Semantica.Ctipus is
                   cons_nom(tn, Fesq.Id12));
             Esem := True;
          end if;
-		 Entrabloc(Ts);
+                 Entrabloc(Ts);
          I := fesq.Id12;
       else
          Ct_Pencap(Fesq, I);
-		  
+
       end if;
-     	 Ct_Param(Param, I);
+         Ct_Param(Param, I);
    end Ct_Pencap;
 
 
@@ -896,7 +897,7 @@ package body Semantica.Ctipus is
       Id : Id_Nom;
 
    begin
-     
+
       case Tipus is
          when Expressio =>
             Ct_Expressioc(A, Tps, Id, L, C);
@@ -936,10 +937,10 @@ package body Semantica.Ctipus is
          when Referencia | Fireferencia=>
             Ct_Referencia_var(A, T, IdTipus);
          when Const =>
-            Ct_Constant(A, T, Idtipus, L, C); 
+            Ct_Constant(A, T, Idtipus, L, C);
          when Identificador =>
             Ct_Identificador(A, T, Idtipus, L, C);
-          
+
          when others =>
             Esem := True;
             null;
@@ -1202,7 +1203,7 @@ package body Semantica.Ctipus is
       Carg : Cursor_Arg;
 
    begin
-     
+
       D := Cons(Ts, Id);
 
       case Desc is
@@ -1234,8 +1235,8 @@ package body Semantica.Ctipus is
                T := Tsnul;
             end if;
             Idtipus := Id;
-		when Dargc =>
-			Idtipus := D.Targ;
+                when Dargc =>
+                        Idtipus := D.Targ;
            D := Cons(Ts, Idtipus);
            if (D.Td = Dtipus) then
               T := D.Dt.Tt;
@@ -1243,7 +1244,7 @@ package body Semantica.Ctipus is
                Error(Tipus_No_Desc, L, C, D.Td'Img);
                Esem := True;
             end if;
-			
+
          when others =>
             Error(Id_No_Reconegut, L, C, Desc'Img);
             Esem := True;
@@ -1281,7 +1282,7 @@ package body Semantica.Ctipus is
          when Repeticio =>
             Ct_Srep(A);
          when Identificador =>
-         
+
             Ct_Identificador(A, T, Idtipus, L, C);
             if T /= Tsnul then
                Error(Id_No_Cridaproc, L, C,
@@ -1307,7 +1308,7 @@ package body Semantica.Ctipus is
                Esem := True;
             end if;
          when others =>
-           
+
             Esem := True;
       end case;
    end Ct_Bloc;
@@ -1504,7 +1505,7 @@ package body Semantica.Ctipus is
 
    begin
       case Tipus is
-         when Pri => 
+         when Pri =>
             Put_Line("CT-ref_pri: pri");
             Ct_Ref_Pri(Fesq, T, Id, It_Idx);
             Ct_Expressio(Fdret, Tsref, Idref, L, C);
@@ -1653,13 +1654,13 @@ package body Semantica.Ctipus is
                                 Cons_Nom(Tn, Id_Cursor));
                         Esem := True;
                      end if;
-                  end if;				
+                  end if;
                end if;
             else
                Error(Tproc_No_Param, L, C, Tsub'Img);
                Esem := True;
             end if;
-			  It_Arg := succ_arg(ts, It_Arg);
+                          It_Arg := succ_arg(ts, It_Arg);
               T := Tsub;
          when others =>
             --Put_Line("ERROR CT-ref_pri: tipus no "&
