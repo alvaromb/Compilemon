@@ -62,7 +62,7 @@ begin
    -- Generacio de codi intermedi
    Inicia_Generacio(Argument(1));
    Gci_Programa(Arbre);
-   --Imprimeix_Taules;
+   Imprimeix_Taules;
    --Tanca_Fitxer;
 
    -- Generacio de codi assemblador

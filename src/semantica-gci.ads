@@ -54,6 +54,7 @@ package Semantica.gci is
    procedure gci_Pcoleccio
      (A : in Pnode;
       base: in out Valor;
+		NumeroComp : in out valor;
       Idarray : out Id_nom);
 
    procedure gci_Bloc
