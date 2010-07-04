@@ -451,7 +451,7 @@ package body Semantica.Assemblador is
 
                --JUANMA
                --New_Line(Fitxer_Asmbl);
-               --Comentari("--Negacio--"& Tab &"#");
+			   --Comentari("Negacio");
                --Ld(Ic3a.Camp2, "%eax");
                --Instr_2_Op("xorl", "%ebx", "%eax");
                --Instr_2_Op("subl", "%eax", "%ebx");

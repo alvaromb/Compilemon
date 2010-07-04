@@ -694,6 +694,7 @@ package body Semantica.Gci is
          when others => null;
       end case;
 
+	put_line("VALOR NUMERICO = "&A.val'img);
       Novaconst(Tv, A.Val, T, idproc, T1);
       Novavar(Tv, idproc, Idres);
 
@@ -1127,11 +1128,11 @@ package body Semantica.Gci is
       idproc : num_proc := proc_nul;
 
    begin
-
+		cim(pproc, idproc);
       if Iddesp = Var_Nul then
          T1:= IdRes;
       else
-         cim(pproc, idproc);
+         
          Novavar(Tv, idproc, T1);
 
          C1:=(
