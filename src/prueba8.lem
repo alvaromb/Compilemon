@@ -22,6 +22,8 @@ procedure qsort is
       tmp := tmp mod max;
 
       i := i +1;
+	  puti(tmp);
+	  new_line;
     end loop;
   end omple_vector;
 
