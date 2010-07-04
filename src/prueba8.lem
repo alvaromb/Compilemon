@@ -29,12 +29,18 @@ procedure qsort is
 
   procedure put_vect(vect: out a_value) is
     i : a_range;
+	ax : integer;
+	s: string;
   begin
     i := 1;
+	ax := 1;
+	s := ",  ";
     while i <= v_len loop
       puti(values(i));
-      puts("  ");
+    --  puts(s);
+	  puti(ax);
       i := i+1;
+	  ax := 1;
     end loop;
   end put_vect;
 

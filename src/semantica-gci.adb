@@ -110,15 +110,6 @@ package body Semantica.Gci is
       Desempilar(Pproc);
       Cim(Pproc, Idprinvocador);
 
-      if Idprinvocador = Proc_Nul then
-         --C1:=(
-         --     Tc => Etiq,
-         --     Ide => Tp.Tp(Idprinvocat).Etiq
-         --    );
-         --Genera(Global, C1);
-                 Put_Line("Estamos en el MAIN");
-      end if;
-
    end gci_Decprocediment;
 
 
@@ -197,7 +188,7 @@ package body Semantica.Gci is
 
        when Dargc =>
                         dtipus:=cons(tts(idproc),d.targ);
-                         put_line(cons_nom(tn,idPar));
+                       
                          Iv := (idPar,
              idproc,
              Dtipus.Dt.ocup,
@@ -607,13 +598,13 @@ package body Semantica.Gci is
 
       case Desc is
          when Dvar => -- R -> id
-             put_line("Es un dvar a gci_Identificador");
+         
             Idres := d.nv;
             Iddesp := var_nul;
             Idtipus := d.tr;
 
          when Dconst =>
-                        put_line("Es un dconst a gci_Identificador");
+                      
                 DescConst := Cons(Tts(idproc), D.tc);
 
                 Iv := (Id,
@@ -624,7 +615,7 @@ package body Semantica.Gci is
                         False,
                         True,
                         D.Vc);
-                        put_line("valor variable: "&D.vc'img);
+                      
                 modif_descripcio(Tv, D.Nvc, Iv);
 
                         Novavar(Tv, idproc, T1);
@@ -737,14 +728,14 @@ package body Semantica.Gci is
 
       case Tipus is
          when Expressio =>
-                        put_line("Es una expressio composta");
+
             gci_Expressioc(A, Idr, Idd);
          when ExpressioUnaria =>
             gci_Expressiou(A, Idr, Idd);
          when Identificador =>
 
             gci_Identificador(A, Idr, Idd, Idtipus); --Idtipus??
-                        put_line("Es un identificador: "&Idr'img&", "&Idd'img);
+                      
          when Const =>
             gci_Constant(A, Idr);
 
@@ -778,7 +769,7 @@ package body Semantica.Gci is
       gci_Expressio(Fdret, Iddret,IddespD);
       -- Comparam els tipus
 
-          put_line("Idesq: "&Idesq'img&" Iddret: "&Iddret'img);
+
       case Op is
 
          when Unio | Interseccio =>
@@ -1024,7 +1015,7 @@ package body Semantica.Gci is
 
    begin
 
-   put_line("Entra a expr aritmetica");
+
 
       if IddespE = Var_Nul then
          T1:= IdResE;
@@ -1248,7 +1239,7 @@ package body Semantica.Gci is
          when Identificador =>
 
             Gci_Identificador(A, Idres, Iddesp, Idtipus);
-                        put_line("Es un identificador:"&Idres'img);
+
          when Referencia => -- r -> r.id
             Gci_Ref_Rec(A, Idres, Iddesp, Idtipus);
 
@@ -1598,10 +1589,7 @@ package body Semantica.Gci is
    begin
 
       efals := nova_etiq;
-        put_line("Conds");
       gci_Expressio(Cond, Idres, Iddesp);
-
-          put_line("IDres: "&Idres'img&", Iddesp"&Iddesp'img);
 
       if Iddesp = Var_Nul then
          C2:=(
