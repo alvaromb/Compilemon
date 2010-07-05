@@ -517,10 +517,10 @@ package body Semantica.Gci is
                    );
 
                if Prm.Despl=Var_Nul then
-                                  put_line("PARAMSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS");
+                  put_line("PARAMSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS");
                   Genera(Params, C1);
                else
-                                  put_line("PARAMccccccccccccccccccccccccccccccccccc");
+                  put_line("PARAMcccccccccccccccccccc");
                   Genera(Paramc, C1, C2);
                end if;
                 Desempilar(Pparam);
@@ -1513,24 +1513,41 @@ package body Semantica.Gci is
       C1,
       C2,
       C3 : Camp;
-
-          Idproc : num_proc;
+      Dtipus_Camp : Descrip;
+      Idproc : num_proc;
 
    begin
 
       Gci_Referencia_Var(Fesq, Idres, Iddesp, Idtipus);
-
       cim(pproc, idproc);
-
       Dcmp := Conscamp(Tts(idproc), Idtipus, Idcamp);
+      Idtipus:= Dcmp.Tcamp;
+      Dtipus_Camp := Cons(Ts, Idtipus);
 
-          Idtipus:= dcmp.tcamp;
+      --MIERDA
+      case Dtipus_Camp.Td is
+         when dnula => Put("dnula, ");
+         when dtipus => Put("dtipus, ");
+         when dvar => Put("dvar, ");
+         when dproc => Put("dproc, ");
+         when dconst => Put("dconst, ");
+         when dargc => Put("dargc, ");
+         when dcamp => Put("dcamp, ");
+      end case;
+      New_Line;
 
-      Novaconst(Tv, valor(Dcmp.Dsp), Tsent, Idproc, numconstant);
+
+
+      Novaconst(Tv, valor(Dcmp.Dsp*4),
+                Tsent, Idproc, Numconstant);
+      Put_Line("NUMCONSTANT dcmp.dsp = "&Valor(Dcmp.Dsp)'Img);
+      Put_Line("NUMCONSTANT * 4 = "&Valor(Dcmp.Dsp*4)'Img);
+      Put_Line("NUMCONSTANT + 4 = "&Valor(Dcmp.Dsp+4)'Img);
 
       if Iddesp = var_nul then
          Iddesp:=numconstant;
       else
+         -- Amb desplaçament
          Novavar(Tv, Idproc, T1);
 
          C1:=(Tc => Var,

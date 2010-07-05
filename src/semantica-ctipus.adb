@@ -255,7 +255,7 @@ package body Semantica.Ctipus is
 
           --arg_puts
       Posa_Id(Tn, Ida, "_arg_puts");
-      Iv := (Ida, Idpr,4, Ipr.Ocup_Param, Tsstr,
+      Iv := (Ida, Idpr, 4, Ipr.Ocup_Param, Tsstr,
              True, False, 0);--16 * Integer'Size
       Posa(Tv, Iv, Idv);
       nv:= nv +1;
@@ -377,8 +377,8 @@ package body Semantica.Ctipus is
       end if;
       Ct_Bloc(Bloc);
       tts(np_propi) := ts;
-	  printts(ts,tn);
-	
+      --printts(ts,tn);
+
       Surtbloc(Ts,tn);
 
    end Ct_Decprocediment;
@@ -470,7 +470,7 @@ package body Semantica.Ctipus is
       E : boolean;
 
    begin
-	--  put_line("ENTRAM A FICAR UN PARAM : "&cons_nom(tn,idpar));
+        --  put_line("ENTRAM A FICAR UN PARAM : "&cons_nom(tn,idpar));
       d := cons(ts, idtipus);
       if d.td /= dtipus then
          Error(tipusParam, A.Fd2.l1, A.Fd2.c1,
@@ -800,9 +800,17 @@ package body Semantica.Ctipus is
                cons_nom(tn, Idtcamp));
          Esem := True;
       else
+
          Desc_Camp := (Dcamp, Idtcamp, Ocup);
+
+         Put_Line("idtcamp : "&Cons_Nom(Tn, Idtcamp));
+         Put_Line("ocup idtcam : "&Dtcamp.Dt.Ocup'Img);
+         Put_Line("OCUP ABANS : "&Ocup'Img);
+
          Posacamp(Ts, Idrecord, Idcamp, Desc_Camp, E);
+         --ocup+dtcamp abans aqiu
          Ocup := Ocup + Dtcamp.dt.ocup;
+         Put_Line("OCUP DPRES : "&Ocup'Img);
          if E then
             Error(idCampRecordExistent, Camp.l1,
                   Camp.c1, cons_nom(tn, Idcamp));

@@ -1,46 +1,54 @@
+-- PROVA1.lem
+-- Array de records. 
+
 procedure prova1 is
-	type jugador is record
-		nom : integer;
-		num : integer;
-		posicio : integer;
+
+	type tipussubjacent is record
+		
+		--linf : integer;
+		lsup : integer;
+		ts : character;
+		o : string;
 	end record;
-	j : jugador;
 
-	type rang_equip is new integer range 0..3;
+	type rang is new integer range 0..3;
 
-	type equip is array (rang_equip) of jugador;
-	e : equip;
+	type descrip_tipus is array (rang) of tipussubjacent;
+	d : descrip_tipus;
 
-	i : rang_equip;
+	i : rang;
 
 begin
-	e(0).nom := 1;
-	e(0).num := 1;
-	e(0).posicio := 1;
+	d(0).ts := 'n';
+	--d(0).linf := 0;
+	d(0).lsup := 0;
+	d(0).o := "merda";
 	
-	e(1).nom := 5;
-	e(1).num := 5;
-	e(1).posicio := 5;
+	d(1).ts := 'b';
+	--d(1).linf := -1;
+	d(1).lsup := 0;
+	d(1).o := "caca";
 	
-	e(2).nom := 16;
-	e(2).num := 16;
-	e(2).posicio := 16;
+	d(2).ts := 'c';
+	--d(2).linf := 1;
+	d(2).lsup := 4;
+	d(2).o := "cacota";
 
-	e(3).nom := 10;
-	e(3).num := 10;
-	e(3).posicio := 10;
-
-	puti(e(0).nom);
---	puts(e(0).posicio);
+	d(3).ts := 's';
+	--d(3).linf := 4;
+	d(3).lsup := 256;
+	d(3).o := "pichacO";
 
 	i := 0;
-	 while (i <= 3) loop
-	 	puti(e(i).nom);
+	while (i <= 3) loop
+		putc(d(i).ts);
 		new_line;
-	 	puti(e(i).num);
+		--puti(d(i).linf);
+		--new_line;
+		puti(d(i).lsup);
+		puts(d(i).o);
 		new_line;
-	 	puti(e(i).posicio);
-	 	new_line;
-	 	i := i + 1;
-	 end loop;
+		new_line;
+		i := i + 1;
+	end loop;
 end prova1;
