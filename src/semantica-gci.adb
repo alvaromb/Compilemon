@@ -665,8 +665,6 @@ package body Semantica.Gci is
 
       end case;
 
-    --Put_line("gci_id: Tipus: "&Idtipus'img);
-
    end gci_Identificador;
 
 
@@ -1277,12 +1275,12 @@ package body Semantica.Gci is
                 );
             ivar := consulta(tv, iddesp);
             ivar2 := consulta(tv, T3);
-           -- put_line("T7 := Iddesp("&ivar.desp'img&") - T3("&ivar2.valconst'img&")");
+           put_line("T7 := Iddesp("&ivar.desp'img&") - T3("&ivar2.valconst'img&")");
             Genera(Resta, C1, C2, C3);
             Novavar(Tv, idproc, T1);
 
             Novaconst(Tv, valor(Integer'size/8), Tsent, idproc, T6);
-            --Put_Line("----> Valor(dtc.dt.base) = "&valor(dtc.dt.base)'img);
+            Put_Line("----> Valor(dtc.dt.base) = "&valor(dtc.dt.base)'img);
 
              C1:=(
                    Tc => Var,
