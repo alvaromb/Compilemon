@@ -1794,7 +1794,7 @@ package body Semantica.Gci is
          if Tp.Tp(P).Tp = Intern then
             Tp.Tp(P).Ocup_Var := 0;
          end if;
-         --Tp.Tp(P).Ocup_Param := 0;
+         
       end loop;
 
       for V in Num_Var range 1..Tv.Nv loop

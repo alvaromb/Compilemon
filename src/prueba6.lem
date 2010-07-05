@@ -32,14 +32,14 @@ begin
 		end if;
 	else
 		puts("Pepe en realidad es homofobo");
-		new_line;
+		--new_line;
 		puts(" - su postura favorita es la ");
 		putc(p.o.postura_favorita);
-		new_line;
+		--new_line;
 		puts(" - el tam. de su polla es ");
 		puti(p.o.tam_polla);
 		puts(" cm");
-		new_line;
+		--new_line;
 	end if;
-	new_line;
+	--new_line;
 end prueba6;

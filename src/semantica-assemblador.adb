@@ -389,13 +389,16 @@ package body Semantica.Assemblador is
                   Instr_1_Op("popl", "%eax");
                   Instr_2_Op("movl", "(%eax)", "%eax");
                  Instr_1_Op("pushl", "%eax");
-               end if;
+               Instr_1_Op("call", Trim(Etiqueta(Ipr), Both));
+               else
                Instr_1_Op("call", Trim(Etiqueta(Ipr), Both));
 
                --Instr_1_Op("call", Trim(Etiqueta(Ipr), Both));
                -- Mirar el tema de si hay que *4
                Instr_2_Op("addl", "$" & Trim(Ipr.Ocup_Param'Img,
                                              Both), "%esp");
+
+				end if;
 
             when Preamb =>
                if Ic3a.Camp1.Tc /= Proc then

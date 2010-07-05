@@ -295,7 +295,11 @@ package body semantica.declsc3a is
             Put_Line("     ocup varl: " & Tp.Tp(I).Ocup_Var'Img);
             Put_Line("     ocup param: " & Tp.Tp(I).Ocup_Param'Img);
             Put_Line("     etiqueta: " & Tp.Tp(I).Etiq'Img);
-         end if;
+         else
+            Put_Line("     ocup param: " & Tp.Tp(I).Ocup_Param'Img);
+            Put_Line("     Nom Proc: " & Cons_nom(Tn, Tp.Tp(I).Etiq_Extern));
+			Put_Line("--------------------------------------");
+		 end if;
       end loop;
 
       Put_Line("-------------------------------------------------");
