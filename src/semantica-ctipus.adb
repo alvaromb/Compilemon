@@ -1653,12 +1653,14 @@ package body Semantica.Ctipus is
                   Cons_Arg(Ts, It_Arg, Id_Cursor, Dparam);
 
                   if Idref = Id_Nul then
-                     Dtipoarg := Cons(ts, Dparam.targ);
-                     if Dtipoarg.dt.tt /= Tsref then
-                        Error(Tparam_No_Coincident,
-                              L, C, "");
-                        Esem := True;
-                     end if;
+					 if(Dtipoarg.td /= dnula) then
+                    	 Dtipoarg := Cons(ts, Dparam.targ);
+                     	if Dtipoarg.dt.tt /= Tsref then
+                        	Error(Tparam_No_Coincident,
+                              	L, C, "");
+                        	Esem := True;
+                     	end if;
+					 end if;
                   elsif Dparam.td = Dargc then
                      if Idref /= Dparam.targ then
                         Error(Tparam_No_Coincident, L, C,

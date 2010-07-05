@@ -128,7 +128,7 @@ package body Decls.Dtsimbols is
     procedure Entrabloc
       (Ts : in out Tsimbols) is
     begin
-		--put_line("*ENTRABLOC*");
+		put_line("*ENTRABLOC*");
         Ts.Prof := Ts.Prof + 1;
         Ts.Tambit(Ts.Prof) := Ts.Tambit(Ts.Prof - 1);
     end Entrabloc;
@@ -141,7 +141,7 @@ package body Decls.Dtsimbols is
         idespl2 : rang_despl;
              id : id_nom;
     begin
-		--put_line("*SURTBLOC*");
+		put_line("*SURTBLOC*");
         idespl1 := ts.tambit(ts.prof);
         ts.prof := ts.prof - 1;
         idespl2 := ts.tambit(ts.prof)+1;
