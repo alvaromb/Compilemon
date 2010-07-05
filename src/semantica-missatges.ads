@@ -1,7 +1,7 @@
-with    decls.dgenerals,
+with decls.dgenerals,
   Ada.Text_IO;
 
-use     decls.dgenerals,
+use decls.dgenerals,
   Ada.Text_IO;
 
 package Semantica.Missatges is
