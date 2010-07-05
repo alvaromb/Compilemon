@@ -1,0 +1,32 @@
+
+
+procedure prueba28 is
+
+
+	type rang is new integer range 0..5;
+
+	type vector is array(rang) of integer;
+	v : vector;
+
+
+	procedure p (v : in vector) is 
+	begin
+
+		v(2):=8;
+		
+
+	end p;
+
+
+
+
+begin
+
+
+	p(v);
+	puti(v(2));
+
+
+
+
+end prueba28;

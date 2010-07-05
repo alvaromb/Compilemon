@@ -1,75 +1,49 @@
-procedure prueba10 is
-	i, k : integer;
-	type rang is new integer range 0..5;
-	type vector is array (rang) of integer;
+procedure prueba13 is
+
+	type jugadors is record
+		puyol : integer;
+		milito: integer;
+		pique : integer;
+		alves : integer;
+	end record;
+
+
+	type rang is new integer range 1..5;
+	type vector is array (rang) of jugadors;
 	a : vector;
+
+	i: rang;
+	k : integer;
+
 begin
-	 -- i := 0;
-	 -- while (i < 15) loop
-	 -- 	puti(i);
-	 -- 	new_line;
-	 -- 	i := i + 1;
-	 -- 	--k := i;
-	 -- end loop;
-	 -- --puti(k);
-	 -- puti(i);
 
-	-- i := 0;
-	-- puti(i);
-	-- new_line;
-	-- i:=i+1;
-	-- puti(i);
-	-- new_line;
-	-- i:=i+1;
-	-- puti(i);
-	-- new_line;
-	-- i:=i+1;
-	-- puti(i);
-	-- new_line;
-	-- i:=i+1;
-	-- puti(i);
-	-- new_line;
-	-- i:=i+1;
-	-- puti(i);
-	-- new_line;
-	-- i:=i+1;
-	-- puti(i);
-	-- new_line;
-	-- i:=i+1;
-	-- puti(i);
-	-- new_line;
-	-- i:=i+1;
-	-- puti(i);
-	-- new_line;
-	-- i:=i+1;
-	-- puti(i);
-	-- new_line;
-	-- i:=i+1;
-	-- puti(i);
-	-- new_line;
-	-- i:=i+1;
-	-- puti(i);
-	-- new_line;
-	-- i:=i+1;
-	-- puti(i);
-	-- new_line;
-	-- i:=i+1;
-	-- puti(i);
-	-- new_line;
-	-- i:=i+1;
-	-- puti(i);
-	-- new_line;
-	-- i:=i+1;
-	-- puti(i);
-	-- new_line;
-	-- i:=i+1;
+	--a(2).puyol := 5;
+	--puti(a(2).puyol);
 
---	i := -10;
---	i:= i +12;
-	--puti(i);
+	--a(1).pique := 3;
+	--puti(a(1).pique);
 
-	--k := -30;
-	a(200) := 88;
-	puti(a(200));
+	i:=1;
+	k:=1;
 
-end prueba10;
+	while i <= 5 loop
+		a(i).puyol := k;
+		a(i).alves := k;
+		a(i).milito := k;
+		a(i).pique := k;
+		i:=i+1;
+	end loop;
+
+
+	i:=1;
+
+	while i <= 5 loop
+		puti(a(i).puyol); 
+		puti(a(i).alves);
+		puti(a(i).milito);
+		puti(a(i).pique);
+		--new_line;
+		i:=i+1;
+	end loop;
+
+end prueba13;

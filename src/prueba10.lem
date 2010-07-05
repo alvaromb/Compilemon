@@ -1,10 +1,45 @@
 procedure prueba10 is
 
-	s:string;
+	--s:string;
+
+	c : character;
+	na, nc : integer;
 	
 begin
+	--s:="b";
+	--gets(s);
+	--puts(s);
 
-	gets(s);
-	puts(s);
+   --puts("introduce una frase acabada en punto.");
+   --new_line;
+   --na:=0;
+   --nc:=0;
+   --getc(c);
+   --while c /= 'z' loop
+   
+	   --putc(c);
+       --if c= 'a' then
+       --   na:=na+1;
+       --end if;
+       --nc:=nc+1;
+ 		--puti(na); new_line;
+		--puti(nc); new_line;
+       --getc(c);
+   --end loop;
+   --puts("numero de aes es: ");
+  	--puti(na); new_line;
+   --puts(", de un total de ");
+   --puti(nc);
+   --puts(" caracteres.");
+
+
+
+
+	--na:=0;
+	--getc(c);
+	--if c = 'a' then
+	--	na:=na+1;
+	--end if;
+	--puti(na);
 
 end prueba10;

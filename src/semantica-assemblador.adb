@@ -39,10 +39,6 @@ package body Semantica.Assemblador is
         Operand1,
         Operand2 : in String) is
    begin
-      --Put_Line(Fitxer_Asmbl, Tab & Instruccio &
-      --           Tab & Operand1 & Tab & ", " &
-      --           Operand2);
-
       Put_Line(Fitxer_Asmbl, Tab & Instruccio &
                  Tab & Operand1 & ", " &
                  Operand2);
@@ -271,19 +267,12 @@ package body Semantica.Assemblador is
    end Ldaddr;
 
 
-   --Mirar si cambiar el nombre (Inicialitza) por si no le gusta al Tito
    procedure Gce_Inicialitza
      (Nom_Fitxer : in String) is
       Iv : Info_Var;
    begin
       Create(Fitxer_Asmbl, Out_File, Nom_Fitxer & ".s");
       Obrir_Fitxer(Nom_Fitxer); --dc3a
-
-
-      --3 pasos a realizar (visto en apuntes):
-      --1º Guardar constantes (.section .data)
-      --2º Guardar Variables comunes (.section .bss)
-      --3º Instrucciones (.section .text)
 
       --1º) Constants
       Put_Line(Fitxer_Asmbl, ".section .data");
@@ -292,7 +281,7 @@ package body Semantica.Assemblador is
          if Iv.Const then
             if Iv.Tsub = Tsstr then
                --Si es un String
-               --s1 : .asciiz "El nombde de a's es"
+               --s1 : .asciiz "El nombre de a's es"
                Put_Line(Fitxer_Asmbl, Tab &
                           Cons_Nom(Tn, Iv.Id) & " : .asciz " &
                           Trim(Cons_Str(Tn, rang_tcar(Iv.Valconst)),
@@ -313,21 +302,18 @@ package body Semantica.Assemblador is
          end if;
       end loop;
 
-      --2º) Variables comunes
+      --2º) Variables comuns
       New_Line(Fitxer_Asmbl);
       Put_Line(Fitxer_Asmbl, ".section .bss");
       Put_Line(Fitxer_Asmbl, Tab & ".comm DISP, 100");
 
-      --3º) Instrucciones
+      --3º) Instruccions
       New_Line(Fitxer_Asmbl);
       Put_Line(Fitxer_Asmbl, ".section .text");
       Put_Line(Fitxer_Asmbl, Tab & ".global main");
       New_Line(Fitxer_Asmbl);
       Put_Line(Fitxer_Asmbl, "main:");
       Put_Line(Fitxer_Asmbl, Tab & "jmp _etq_1");
-      --Put_Line(Fitxer_Asmbl, "jmp "
-      --jmp a l'etiqueta del programa principal
-      --etiqueta del programa principal
 
    end Gce_Inicialitza;
 
@@ -342,7 +328,6 @@ package body Semantica.Assemblador is
 
    begin
       while not Fi_Fitxer loop
-         --Para cada instruccion c3a la tratamos
          Ipr := Info_Proc_Nul;
          Ide := Etiq_Nul;
          Llegir_Fitxer(Ic3a);
@@ -350,16 +335,6 @@ package body Semantica.Assemblador is
          Dpn := 0;
 
          case Ic3a.Instr is
-            -- 1 Operand
-            --when Global =>
-               --if Ic3a.Camp1.Tc /= Etiq then
-               --   raise Error_Assemblador;
-               --end if;
-               --New_Line(Fitxer_Asmbl);
-               --Comentari("Global " & Ic3a.Camp1.Ide'Img);
-               --Ide := Ic3a.Camp1.Ide;
-               --Put_Line(Fitxer_Asmbl, ".globl " & Etiqueta(Ide));
-               --Put_Line(Fitxer_Asmbl, ".globl _etq_" & Trim(Ide'Img, Both));
 
             when Rtn =>
                if Ic3a.Camp1.Tc /= Proc then
@@ -389,16 +364,12 @@ package body Semantica.Assemblador is
                   Instr_1_Op("popl", "%eax");
                   Instr_2_Op("movl", "(%eax)", "%eax");
                  Instr_1_Op("pushl", "%eax");
+   			   end if;
                Instr_1_Op("call", Trim(Etiqueta(Ipr), Both));
-               else
-               Instr_1_Op("call", Trim(Etiqueta(Ipr), Both));
-
-               --Instr_1_Op("call", Trim(Etiqueta(Ipr), Both));
-               -- Mirar el tema de si hay que *4
                Instr_2_Op("addl", "$" & Trim(Ipr.Ocup_Param'Img,
                                              Both), "%esp");
 
-				end if;
+				--end if;
 
             when Preamb =>
                if Ic3a.Camp1.Tc /= Proc then
@@ -409,7 +380,6 @@ package body Semantica.Assemblador is
                Nproc := Nproc + 1;
                Ipr := Consulta(Tp, Ic3a.Camp1.Idp);
                Prof_Actual := Ipr.Prof;
-               --Etiqueta(Etiqueta(Ipr));
                Instr_2_Op("movl", "$DISP", "%esi");
                Dpn := 4*Integer(Ipr.Prof);
                Instr_1_Op("pushl", Trim(Dpn'Img, Both) & "(%esi)");
@@ -456,11 +426,10 @@ package body Semantica.Assemblador is
                New_Line(Fitxer_Asmbl);
                Comentari("Not");
                Ld(Ic3a.Camp2, "%eax");
-               --notl per not
                Instr_1_Op("notl", "%eax");
                St("%eax", Ic3a.Camp1);
 
-            when Copia => --a:=b
+            when Copia => 
                New_Line(Fitxer_Asmbl);
                Comentari("Copia");
                Ld(Ic3a.Camp2, "%eax");
@@ -524,7 +493,6 @@ package body Semantica.Assemblador is
                Comentari("AND");
                Ld(Ic3a.Camp2, "%eax");
                Ld(Ic3a.Camp3, "%ebx");
-               -- andl per and
                Instr_2_Op("andl", "%ebx", "%eax");
                St("%eax", Ic3a.Camp1);
 
@@ -646,7 +614,7 @@ package body Semantica.Assemblador is
       Close(Fitxer_Asmbl);
    exception
       when others=>
-         null; --Mirar si poner alguna excepcion
+         null; 
    end Gce_Finalitza;
 
 
