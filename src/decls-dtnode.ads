@@ -44,7 +44,7 @@ package Decls.Dtnode is
       Expressio, 
       ExpressioUnaria, -- Not E, -E
       Pencap,
-      Procediment, -- Fe = encap, Fc = declaracions, Fd = bloc
+      Procediment,
       Dvariable, 
       Dconstant, 
       Dcoleccio, 

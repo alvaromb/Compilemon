@@ -638,7 +638,6 @@ package body Semantica.Ctipus is
                   cons_nom(tn, Id));
             Esem := True;
          end if;
-
       end if;
 
    end Ct_Decconst;

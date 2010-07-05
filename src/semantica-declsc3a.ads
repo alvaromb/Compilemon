@@ -20,37 +20,14 @@ use Decls.Dgenerals,
 
 package Semantica.Declsc3a is
 
-   --procediments i funcions
-   --Inicializar las tablas --OJO A ESTE NOMBRE!!!!
-   --procedure Noves_taules
-   --  (Tp : out T_Procs;
-   --   Tv : out T_Vars;
-   --   Te : out T_Etiqs);
-
    --taula procediments
    procedure Nouproc
      (Tp  : in out T_Procs;
       Idp : out num_proc);
 
-   --procedure Posa
-   --  (Tp  : in out T_Procs;
-   --   Ip  : in Info_Proc;
-   --   Idp : out num_Proc);
-
    function Consulta
      (Tp  : in  T_Procs;
       Idp : in  num_proc) return Info_Proc;
-
-   --procedure Modif_Descripcio
-   --  (Tp  : in out T_Procs;
-   --   Idp : in num_proc;
-   --   Ip  : in Info_Proc);
-
-   -- Taula variables
-   --procedure Posa
-   --  (Tv : in out T_Vars;
-   --   Iv : in Info_Var;
-   --   Idv : out num_var);
 
    function Consulta
      (Tv  : in T_Vars;
@@ -76,15 +53,6 @@ package Semantica.Declsc3a is
    --taula d'etiquetes
    function Nova_Etiq return num_Etiq;
 
-   --procedure Posa
-   --  (Te  : in out T_Etiqs;
-   --   Ie  : in Info_Etiq;
-   --   Ide : out num_Etiq);
-
-   --  function Consulta
-   --    (Te  : in T_Etiqs;
-   --     Ide : in num_Etiq) return Info_Etiq;
-
    function Etiqueta
      (Ipr : in Info_Proc) return String;
 
@@ -100,7 +68,7 @@ package Semantica.Declsc3a is
      (Instruccio : in c3a);
    function Fi_Fitxer return Boolean;
 
-   --Funcion auxiliar para ver el contenido de las tablas
+   --Funcio auxiliar
    procedure imprimeix_Taules;
 
 private
@@ -110,6 +78,3 @@ private
    F3at : Ada.Text_Io.File_Type;
 
 end Semantica.declsc3a;
-
-
-

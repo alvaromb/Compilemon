@@ -19,8 +19,6 @@ package Semantica is
    --Definicions basiques
    type tInstruccio is
      (--1 operand
-      --Global, --modificacion sobre los apuntes
-      --.global .etiq_principal
       Rtn,
       Call,
       Preamb,
@@ -72,11 +70,6 @@ package Semantica is
       Camp3 : Camp;
    end record;
 
-
-   --Taula de procediments (es necessari el nprof i despl
-   --que es troba decls-dtdesc
-   --i aixo hauria d'anar a dgenerals)
-
    type Tprocediment is
      (Intern,
       Extern);
@@ -94,8 +87,7 @@ package Semantica is
                Etiq_extern : Id_Nom;
          end case;
       end record;
-   --en llamosi diu que hem de distinguir si es un proc intern i extern
-   --i en l'extern nomes importa tenir un etiq : Idnom
+
    Info_Proc_Nul : Info_Proc := (Intern, 0, Id_Nul, 0, 0, Etiq_Nul);
 
    type Taula_P is array
@@ -107,7 +99,6 @@ package Semantica is
    end record;
 
    Tp : T_Procs;
-
 
    --Taula de variables
    type Info_Var is record
@@ -138,36 +129,13 @@ package Semantica is
       Tv : taula_v;
       Nv : num_var;
    end record;
+
    Tv : T_Vars;
-
-   --  -- Taula d'Etiquetes
    Ne : Num_Etiq := 0;
-   --  type Info_Etiq (TipE:Tipus_Etiq := Etiq_Num) is record
-   --     case TipE is
-   --        when Etiq_Num =>
-   --           N : Integer;
-   --        when Etiq_Proc =>
-   --           Idpr : Num_Proc;
-   --     end case;
-   --  end record;
-
-   --  type Taula_E is array
-   --    (num_Etiq) of Info_Etiq;
-
-   --  type T_Etiqs is record
-   --     Te : Taula_E;
-   --     Ne : num_Etiq;
-   --  end record;
-   --  Te : T_Etiqs;
-
    Arbre : Pnode;
-
    -- Per els brancaments
    Zero,
-   --Uno,
    MenysU : num_Var;
-
-
 
    -- Procediments
    procedure Abuit
@@ -259,15 +227,7 @@ package Semantica is
       Iv : in Info_Var;
       Idv : out num_var);
 
-   -- Procediments per a la Taula d'Etiquetes
-   --  procedure Posa
-   --    (Te  : in out T_Etiqs;
-   --     Ie  : in Info_Etiq;
-   --     Ide : out num_Etiq);
-
 private
-
-   --Esem : Boolean := False;
 
    Ts : Tsimbols;
    Tts: Ttsimbols;

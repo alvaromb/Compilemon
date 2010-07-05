@@ -54,22 +54,16 @@ begin
    --PROVISIONAL
    Inicia_analisi(Argument(1));
    yyparse;
-
-
-   -- Comprovacio de tipus
+   --Comprovacio de tipus
    Ct_Programa(Arbre);
 
    if not esem then
-
 	   -- Generacio de codi intermedi
 	   Inicia_Generacio(Argument(1));
 	   Gci_Programa(Arbre);
 	   Imprimeix_Taules;
-	   --Tanca_Fitxer;
-
 	   -- Generacio de codi assemblador
 	   Genera_Assemblador(Argument(1));
-
    end if;
 
    Close_Input;
@@ -79,5 +73,4 @@ exception
       Put_Line("ERROR: Error a la linea "
                  &yy_line_number'img&
                  " i columna "&yy_begin_column'img);
-
 end compilemon;

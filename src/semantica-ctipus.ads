@@ -4,7 +4,6 @@ with Ada.Text_Io,
   Semantica,
   Decls.D_Taula_De_Noms,
   Decls.D_Atribut,
-  --Semantica.Dtsimbols,
   Decls.dtsimbols,
   Decls.Dtdesc,
   Semantica.Missatges;
@@ -15,7 +14,6 @@ use Ada.Text_Io,
   Semantica,
   Decls.D_Taula_De_Noms,
   Decls.D_Atribut,
-  --Semantica.Dtsimbols,
   Decls.Dtsimbols,
   Decls.Dtdesc,
   Semantica.Missatges;
@@ -58,12 +56,7 @@ package Semantica.Ctipus is
 private
 
    Ts : Tsimbols;
-   --Tn : Taula_De_Noms;
-   --nv : num_var;
-   --np : num_proc;
-
-   --Esem : Boolean := False;
-
+  
    procedure Ct_Decprocediment
      (A : in Pnode);
 

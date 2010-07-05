@@ -97,7 +97,6 @@ package body decls.d_arbre is
        p := (nodeArbre, 0, 0, paux);
     end creaNode;
 
-    -- Crea node per identificadors
     procedure CreaNode_ID
       (p : out atribut;
       id : in atribut;
@@ -110,7 +109,6 @@ package body decls.d_arbre is
        paux.c1 := id.col;
        p := (nodeArbre, 0, 0, paux);
     end CreaNode_ID;
-
 
     procedure CreaNode_VAL
       (p : out atribut;
@@ -131,7 +129,6 @@ package body decls.d_arbre is
        p := (nodeArbre, 0, 0, paux);
     end CreaNode_VAL;
 
-
     procedure Creanode_MODE
       (P : out Atribut;
        M : in mmode;
@@ -143,7 +140,6 @@ package body decls.d_arbre is
        P := (NodeArbre, 0, 0, Paux);
     end Creanode_Mode;
 
-
     procedure creaNode
       (P : out Atribut;
       Tn : in Tipusnode) is
@@ -153,14 +149,12 @@ package body decls.d_arbre is
       P := (NodeArbre, 0, 0, Paux);
     end creaNode;
 
-
     procedure Remunta
       (P : out Atribut;
        A : in Atribut) is
     begin
        P := A;
     end Remunta;
-
 
     procedure Cons_Tnode
       (P : in Pnode;

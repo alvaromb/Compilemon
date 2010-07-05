@@ -94,11 +94,10 @@ package body semantica.declsc3a is
       end if;
 
       Posa_Id(Tn, Idn, Nomconst);
-      --Ip:=Consulta(Tp, Idpr); -- No se emplea en ningun sitio
 
       Iv:=(Id       => Idn,
            Np       => Idpr,
-           Ocup     => Integer'Size / 8,-- what? Ocup
+           Ocup     => Integer'Size / 8,
            Desp     => 0,
            Tsub     => Tsub,
            Param    => False,
@@ -110,40 +109,26 @@ package body semantica.declsc3a is
       D:=(Dconst,
           Id_Nul,
           Vc,
-                  Nconst);
+          Nconst);
 
       Posa(Ts, Idn, D, E);
 
    end Novaconst;
 
-
-
-   --taula d'etiquetes
-   function Nova_Etiq return Num_Etiq is
+  function Nova_Etiq return Num_Etiq is
    begin
       Ne := Ne + 1;
       return Ne;
    end Nova_Etiq;
 
-
-   --  function Consulta
-   --    (Te  : in T_Etiqs;
-   --     Ide : in num_Etiq) return Info_Etiq is
-
-   --  begin
-   --     return Te.Te(Ide);
-   --  end Consulta;
-
-   --------
    function Etiqueta
      (Idpr : in num_Proc) return String is
 
       Nomproc : String := Cons_nom(Tn, Consulta(Tp, Idpr).Idn);
-
    begin
       return "_" & Trim(Nomproc, Both);
    end Etiqueta;
-   ---
+  
 
    function Etiqueta
      (N : in Integer) return String is
@@ -153,20 +138,6 @@ package body semantica.declsc3a is
       return Trim(Text, Both);
    end Etiqueta;
 
-   ---
-
-   --  function Etiqueta
-   --    (Ide : in Num_Etiq) return String is
-   --     Ie : Info_Etiq;
-   --  begin
-   --     Ie:=Consulta(Te, Ide);
-   --     case Ie.TipE is
-   --        when Etiq_Num =>
-   --           return Etiqueta (Ie.N);
-   --        when Etiq_Proc =>
-   --           return Etiqueta (Ie.Idpr);
-   --     end case;
-   --  end Etiqueta;
 
    function Etiqueta
      (Ipr : in Info_Proc) return String is
@@ -178,10 +149,6 @@ package body semantica.declsc3a is
             return "_" & Trim(Cons_Nom(Tn, Ipr.Etiq_Extern), Both);
       end case;
    end Etiqueta;
-
-
-   -----
-
 
    --Fitxers
    procedure Crea_Fitxer(Nom_Fitxer: in String) is
@@ -257,7 +224,7 @@ package body semantica.declsc3a is
             when Const =>
                Put_Line(F3at, Instruccio.Camp2.Idc'Img);
             when Etiq =>
-               Put_Line(F3at, Instruccio.Camp1.Ide'Img);--?
+               Put_Line(F3at, Instruccio.Camp1.Ide'Img);--
             when others =>
                null;
          end case;
@@ -285,7 +252,7 @@ package body semantica.declsc3a is
             when Const =>
                Put(F3at, Instruccio.Camp2.Idc'Img & Ascii.Ht);
             when Etiq =>
-               Put(F3at, Instruccio.Camp1.Ide'Img & Ascii.Ht); --?
+               Put(F3at, Instruccio.Camp1.Ide'Img & Ascii.Ht); --
             when others =>
                null;
          end case;
@@ -298,13 +265,12 @@ package body semantica.declsc3a is
             when Const =>
                Put_Line(F3at, Instruccio.Camp3.Idc'Img);
             when Etiq =>
-               Put_Line(F3at, Instruccio.Camp3.Ide'Img); --tocat, abans camp1
+               Put_Line(F3at, Instruccio.Camp3.Ide'Img); --
             when others =>
                null;
          end case;
 
       end if;
-
    end Escriure_Fitxer;
 
 
@@ -314,15 +280,13 @@ package body semantica.declsc3a is
    end Fi_Fitxer;
 
 
-
-
    procedure imprimeix_Taules is
    begin
 
-      --if Debug then
+
       Put_Line("");
       Put_Line("-------------------------------------------------");
-      Put_Line("Contenido de la tabla de procedimientos:");
+      Put_Line("Taula de procediments");
 
       for I in num_Proc range 1..Tp.Np loop
          if Tp.Tp(I).Tp = Intern then
@@ -335,7 +299,7 @@ package body semantica.declsc3a is
       end loop;
 
       Put_Line("-------------------------------------------------");
-      Put_Line("Contenido de la tabla de variables:");
+      Put_Line("Taula de variables:");
       for I in num_Var range 1..Tv.Nv loop
          Put_Line("Variable: " & I'Img);
          Put_Line("     nom:" & Cons_nom(Tn, Tv.Tv(I).Id));
@@ -353,17 +317,6 @@ package body semantica.declsc3a is
 
       end loop;
 
-      --  Put_Line("-------------------------------------------------");
-      --  Put_Line("Contenido de la tabla de etiquetas:");
-      --  for I in num_Etiq range 1..Te.Ne loop
-      --     Put_Line("etiqueta: " & I'Img);
-      --     Put_Line("     " & Etiqueta (Te, I));
-      --  end loop;
-      --  Put_Line("-------------------------------------------------");
-
-      --end if;
-
    end imprimeix_Taules;
-
 
 end semantica.declsc3a;

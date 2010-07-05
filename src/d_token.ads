@@ -54,10 +54,8 @@ package d_token is
                         op_multiplicacio,
                         op_divisio,
                         id,
-                        --cadena,
                         const,
                         Error,
                         End_of_Input);
-
 
 end d_token;

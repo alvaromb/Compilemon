@@ -1,7 +1,4 @@
 procedure prueba10 is
-	--i, k : integer;
-
-	--a, b : boolean;
 
 	s:string;
 	
@@ -9,21 +6,5 @@ begin
 
 	gets(s);
 	puts(s);
-
-	--k:= -5 mod 6;
-	--i := -k;
-	--puti(-8);
-
-
-	--a:= true;
-	--b:= a;
-
-	--if b then 
-	--	k:=1;
-	--else
-	--	k:=0;
-	--end if;
-
-	--puti(k);
 
 end prueba10;
