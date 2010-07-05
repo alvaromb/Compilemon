@@ -32,18 +32,20 @@
 package body Decls.Dtsimbols is
 
    procedure printts
-     (ts : in tsimbols) is
+     (ts : in tsimbols;
+	  tn : in taula_de_noms) is
    begin
       New_Line;
-        Put_Line("tambit ----------");
-        for i in 1 .. nprof'Last loop
-           Put_Line("tambit["&i'img&"] := "
-                      &ts.tambit(i)'img);
-        end loop;
+     --   Put_Line("tambit ----------");
+     --   for i in 1 .. nprof'Last loop
+     --      Put_Line("tambit["&i'img&"] := "
+     --                 &ts.tambit(i)'img);
+     --   end loop;
 
         Put_Line("");
+		
         Put_Line("tdesc ------------");
-        for i in 1 .. (id_nom'Last-975) loop
+        for i in 1 .. (id_nom'Last-970) loop
            Put("tdesc["&i'img&"] := (");
            Put(ts.tdesc(i).np'img&", ");
            case ts.tdesc(i).d.td is
@@ -55,28 +57,28 @@ package body Decls.Dtsimbols is
               when dargc => Put("dargc, ");
               when dcamp => Put("dcamp, ");
            end case;
-           Put(ts.tdesc(i).s'img&")");
+           Put(ts.tdesc(i).s'img&") "&cons_nom(tn,i));
            New_Line;
         end loop;
 
-        New_Line;
-        Put_Line("texpansio --------");
-        for i in 1 .. rang_despl(40) loop --rang_despl'Last-998
-           Put("texp["&i'img&"] := (");
-           Put(ts.texp(i).np'img&", ");
-           case ts.texp(i).d.td is
-              when dnula => Put("dnula, ");
-              when dtipus => Put("dtipus, ");
-              when dvar => Put("dvar, ");
-              when dproc => Put("dproc, ");
-              when dconst => Put("dconst, ");
-              when dargc => Put("dargc, ");
-              when dcamp => Put("dcamp, ");
-           end case;
-           Put(ts.texp(i).id'img&", ");
-           Put(ts.texp(i).s'img&")");
-           New_Line;
-        end loop;
+ --       New_Line;
+ --       Put_Line("texpansio --------");
+ --       for i in 1 .. rang_despl(40) loop --rang_despl'Last-998
+ --          Put("texp["&i'img&"] := (");
+ --          Put(ts.texp(i).np'img&", ");
+ --          case ts.texp(i).d.td is
+ --             when dnula => Put("dnula, ");
+ --             when dtipus => Put("dtipus, ");
+ --             when dvar => Put("dvar, ");
+ --             when dproc => Put("dproc, ");
+ --             when dconst => Put("dconst, ");
+ --             when dargc => Put("dargc, ");
+ --             when dcamp => Put("dcamp, ");
+ --          end case;
+  --         Put(ts.texp(i).id'img&", ");
+ --          Put(ts.texp(i).s'img&")");
+  --         New_Line;
+  --      end loop;
         Put_Line("PROFUNDITAT: "&ts.prof'img);
    end printts;
 
@@ -107,6 +109,10 @@ package body Decls.Dtsimbols is
         if not e then
             ts.tambit(ts.prof) := ts.tambit(ts.prof) + 1;
             idespl := ts.tambit(ts.prof);
+			while ts.texp(idespl).np = no_prof loop
+				idespl:= idespl +1;
+				ts.tambit(ts.prof) := 1 +ts.tambit(ts.prof);
+			end loop;
             ts.texp(idespl) := (ts.tdesc(id).np,
                                 ts.tdesc(id).d, id, 0);
             ts.tdesc(id) := (ts.prof, d, 0);
@@ -318,6 +324,8 @@ package body Decls.Dtsimbols is
         else
            ts.tdesc(idp).s := idespl;
         end if;
+		
+		put_line("IDespl on es guarda : "&idespl'img&" l'anterior: "&pp'img&"posterior: "&idp'img);
     end Posa_Arg;
 
 
@@ -325,6 +333,7 @@ package body Decls.Dtsimbols is
       (Ts : in Tsimbols;
       Idp : in Id_Nom) return Cursor_Arg is
     begin
+	   put_line("succ: "&Succ_Arg(ts,cursor_arg(ts.tdesc(idp).s))'img);
        return cursor_arg(ts.tdesc(idp).s);
     end Primer_Arg;
 

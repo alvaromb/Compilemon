@@ -3,15 +3,17 @@ procedure prova is
 	n,i : integer;
 	s : string;
 
+	procedure porcella(x : in integer; r : in integer) is
+
+		j : integer;
+	begin
+		puti(x+r);
+	end porcella;
 
   
 	procedure muestra_error is
 		a: integer;
-			procedure porcella(x : in integer; s : in integer) is
 
-	begin
-		puti(x+s);
-	end porcella;
 	begin
 		a := 4;
 		porcella(a,a);

@@ -310,9 +310,6 @@ package body Semantica.Ctipus is
       Obre_Fitxer(nomFitxer);
    end Inicia_analisi;
 
-
-
-
    -- Procediments interns
    procedure Posa_Idvar
      (Idvar : in Id_Nom;
@@ -380,6 +377,8 @@ package body Semantica.Ctipus is
       end if;
       Ct_Bloc(Bloc);
       tts(np_propi) := ts;
+	  printts(ts,tn);
+	
       Surtbloc(Ts,tn);
 
    end Ct_Decprocediment;
@@ -471,7 +470,7 @@ package body Semantica.Ctipus is
       E : boolean;
 
    begin
-
+	--  put_line("ENTRAM A FICAR UN PARAM : "&cons_nom(tn,idpar));
       d := cons(ts, idtipus);
       if d.td /= dtipus then
          Error(tipusParam, A.Fd2.l1, A.Fd2.c1,

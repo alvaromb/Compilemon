@@ -40,7 +40,8 @@ package Decls.Dtsimbols is
     -- VERSIO 1: llenguatge simple sense estructura
     -- de blocs estil Fortran.
     procedure Printts
-      (Ts : in Tsimbols);
+     (ts : in tsimbols;
+	  tn : in taula_de_noms);
 
     procedure tbuida
       (ts : out tsimbols);
