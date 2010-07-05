@@ -1,0 +1,24 @@
+procedure prova is
+  
+	n,i : integer;
+	s : string;
+
+
+  
+	procedure muestra_error is
+		a: integer;
+			procedure porcella(x : in integer; s : in integer) is
+
+	begin
+		puti(x+s);
+	end porcella;
+	begin
+		a := 4;
+		porcella(a,a);
+	end muestra_error;
+  
+begin
+
+	muestra_error;
+end prova;
+
