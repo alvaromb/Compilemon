@@ -49,8 +49,10 @@ begin
 	while (i <= 2) loop
 		while (j <= 2) loop
 			c(i, j) := a(i, j) + b(i, j);
+			puti(c(i, j));
 			j := j + 1;
 		end loop;
+		new_line;
 		j := 0;
 		i := i + 1;
 	end loop;

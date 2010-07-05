@@ -737,7 +737,7 @@ package body Semantica.Ctipus is
                           " idarr: "&Idarray'Img);
                Esem := True;
             end if;
-			
+
             Ncomponents := Despl(Di.Dt.Lsup
                                    - Di.Dt.Linf + 1);
          end if;

@@ -43,13 +43,6 @@ procedure qsort is
     end loop;
   end put_vect;
 
-	 procedure swap(left: in a_range; right: in a_range) is
-     	tmp : integer;
-   		begin
-     		tmp := values(left);
-     		values(left) := values(right);
-     		values(right) := tmp;
-   	end swap;
 
  
    procedure sort(inferior: in a_range; superior: in a_range) is
@@ -57,6 +50,16 @@ procedure qsort is
      j: a_range;
      pivot: integer;
      tmp: a_range;
+
+     
+  procedure swap(left: in a_range; right: in a_range) is
+  tmp : integer;
+  begin
+  tmp := values(left);
+  values(left) := values(right);
+  values(right) := tmp;
+  end swap;
+
    begin
 
      if inferior < superior then
