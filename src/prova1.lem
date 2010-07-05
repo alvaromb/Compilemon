@@ -1,0 +1,44 @@
+procedure prova1 is
+	type jugador is record
+		nom : string;
+		num : integer;
+		posicio : string;
+	end record;
+	j : jugador;
+
+	type rang_equip is new integer range 0..3;
+
+	type equip is array (rang_equip) of jugador;
+	e : equip;
+
+	i : rang_equip;
+
+begin
+	e(0).nom := "Valdes";
+	e(0).num := 1;
+	e(0).posicio := "Porter";
+	
+	e(1).nom := "Puyol";
+	e(1).num := 5;
+	e(1).posicio := "Defensa";
+	
+	e(2).nom := "Busquets";
+	e(2).num := 16;
+	e(2).posicio := "Pivot";
+
+	e(3).nom := "Villa";
+	e(3).num := 10;
+	e(3).posicio := "Davanter";
+
+	puts(e(0).nom);
+	puts(e(0).posicio);
+
+	-- i := 0;
+	-- while (i <= 3) loop
+	-- 	puts(e(i).nom);
+	-- 	puti(e(i).num);
+	-- 	puts(e(i).posicio);
+	-- 	new_line;
+	-- 	i := i + 1;
+	-- end loop;
+end prova1;
