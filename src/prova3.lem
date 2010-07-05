@@ -1,0 +1,24 @@
+-- PROVA3.lem
+-- Vectors amb rangs negatius
+
+procedure prova3 is
+	type rang is new integer range -2..5;
+	type vector is array (rang) of integer;
+	v : vector;
+	i : rang;
+begin
+
+	i := -2;
+	while (i <=5) loop
+		v(i) := 7;
+		i := i + 1;
+	end loop;
+	
+	i := -2;
+	while (i <= 5) loop
+		puti(v(i));
+		new_line;
+		i := i + 1;
+	end loop;
+
+end prova3;
