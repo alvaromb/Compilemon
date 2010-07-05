@@ -43,7 +43,8 @@ package body Semantica.Declsc3a is
       Ip        : Info_Proc := Info_Proc_Nul;
       Iv        : Info_Var  := Info_Var_Nul;
       Numvar    : Integer   := Integer (Tv.Nv) + 1;
-      Nomvar    : String    := "_var" & Integer'Image(Numvar);
+      Nomvar    : String    := "_var" &
+        Integer'Image(Numvar);
       Idn       : Id_Nom;
 
    begin
@@ -122,8 +123,8 @@ package body Semantica.Declsc3a is
 
    function Etiqueta
      (Idpr : in num_Proc) return String is
-
-      Nomproc : String := Cons_nom(Tn, Consulta(Tp, Idpr).Idn);
+      Nomproc : String := Cons_Nom
+        (Tn, Consulta(Tp, Idpr).Idn);
    begin
       return "_" & Trim(Nomproc, Both);
    end Etiqueta;
@@ -145,7 +146,8 @@ package body Semantica.Declsc3a is
          when Intern =>
             return "_etq_" & Trim(Ipr.Etiq'Img, Both);
          when Extern =>
-            return "_" & Trim(Cons_Nom(Tn, Ipr.Etiq_Extern), Both);
+            return "_" &
+              Trim(Cons_Nom(Tn, Ipr.Etiq_Extern), Both);
       end case;
    end Etiqueta;
 
@@ -206,13 +208,17 @@ package body Semantica.Declsc3a is
          -- 2 operands
          case Instruccio.Camp1.Tc is
             when Proc =>
-               Put(F3at, Instruccio.Camp1.Idp'Img & Ascii.Ht);
+               Put(F3at, Instruccio.Camp1.Idp'Img &
+                     Ascii.Ht);
             when Var =>
-               Put(F3at, Instruccio.Camp1.Idv'Img & Ascii.Ht);
+               Put(F3at, Instruccio.Camp1.Idv'Img &
+                     Ascii.Ht);
             when Const =>
-               Put(F3at, Instruccio.Camp1.Idc'Img & Ascii.Ht);
+               Put(F3at, Instruccio.Camp1.Idc'Img &
+                     Ascii.Ht);
             when Etiq =>
-               Put(F3at, Instruccio.Camp1.Ide'Img & Ascii.Ht);
+               Put(F3at, Instruccio.Camp1.Ide'Img &
+                     Ascii.Ht);
             when others =>
                null;
          end case;
@@ -234,26 +240,34 @@ package body Semantica.Declsc3a is
          -- 3 operands
          case Instruccio.Camp1.Tc is
             when Proc =>
-               Put(F3at, Instruccio.Camp1.Idp'Img & Ascii.Ht);
+               Put(F3at, Instruccio.Camp1.Idp'Img &
+                     Ascii.Ht);
             when Var =>
-               Put(F3at, Instruccio.Camp1.Idv'Img & Ascii.Ht);
+               Put(F3at, Instruccio.Camp1.Idv'Img &
+                     Ascii.Ht);
             when Const =>
-               Put(F3at, Instruccio.Camp1.Idc'Img & Ascii.Ht);
+               Put(F3at, Instruccio.Camp1.Idc'Img &
+                     Ascii.Ht);
             when Etiq =>
-               Put(F3at, Instruccio.Camp1.Ide'Img & Ascii.Ht);
+               Put(F3at, Instruccio.Camp1.Ide'Img &
+                     Ascii.Ht);
             when others =>
                null;
          end case;
 
          case Instruccio.Camp2.Tc is
             when Proc =>
-               Put(F3at, Instruccio.Camp2.Idp'Img & Ascii.Ht);
+               Put(F3at, Instruccio.Camp2.Idp'Img &
+                     Ascii.Ht);
             when Var =>
-               Put(F3at, Instruccio.Camp2.Idv'Img & Ascii.Ht);
+               Put(F3at, Instruccio.Camp2.Idv'Img &
+                     Ascii.Ht);
             when Const =>
-               Put(F3at, Instruccio.Camp2.Idc'Img & Ascii.Ht);
+               Put(F3at, Instruccio.Camp2.Idc'Img &
+                     Ascii.Ht);
             when Etiq =>
-               Put(F3at, Instruccio.Camp1.Ide'Img & Ascii.Ht);
+               Put(F3at, Instruccio.Camp1.Ide'Img &
+                     Ascii.Ht);
             when others =>
                null;
          end case;
@@ -280,49 +294,5 @@ package body Semantica.Declsc3a is
       return End_Of_File(F3as);
    end Fi_Fitxer;
 
-
-   procedure imprimeix_Taules is
-   begin
-
-
-      Put_Line("");
-      Put_Line("-------------------------------------------------");
-      Put_Line("Taula de procediments");
-
-      for I in num_Proc range 1..Tp.Np loop
-         if Tp.Tp(I).Tp = Intern then
-            Put_Line("Procediment: " & I'Img);
-            Put_Line("     prof: " & Tp.Tp(I).Prof'Img);
-            Put_Line("     ocup varl: " & Tp.Tp(I).Ocup_Var'Img);
-            Put_Line("     ocup param: " & Tp.Tp(I).Ocup_Param'Img);
-            Put_Line("     etiqueta: " & Tp.Tp(I).Etiq'Img);
-         else
-            Put_Line("     ocup param: " & Tp.Tp(I).Ocup_Param'Img);
-            Put_Line("     Nom Proc: " & Cons_nom(Tn, Tp.Tp(I).Etiq_Extern));
-            Put_Line("--------------------------------------");
-         end if;
-      end loop;
-
-      Put_Line("-------------------------------------------------");
-      Put_Line("Taula de variables:");
-      for I in num_Var range 1..Tv.Nv loop
-         Put_Line("Variable: " & I'Img);
-         Put_Line("     nom:" & Cons_nom(Tn, Tv.Tv(I).Id));
-         Put_Line("     proc:" & Tv.Tv(I).Np'Img);
-         Put_Line("     ocup:" & Tv.Tv(I).Ocup'Img);
-         Put_Line("     dpv:" & Tv.Tv(I).Desp'Img);
-         Put_Line("     tsub:" & Tv.Tv(I).Tsub'Img);
-         Put_Line("     param:" & Tv.Tv(I).Param'Img);
-         Put_Line("     const:" & Tv.Tv(I).Const'Img);
-         Put_Line("     valconst:" & Tv.Tv(I).Valconst'Img);
-
-         if Tv.Tv(I).Tsub=TSARR and Tv.Tv(I).Const then
-            Put_Line("          " &
-                       Cons_str(Tn, rang_tcar(Tv.Tv(I).Valconst)));
-         end if;
-
-      end loop;
-
-   end Imprimeix_Taules;
 
 end Semantica.Declsc3a;

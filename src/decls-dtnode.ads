@@ -82,7 +82,8 @@ package Decls.Dtnode is
            | declaracions | bloc | assignacio | pri
            | dcoleccio | Pdimcoleccio | Referencia
            | pcoleccio | dvariable
-           | Declmultvar | encappri | Pencap =>  Fe1, Fd1 : Pnode;
+           | Declmultvar | encappri | Pencap =>
+            Fe1, Fd1 : Pnode;
 
          when CondicionalC | dconstant | dregistre
            | Dencapregistre | Param => fe2, fc2, fd2: pnode;

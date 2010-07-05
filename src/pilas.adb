@@ -51,7 +51,8 @@ package body pilas is
      (P : in out Pila) is
       Antic : Pila;
    begin
-      pragma Assert (P /= null, "Intent de desempilar una pila buida");
+      pragma Assert
+        (P /= null, "Intent de desempilar una pila buida");
       Antic := P;
       P := P.all.Resta;
       Allibera_Memoria(Antic);

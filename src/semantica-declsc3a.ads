@@ -68,9 +68,6 @@ package Semantica.Declsc3a is
      (Instruccio : in c3a);
    function Fi_Fitxer return Boolean;
 
-   --Funcio auxiliar
-   procedure Imprimeix_Taules;
-
 private
    package Fitxer_Seq is new Ada.Sequential_Io(c3a);
    use Fitxer_Seq;

@@ -88,7 +88,8 @@ package Semantica is
          end case;
       end record;
 
-   Info_Proc_Nul : Info_Proc := (Intern, 0, Id_Nul, 0, 0, Etiq_Nul);
+   Info_Proc_Nul : Info_Proc := (Intern, 0, Id_Nul,
+                                 0, 0, Etiq_Nul);
 
    type Taula_P is array
      (Num_Proc) of Info_Proc;

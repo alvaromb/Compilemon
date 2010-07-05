@@ -169,7 +169,7 @@ package body Semantica.Gci is
                    0);
             Modif_Descripcio(Tv, D.Nvarg, Iv);
          when others =>
-            Put_Line("Argsgci - No Es Un Misterio Carmen??");
+            null;
       end case;
    end Gci_Param;
 
@@ -928,20 +928,23 @@ package body Semantica.Gci is
             Gci_Ref_Rec(A, Idres, Iddesp, Idtipus);
 
          when Fireferencia => --R -> Ref_Pri)
-            Gci_Ref_Pri(A.F6, Idres, Iddesp, Idbase, Idtipus, It_Idx);
+            Gci_Ref_Pri(A.F6, Idres, Iddesp, Idbase,
+                        Idtipus, It_Idx);
 
             Cim(Pproc, Idproc);
             Dtc := Cons(Tts(Idproc),Idtipus);
             Idtipus := Dtc.Dt.Tcamp;
             Novavar(Tv,Idproc, T7);
-            Novaconst(Tv, Valor(Dtc.Dt.Base), Tsent, Idproc, T3);
+            Novaconst(Tv, Valor(Dtc.Dt.Base), Tsent,
+                      Idproc, T3);
 
             C1 := (Var, T7);
             C2 := (Var, Iddesp);
             C3 := (Const, T3);
             Genera(Resta, C1, C2, C3);
             Novavar(Tv, Idproc, T1);
-            Novaconst(Tv, Valor(integer'Size/8), Tsent, Idproc, T6);
+            Novaconst(Tv, Valor(integer'Size/8), Tsent,
+                      Idproc, T6);
 
             C1 := (Var, T1);
             C2 := (Var, T7);
@@ -953,7 +956,8 @@ package body Semantica.Gci is
                Iddesp := T1;
             else
                Novavar(Tv, Idproc, T4);
-               Novaconst(Tv, Valor(Dtc.Dt.Ocup), Tsent, Idproc, T5);
+               Novaconst(Tv, Valor(Dtc.Dt.Ocup), Tsent,
+                         Idproc, T5);
 
                C1 := (Var, T4);
                C2 := (Const, T5);
@@ -988,11 +992,11 @@ package body Semantica.Gci is
 
    begin
       case Tipus is
-         when Pri => --Pri -> Pri ,E
-                     --Put_Line("Ct-Ref_Pri: Pri");
+         when Pri => --Pri -> Pri, E
             Cim(Pproc, Idproc);
 
-            Gci_Ref_Pri(Fesq, Idres, Iddesp, Idbase, Idtipus, It_Idx);
+            Gci_Ref_Pri(Fesq, Idres, Iddesp, Idbase,
+                        Idtipus, It_Idx);
             Gci_Expressio(Fdret, Idrese, Iddespe);
 
             It_Idx := Succ_Idx(Tts(Idproc), It_Idx);
@@ -1030,7 +1034,8 @@ package body Semantica.Gci is
          when Encappri => -- Encappri --> R(E
             Cim(Pproc, Idproc);
 
-            Gci_Referencia_Var(Fesq, Idres, Idbase, Idtipus);
+            Gci_Referencia_Var(Fesq, Idres, Idbase,
+                               Idtipus);
             Gci_Expressio(Fdret, Idrese, Iddespe);
             It_Idx := Primer_Idx(Tts(Idproc), Idtipus);
 
@@ -1071,9 +1076,11 @@ package body Semantica.Gci is
       Idproc : Num_Proc;
 
    begin
-      Gci_Referencia_Var(Fesq, Idres, Iddesp, Idtipus);
+      Gci_Referencia_Var(Fesq, Idres, Iddesp,
+                         Idtipus);
       Cim(Pproc, Idproc);
-      Dcmp := Conscamp(Tts(Idproc), Idtipus, Idcamp);
+      Dcmp := Conscamp(Tts(Idproc), Idtipus,
+                       Idcamp);
       Idtipus:= Dcmp.Tcamp;
       Dtipus_Camp := Cons(Ts, Idtipus);
       Novaconst(Tv, Valor(Dcmp.Dsp*4),
@@ -1225,7 +1232,7 @@ package body Semantica.Gci is
    end Gci_Srep;
 
 
-   -- Calcula Desplaçaments
+   -- Calcula Desplacaments
    procedure Calcula_Despls is
       Idpr     : Num_Proc;
       Ocup_Var : Despl;
@@ -1242,14 +1249,17 @@ package body Semantica.Gci is
             Idpr := Tv.Tv(V).Np;
             if Tp.Tp(Idpr).Tp = intern then
                Tv.Tv(V).Desp := Tp.Tp(Idpr).Ocup_Param + 12;
-               Tp.Tp(Idpr).Ocup_Param := Despl(Tp.Tp(Idpr).Ocup_Param) + 4;
+               Tp.Tp(Idpr).Ocup_Param :=
+                 Despl(Tp.Tp(Idpr).Ocup_Param) + 4;
             end if;
          else
             Idpr := Tv.Tv(V).Np;
             if Tp.Tp(Idpr).Tp = intern then
                Ocup_Var := Tv.Tv(V).Ocup;
-               Tp.Tp(Idpr).Ocup_Var := Tp.Tp(Idpr).Ocup_Var + Ocup_Var;
-               Tv.Tv(V).Desp := Despl(Tp.Tp(Idpr).Ocup_Var* (-1));
+               Tp.Tp(Idpr).Ocup_Var :=
+                 Tp.Tp(Idpr).Ocup_Var + Ocup_Var;
+               Tv.Tv(V).Desp :=
+                 Despl(Tp.Tp(Idpr).Ocup_Var* (-1));
             end if;
          end if;
       end loop;

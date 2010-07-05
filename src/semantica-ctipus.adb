@@ -1541,7 +1541,8 @@ package body Semantica.Ctipus is
                   Dtipoarg := Cons(Ts, Id_Cursor);
                   if Idref = Id_Nul then
                      if Dtipoarg.Dt.Tt /= Tsref then
-                        Error(Tparam_No_Coincident, L, C, "");
+                        Error(Tparam_No_Coincident, L, C,
+                              "");
                         Esem := True;
                      end if;
                   elsif Idref /= Id_Cursor then
