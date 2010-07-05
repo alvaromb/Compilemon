@@ -1,16 +1,5 @@
--- ------------------------------------------------
---  Declaracions taula de simbols
--- ------------------------------------------------
---  Versio  :   0.1
---  Autors  :   Jose Ruiz Bravo
---              Biel Moya Alcover
---              Alvaro Medina Ballester
--- ------------------------------------------------
---      Declaracions dels procediments de la
---  taula de simbols.
---
--- ------------------------------------------------
-
+-- DECLS-DTSIMBOLS.ads
+-- Declaracions de taula de simbols
 
 with    Decls.Dtdesc,
         Decls.Dgenerals,
@@ -27,9 +16,9 @@ package Decls.Dtsimbols is
 
     --pragma pure;
 
-    type Tsimbols is private;	
-    type ttsimbols is array
-	  (num_proc) of tsimbols;	
+    type Tsimbols is private;
+    type Ttsimbols is array
+          (Num_Proc) of Tsimbols;
 
     --Serveix per al joc de proves
     type Cursor_Idx is new Rang_Despl;
@@ -39,11 +28,11 @@ package Decls.Dtsimbols is
     -- VERSIO 1: llenguatge simple sense estructura
     -- de blocs estil Fortran.
     procedure Printts
-     (ts : in tsimbols;
-	  tn : in taula_de_noms);
+      (Ts : in Tsimbols;
+       Tn : in Taula_De_Noms);
 
-    procedure tbuida
-      (ts : out tsimbols);
+    procedure Tbuida
+      (Ts : out Tsimbols);
 
     procedure posa
       (ts : in out tsimbols;
@@ -62,7 +51,7 @@ package Decls.Dtsimbols is
 
     procedure surtbloc
       (ts : in out tsimbols;
-	   tn : in taula_de_noms);
+           tn : in taula_de_noms);
 
     -- VERSIO 3: Blocs mes records.
     procedure posacamp

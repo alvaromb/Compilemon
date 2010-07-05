@@ -18,7 +18,8 @@ package Semantica.gci is
       C2    : in Camp := Camp_Nul;
       C3    : in Camp := Camp_Nul);
 
-   procedure Inicia_Generacio(nomFitxer : in String);
+   procedure Inicia_Generacio
+     (nomFitxer : in String);
 
    procedure Gci_Decprocediment
      (A : in Pnode);
@@ -63,7 +64,7 @@ package Semantica.gci is
      (Idref, Iddref, Idrexp, Iddexp: in num_var);
 
    --Procediments
-   procedure gci_Referencia_Proc 
+   procedure gci_Referencia_Proc
      (A : in Pnode;
       Idproc : out num_proc);
 
@@ -84,7 +85,7 @@ package Semantica.gci is
      (A : in Pnode;
       Idr, Idd: out num_var);
 
-   procedure gci_Expressioc 
+   procedure gci_Expressioc
      (A : in Pnode;
       Idres,Idresdesp: out num_var);
 
@@ -145,6 +146,6 @@ package Semantica.gci is
 
 private
 
-   Nprofunditat : nprof;	
+   Nprofunditat : nprof;
 
 end Semantica.gci;

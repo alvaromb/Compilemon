@@ -1,8 +1,8 @@
 with    decls.dgenerals,
-        Ada.Text_IO;
+  Ada.Text_IO;
 
 use     decls.dgenerals,
-        Ada.Text_IO;
+  Ada.Text_IO;
 
 package Semantica.Missatges is
 
@@ -48,7 +48,8 @@ package Semantica.Missatges is
       Tipus_No_Array,
       Tproc_No_Param);
 
-   procedure Obre_Fitxer(nomFitxer: in String);
+   procedure Obre_Fitxer
+     (nomFitxer: in String);
 
    procedure Tanca_Fitxer;
 

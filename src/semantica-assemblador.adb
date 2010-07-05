@@ -89,19 +89,19 @@ package body Semantica.Assemblador is
                                                 Both), Dst);
                end if;
 
-            -- 'a' es local
+               -- 'a' es local
             elsif Prof_Var = Prof_Actual then
                -- 'a' es parametre local
                if Ivar.Param then
                   Comentari("LD parametre local");
                   Instr_2_Op("movl", Da'Img & "(%ebp)", "%esi");
                   Instr_2_Op("movl", "(%esi)", Dst);
-               -- 'a' es variable local
+                  -- 'a' es variable local
                else
                   Comentari("LD variable local");
                   Instr_2_Op("movl", Trim(Da'Img, Both) & "(%ebp)", Dst);
                end if;
-            -- 'a' es global
+               -- 'a' es global
             elsif Prof_Var < Prof_Actual then
                -- 'a' es parametre global
                if Ivar.Param then
@@ -111,7 +111,7 @@ package body Semantica.Assemblador is
                   Instr_2_Op("movl", Trim(Dpa'Img, Both) & "(%esi)", "%esi");
                   Instr_2_Op("movl", Trim(Da'Img, Both) & "(%esi)", "%esi");
                   Instr_2_Op("movl", "(%esi)", Dst);
-               -- 'a' es variable global
+                  -- 'a' es variable global
                else
                   Comentari("LD variable global");
                   Instr_2_Op("movl", "$DISP", "%esi");
@@ -167,13 +167,13 @@ package body Semantica.Assemblador is
          if not Idst.Param then
             Comentari("ST a una variable local");
             Instr_2_Op("movl", Org, Trim(Da'Img, Both) & "(%ebp)");
-         -- 'a' es un parametre local
+            -- 'a' es un parametre local
          else
             Comentari("ST a un parametre local");
             Instr_2_Op("movl", Trim(Da'Img, Both) & "(%ebp)", "%edi");
             Instr_2_Op("movl", Org, "(%edi)");
          end if;
-      -- 'a' es global
+         -- 'a' es global
       elsif Prof_Var < Prof_Actual then
          -- 'a' es una variable global
          if not Idst.Param then
@@ -183,7 +183,7 @@ package body Semantica.Assemblador is
             Instr_2_Op("addl", "$" & Trim(Dpa'Img, Both), "%esi");
             Instr_2_Op("movl", "(%esi)", "%edi");
             Instr_2_Op("movl", Org, Trim(Da'Img, Both) & "(%edi)");
-         -- 'a' es un parametre global
+            -- 'a' es un parametre global
          else
             Comentari("ST a un parametre global");
             Instr_2_Op("movl", "$DISP", "%esi");
@@ -218,7 +218,7 @@ package body Semantica.Assemblador is
             Comentari("LDADDR amb a constant" & Org.Idc'Img & ", " & Dst);
             Instr_2_Op("movl", "$" & Trim(Cons_Nom(Tn, Ivar.Id), Both), Dst);
 
-         -- 'a' es una variable
+            -- 'a' es una variable
          when Var =>
             Prof_Var := Consulta(Tp, Ivar.Np).Prof;
             -- 'a' es una variable constant
@@ -228,19 +228,19 @@ package body Semantica.Assemblador is
                Instr_2_Op("movl", "$" & Trim(Cons_Nom(Tn, Ivar.Id), Both),
                           Dst);
 
-            -- 'a' es local
+               -- 'a' es local
             elsif Prof_Var = Prof_Actual then
                -- 'a' es una variable local
                if not Ivar.Param then
                   Comentari("LDADDR amb variable local");
                   Instr_2_Op("leal", Trim(Da'Img, Both) & "(%ebp)", Dst);
-               -- 'a' es un parametre local
+                  -- 'a' es un parametre local
                else
                   Comentari("LDADDR amb parametre local");
                   Instr_2_Op("movl", Trim(Da'Img, Both) & "(%ebp)", Dst);
                end if;
 
-            -- 'a' es global
+               -- 'a' es global
             elsif Prof_Var < Prof_Actual then
                -- 'a' es una variable global
                if not Ivar.Param then
@@ -249,7 +249,7 @@ package body Semantica.Assemblador is
                   Dpa := 4*Integer(Prof_Var);
                   Instr_2_Op("movl", Trim(Dpa'Img, Both) & "(%esi)", "%esi");
                   Instr_2_Op("leal", Trim(Da'Img, Both) & "(%esi)", Dst);
-               -- 'a' es un parametre global
+                  -- 'a' es un parametre global
                else
                   Comentari("LDADDR amb parametre global");
                   Instr_2_Op("movl", "$DISP", "%esi");
@@ -363,13 +363,13 @@ package body Semantica.Assemblador is
                   Comentari("Crida a 'gets' o 'puts'");
                   Instr_1_Op("popl", "%eax");
                   Instr_2_Op("movl", "(%eax)", "%eax");
-                 Instr_1_Op("pushl", "%eax");
-   			   end if;
+                  Instr_1_Op("pushl", "%eax");
+               end if;
                Instr_1_Op("call", Trim(Etiqueta(Ipr), Both));
                Instr_2_Op("addl", "$" & Trim(Ipr.Ocup_Param'Img,
                                              Both), "%esp");
 
-				--end if;
+               --end if;
 
             when Preamb =>
                if Ic3a.Camp1.Tc /= Proc then
@@ -410,10 +410,12 @@ package body Semantica.Assemblador is
                   raise Error_Assemblador;
                end if;
                New_Line(Fitxer_Asmbl);
-               Comentari("Brancament Incondicional " & Ic3a.Camp1.Ide'Img);
-               Instr_1_Op("jmp", "_etq_" & Trim(Ic3a.Camp1.Ide'Img, Both));
+               Comentari("Brancament Incondicional " &
+                           Ic3a.Camp1.Ide'Img);
+               Instr_1_Op("jmp", "_etq_" &
+                            Trim(Ic3a.Camp1.Ide'Img, Both));
 
-            -- 2 Operands
+               -- 2 Operands
             when Negacio =>
                New_Line(Fitxer_Asmbl);
                Comentari("Negacio");
@@ -429,7 +431,7 @@ package body Semantica.Assemblador is
                Instr_1_Op("notl", "%eax");
                St("%eax", Ic3a.Camp1);
 
-            when Copia => 
+            when Copia =>
                New_Line(Fitxer_Asmbl);
                Comentari("Copia");
                Ld(Ic3a.Camp2, "%eax");
@@ -443,7 +445,7 @@ package body Semantica.Assemblador is
                Instr_2_Op("addl", "%ebx", "%eax");
                Instr_1_Op("pushl", "%eax");
 
-            -- 3 Operands
+               -- 3 Operands
             when Suma =>
                New_Line(Fitxer_Asmbl);
                Comentari("Suma");
@@ -531,8 +533,10 @@ package body Semantica.Assemblador is
                Ld(Ic3a.Camp1, "%eax");
                Ld(Ic3a.Camp2, "%ebx");
                Instr_2_Op("cmpl", "%ebx", "%eax");
-               Instr_1_Op("jge", "_etq_" & Trim(Ide'Img, Both));
-               Instr_1_Op("jmp", "_etq_" & Trim(Ic3a.Camp3.Ide'Img, Both));
+               Instr_1_Op("jge", "_etq_" &
+                            Trim(Ide'Img, Both));
+               Instr_1_Op("jmp", "_etq_" &
+                            Trim(Ic3a.Camp3.Ide'Img, Both));
                Etiqueta("_etq_" & Trim(Ide'Img, Both));
 
             when Menorigual =>
@@ -544,8 +548,10 @@ package body Semantica.Assemblador is
                Ld(Ic3a.Camp1, "%eax");
                Ld(Ic3a.Camp2, "%ebx");
                Instr_2_Op("cmpl", "%ebx", "%eax");
-               Instr_1_Op("jg", "_etq_" & Trim(Ide'Img, Both));
-               Instr_1_Op("jmp", "_etq_" & Trim(Ic3a.Camp3.Ide'Img, Both));
+               Instr_1_Op("jg", "_etq_" &
+                            Trim(Ide'Img, Both));
+               Instr_1_Op("jmp", "_etq_" &
+                            Trim(Ic3a.Camp3.Ide'Img, Both));
                Etiqueta("_etq_" & Trim(Ide'Img, Both));
 
             when Igual =>
@@ -557,8 +563,10 @@ package body Semantica.Assemblador is
                Ld(Ic3a.Camp1, "%eax");
                Ld(Ic3a.Camp2, "%ebx");
                Instr_2_Op("cmpl", "%ebx", "%eax");
-               Instr_1_Op("jne", "_etq_" & Trim(Ide'Img, Both));
-               Instr_1_Op("jmp", "_etq_" & Trim(Ic3a.Camp3.Ide'Img, Both));
+               Instr_1_Op("jne", "_etq_" &
+                            Trim(Ide'Img, Both));
+               Instr_1_Op("jmp", "_etq_" &
+                            Trim(Ic3a.Camp3.Ide'Img, Both));
                Etiqueta("_etq_" & Trim(Ide'Img, Both));
 
             when Majorigual =>
@@ -570,8 +578,10 @@ package body Semantica.Assemblador is
                Ld(Ic3a.Camp1, "%eax");
                Ld(Ic3a.Camp2, "%ebx");
                Instr_2_Op("cmpl", "%ebx", "%eax");
-               Instr_1_Op("jl", "_etq_" & Trim(Ide'Img, Both));
-               Instr_1_Op("jmp", "_etq_" & Trim(Ic3a.Camp3.Ide'Img, Both));
+               Instr_1_Op("jl", "_etq_" &
+                            Trim(Ide'Img, Both));
+               Instr_1_Op("jmp", "_etq_" &
+                            Trim(Ic3a.Camp3.Ide'Img, Both));
                Etiqueta("_etq_" & Trim(Ide'Img, Both));
 
             when Major =>
@@ -583,8 +593,10 @@ package body Semantica.Assemblador is
                Ld(Ic3a.Camp1, "%eax");
                Ld(Ic3a.Camp2, "%ebx");
                Instr_2_Op("cmpl", "%ebx", "%eax");
-               Instr_1_Op("jle", "_etq_" & Trim(Ide'Img, Both));
-               Instr_1_Op("jmp", "_etq_" & Trim(Ic3a.Camp3.Ide'Img, Both));
+               Instr_1_Op("jle", "_etq_" &
+                            Trim(Ide'Img, Both));
+               Instr_1_Op("jmp", "_etq_" &
+                            Trim(Ic3a.Camp3.Ide'Img, Both));
                Etiqueta("_etq_" & Trim(Ide'Img, Both));
 
             when Diferent =>
@@ -596,8 +608,10 @@ package body Semantica.Assemblador is
                Ld(Ic3a.Camp1, "%eax");
                Ld(Ic3a.Camp2, "%ebx");
                Instr_2_Op("cmpl", "%ebx", "%eax");
-               Instr_1_Op("je", "_etq_" & Trim(Ide'Img, Both));
-               Instr_1_Op("jmp", "_etq_" & Trim(Ic3a.Camp3.Ide'Img, Both));
+               Instr_1_Op("je", "_etq_" &
+                            Trim(Ide'Img, Both));
+               Instr_1_Op("jmp", "_etq_" &
+                            Trim(Ic3a.Camp3.Ide'Img, Both));
                Etiqueta("_etq_" & Trim(Ide'Img, Both));
 
             when others =>
@@ -614,7 +628,7 @@ package body Semantica.Assemblador is
       Close(Fitxer_Asmbl);
    exception
       when others=>
-         null; 
+         null;
    end Gce_Finalitza;
 
 

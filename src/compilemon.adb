@@ -1,15 +1,5 @@
--- ------------------------------------------------
---  Programa de prova
--- ------------------------------------------------
---  Versio  :   0.2
---  Autors  :   Jose Ruiz Bravo
---              Biel Moya Alcover
---              Alvaro Medina Ballester
--- ------------------------------------------------
---      Programa per comprovar les funcionalitats
---  del lexic i la taula de noms.
---
--- ------------------------------------------------
+-- COMPILEMON.adb
+-- Programa per compilar el compilador
 
 with Ada.Text_IO,
   Ada.Command_Line,
@@ -50,10 +40,9 @@ procedure Compilemon is
 
 begin
    Open_Input(Argument(1));
-
-   --PROVISIONAL
    Inicia_analisi(Argument(1));
    yyparse;
+
    --Comprovacio de tipus
    Ct_Programa(Arbre);
 
@@ -70,7 +59,7 @@ begin
 
 exception
    when Syntax_Error =>
-      Put_Line("ERROR: Error a la linea "
+      Put_Line("ERROR CompiLEMON: Error a la linea "
                  &yy_line_number'img&
                  " i columna "&yy_begin_column'img);
 end compilemon;

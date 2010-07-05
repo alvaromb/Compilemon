@@ -1,138 +1,138 @@
 package body Semantica is
 
    procedure Abuit
-     (P : out pnode) is
+     (P : out Pnode) is
    begin
-      p := null;
-   end abuit;
+      P := null;
+   end Abuit;
 
 
-   procedure creaNode_programa
+   procedure Creanode_Programa
      (P : out Atribut;
       A : in Atribut) is
    begin
       P := A;
-      arbre := P.A;
-   end creaNode_programa;
+      Arbre := P.A;
+   end Creanode_Programa;
 
 
-   procedure creaNode
-     (p : out atribut;
-      fe,fd : in atribut;
-      tn : in Tipusnode) is
-      paux : pnode;
+   procedure Creanode
+     (P : out Atribut;
+      Fe, Fd : in Atribut;
+      Tn : in Tipusnode) is
+      Paux : Pnode;
    begin
-      paux := new node(tn);
-      paux.fe1 := fe.a;
-      paux.fd1 := fd.a;
-      p := (nodeArbre, 0, 0, paux);
-   end creaNode;
+      Paux := new Node(Tn);
+      Paux.Fe1 := Fe.A;
+      Paux.Fd1 := Fd.A;
+      P := (Nodearbre, 0, 0, Paux);
+   end Creanode;
 
 
-   procedure CreaNode
-     (p : out atribut;
-      fe,fc,fd : in atribut;
-      tn : in Tipusnode) is
-      paux : pnode;
+   procedure Creanode
+     (P : out Atribut;
+      Fe, Fc, Fd : in Atribut;
+      Tn : in Tipusnode) is
+      Paux : Pnode;
    begin
-      paux := new node(tn);
-      paux.fe2 := fe.a;
-      paux.fd2 := fd.a;
-      paux.fc2 := fc.a;
-      p := (nodeArbre, 0, 0, paux);
-   end creaNode;
+      Paux := new Node(Tn);
+      Paux.Fe2 := Fe.A;
+      Paux.Fd2 := Fd.A;
+      Paux.Fc2 := Fc.A;
+      P := (Nodearbre, 0, 0, Paux);
+   end Creanode;
 
 
-   procedure creaNode
-     (p : out atribut;
-      fe, fd : in atribut;
-      op : in operacio;
-      tn : in Tipusnode) is
-      paux : pnode;
+   procedure Creanode
+     (P : out Atribut;
+      Fe, Fd : in Atribut;
+      Op : in Operacio;
+      Tn : in Tipusnode) is
+      Paux : Pnode;
    begin
-      paux := new node(tn);
-      paux.fe3 := fe.a;
-      paux.fd3 := fd.a;
-      paux.op3 := op;
-      p := (nodeArbre, 0, 0, paux);
-   end creaNode;
+      Paux := new Node(Tn);
+      Paux.Fe3 := Fe.A;
+      Paux.Fd3 := Fd.A;
+      Paux.Op3 := Op;
+      P := (Nodearbre, 0, 0, Paux);
+   end Creanode;
 
 
-   procedure CreaNode
-     (p : out atribut;
-      f : in atribut;
-      op : in operacio;
-      tn : in Tipusnode) is
-      paux : pnode;
+   procedure Creanode
+     (P : out Atribut;
+      F : in Atribut;
+      Op : in Operacio;
+      Tn : in Tipusnode) is
+      Paux : Pnode;
    begin
-      paux := new node(tn);
-      paux.f4 := f.a;
-      paux.op4 := op;
-      p := (nodeArbre, 0, 0, paux);
-   end creaNode;
+      Paux := new Node(Tn);
+      Paux.F4 := F.A;
+      Paux.Op4 := Op;
+      P := (Nodearbre, 0, 0, Paux);
+   end Creanode;
 
 
-   procedure CreaNode
-     (p : out atribut;
-      fe, fce, fc, fd : in atribut;
-      tn : in Tipusnode) is
-      paux : pnode;
+   procedure Creanode
+     (P : out Atribut;
+      Fe, Fce, Fc, Fd : in Atribut;
+      Tn : in Tipusnode) is
+      Paux : Pnode;
    begin
-      paux := new node(tn);
-      paux.fe5 := fe.a;
-      paux.fc5 := fce.a;
-      paux.fd5 := fc.a;
-      paux.fid5 := fd.a;
-      p := (nodeArbre, 0, 0, paux);
-   end creaNode;
+      Paux := new Node(Tn);
+      Paux.Fe5 := Fe.A;
+      Paux.Fc5 := Fce.A;
+      Paux.Fd5 := Fc.A;
+      Paux.Fid5 := Fd.A;
+      P := (Nodearbre, 0, 0, Paux);
+   end Creanode;
 
-   procedure creaNode
-     (p : out atribut;
-      f : in atribut;
-      tn : in Tipusnode) is
-      paux : pnode;
+   procedure Creanode
+     (P : out atribut;
+      F : in atribut;
+      Tn : in Tipusnode) is
+      Paux : Pnode;
    begin
-      paux := new node(tn);
-      paux.f6 := f.a;
-      p := (nodeArbre, 0, 0, paux);
-   end creaNode;
+      Paux := new Node(Tn);
+      Paux.F6 := F.A;
+      P := (Nodearbre, 0, 0, Paux);
+   end Creanode;
 
    -- Crea node per identificadors
-   procedure CreaNode_ID
-     (p : out atribut;
-      id : in atribut;
-      tn : in Tipusnode) is
-      paux : pnode;
+   procedure Creanode_Id
+     (P : out Atribut;
+      Id : in Atribut;
+      Tn : in Tipusnode) is
+      Paux : Pnode;
    begin
-      paux := new node(tn);
-      paux.id12 := id.idn;
-      paux.l1 := id.lin;
-      paux.c1 := id.col;
-      p := (nodeArbre, 0, 0, paux);
-   end CreaNode_ID;
+      Paux := new Node(Tn);
+      Paux.Id12 := Id.Idn;
+      Paux.L1 := Id.Lin;
+      Paux.C1 := Id.Col;
+      P := (Nodearbre, 0, 0, Paux);
+   end Creanode_Id;
 
 
-   procedure CreaNode_VAL
-     (p : out atribut;
-      a : in atribut;
-      tn : in Tipusnode;
+   procedure Creanode_Val
+     (P : out Atribut;
+      A : in Atribut;
+      Tn : in Tipusnode;
       S : in Valor) is
-      paux : pnode;
+      Paux : Pnode;
    begin
-      paux := new node(tn);
+      Paux := new Node(Tn);
       if S = 0 then
-         paux.val := A.Val*(-1);
+         Paux.Val := A.Val*(-1);
       else
          Paux.Val := A.Val;
       end if;
       Paux.Tconst := A.T;
-      paux.l2 := a.lin;
-      paux.c2 := a.col;
-      p := (nodeArbre, 0, 0, paux);
-   end CreaNode_VAL;
+      Paux.L2 := A.Lin;
+      Paux.C2 := A.Col;
+      P := (Nodearbre, 0, 0, Paux);
+   end Creanode_Val;
 
 
-   procedure Creanode_MODE
+   procedure Creanode_Mode
      (P : out Atribut;
       M : in mmode;
       Tn : in Tipusnode) is
@@ -144,14 +144,14 @@ package body Semantica is
    end Creanode_Mode;
 
 
-   procedure creaNode
+   procedure Creanode
      (P : out Atribut;
       Tn : in Tipusnode) is
       Paux : Pnode;
    begin
       Paux := new Node(tn);
       P := (NodeArbre, 0, 0, Paux);
-   end creaNode;
+   end Creanode;
 
 
    procedure Remunta
@@ -174,17 +174,10 @@ package body Semantica is
      (Tp : out T_Procs;
       Tv : out T_Vars) is
    begin
-      --null;
-      -- Hem de crear un proc inicialitzador de cada taula on posem l'index
-      -- a 0
-      --Tbuida(Tp);
-      --Tbuida(Tv);
-      --Tbuida(Te);
-      --TP
-      Tp.Np:=0;
-      --TV
-      Tv.Nv:=0;
+      Tp.Np := 0;
+      Tv.Nv := 0;
    end Noves_taules;
+
 
    -- Procediments per Taula de Procediments
    procedure Posa
@@ -192,10 +185,11 @@ package body Semantica is
       Ip  : in Info_Proc;
       Idp : out num_Proc) is
    begin
-      Tp.Np:=Tp.Np+1;
-      Tp.Tp(Tp.Np):=Ip;
-      Idp:=Tp.Np;
+      Tp.Np := Tp.Np+1;
+      Tp.Tp(Tp.Np) := Ip;
+      Idp := Tp.Np;
    end Posa;
+
 
    procedure Modif_Descripcio
      (Tp  : in out T_Procs;
@@ -204,6 +198,7 @@ package body Semantica is
    begin
       Tp.Tp(Idp) := Ip;
    end Modif_Descripcio;
+
 
    -- Procediments per a la Taula de Variables
    procedure Posa
@@ -216,27 +211,11 @@ package body Semantica is
       Idv := Tv.Nv;
    end Posa;
 
-   -- Procediments per a la Taula d'Etiquetes
-   --  procedure Posa
-   --    (Te  : in out T_Etiqs;
-   --     Ie  : in Info_Etiq;
-   --     Ide : out Num_Etiq) is
-   --  begin
-   --     Te.Ne := Te.Ne+1;
-   --     Ide := Te.Ne;
-   --     Te.Te(Ide) := Ie;
-   --  end Posa;
+
    function Nova_Etiq return Num_Etiq is
-      --ie : Info_Etiq;
    begin
       Ne := Ne+1;
---      Ie := (TipE => Etiq_Num,
---             N    => Integer (Te.Ne));
---      Te.Te(Te.Ne):=ie;
-
       return Ne;
    end Nova_Etiq;
-
-
 
 end Semantica;

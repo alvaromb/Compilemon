@@ -1,18 +1,5 @@
--- ------------------------------------------------
---  Paquet de procediments dels atributs
--- ------------------------------------------------
---  Versio  :   0.2
---  Autors  :   Jose Ruiz Bravo
---              Biel Moya Alcover
---              Alvaro Medina Ballester
--- ------------------------------------------------
---      En aquest fitxer tenim implementats les
---  assignacions de cada tipus de token al tipus
---  atribut que li correspon. Cal destacar
---  l'utilitzacio de la taula de noms en els
---  casos d'identificadors i strings.
---
--- ------------------------------------------------
+-- DECLS-D_ATRIBUT.ads
+-- Paquet de declaracions d'atributs
 
 with    Decls.Dgenerals,
         Decls.D_Taula_De_Noms,
@@ -24,17 +11,17 @@ use     Decls.Dgenerals,
         Decls.Dtnode,
         Decls.Dtdesc;
 
-package decls.d_atribut is
+package Decls.D_Atribut is
 
-  type atribut (t : tipus_atribut := atom) is record
-      lin, col : natural;
-      case t is
+  type Atribut (T : Tipus_Atribut := Atom) is record
+      Lin, Col : Natural;
+      case T is
           when Atom      => null;
-          when A_Ident   => idn : id_nom;
+          when A_Ident   => Idn : Id_Nom;
           when A_Lit_C | A_Lit_N | A_Lit_S
-            => val : valor;
-          when others    => a   : pnode;
+            => Val : Valor;
+          when others    => A : Pnode;
       end case;
   end record;
 
-end decls.d_atribut;
+end Decls.D_Atribut;

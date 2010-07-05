@@ -1,25 +1,14 @@
--- ------------------------------------------------
---  Paquet de declaracions de la taula de noms
--- ------------------------------------------------
---  Versio  :   0.2
---  Autors  :   Jose Ruiz Bravo
---              Biel Moya Alcover
---              Alvaro Medina Ballester
--- ------------------------------------------------
---  Especificacio de l'estructura necessaria
--- per el maneig de la taula de noms i dels metodes
--- per tractar-la.
---
--- ------------------------------------------------
+-- DECLS-D_TAULA_DE_NOMS.ads
+-- Declaracions de la taula de noms
 
 with    Decls.Dgenerals,
-        Ada.text_IO;
+        Ada.Text_Io;
 
 use     Decls.Dgenerals,
-        Ada.Text_IO;
+        Ada.Text_Io;
 
 
-package decls.d_taula_de_noms is
+package Decls.D_Taula_De_Noms is
 
     --pragma pure;
 
@@ -27,75 +16,75 @@ package decls.d_taula_de_noms is
     E_Tids_Plena : exception;
     E_Tcar_Plena : exception;
 
-    type taula_de_noms is limited private;
+    type Taula_De_Noms is limited private;
 
-    type id_nom is new integer
-      range 0 .. max_id;
+    type Id_Nom is new Integer
+      range 0 .. Max_Id;
 
-    type rang_dispersio is new integer
-      range 0 .. max_id;
+    type Rang_Dispersio is new Integer
+      range 0 .. Max_Id;
 
-    type rang_tcar is new integer
-      range 0 .. (long_num_ident*max_id);
+    type Rang_Tcar is new Integer
+      range 0 .. (Long_Num_Ident*Max_Id);
 
     -- Valor nul per al tipus id_nom
-    id_nul : constant id_nom := 0;
+    Id_Nul : constant Id_Nom := 0;
 
-    procedure tbuida
-      (tn : out taula_de_noms);
+    procedure Tbuida
+      (Tn : out Taula_De_Noms);
 
-    procedure posa_id
-      (tn : in out taula_de_noms;
-      idn : out id_nom;
-      nom : in string);
+    procedure Posa_Id
+      (Tn : in out Taula_De_Noms;
+      Idn : out Id_Nom;
+      Nom : in String);
 
-    procedure posa_tc
-      (tn : in out taula_de_noms;
-      nom : in string);
+    procedure Posa_Tc
+      (Tn : in out Taula_De_Noms;
+      Nom : in String);
 
-    procedure posa_str
-      (tn : in out taula_de_noms;
-      ids : out rang_tcar;
-        s : in string);
+    procedure Posa_Str
+      (Tn : in out Taula_De_Noms;
+      Ids : out Rang_Tcar;
+        S : in String);
 
-    function cons_nom
-      (tn : in taula_de_noms;
-      idn : in id_nom)
-      return string;
+    function Cons_Nom
+      (Tn : in Taula_De_Noms;
+      Idn : in Id_Nom)
+      return String;
 
-    function cons_str
-      (tn : in taula_de_noms;
-      ids : in rang_tcar)
-      return string;
+    function Cons_Str
+      (Tn : in Taula_De_Noms;
+      Ids : in Rang_Tcar)
+      return String;
 
-    function fdisp_tn
-      (nom : in string)
-      return rang_dispersio;
+    function Fdisp_Tn
+      (Nom : in String)
+      return Rang_Dispersio;
 
 
 private
 
-   type taula_dispersio is array
-     (rang_dispersio) of id_nom;
+   type Taula_Dispersio is array
+     (Rang_Dispersio) of Id_Nom;
 
-   type t_identificador is record
-           pos_tcar : rang_tcar;
-            seguent : id_nom;
-       long_paraula : Natural;
+   type T_Identificador is record
+           Pos_Tcar : Rang_Tcar;
+            Seguent : Id_Nom;
+       Long_Paraula : Natural;
    end record;
 
-   type taula_identificadors is array
-     (1 .. id_nom'Last) of t_identificador;
+   type Taula_Identificadors is array
+     (1 .. Id_Nom'Last) of T_Identificador;
 
-   type taula_caracters is array
-     (rang_tcar) of character;
+   type Taula_Caracters is array
+     (Rang_Tcar) of Character;
 
    type taula_de_noms is record
-        td : taula_dispersio;
-       tid : taula_identificadors;
-        tc : taula_caracters;
-       nid : id_nom;
-      ncar : rang_tcar;
+        Td : Taula_Dispersio;
+       Tid : Taula_Identificadors;
+        Tc : Taula_Caracters;
+       Nid : Id_Nom;
+      Ncar : Rang_Tcar;
    end record;
 
-end decls.d_taula_de_noms;
+end Decls.D_Taula_De_Noms;

@@ -160,7 +160,7 @@ package Semantica is
       fe, fce, fc, fd : in atribut;
       tn : in Tipusnode);
 
-     procedure creaNode
+   procedure creaNode
      (p : out atribut;
       f : in atribut;
       tn : in Tipusnode);

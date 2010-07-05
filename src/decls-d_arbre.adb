@@ -1,153 +1,158 @@
-package body decls.d_arbre is
+package body Decls.D_Arbre is
 
    procedure Abuit
-     (P : out pnode) is
+     (P : out Pnode) is
    begin
-       p := null;
-   end abuit;
+       P := Null;
+   end Abuit;
 
 
-   procedure creaNode_programa
+   procedure Creanode_Programa
      (P : out Atribut;
       A : in Atribut) is
    begin
       P := A;
-      arbre := P.A;
-   end creaNode_programa;
+      Arbre := P.A;
+   end Creanode_Programa;
 
 
-   procedure creaNode
-     (p : out atribut;
-      fe,fd : in atribut;
-      tn : in Tipusnode) is
-      paux : pnode;
+   procedure Creanode
+     (P : out Atribut;
+      Fe,Fd : in Atribut;
+      Tn : in Tipusnode) is
+      Paux : Pnode;
    begin
-      paux := new node(tn);
-      paux.fe1 := fe.a;
-      paux.fd1 := fd.a;
-      p := (nodeArbre, 0, 0, paux);
-   end creaNode;
+      Paux := new Node(Tn);
+      Paux.Fe1 := Fe.A;
+      Paux.Fd1 := Fd.A;
+      P := (Nodearbre, 0, 0, Paux);
+   end Creanode;
 
 
-   procedure CreaNode
-     (p : out atribut;
-      fe,fc,fd : in atribut;
-      tn : in Tipusnode) is
-        paux : pnode;
+   procedure Creanode
+     (P : out Atribut;
+      Fe,Fc,Fd : in Atribut;
+      Tn : in Tipusnode) is
+        Paux : Pnode;
    begin
-      paux := new node(tn);
-      paux.fe2 := fe.a;
-      paux.fd2 := fd.a;
-      paux.fc2 := fc.a;
-      p := (nodeArbre, 0, 0, paux);
-   end creaNode;
+      Paux := new Node(Tn);
+      Paux.Fe2 := Fe.A;
+      Paux.Fd2 := Fd.A;
+      Paux.Fc2 := Fc.A;
+      P := (Nodearbre, 0, 0, Paux);
+   end Creanode;
 
 
-   procedure creaNode
-     (p : out atribut;
-     fe, fd : in atribut;
-     op : in operacio;
-     tn : in Tipusnode) is
-       paux : pnode;
+   procedure Creanode
+     (P : out Atribut;
+     Fe, Fd : in Atribut;
+     Op : in Operacio;
+     Tn : in Tipusnode) is
+       Paux : Pnode;
    begin
-      paux := new node(tn);
-      paux.fe3 := fe.a;
-      paux.fd3 := fd.a;
-      paux.op3 := op;
-      p := (nodeArbre, 0, 0, paux);
-   end creaNode;
+      Paux := new Node(Tn);
+      Paux.Fe3 := Fe.A;
+      Paux.Fd3 := Fd.A;
+      Paux.Op3 := Op;
+      P := (Nodearbre, 0, 0, Paux);
+   end Creanode;
 
 
-   procedure CreaNode
-     (p : out atribut;
-      f : in atribut;
-     op : in operacio;
-     tn : in Tipusnode) is
-       paux : pnode;
+   procedure Creanode
+     (P : out Atribut;
+      F : in Atribut;
+     Op : in Operacio;
+     Tn : in Tipusnode) is
+       Paux : Pnode;
    begin
-      paux := new node(tn);
-      paux.f4 := f.a;
-      paux.op4 := op;
-      p := (nodeArbre, 0, 0, paux);
-   end creaNode;
+      Paux := new Node(Tn);
+      Paux.F4 := F.A;
+      Paux.Op4 := Op;
+      P := (Nodearbre, 0, 0, Paux);
+   end Creanode;
 
 
-   procedure CreaNode
-      (p : out atribut;
-       fe, fce, fc, fd : in atribut;
-       tn : in Tipusnode) is
-        paux : pnode;
-    begin
-       paux := new node(tn);
-       paux.fe5 := fe.a;
-       paux.fc5 := fce.a;
-       paux.fd5 := fc.a;
-       paux.fid5 := fd.a;
-       p := (nodeArbre, 0, 0, paux);
-    end creaNode;
-
-    procedure creaNode
-     (p : out atribut;
-      f : in atribut;
-      tn : in Tipusnode) is
-        paux : pnode;
-    begin
-       paux := new node(tn);
-       paux.f6 := f.a;
-       p := (nodeArbre, 0, 0, paux);
-    end creaNode;
-
-    procedure CreaNode_ID
-      (p : out atribut;
-      id : in atribut;
-      tn : in Tipusnode) is
-       paux : pnode;
-    begin
-       paux := new node(tn);
-       paux.id12 := id.idn;
-       paux.l1 := id.lin;
-       paux.c1 := id.col;
-       p := (nodeArbre, 0, 0, paux);
-    end CreaNode_ID;
-
-    procedure CreaNode_VAL
-      (p : out atribut;
-       a : in atribut;
-      tn : in Tipusnode;
-       S : in Valor) is
-       paux : pnode;
-    begin
-       paux := new node(tn);
-       if S = 0 then
-          paux.val := A.Val*(-1);
-       else
-          Paux.Val := A.Val;
-       end if;
-       Paux.Tconst := A.T;
-       paux.l2 := a.lin;
-       paux.c2 := a.col;
-       p := (nodeArbre, 0, 0, paux);
-    end CreaNode_VAL;
-
-    procedure Creanode_MODE
+   procedure Creanode
       (P : out Atribut;
-       M : in mmode;
+       Fe, Fce, Fc, Fd : in Atribut;
+       Tn : in Tipusnode) is
+        Paux : Pnode;
+    begin
+       Paux := new Node(Tn);
+       Paux.Fe5 := Fe.A;
+       Paux.Fc5 := Fce.A;
+       Paux.Fd5 := Fc.A;
+       Paux.Fid5 := Fd.A;
+       P := (Nodearbre, 0, 0, Paux);
+    end Creanode;
+
+
+    procedure Creanode
+     (P : out Atribut;
+      F : in Atribut;
+      Tn : in Tipusnode) is
+        Paux : Pnode;
+    begin
+       Paux := new Node(Tn);
+       Paux.F6 := F.A;
+       P := (Nodearbre, 0, 0, Paux);
+    end Creanode;
+
+
+    procedure Creanode_Id
+      (P : out Atribut;
+      Id : in Atribut;
+      Tn : in Tipusnode) is
+       Paux : Pnode;
+    begin
+       Paux := new Node(Tn);
+       Paux.Id12 := Id.Idn;
+       Paux.L1 := Id.Lin;
+       Paux.C1 := Id.Col;
+       P := (Nodearbre, 0, 0, Paux);
+    end Creanode_Id;
+
+
+    procedure Creanode_Val
+      (P : out Atribut;
+       A : in Atribut;
+      Tn : in Tipusnode;
+       S : in Valor) is
+       Paux : Pnode;
+    begin
+       Paux := new Node(Tn);
+       If S = 0 Then
+          Paux.Val := A.Val*(-1);
+       Else
+          Paux.Val := A.Val;
+       end If;
+       Paux.Tconst := A.T;
+       Paux.L2 := A.Lin;
+       Paux.C2 := A.Col;
+       P := (Nodearbre, 0, 0, Paux);
+    end Creanode_Val;
+
+
+    procedure Creanode_Mode
+      (P : out Atribut;
+       M : in Mmode;
        Tn : in Tipusnode) is
        Paux : Pnode;
     begin
        Paux := new Node(Tn);
        Paux.M12 := M;
-       P := (NodeArbre, 0, 0, Paux);
+       P := (Nodearbre, 0, 0, Paux);
     end Creanode_Mode;
 
-    procedure creaNode
+    procedure Creanode
       (P : out Atribut;
       Tn : in Tipusnode) is
       Paux : Pnode;
     begin
-      Paux := new Node(tn);
-      P := (NodeArbre, 0, 0, Paux);
-    end creaNode;
+      Paux := new Node(Tn);
+      P := (Nodearbre, 0, 0, Paux);
+    end Creanode;
+
 
     procedure Remunta
       (P : out Atribut;
@@ -156,6 +161,7 @@ package body decls.d_arbre is
        P := A;
     end Remunta;
 
+
     procedure Cons_Tnode
       (P : in Pnode;
       Tn : out Tipusnode) is
@@ -163,4 +169,4 @@ package body decls.d_arbre is
        Tn := P.Tipus;
     end Cons_Tnode;
 
-end decls.d_arbre;
+end Decls.D_Arbre;

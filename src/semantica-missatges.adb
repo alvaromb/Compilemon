@@ -1,8 +1,9 @@
 package body Semantica.Missatges is
 
-   procedure Obre_Fitxer(nomFitxer: in String) is
+   procedure Obre_Fitxer
+     (Nomfitxer : in String) is
    begin
-      Create(log_file, out_file, nomFitxer&".log");
+      Create(Log_File, Out_File, Nomfitxer&".log");
    end Obre_Fitxer;
 
    procedure Tanca_Fitxer is
@@ -15,40 +16,40 @@ package body Semantica.Missatges is
    begin
       put_line(log_file, "ERROR CompiLEMON: " & msj);
       put_line("ERROR CompiLEMON: " & msj);
-   end impressio;
+   end Impressio;
 
    procedure Error
-     (te : in terror;
-      l, c : in Natural;
-      id : string) is
+     (Te : in Terror;
+      L, C : in Natural;
+      Id : String) is
    begin
       case te is
          when id_existent =>
-            impressio("l:"&l'img&" c:"&c'img&
+            Impressio("l:"&l'img&" c:"&c'img&
                         " L'identificador '"&id&
                         "' ja existeix");
          when idProgDiferents =>
-            impressio("l:"&l'img&" c:"&c'img&
+            Impressio("l:"&l'img&" c:"&c'img&
                         " Possible escritura "&
                         "erronea de '"&Id&"'");
          when tipusParam =>
-            impressio("l: "&l'img&" c: "&c'img&
+            Impressio("l: "&l'img&" c: "&c'img&
                         " El tipus del parametre "&
                            id&" es incorrecte");
          when enregArg =>
-            impressio("l: "&l'img&" c: "&c'img&
+            Impressio("l: "&l'img&" c: "&c'img&
                         " Error al enregistrar"&
                         " l'argument");
          when paramRepetit =>
-            impressio("l: "&l'img&" c: "&c'img&
+            Impressio("l: "&l'img&" c: "&c'img&
                         " El param "&id&
                         " es troba repetit");
          when tipusSubDiferents =>
-            impressio("l: "&l'img&" c: "&c'img&
+            Impressio("l: "&l'img&" c: "&c'img&
                         " Tipus subjacents "&
                         "diferents "&id);
          when tipusInexistent =>
-            impressio("l: "&l'img&" c: "&c'img&
+            Impressio("l: "&l'img&" c: "&c'img&
                         " El tipus "&id&" no "&
                         "existeix o no es correcte");
          when tipusSubIncorrecte =>
@@ -56,58 +57,58 @@ package body Semantica.Missatges is
             --declaram per sobre el tipus
             -- assignat si son diferents l'erroni
             --es el que assignam
-            impressio("l: "&l'img&" c: "&c'img&
+            Impressio("l: "&l'img&" c: "&c'img&
                         " El tipus "&id&
                         " no es correspon amb el tipus"&
                         " de la variable");
          when rang_sobrepassat =>
-            impressio("l: "&l'img&" c: "&c'img&" El "&
+            Impressio("l: "&l'img&" c: "&c'img&" El "&
                         "valor de la constant "&
                         id&" surt del rang");
          when idCampRecordExistent =>
-            impressio("l: "&l'img&" c: "&c'img&
+            Impressio("l: "&l'img&" c: "&c'img&
                         " Ja existeix un camp "&
                         id&" en aquest record");
          when TsubjRangDif =>
-            impressio("l: "&l'img&" c: "&c'img&
+            Impressio("l: "&l'img&" c: "&c'img&
                         "Els Tsubjacents dels "&
                         "limits del subtipus "&id&
                         " son diferents");
          when ValEsqMajorDret =>
-            impressio("l: "&l'img&" c: "&c'img&
+            Impressio("l: "&l'img&" c: "&c'img&
                         " El valor del limit "&
                         "Esquerra no pot esser major"&
                         " que el Dret en "&
                         "la declaracio del subrang: "&id);
          when TsubjDifTipus =>
-            impressio("l: "&l'img&" c: "&c'img&
+            Impressio("l: "&l'img&" c: "&c'img&
                         " Els Tsubjacents dels "&
                         "limits del subtipus"&id&
                         " son diferents al "&
                         "tipus assignat");
          when ValEsqMenor =>
-            impressio("l: "&l'img&" c: "&c'img&
+            Impressio("l: "&l'img&" c: "&c'img&
                         " El valor esquerra es menor"&
                         "al permes en el subtipus"&id);
          when ValDretMajor =>
-            impressio("l: "&l'img&" c: "&c'img&
+            Impressio("l: "&l'img&" c: "&c'img&
                         " El valor dret es major"&
                         "al permes en el subtipus"&id);
          when TsubNoValid =>
-            impressio("l: "&l'img&" c: "&c'img&
+            Impressio("l: "&l'img&" c: "&c'img&
                         " Tipus subjacent no valid"&
                         " per al subrang"&id);
          when argNoProc =>
-            impressio("l: "&l'img&" c: "&c'img&
+            Impressio("l: "&l'img&" c: "&c'img&
                         " L'identificador de "&
                         "l'argument no es un procediment"
                         &id);
          when posaIdxArray =>
-            impressio("l: "&l'img&" c: "&c'img&
+            Impressio("l: "&l'img&" c: "&c'img&
                         " Error al enregistrar "&
                         "l'index "&id&" en un array");
          when tipusIdxErroniArray =>
-            impressio("l: "&l'img&" c: "&c'img&
+            Impressio("l: "&l'img&" c: "&c'img&
                         " L'index d'un array nomes"&
                         " pot esser d'un tipus, "&
                         "aquest es d' "&Id);
@@ -208,5 +209,6 @@ package body Semantica.Missatges is
             Impressio("l'identificador ja existeix");
          when others => null;
       end case;
-   end error;
+   end Error;
+
 end Semantica.Missatges;

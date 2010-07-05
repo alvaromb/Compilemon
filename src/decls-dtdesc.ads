@@ -1,14 +1,5 @@
--- ------------------------------------------------
---  Paquet de declaracions del tipus descripcio
--- ------------------------------------------------
---  Versio  :   0.1
---  Autors  :   Jose Ruiz Bravo
---              Biel Moya Alcover
---              Alvaro Medina Ballester
--- ------------------------------------------------
---      Declaracions del tipus descripcio.
---
--- ------------------------------------------------
+-- DECLS-DTDESC.ads
+-- Declaracions de descripcio
 
 with    Decls.Dgenerals,
         Decls.D_Taula_De_Noms;
@@ -21,64 +12,64 @@ package Decls.Dtdesc is
     --pragma pure;
 
     -- Representa tambit
-    max_nprof : constant integer := 25;
-    type nprof is new integer
-      range -1 .. max_nprof;
-    nul_nprof : constant nprof := 0;
-	no_prof : constant nprof := -1;
+    Max_Nprof : constant Integer := 25;
+    type Nprof is new Integer
+      range -1 .. Max_Nprof;
+    Nul_Nprof : constant Nprof := 0;
+    No_Prof : constant Nprof := -1;
 
-    type despl is new integer;
+    type Despl is new Integer;
 
     -- Representa texpansio
-    type rang_despl is new integer
-      range 0 .. (max_id * max_nprof);
-    nul_despl : constant rang_despl := 0;
+    type Rang_Despl is new Integer
+      range 0 .. (Max_Id * Max_Nprof);
+    Nul_Despl : constant Rang_Despl := 0;
 
-    type tdescrip is
-      (dnula,
-       dconst,
-       dvar,
-       dtipus,
-       dproc,
-       dcamp,
-       dargc);
+    type Tdescrip is
+      (Dnula,
+       Dconst,
+       Dvar,
+       Dtipus,
+       Dproc,
+       Dcamp,
+       Dargc);
 
-    type tipussubjacent is
-      (tsbool,
-       tscar,
-       tsstr,
-       tsent,
-       tsrec,
-       tsarr,
-       tsnul);
+    type Tipussubjacent is
+      (Tsbool,
+       Tscar,
+       Tsstr,
+       Tsent,
+       Tsrec,
+       Tsarr,
+       Tsnul);
 
-    type descriptipus (tt: tipussubjacent := tsnul) is
+    type Descriptipus (Tt: Tipussubjacent := Tsnul) is
         record
-            ocup : despl;
-            case tt is
-                when tsbool | tscar | tsent =>
-                   linf, lsup : valor;
-                when tsarr | tsstr => tcamp : id_nom;
-              		 base : valor;
-                when tsrec | tsnul  => null;
+            Ocup : Despl;
+            case Tt is
+                when Tsbool | Tscar | Tsent =>
+                   Linf, Lsup : Valor;
+                when Tsarr | Tsstr => Tcamp : Id_Nom;
+                   Base : Valor;
+                when Tsrec | Tsnul  => null;
             end case;
         end record;
 
-    type descrip (td : tdescrip := dnula) is
+    type Descrip (Td : Tdescrip := Dnula) is
         record
-            case td is
-                when dnula  => null;
-                when dtipus => dt: descriptipus;
-                when dvar   => tr: id_nom;
-                               nv: num_var;
-                when dproc  => np: num_proc;
-                when dconst => tc: id_nom;
-                               vc: valor;
-                               Nvc: Num_Var;
-                when dargc  => nvarg: num_var;
-                                targ: id_nom;
-                when dcamp  => tcamp: id_nom;
-                                 dsp: despl;
+            case Td is
+                when Dnula  => null;
+                when Dtipus => Dt : Descriptipus;
+                when Dvar   => Tr : Id_Nom;
+                               Nv : Num_Var;
+                when Dproc  => Np : Num_Proc;
+                when Dconst => Tc : Id_Nom;
+                               Vc : Valor;
+                               Nvc : Num_Var;
+                when Dargc  => Nvarg : Num_Var;
+                                Targ : Id_Nom;
+                when Dcamp  => Tcamp : Id_Nom;
+                                 Dsp : Despl;
             end case;
         end record;
 

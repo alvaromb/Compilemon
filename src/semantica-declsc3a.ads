@@ -50,7 +50,7 @@ package Semantica.Declsc3a is
       Idpr : in num_proc;
       Idc  : out num_var);
 
-   --taula d'etiquetes
+   --Taula d'etiquetes
    function Nova_Etiq return num_Etiq;
 
    function Etiqueta
@@ -69,7 +69,7 @@ package Semantica.Declsc3a is
    function Fi_Fitxer return Boolean;
 
    --Funcio auxiliar
-   procedure imprimeix_Taules;
+   procedure Imprimeix_Taules;
 
 private
    package Fitxer_Seq is new Ada.Sequential_Io(c3a);
@@ -77,4 +77,4 @@ private
    F3as : Fitxer_Seq.File_Type;
    F3at : Ada.Text_Io.File_Type;
 
-end Semantica.declsc3a;
+end Semantica.Declsc3a;

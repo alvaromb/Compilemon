@@ -1,50 +1,45 @@
-
 package body Semantica.Gci is
 
-   package Pila_Proc is new Pilas (num_Proc);
+   package Pila_Proc is new Pilas (Num_Proc);
    use Pila_Proc;
-   Pproc : Pila_proc.Pila;
+   Pproc : Pila_Proc.Pila;
 
    package Pila_Param is new Pilas (T_Param);
    use Pila_Param;
    Pparam : Pila_Param.Pila;
 
    procedure Genera
-     (Instr : in tInstruccio;
+     (instr : in Tinstruccio;
       C1    : in Camp := Camp_Nul;
       C2    : in Camp := Camp_Nul;
       C3    : in Camp := Camp_Nul) is
    begin
-      Escriure_Fitxer((Instr, C1, C2, C3));
+      Escriure_Fitxer((instr, C1, C2, C3));
    end Genera;
 
 
-
-   procedure Inicia_Generacio(nomFitxer : in String) is
+   procedure inicia_Generacio
+     (Nomfitxer : in String) is
    begin
-          --Ct_Programa(Arbre);
-
-          if not esem then
-        Crea_Fitxer(nomFitxer);--c3a
-        Pila_Buida(Pproc);
-        Pila_Buida(Pparam);
-        Empilar(Pproc, Proc_Nul);
+      if not Esem then
+         Crea_Fitxer(Nomfitxer);
+         Pila_Buida(Pproc);
+         Pila_Buida(Pparam);
+         Empilar(Pproc, Proc_Nul);
       end if;
+   end inicia_Generacio;
 
-   end Inicia_Generacio;
 
-
-   procedure gci_Programa
+   procedure Gci_Programa
      (A : in Pnode) is
    begin
-       Nprofunditat := 1;
-      empilar(pproc, proc_nul);
-      Tv.nv := nv;
-      gci_Decprocediment(A);
-
+      Nprofunditat := 1;
+      Empilar(Pproc, Proc_Nul);
+      Tv.Nv := Nv;
+      Gci_Decprocediment(A);
       Calcula_Despls;
       Tanca_Fitxer;
-   end gci_Programa;
+   end Gci_Programa;
 
 
    procedure Gci_Decprocediment
@@ -56,157 +51,130 @@ package body Semantica.Gci is
       Id : Pnode renames A.Fid5;
       Id_Proc : Id_Nom renames A.Fid5.Id12;
 
-      eip : num_etiq;
-      C1 : camp;
+      Eip : Num_Etiq;
+      C1 : Camp;
 
-      Ipr : Info_Proc;
-      dproc : Descrip;
+      Ipr : info_Proc;
+      Dproc : Descrip;
 
       Idprinvocador,
       Idprinvocat,
-          nproc : Num_Proc;
+      Nproc : Num_Proc;
 
    begin
 
       Gci_Encap(Encap, Id_Proc);
+      Eip := Nova_Etiq;
+      Cim(Pproc, Nproc);
+      Dproc := Cons(Tts(Nproc), Id_Proc);
 
-      eip := Nova_Etiq;
-      cim(Pproc, nproc);
-      dproc:=Cons(TTs(nproc), Id_Proc);
-
-      Ipr := (Intern, 0, Id_Proc, Nprofunditat, 0, eip);
-          Nprofunditat := Nprofunditat + 1;
-          Modif_Descripcio(Tp, dproc.np, Ipr);
+      Ipr := (intern, 0, Id_Proc, Nprofunditat, 0, Eip);
+      Nprofunditat := Nprofunditat + 1;
+      Modif_Descripcio(Tp, Dproc.Np, Ipr);
 
       if Decls.Tipus = Declaracions then
-         gci_Declaracions(Decls); --pendent, arrays, vars i constants
+         Gci_Declaracions(Decls);
       end if;
 
-      --Necesario? PRMB
-
-      C1 := (Tc => Etiq, Ide => eip);
+      C1 := (Etiq, Eip);
       Genera(Etiqueta, C1);
-
-
-      C1:=(
-           Tc => Proc,
-           Idp => dproc.np);
-
+      C1:=(Proc, Dproc.Np);
       Genera(Preamb, C1);
+      Gci_Bloc(Bloc);
+      Nprofunditat := Nprofunditat - 1;
 
-
-      gci_Bloc(Bloc);
-
-          Nprofunditat := Nprofunditat - 1;
-      --RTN
+      --Rtn
       Cim(Pproc, Idprinvocat);
-      C1:=(
-           Tc => Proc,
-           Idp => Idprinvocat
-          );
+      C1:=(Proc, Idprinvocat);
       Genera(Rtn, C1);
-
 
       Desempilar(Pproc);
       Cim(Pproc, Idprinvocador);
 
-   end gci_Decprocediment;
-
-
+   end Gci_Decprocediment;
 
 
    procedure Gci_Encap
      (A : in Pnode;
       I : in Id_Nom) is
       Dproc : Descrip;
-          idproc : num_proc;
+      Idproc : Num_Proc;
    begin
+      if A.Tipus = Pencap then
+         Gci_Pencap(A);
+      else
+         Cim(Pproc, Idproc);
+         Dproc := Cons(Tts(Idproc), I);
+         Empilar(Pproc, Dproc.Np);
+      end if;
 
-        if A.Tipus = Pencap then
-
-                gci_Pencap(A);
-
-        else
-      cim(pproc, idproc);
-      Dproc := Cons(tts(idproc), I);
-      Empilar(Pproc, dproc.Np);
-
-        end if;
-
-   end gci_Encap;
+   end Gci_Encap;
 
 
-   procedure gci_Pencap
+   procedure Gci_Pencap
      (A : in Pnode) is
 
       Param : Pnode renames A.Fd1;
       Fesq : Pnode renames A.Fe1;
       Dproc : Descrip;
-      idproc : num_proc;
+      Idproc : Num_Proc;
 
    begin
-
-      if Fesq.Tipus = Identificador then -- id(param
-                 cim(pproc, idproc);
-         Dproc := Cons(tts(idproc), Fesq.Id12);
-         Empilar(Pproc, dproc.Np);
-                 gci_Param(Param);
+      if Fesq.Tipus = Identificador then
+         Cim(Pproc, Idproc);
+         Dproc := Cons(Tts(Idproc), Fesq.Id12);
+         Empilar(Pproc, Dproc.Np);
+         Gci_Param(Param);
       else
-         gci_Pencap(Fesq);
-                 gci_Param(Param);
+         Gci_Pencap(Fesq);
+         Gci_Param(Param);
       end if;
+   end Gci_Pencap;
 
-   end gci_Pencap;
 
-
-        procedure gci_Param
+   procedure Gci_Param
      (A : in Pnode) is
 
-      idPar : id_nom renames A.Fe2.id12;
-      d, dtipus: Descrip;
-      idproc : num_proc;
-          Iv : Info_Var;
+      Idpar : Id_Nom renames A.Fe2.Id12;
+      D, Dtipus: Descrip;
+      Idproc : Num_Proc;
+      Iv : info_Var;
 
    begin
+      Cim(Pproc, Idproc);
+      D := Cons(Tts(Idproc), Idpar);
 
-      cim(pproc, idproc);
-      d := cons(tts(idproc), idPar);
+      case D.Td is
+         when Dvar =>
+            Dtipus:=Cons(Tts(Idproc),D.Tr);
+            Iv := (Idpar,
+                   Idproc,
+                   Dtipus.Dt.Ocup,
+                   0,
+                   Dtipus.Dt.Tt,
+                   True,
+                   False,
+                   0);
+            Modif_Descripcio(Tv, D.Nv, Iv);
 
-
-          case d.td is
-           when Dvar =>
-            dtipus:=cons(tts(idproc),d.tr);
-            Iv := (idPar,
-             idproc,
-             Dtipus.Dt.ocup,
-             0,
-             Dtipus.Dt.tt,
-             True,
-             False,
-             0);
-             modif_descripcio(Tv, D.Nv, Iv);
-
-       when Dargc =>
-             dtipus:=cons(tts(idproc),d.targ);
-
-             Iv := (idPar,
-             idproc,
-             Dtipus.Dt.ocup,
-             0,
-             Dtipus.Dt.tt,
-             True,
-             False,
-             0);
-             modif_descripcio(Tv, D.Nvarg, Iv);
-       when others =>
-                        put_line("ArgsGci - No es un misterio carmen??");
-
+         when Dargc =>
+            Dtipus:=Cons(Tts(Idproc),D.Targ);
+            Iv := (Idpar,
+                   Idproc,
+                   Dtipus.Dt.Ocup,
+                   0,
+                   Dtipus.Dt.Tt,
+                   True,
+                   False,
+                   0);
+            Modif_Descripcio(Tv, D.Nvarg, Iv);
+         when others =>
+            Put_Line("Argsgci - No Es Un Misterio Carmen??");
       end case;
+   end Gci_Param;
 
-   end gci_Param;
 
-
-   procedure gci_Declaracions
+   procedure Gci_Declaracions
      (A : in Pnode) is
 
       Decl : Pnode renames A.Fd1;
@@ -219,42 +187,39 @@ package body Semantica.Gci is
 
       case Decl.Tipus is
          when Dvariable   =>
-            gci_Decvar(Decl);
+            Gci_Decvar(Decl);
          when Dconstant   =>
-            null;
+            Null;
          when Dcoleccio   =>
-            gci_Deccol(Decl);
+            Gci_Deccol(Decl);
          when Dregistre | Dencapregistre | Firecord =>
-            null;
+            Null;
          when Dsubrang    =>
-            null;
+            Null;
          when Procediment =>
-            gci_Decprocediment(Decl);
+            Gci_Decprocediment(Decl);
          when others =>
-            null;
+            Null;
       end case;
+   end Gci_Declaracions;
 
-   end gci_Declaracions;
 
-
-   procedure gci_Decvar
+   procedure Gci_Decvar
      (A : in Pnode) is
 
       Dvariable : Pnode renames A.Fd1;
       Id : Id_Nom renames A.Fe1.Id12;
-      Ivar : Info_Var := Info_Var_Nul;
-      desc,desctipus : Descrip;
-      idproc : num_proc;
+      Ivar : info_Var := info_Var_Nul;
+      Desc,Desctipus : Descrip;
+      Idproc : Num_Proc;
 
    begin
-      gci_Declsvar(Dvariable);
-
-      cim(pproc, idproc);
-      desc:= cons(Tts(idproc),Id);
-      desctipus := cons(Tts(idproc),desc.tr);
-
+      Gci_Declsvar(Dvariable);
+      Cim(Pproc, Idproc);
+      Desc:= Cons(Tts(Idproc),Id);
+      Desctipus := Cons(Tts(Idproc),Desc.Tr);
       Ivar := (Id,
-               idproc,
+               Idproc,
                Desctipus.Dt.Ocup,
                0,
                Desctipus.Dt.Tt,
@@ -262,172 +227,145 @@ package body Semantica.Gci is
                False,
                0);
       Modif_Descripcio(Tv, Desc.Nv, Ivar);
+   end Gci_Decvar;
 
-   end gci_Decvar;
-
-   procedure gci_Declsvar
+   procedure Gci_Declsvar
      (A : in Pnode) is
 
       Tnode : Tipusnode renames A.Tipus;
-      Ivar : Info_Var := Info_Var_Nul;
-      desc,desctipus : Descrip;
-      idproc : num_proc;
+      Ivar : info_Var := info_Var_Nul;
+      Desc,Desctipus : Descrip;
+      Idproc : Num_Proc;
 
    begin
-
       if Tnode = Declmultvar then
-         gci_Declsvar(A.Fd1);
-
-         cim(pproc, idproc);
-         desc:= cons(Tts(idproc),A.Fe1.Id12);
-
-         desctipus := cons(Tts(idproc),desc.tr);
-
+         Gci_Declsvar(A.Fd1);
+         Cim(Pproc, Idproc);
+         Desc:= Cons(Tts(Idproc),A.Fe1.Id12);
+         Desctipus := Cons(Tts(Idproc),Desc.Tr);
          Ivar := (A.Fe1.Id12,
-                  idproc,
-                  Desctipus.Dt.ocup,
+                  Idproc,
+                  Desctipus.Dt.Ocup,
                   0,
-                  Desctipus.Dt.tt,
+                  Desctipus.Dt.Tt,
                   False,
                   False,
                   0);
-
-         modif_descripcio(Tv, Desc.Nv, Ivar);
-
+         Modif_Descripcio(Tv, Desc.Nv, Ivar);
       end if;
+   end Gci_Declsvar;
 
-   end gci_Declsvar;
 
-   procedure gci_Decconst --no serveix per a res!!! no l'invocam
+   procedure Gci_Decconst
      (A : in Pnode) is
 
       Id : Id_Nom renames A.Fe2.Id12;
       Val : Pnode renames A.Fd2;
-      Iconst : Info_Var := Info_Var_Nul;
-      desc, desctipus : Descrip;
-      idproc : num_proc;
+      Iconst : info_Var := info_Var_Nul;
+      Desc, Desctipus : Descrip;
+      Idproc : Num_Proc;
 
    begin
-
-      cim(pproc, idproc);
-      desc:= cons(Tts(idproc),A.Fd1.Id12);
-
-      desctipus := cons(Tts(idproc),desc.tr);
-
+      Cim(Pproc, Idproc);
+      Desc:= Cons(Tts(Idproc),A.Fd1.Id12);
+      Desctipus := Cons(Tts(Idproc),Desc.Tr);
       Iconst := (Id,
-                 idproc,
-                 Desctipus.Dt.ocup,
+                 Idproc,
+                 Desctipus.Dt.Ocup,
                  0,
-                 Desctipus.Dt.tt,
+                 Desctipus.Dt.Tt,
                  False,
-                 True,--no n'estic 100% segur
+                 True,
                  Val.Val);
-      modif_descripcio(tv, Desc.Nv, Iconst);
+      Modif_Descripcio(Tv, Desc.Nv, Iconst);
+   end Gci_Decconst;
 
-   end gci_Decconst;-----------------------------------------------------------
 
-
-   procedure gci_Deccol
+   procedure Gci_Deccol
      (A : in Pnode) is
 
       Darray : Descrip;
       Fesq : Pnode renames A.Fe1;
       Idarray : Id_Nom;
-      base : valor := 0;
-          idproc : num_proc;
-          T1 : num_var;
+      Base : Valor := 0;
+      Idproc : Num_Proc;
+      T1 : Num_Var;
 
-   begin  --p_dcoleccio s_parentesitancat pc_of id
-
-      gci_Pcoleccio(Fesq,base,Idarray);
-          cim(pproc, idproc);
-      Darray := cons(Tts(idproc),Idarray);
-
-        Put_Line("BASE ARRAY = "& Base'img);
-        Novaconst(Tv, base, Tsent, idproc, T1);
-
-      Darray.Dt.Base := base;
-
-        Put_Line("Darray.Dt.Base = "& Darray.Dt.Base'img);
-      actualitza(Tts(idproc), Idarray, Darray);
-
-   end gci_Deccol;
+   begin
+      Gci_Pcoleccio(Fesq,Base,Idarray);
+      Cim(Pproc, Idproc);
+      Darray := Cons(Tts(Idproc),Idarray);
+      Novaconst(Tv, Base, Tsent, Idproc, T1);
+      Darray.Dt.Base := Base;
+      Actualitza(Tts(Idproc), Idarray, Darray);
+   end Gci_Deccol;
 
 
-   procedure gci_Pcoleccio
+   procedure Gci_Pcoleccio
      (A : in Pnode;
-      base: in out Valor;
-      Idarray : out Id_nom) is
+      Base: in out Valor;
+      Idarray : out Id_Nom) is
 
       Fesq : Pnode renames A.Fe1;
       Id   : Id_Nom renames A.Fd1.Id12;
       Ncomp : Valor;
       Dtcamp : Descrip;
-          idproc : num_proc;
+      Idproc : Num_Proc;
 
    begin
 
-      cim(pproc, idproc);
+      Cim(Pproc, Idproc);
+      if (A.Tipus = Pcoleccio) then
+         Gci_Pcoleccio(Fesq, Base, Idarray);
+         Dtcamp := Cons(Tts(Idproc),Id);
+         Ncomp :=  Dtcamp.Dt.Lsup - Dtcamp.Dt.Linf + 1;
+         Base := (Base * Ncomp) + Dtcamp.Dt.Linf;
 
-      if (A.Tipus = Pcoleccio) then--p_dcoleccio s_coma id
-
-         gci_Pcoleccio(Fesq, base, Idarray);
-
-         Dtcamp := cons(Tts(idproc),Id);
-         ncomp :=  dtcamp.dt.lsup - dtcamp.dt.linf + 1;
-         base := (base * ncomp) + dtcamp.dt.linf;
-
-
-      elsif (A.Tipus = Pdimcoleccio) then --pc_type id pc_is pc_array s_parentesiobert id
-
-         Dtcamp := cons(Tts(idproc),Id);
+      elsif (A.Tipus = Pdimcoleccio) then
+         Dtcamp := Cons(Tts(Idproc),Id);
          Idarray := Fesq.Id12;
-         base := dtcamp.dt.linf;
-
+         Base := Dtcamp.Dt.Linf;
       end if;
-
    end Gci_Pcoleccio;
 
 
-   procedure gci_Bloc
+   procedure Gci_Bloc
      (A : in Pnode) is
 
       D : Descrip;
       Idbase : Num_Proc;
       Idtipus : Id_Nom;
-
       Idres,
       Iddesp,
       Idr,
-      Idd: num_var;
+      Idd: Num_Var;
 
    begin
       case (A.Tipus) is
          when Bloc =>
-            gci_Bloc(A.Fe1);
-            gci_Bloc(A.Fd1);
+            Gci_Bloc(A.Fe1);
+            Gci_Bloc(A.Fd1);
          when Repeticio =>
-            gci_Srep(A);
-         when Identificador => --crida a procediment sense parametres
-
-            gci_identificador(A, Idres, Iddesp, Idtipus);
+            Gci_Srep(A);
+         when Identificador =>
+            Gci_Identificador(A, Idres, Iddesp, Idtipus);
          when Fireferencia =>
-            gci_Referencia_Proc(A, Idbase);
-         when condicionalS =>
-            gci_Sconds(A);
-         when condicionalC =>
-            gci_Scondc(A);
+            Gci_Referencia_Proc(A, Idbase);
+         when Condicionals =>
+            Gci_Sconds(A);
+         when Condicionalc =>
+            Gci_Scondc(A);
          when Assignacio =>
-            gci_Referencia_Var(A.Fe1, Idr, Idd, Idtipus);
-            gci_Expressio(A.Fd1, Idres, Iddesp);
-            gci_Assignacio(Idr, Idd, Idres, Iddesp);
+            Gci_Referencia_Var(A.Fe1, Idr, Idd, Idtipus);
+            Gci_Expressio(A.Fd1, Idres, Iddesp);
+            Gci_Assignacio(Idr, Idd, Idres, Iddesp);
          when others => null;
       end case;
-   end gci_Bloc;
+   end Gci_Bloc;
 
 
    procedure Gci_Assignacio
-     (Idref, Iddref, Idrexp, Iddexp: in num_var) is
+     (Idref, Iddref, Idrexp, Iddexp: in Num_Var) is
       C1,
       C2,
       C3,
@@ -435,28 +373,13 @@ package body Semantica.Gci is
       C5 : Camp;
       T : Num_Var;
       Idproc : Num_Proc;
+
    begin
-
-      C1:=(
-           Tc => Var,
-           Idv => Idref
-          );
-      C2:=(
-           Tc => Var,
-           Idv => Iddref
-          );
-      C3:=(
-           Tc => Var,
-           Idv => Idrexp
-          );
-      C4:=(
-           Tc => Var,
-           Idv => Iddexp
-          );
-
-
-      cim(pproc, idproc);
-
+      C1:=(Var, Idref);
+      C2:=(Var, Iddref);
+      C3:=(Var, Idrexp);
+      C4:=(Var, Iddexp);
+      Cim(Pproc, Idproc);
 
       if Iddref = Var_Nul then
          if Iddexp = Var_Nul then
@@ -468,220 +391,169 @@ package body Semantica.Gci is
          if Iddexp = Var_Nul then
             Genera(Asigindex, C1, C2, C3);
          else
-            Novavar(Tv, idproc, T);
-                 C5:=(
-                  Tc => Var,
-                  Idv => T
-             );
+            Novavar(Tv, Idproc, T);
+            C5:=(Var, T);
             Genera(Consindex, C5, C3, C4);
             Genera(Asigindex, C1, C2, C5);
          end if;
       end if;
-
-   end gci_Assignacio;
+   end Gci_Assignacio;
 
 
    --Procediments
-   procedure gci_Referencia_Proc
+   procedure Gci_Referencia_Proc
      (A : in Pnode;
-      Idproc : out num_proc) is
+      Idproc : out Num_Proc) is
 
       Tipus : Tipusnode renames A.Tipus;
-      dproc : Descrip;
-
+      Dproc : Descrip;
       Prm : T_Param;
-      c1, c2 : camp;
+      C1, C2 : Camp;
 
    begin
-
       case Tipus is
-         when Identificador => --R -> id
-                        idproc:= proc_nul;
-                        cim(pproc,idproc);
-            dproc := cons(tts(idproc), A.Id12);
-            Idproc := dproc.np;
+         when Identificador => --R -> Id
+            Idproc:= Proc_Nul;
+            Cim(Pproc,Idproc);
+            Dproc := Cons(Tts(Idproc), A.Id12);
+            Idproc := Dproc.Np;
 
-         when Fireferencia => -- R -> pri)
-            gci_Ref_Pri(A.F6, Idproc);
+         when Fireferencia => -- R -> Pri)
+            Gci_Ref_Pri(A.F6, Idproc);
 
-            while not es_buida(pparam) loop
-               cim(pparam, prm);
-               C1:=(
-                    Tc => Var,
-                    Idv => Prm.Base
-                   );
-
-               C2:=(
-                    Tc => Var,
-                    Idv => Prm.Despl
-                   );
+            while not Es_Buida(Pparam) loop
+               Cim(Pparam, Prm);
+               C1:=(Var, Prm.Base);
+               C2:=(Var, Prm.Despl);
 
                if Prm.Despl=Var_Nul then
-                  put_line("PARAMSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS");
                   Genera(Params, C1);
                else
-                  put_line("PARAMcccccccccccccccccccc");
                   Genera(Paramc, C1, C2);
                end if;
-                Desempilar(Pparam);
+               Desempilar(Pparam);
             end loop;
 
-
-            c1:=(
-                 Tc => Proc,
-                 Idp => Idproc
-                );
-            genera(Call, c1);
+            C1:=(Proc, Idproc);
+            Genera(Call, C1);
 
          when others =>
-            Put_Line("ERROR (DEBUG)");
-
+            Put_Line("Error (Debug)");
       end case;
+   end Gci_Referencia_Proc;
 
-   end gci_Referencia_Proc;
 
-
-   procedure gci_Ref_Pri
+   procedure Gci_Ref_Pri
      (A : in Pnode;
-      Idproc : out num_proc) is
+      Idproc : out Num_Proc) is
 
       Tipus : Tipusnode renames A.Tipus;
       Fesq : Pnode renames A.Fe1;
       Fdret : Pnode renames A.Fd1;
 
-      Idres, Iddesp : num_var;
-      prm:  T_Param;
+      Idres, Iddesp : Num_Var;
+      Prm:  T_Param;
+
    begin
       case Tipus is
-         when Pri => --pri -> pri,E
-            gci_Ref_Pri(Fesq,IdProc);
-            gci_Expressio(Fdret, Idres, Iddesp);
-            prm.base := Idres;
-            prm.despl := Iddesp;
-            empilar(pparam, prm);
+         when Pri => --Pri -> Pri,E
+            Gci_Ref_Pri(Fesq,Idproc);
+            Gci_Expressio(Fdret, Idres, Iddesp);
+            Prm.Base := Idres;
+            Prm.Despl := Iddesp;
+            Empilar(Pparam, Prm);
 
-         when Encappri => -- pri -> R(E
-            gci_Referencia_Proc(Fesq, Idproc);
-            gci_Expressio(Fdret, Idres, Iddesp);
-            prm.base := Idres;
-            prm.despl := Iddesp;
-            empilar(pparam, prm);
+         when Encappri => -- Pri -> R(E
+            Gci_Referencia_Proc(Fesq, Idproc);
+            Gci_Expressio(Fdret, Idres, Iddesp);
+            Prm.Base := Idres;
+            Prm.Despl := Iddesp;
+            Empilar(Pparam, Prm);
 
          when others =>
-            Put_Line("ERROR (DEBUG)");
+            Put_Line("Error (Debug)");
       end case;
-   end gci_Ref_Pri;
+   end Gci_Ref_Pri;
 
 
-   procedure gci_Identificador
+   procedure Gci_Identificador
      (A : in Pnode;
-      Idres, Iddesp: out num_var;
+      Idres, Iddesp: out Num_Var;
       Idtipus : out Id_Nom) is
 
-      D , descConst: Descrip;
+      D , Descconst: Descrip;
       Id : Id_Nom renames A.Id12;
       Desc : Tdescrip renames D.Td;
 
-      idv, T1 : num_var := var_nul;
-      idproc : num_proc := proc_nul;
-      c1, c2: camp;
+      Idv, T1 : Num_Var := Var_Nul;
+      Idproc : Num_Proc := Proc_Nul;
+      C1, C2: Camp;
 
-          iv : Info_Var;
+      Iv : info_Var;
 
    begin
-          cim(pproc, idproc);
-      D := Cons(Tts(idproc), Id);
-
-
+      Cim(Pproc, Idproc);
+      D := Cons(Tts(Idproc), Id);
       case Desc is
-         when Dvar => -- R -> id
-
-            Idres := d.nv;
-            Iddesp := var_nul;
-            Idtipus := d.tr;
+         when Dvar => -- R -> Id
+            Idres := D.Nv;
+            Iddesp := Var_Nul;
+            Idtipus := D.Tr;
 
          when Dconst =>
+            Descconst := Cons(Tts(Idproc), D.Tc);
+            Iv := (Id,
+                   Idproc,
+                   Descconst.Dt.Ocup,
+                   0,
+                   Descconst.Dt.Tt,
+                   False,
+                   True,
+                   D.Vc);
+            Modif_Descripcio(Tv, D.Nvc, Iv);
+            Novavar(Tv, Idproc, T1);
 
-                DescConst := Cons(Tts(idproc), D.tc);
+            C1:=(Var, T1);
+            C2:=(Const, D.Nvc);
+            Genera(Copia, C1, C2);
+            Idres:= T1;
+            Iddesp:= Var_Nul;
+            Idtipus:= D.Tc;
 
-                Iv := (Id,
-                        idproc,
-                        DescConst.Dt.ocup,
-                        0,
-                        DescConst.Dt.tt,
-                        False,
-                        True,
-                        D.Vc);
-
-                modif_descripcio(Tv, D.Nvc, Iv);
-
-                        Novavar(Tv, idproc, T1);
-
-            C1:=(
-                 Tc => Var,
-                 Idv => t1
-                );
-
-            C2:=(
-                 Tc => Const,
-                 Idc => D.nvc
-                );
-
-            genera(copia, c1, c2);
-
-            Idres:= t1;
-            Iddesp:= var_nul;
-            Idtipus:= d.tc;
-                 when Dargc =>
-                         Novavar(Tv, idproc, T1);
-                        C1:=(
-                 Tc => Var,
-                 Idv => t1
-                );
-
-            C2:=(
-                 Tc => Var,
-                 Idv => d.nvarg
-                );
-
-            genera(copia, c1, c2);
-
-                        Idres := t1;
-            Iddesp := var_nul;
-            Idtipus := d.targ;
-
+         when Dargc =>
+            Novavar(Tv, Idproc, T1);
+            C1:=(Var, T1);
+            C2:=(Var, D.Nvarg);
+            Genera(Copia, C1, C2);
+            Idres := T1;
+            Iddesp := Var_Nul;
+            Idtipus := D.Targ;
 
          when Dproc =>
-
-            D:=cons(Tts(idproc), id);
-            c1:=(
-                 Tc => Proc,
-                 Idp => D.Np
-                );
-            genera(Call, c1);
+            D:=Cons(Tts(Idproc), Id);
+            C1:=(Proc, D.Np);
+            Genera(Call, C1);
 
          when others =>
-            put_line("Es un altre tipus al gci identificador");
+            Put_Line("Es Un Altre Tipus Al Gci Identificador");
 
       end case;
+   end Gci_Identificador;
 
-   end gci_Identificador;
 
-
-   procedure gci_Constant
+   procedure Gci_Constant
      (A : in Pnode;
-      Idres : out Num_var) is
+      Idres : out Num_Var) is
 
       Tatr : Tipus_Atribut renames A.Tconst;
-      idproc : num_proc;
+      Idproc : Num_Proc;
       T : Tipussubjacent;
-          T1 : num_Var;
-          C1,
+      T1 : Num_Var;
+      C1,
       C2 : Camp;
+
    begin
-
-      cim(pproc, idproc);
-
+      Cim(Pproc, Idproc);
       case (Tatr) is
          when A_Lit_C =>
             T := Tscar;
@@ -689,190 +561,124 @@ package body Semantica.Gci is
             T := Tsent;
          when A_Lit_S =>
             T := Tsstr;
-         when others => null;
+         when others => Null;
       end case;
 
-        put_line("VALOR NUMERICO = "&A.val'img);
-      Novaconst(Tv, A.Val, T, idproc, T1);
-      Novavar(Tv, idproc, Idres);
-
-      C1:=(
-           Tc => Const,
-           Idc => T1
-          );
-      C2:=(
-           Tc => Var,
-           Idv => Idres
-          );
-
+      Novaconst(Tv, A.Val, T, Idproc, T1);
+      Novavar(Tv, Idproc, Idres);
+      C1:=(Const, T1);
+      C2:=(Var, Idres);
       Genera(Copia, C2, C1);
+   end Gci_Constant;
 
 
-   end gci_Constant;
-
-
-   procedure gci_Expressio
+   procedure Gci_Expressio
      (A : in Pnode;
-      Idr, Idd: out num_var) is
+      Idr, Idd: out Num_Var) is
 
       Tipus : Tipusnode renames A.Tipus;
       Idtipus : Id_Nom;
-          desc : descrip;
+      Desc : Descrip;
 
    begin
-      Idd := var_nul;
-
-
+      Idd := Var_Nul;
       case Tipus is
          when Expressio =>
-
-            gci_Expressioc(A, Idr, Idd);
-         when ExpressioUnaria =>
-            gci_Expressiou(A, Idr, Idd);
+            Gci_Expressioc(A, Idr, Idd);
+         when Expressiounaria =>
+            Gci_Expressiou(A, Idr, Idd);
          when Identificador =>
-
-            gci_Identificador(A, Idr, Idd, Idtipus); --Idtipus??
-
-                        -- cim(pproc, idproc);
-                         --desc := cons(tts(idproc),Idtipus);
-                         --if (desc.td = dtipus) then
-
-
-                         --end if;
-
+            Gci_Identificador(A, Idr, Idd, Idtipus);
          when Const =>
-            gci_Constant(A, Idr);
-
+            Gci_Constant(A, Idr);
          when Fireferencia | Referencia =>
-            gci_Referencia_Var(A, Idr, Idd, Idtipus);
+            Gci_Referencia_Var(A, Idr, Idd, Idtipus);
          when others =>
-            Put_Line("ERROR (DEBUG)");
+            Put_Line("Error (Debug)");
       end case;
+   end Gci_Expressio;
 
-   end gci_Expressio;
 
-
-   procedure gci_Expressioc --comprovar parametres
+   procedure Gci_Expressioc
      (A : in Pnode;
-      Idres,Idresdesp: out num_var) is
+      Idres,Idresdesp: out Num_Var) is
 
       Fesq : Pnode renames A.Fe3;
       Fdret : Pnode renames A.Fd3;
       Op : Operacio renames A.Op3;
-
       Idesq,
       Iddret,
-      IddespE,
-      IddespD : num_var;
+      Iddespe,
+      Iddespd : Num_Var;
 
    begin
-
-      --Analitzam l'operand esquerra
-      gci_Expressio(Fesq, Idesq,IddespE);
-      --Analitzam l'operand dret
-      gci_Expressio(Fdret, Iddret,IddespD);
-      -- Comparam els tipus
-
-
+      --Analitzam L'Operand Esquerra
+      Gci_Expressio(Fesq, Idesq,Iddespe);
+      --Analitzam L'Operand Dret
+      Gci_Expressio(Fdret, Iddret,Iddespd);
+      -- Comparam Els Tipus
       case Op is
-
-         when Unio | Interseccio =>
-            Gci_Exp_Logica(Idesq, Iddret, IddespE,
-                           IddespD, Idres, Idresdesp, Op);
-
+         when Unio | interseccio =>
+            Gci_Exp_Logica(Idesq, Iddret, Iddespe,
+                           Iddespd, Idres, Idresdesp, Op);
          when Menor | Menorig | Major | Majorig
            | Igual | Distint =>
-            gci_Exp_Relacional(Idesq, Iddret, IddespE,
-                               IddespD, Idres, Idresdesp, Op);
-
+            Gci_Exp_Relacional(Idesq, Iddret, Iddespe,
+                               Iddespd, Idres, Idresdesp, Op);
          when Suma | Resta | Mult | Div | Modul =>
-            gci_Exp_Aritmetica(Idesq, Iddret, IddespE,
-                               IddespD, Idres, Idresdesp, Op);
-
+            Gci_Exp_Aritmetica(Idesq, Iddret, Iddespe,
+                               Iddespd, Idres, Idresdesp, Op);
          when others =>
-            null;
+            Null;
       end case;
-
-   end gci_Expressioc;
-
+   end Gci_Expressioc;
 
 
-   procedure gci_Exp_Relacional --manca acabar d'entendre el final
-     (IdResE, IdResD, IddespE, IddespD : in num_var;
-      IdResultExp, IddespExp :   out num_var;
+   procedure Gci_Exp_Relacional
+     (Idrese, Idresd, Iddespe, Iddespd : in Num_Var;
+      Idresultexp, Iddespexp : out Num_Var;
       Op : in Operacio) is
 
       T1,
       T2,
-      T3 : num_Var := Var_Nul;
+      T3 : Num_Var := Var_Nul;
 
       Emig,
-      Efi : num_Etiq;
+      Efi : Num_Etiq;
 
       C1,
       C2,
       C3 : Camp;
-
-      idproc : num_proc := proc_nul;
+      Idproc : Num_Proc := Proc_Nul;
 
    begin
-
-      if IddespE = Var_Nul then
-         T1:= IdResE;
+      if Iddespe = Var_Nul then
+         T1:= Idrese;
       else
-         cim(pproc, idproc);
-         Novavar(Tv, idproc, T1);
-
-         C1:=(
-              Tc => Var,
-              Idv => T1
-             );
-         C2:=(
-              Tc => Var,
-              Idv => IdResE
-             );
-         C3:=(
-              Tc => Var,
-              Idv => IddespE
-             );
+         Cim(Pproc, Idproc);
+         Novavar(Tv, Idproc, T1);
+         C1:=(Var, T1);
+         C2:=(Var, Idrese);
+         C3:=(Var, Iddespe);
          Genera(Consindex,C1,C2,C3);
-
       end if;
 
-      if IddespD = Var_Nul then
-         T2 := IdResD;
+      if Iddespd = Var_Nul then
+         T2 := Idresd;
       else
-         cim(pproc, idproc);
-         Novavar(Tv, idproc, T2);
-         C1:=(
-              Tc  => Var,
-              Idv => T2
-             );
-         C2:=(
-              Tc  => Var,
-              Idv => IdResD
-             );
-         C3:=(
-              Tc  => Var,
-              Idv => IddespD);
+         Cim(Pproc, Idproc);
+         Novavar(Tv, Idproc, T2);
+         C1:=(Var, T2);
+         C2:=(Var, Idresd);
+         C3:=(Var, Iddespd);
          Genera(Consindex,C1,C2,C3);
       end if;
 
       Emig:=Nova_Etiq;
       Efi:=Nova_Etiq;
-
-      C1:=(
-           Tc => Var,
-           Idv => T1
-          );
-      C2:=(
-           Tc => Var,
-           Idv => T2
-          );
-      C3:=( --Al loro, puesto de nuestra manera. C3 va la etiqueta
-            Tc => Etiq,
-            Ide => Emig
-          );
+      C1:=(Var, T1);
+      C2:=(Var, T2);
+      C3:=(Etiq, Emig);
 
       case Op is
          when Menor => Genera(Menor, C1, C2, C3);
@@ -881,465 +687,289 @@ package body Semantica.Gci is
          when Majorig => Genera(Majorigual, C1, C2, C3);
          when Major => Genera(Major, C1, C2, C3);
          when Distint => Genera(Diferent, C1, C2, C3);
-         when others => null;
+         when others => Null;
       end case;
 
-      cim(pproc, idproc);
+      Cim(Pproc, Idproc);
       Novavar(Tv, Idproc, T3);
-
-      C1:=(
-           Tc => Var,
-           Idv => T3
-          );
-      C2:=(
-           Tc => Const,
-           Idc => Zero
-          );
-
+      C1 := (Var, T3 );
+      C2 := (Const, Zero);
       Genera(Copia, C1, C2);
-
-      C3:=(
-           Tc => Etiq,
-           Ide => Efi
-          );
-      Genera(Branc_Inc, C3);
-
-      C3.Ide:=Emig;
+      C3 := (Etiq, Efi);
+      Genera(Branc_inc, C3);
+      C3.Ide := Emig;
       Genera(Etiqueta, C3);
-
-      C2.Idc:=MenysU;
+      C2.Idc := Menysu;
       Genera(Copia, C1, C2);
-
-      C3.Ide:=Efi;
+      C3.Ide := Efi;
       Genera(Etiqueta, C3);
-
-      IdResultExp:=T3;
-      IddespExp:=Var_Nul;
-
-
-   end gci_Exp_Relacional;
+      Idresultexp := T3;
+      Iddespexp := Var_Nul;
+   end Gci_Exp_Relacional;
 
 
-
-   procedure gci_Exp_Logica
-     (IdResE, IdResD, IddespE, IddespD : in num_var;
-      IdResultExp, IddespExp :   out num_var;
-      Op : in Operacio) is
+   procedure Gci_Exp_Logica
+     (Idrese, Idresd, Iddespe, Iddespd : in Num_Var;
+      Idresultexp, Iddespexp :   out Num_Var;
+      Op : in Operacio) Is
 
       T1,
       T2,
-      T3 : num_Var := Var_Nul;
+      T3 : Num_Var := Var_Nul;
       C1,
       C2,
       C3 : Camp;
-      idproc : num_proc := proc_nul;
+      Idproc : Num_Proc := Proc_Nul;
 
    begin
-
-      if IddespE = Var_Nul then
-         T1:= IdResE;
+      if Iddespe = Var_Nul then
+         T1:= Idrese;
       else
-         cim(pproc, idproc);
-         Novavar(Tv, idproc, T1);
-
-         C1:=(
-              Tc => Var,
-              Idv => T1
-             );
-         C2:=(
-              Tc => Var,
-              Idv => IdResE
-             );
-         C3:=(
-              Tc => Var,
-              Idv => IddespE
-             );
+         Cim(Pproc, Idproc);
+         Novavar(Tv, Idproc, T1);
+         C1 := (Var, T1);
+         C2 := (Var, Idrese);
+         C3 := (Var, Iddespe);
          Genera(Consindex,C1,C2,C3);
-
       end if;
 
-      if IddespD = Var_Nul then
-         T2 := IdResD;
+      if Iddespd = Var_Nul then
+         T2 := Idresd;
       else
-         cim(pproc, idproc);
-         Novavar(Tv, idproc, T2);
-         C1:=(
-              Tc  => Var,
-              Idv => T2
-             );
-         C2:=(
-              Tc  => Var,
-              Idv => IdResD
-             );
-         C3:=(
-              Tc  => Var,
-              Idv => IddespD);
-         Genera(ConsIndex, C1, C2, C3);
+         Cim(Pproc, Idproc);
+         Novavar(Tv, Idproc, T2);
+         C1 := (Var, T2);
+         C2 := (Var, Idresd);
+         C3 := (Var, Iddespd);
+         Genera(Consindex, C1, C2, C3);
       end if;
 
-      cim(pproc, idproc);
-      Novavar(Tv, idproc, T3);
-      C1:=(
-           Tc => Var,
-           Idv => T3
-          );
-      C2:=(
-           Tc => Var,
-           Idv => T1
-          );
-      C3:=(
-           Tc => Var,
-           Idv => T2
-          );
+      Cim(Pproc, Idproc);
+      Novavar(Tv, Idproc, T3);
+      C1 := (Var, T3);
+      C2 := (Var, T1);
+      C3 := (Var, T2);
 
       case Op is
          when Unio => Genera(Op_Or,C1,C2,C3);
-         when Interseccio => Genera(Op_And,C1,C2,C3);
-         when others => null;
+         when interseccio => Genera(Op_And,C1,C2,C3);
+         when others => Null;
       end case;
 
-      IdResultExp := T3;
-      IddespExp := Var_Nul;
+      Idresultexp := T3;
+      Iddespexp := Var_Nul;
+   end Gci_Exp_Logica;
 
-   end gci_Exp_Logica;
 
-
-   procedure gci_Exp_Aritmetica
-     (IdResE, IdResD, IddespE, IddespD : in num_var;
-      IdResultExp, IddespExp : out num_var;
+   procedure Gci_Exp_Aritmetica
+     (Idrese, Idresd, Iddespe, Iddespd : in Num_Var;
+      Idresultexp, Iddespexp : out Num_Var;
       Op : in Operacio) is
 
       T1,
       T2,
-      T3 : num_Var := Var_Nul;
+      T3 : Num_Var := Var_Nul;
       C1,
       C2,
       C3 : Camp;
-      idproc : num_proc := proc_nul;
+      Idproc : Num_Proc := Proc_Nul;
 
    begin
-
-
-
-      if IddespE = Var_Nul then
-         T1:= IdResE;
+      if Iddespe = Var_Nul then
+         T1:= Idrese;
       else
-         cim(pproc, idproc);
-         Novavar(Tv, idproc, T1);
-
-         C1:=(
-              Tc => Var,
-              Idv => T1
-             );
-         C2:=(
-              Tc => Var,
-              Idv => IdResE
-             );
-         C3:=(
-              Tc => Var,
-              Idv => IddespE
-             );
+         Cim(Pproc, Idproc);
+         Novavar(Tv, Idproc, T1);
+         C1 := (Var, T1);
+         C2 := (Var, Idrese);
+         C3 := (Var, Iddespe);
          Genera(Consindex,C1,C2,C3);
-
       end if;
 
-      if IddespD = Var_Nul then
-         T2 := IdResD;
+      if Iddespd = Var_Nul then
+         T2 := Idresd;
       else
-         cim(pproc, idproc);
-         Novavar(Tv, idproc, T2);
-         C1:=(
-              Tc  => Var,
-              Idv => T2
-             );
-         C2:=(
-              Tc  => Var,
-              Idv => IdResD
-             );
-         C3:=(
-              Tc  => Var,
-              Idv => IddespD);
-         Genera(ConsIndex,C1,C2,C3);
+         Cim(Pproc, Idproc);
+         Novavar(Tv, Idproc, T2);
+         C1 := (Var, T2);
+         C2 := (Var, Idresd);
+         C3 := (Var, Iddespd);
+         Genera(Consindex,C1,C2,C3);
       end if;
 
-      cim(pproc, idproc);
-      Novavar(Tv, idproc, T3);
-      C1:=(
-           Tc => Var,
-           Idv => T3
-          );
-      C2:=(
-           Tc => Var,
-           Idv => T1
-          );
-      C3:=(
-           Tc => Var,
-           Idv => T2
-          );
+      Cim(Pproc, Idproc);
+      Novavar(Tv, Idproc, T3);
+      C1 := (Var, T3);
+      C2:=(Var, T1);
+      C3:=(Var, T2);
 
       case Op is
-         when Suma => Genera(Suma,C1,C2,C3);
-         when Resta => Genera(Resta,C1,C2,C3);
-         when Mult => Genera(Producte,C1,C2,C3);
-         when Div => Genera(Divisio,C1,C2,C3);
-         when Modul => Genera(Modul,C1,C2,C3);
-         when others => null;
+         when Suma => Genera(Suma, C1, C2, C3);
+         when Resta => Genera(Resta, C1, C2, C3);
+         when Mult => Genera(Producte, C1, C2, C3);
+         when Div => Genera(Divisio, C1, C2, C3);
+         when Modul => Genera(Modul, C1, C2, C3);
+         when others => Null;
       end case;
 
-      IdResultExp := T3;
-      IddespExp := Var_Nul;
+      Idresultexp := T3;
+      Iddespexp := Var_Nul;
 
-   end gci_Exp_Aritmetica;
+   end Gci_Exp_Aritmetica;
 
 
-   procedure gci_Expressiou
+   procedure Gci_Expressiou
      (A : in Pnode;
-      Idr, Idd : out num_var) is
+      Idr, Idd : out Num_Var) is
 
       Fdret : Pnode renames A.F4;
       Op : Operacio renames A.Op4;
       Idru, Iddu : Num_Var;
 
    begin
-      gci_Expressio(Fdret, Idru, Iddu);
+      Gci_Expressio(Fdret, Idru, Iddu);
       case Op is
          when Resta =>
-            gci_Exp_Negacio(Idru, Iddu, Idr, Idd);
+            Gci_Exp_Negacio(Idru, Iddu, Idr, Idd);
          when Negacio =>
-            gci_Exp_Neglogica(Idru, Iddu, Idr, Idd);
+            Gci_Exp_Neglogica(Idru, Iddu, Idr, Idd);
          when others =>
-            null;
+            Null;
       end case;
+   end Gci_Expressiou;
 
-   end gci_Expressiou;
 
-
-   procedure gci_Exp_Negacio
-     (idRes, Iddesp : in num_var;
-      IdresultExp, IddespExp : out num_var) is
+   procedure Gci_Exp_Negacio
+     (Idres, Iddesp : in Num_Var;
+      Idresultexp, Iddespexp : out Num_Var) is
 
       T1,
-      T2 : num_Var := Var_Nul;
+      T2 : Num_Var := Var_Nul;
       C1,
       C2,
       C3 : Camp;
-      idproc : num_proc := proc_nul;
+      Idproc : Num_Proc := Proc_Nul;
 
    begin
-                cim(pproc, idproc);
+      Cim(Pproc, Idproc);
       if Iddesp = Var_Nul then
-         T1:= IdRes;
+         T1:= Idres;
       else
-
-         Novavar(Tv, idproc, T1);
-
-         C1:=(
-              Tc => Var,
-              Idv => T1
-             );
-         C2:=(
-              Tc => Var,
-              Idv => IdRes
-             );
-         C3:=(
-              Tc => Var,
-              Idv => Iddesp
-             );
-
+         Novavar(Tv, Idproc, T1);
+         C1 := (Var, T1);
+         C2 := (Var, Idres);
+         C3 := (Var, Iddesp);
          Genera(Consindex, C1, C2, C3);
-
       end if;
 
-      Novavar(Tv, idproc, T2);
-      C1:=(
-           Tc => Var,
-           Idv => T2
-          );
-      C2:=(
-           Tc => Var,
-           Idv => T1
-          );
-
+      Novavar(Tv, Idproc, T2);
+      C1 := (Var, T2);
+      C2 := (Var, T1);
 
       Genera(Negacio, C1, C2);
-
-      IdResultExp := T2;
-      IddespExp := Var_Nul;
-
-   end gci_Exp_Negacio;
+      Idresultexp := T2;
+      Iddespexp := Var_Nul;
+   end Gci_Exp_Negacio;
 
 
-   procedure gci_Exp_Neglogica
-     (idRes, Iddesp : in num_var;
-      IdresultExp, IddespExp : out num_var) is
+   procedure Gci_Exp_Neglogica
+     (Idres, Iddesp : in Num_Var;
+      Idresultexp, Iddespexp : out Num_Var) is
 
       T1,
-      T2 : num_Var := Var_Nul;
+      T2 : Num_Var := Var_Nul;
       C1,
       C2,
       C3 : Camp;
-      idproc : num_proc := proc_nul;
+      Idproc : Num_Proc := Proc_Nul;
 
    begin
-
-         cim(pproc, idproc);
-
+      Cim(Pproc, Idproc);
       if Iddesp = Var_Nul then
-         T1:= IdRes;
+         T1:= Idres;
       else
-
-         Novavar(Tv, idproc, T1);
-
-         C1:=(
-              Tc => Var,
-              Idv => T1
-             );
-         C2:=(
-              Tc => Var,
-              Idv => IdRes
-             );
-         C3:=(
-              Tc => Var,
-              Idv => Iddesp
-             );
-
+         Novavar(Tv, Idproc, T1);
+         C1 := (Var, T1);
+         C2 := (Var, Idres);
+         C3 := (Var, Iddesp);
          Genera(Consindex, C1, C2, C3);
-
       end if;
 
-
-      Novavar(Tv, idproc, T2);
-      C1:=(
-           Tc => Var,
-           Idv => T2
-          );
-      C2:=(
-           Tc => Var,
-           Idv => T1
-          );
+      Novavar(Tv, Idproc, T2);
+      C1 := (Var, T2);
+      C2 := (Var, T1);
 
       Genera(Op_Not, C1, C2);
+      Idresultexp := T2;
+      Iddespexp := Var_Nul;
 
-      IdResultExp := T2;
-      IddespExp := Var_Nul;
-
-   end gci_Exp_Neglogica;
+   end Gci_Exp_Neglogica;
 
 
-   procedure gci_Referencia_Var
+   procedure Gci_Referencia_Var
      (A : in Pnode;
       Idres, Iddesp: out Num_Var;
       Idtipus : out Id_Nom) is
 
       Tipus : Tipusnode renames A.Tipus;
-      --Idbase : Id_Nom;
       Idbase : Num_Var;
       It_Idx : Cursor_Idx;
       Da, Dtc : Descrip;
-      T1,T2,T3,T4,T5,T6,T7: num_Var := Var_Nul;
-      idproc : num_proc := proc_nul;
+      T1,T2,T3,T4,T5,T6,T7: Num_Var := Var_Nul;
+      Idproc : Num_Proc := Proc_Nul;
       C1, C2, C3: Camp;
 
-        --debug
-        ivar : info_var;
-        ivar2 : info_var;
    begin
       case Tipus is
          when Identificador =>
-
             Gci_Identificador(A, Idres, Iddesp, Idtipus);
 
-         when Referencia => -- r -> r.id
+         when Referencia => -- R -> R.Id
             Gci_Ref_Rec(A, Idres, Iddesp, Idtipus);
 
-         when Fireferencia => --r -> ref_pri)
+         when Fireferencia => --R -> Ref_Pri)
             Gci_Ref_Pri(A.F6, Idres, Iddesp, Idbase, Idtipus, It_Idx);
 
-            cim(pproc, idproc);
-            dtc := cons(Tts(idproc),Idtipus);
-                    Idtipus := dtc.dt.tcamp;
-            Novavar(Tv,idproc, T7);
-            Novaconst(Tv, valor(dtc.dt.base), Tsent, idproc, T3);
+            Cim(Pproc, Idproc);
+            Dtc := Cons(Tts(Idproc),Idtipus);
+            Idtipus := Dtc.Dt.Tcamp;
+            Novavar(Tv,Idproc, T7);
+            Novaconst(Tv, Valor(Dtc.Dt.Base), Tsent, Idproc, T3);
 
-            C1:=(
-                 Tc => Var,
-                 Idv => T7
-                );
-            C2:=(
-                 Tc  => Var,
-                 Idv => Iddesp
-                );
-            C3:=(
-                 Tc  => Const,
-                 Idc => T3
-                );
-            ivar := consulta(tv, iddesp);
-            ivar2 := consulta(tv, T3);
-           put_line("T7 := Iddesp("&ivar.desp'img&") - T3("&ivar2.valconst'img&")");
+            C1 := (Var, T7);
+            C2 := (Var, Iddesp);
+            C3 := (Const, T3);
             Genera(Resta, C1, C2, C3);
-            Novavar(Tv, idproc, T1);
+            Novavar(Tv, Idproc, T1);
+            Novaconst(Tv, Valor(integer'Size/8), Tsent, Idproc, T6);
 
-            Novaconst(Tv, valor(Integer'size/8), Tsent, idproc, T6);
-            Put_Line("----> Valor(dtc.dt.base) = "&valor(dtc.dt.base)'img);
+            C1 := (Var, T1);
+            C2 := (Var, T7);
+            C3 := (Const, T6);
+            Genera(Producte, C1, C2, C3);
+            Novavar(Tv, Idproc, T2);
 
-             C1:=(
-                   Tc => Var,
-                   Idv => T1
-                  );
-              C2:=(
-                   Tc  => Var,
-                   Idv => T7
-                  );
-              C3:=(
-                   Tc  => Const,
-                   Idc => T6
-                  );
-              Genera(Producte, C1, C2, C3);
-              Novavar(Tv, idproc, T2);
-              --fiprova
-              Ivar := Consulta(Tv, T6);
-              Put_Line("T1 := T7 (resta anterior) * T6("&
-                         Ivar.Valconst'Img&")");
-
-            --C2.Idv := T2;
-            --C3.Idc := Dtc.Dt.Base;
-            --Genera(Producte, C2, C1, C3);
-
-
-            if Idbase = var_nul then
-               --Iddesp := T2;
+            if Idbase = Var_Nul then
                Iddesp := T1;
             else
-               Novavar(Tv, idproc, T4);
-               --Novaconst(Tv, Idbase, Tsent, idproc, T5);
-                  Novaconst(Tv, valor(dtc.dt.ocup), Tsent, idproc, T5);
+               Novavar(Tv, Idproc, T4);
+               Novaconst(Tv, Valor(Dtc.Dt.Ocup), Tsent, Idproc, T5);
 
-               C1:=(
-                    Tc => Var,
-                    Idv => T4
-                   );
-               C2:=(
-                    Tc  => Const,
-                    Idc => T5
-                   );
-               C3:=(
-                    Tc  => Var,
-                    Idv => T2
-                   );
+               C1 := (Var, T4);
+               C2 := (Const, T5);
+               C3 := (Var, T2);
                Genera(Suma, C1, C2, C3);
-
             end if;
-            Put_Line("------------ END ref pri -------------");
-         when others => null;
+         when others => Null;
       end case;
 
-   end gci_Referencia_Var;
+   end Gci_Referencia_Var;
 
 
    --Arrays
-   procedure gci_Ref_Pri
+   procedure Gci_Ref_Pri
      (A : in Pnode;
-      Idres, Iddesp, Idbase : out Num_var;
+      Idres, Iddesp, Idbase : out Num_Var;
       Idtipus : out Id_Nom;
       It_Idx : out Cursor_Idx) is
 
@@ -1347,159 +977,83 @@ package body Semantica.Gci is
       Fesq : Pnode renames A.Fe1;
       Fdret : Pnode renames A.Fd1;
 
-      IdresE, iddespE : Num_var := Var_Nul;
+      Idrese, Iddespe : Num_Var := Var_Nul;
 
-      T0,T1,T2,T3 : num_Var := Var_Nul;
+      T0,T1,T2,T3 : Num_Var := Var_Nul;
       C1, C2, C3 : Camp;
-      idproc : num_proc := proc_nul;
-      di : Id_nom;
-      dti: descrip;
-      ni : valor;
-
-      --debug
-      Ivar : Info_Var;
+      Idproc : Num_Proc := Proc_Nul;
+      Di : Id_Nom;
+      Dti: Descrip;
+      Ni : Valor;
 
    begin
       case Tipus is
-         when Pri => --pri -> pri ,E
-                     --Put_Line("CT-ref_pri: pri");
-            Put_Line("------------- pri, E -------------");
-            cim(pproc, idproc);
+         when Pri => --Pri -> Pri ,E
+                     --Put_Line("Ct-Ref_Pri: Pri");
+            Cim(Pproc, Idproc);
 
             Gci_Ref_Pri(Fesq, Idres, Iddesp, Idbase, Idtipus, It_Idx);
-            gci_Expressio(Fdret, IdresE, IddespE);
+            Gci_Expressio(Fdret, Idrese, Iddespe);
 
-            It_Idx := Succ_Idx(Tts(idproc), It_Idx);
+            It_Idx := Succ_Idx(Tts(Idproc), It_Idx);
 
-            di := cons_idx(Tts(idproc), It_idx);
-            dti := cons(Tts(idproc),di);
-            ni := dti.dt.lsup - dti.dt.linf + 1;
+            Di := Cons_Idx(Tts(Idproc), It_Idx);
+            Dti := Cons(Tts(Idproc),Di);
+            Ni := Dti.Dt.Lsup - Dti.Dt.Linf + 1;
 
-            Novaconst(Tv, ni, Tsent, idproc, T0);
-            Novavar(Tv, idproc, T1);
-
-            C1:=(
-                 Tc => Var,
-                 Idv => T1
-                );
-            C2:=(
-                 Tc => Var,
-                 Idv => Iddesp
-                );
-            C3:=(
-                 Tc  => Const,
-                 Idc => T0
-                );
-
+            Novaconst(Tv, Ni, Tsent, Idproc, T0);
+            Novavar(Tv, Idproc, T1);
+            C1 := (Var, T1);
+            C2 := (Var, Iddesp);
+            C3 := (Const, T0);
             Genera(Producte, C1, C2, C3);
-            Ivar := Consulta(Tv, Iddesp);
-            Put_Line("T1 := C2_iddesp("&Ivar.Desp'Img&") * C3_t0("&
-                       Ni'Img&")");
-            Novavar(Tv, idproc, T2);
+            Novavar(Tv, Idproc, T2);
 
-            if IddespE = var_nul then
-
-               C1:=(
-                    Tc => Var,
-                    Idv => T2
-                   );
-               C2:=(
-                    Tc => Var,
-                    Idv => T1
-                   );
-               C3:=(
-                    Tc => Var,
-                    Idv => IdresE
-                   );
-
+            if Iddespe = Var_Nul then
+               C1 := (Var, T2);
+               C2 := (Var, T1);
+               C3 := (Var, Idrese);
                Genera(Suma, C1, C2, C3);
-               Ivar := Consulta(Tv, Idrese);
-               Put_Line("T2 := C2_T1 + C3_IdresE("&Ivar.Desp'Img&")");
-
             else
-
-              -- Novavar(Tv, idproc, T1);
-
-               C1:=(
-                    Tc => Var,
-                    Idv => T3
-                   );
-               C2:=(
-                    Tc => Var,
-                    Idv => IdresE
-                   );
-               C3:=(
-                    Tc => Var,
-                    Idv => IddespE
-                   );
-
+               C1 := (Var, T3);
+               C2 := (Var, Idrese);
+               C3 := (Var, Iddespe);
                Genera(Suma, C1, C2, C3);
 
-               C1:=(
-                    Tc => Var,
-                    Idv => T2
-                   );
-               C2:=(
-                    Tc => Var,
-                    Idv => T1
-                   );
-               C3:=(
-                    Tc => Var,
-                    Idv => T3
-                   );
-
+               C1 := (Var, T2);
+               C2 := (Var, T1);
+               C3 := (Var, T3);
                Genera(Suma, C1, C2, C3);
             end if;
-            Iddesp:=T2;
-            Put_Line("------------------ END pri, E ------------");
+            Iddesp := T2;
 
-         when Encappri => -- encappri --> R(E
+         when Encappri => -- Encappri --> R(E
+            Cim(Pproc, Idproc);
 
-            Put_Line("------------------ R(E ---------------");
-            cim(pproc, idproc);
+            Gci_Referencia_Var(Fesq, Idres, Idbase, Idtipus);
+            Gci_Expressio(Fdret, Idrese, Iddespe);
+            It_Idx := Primer_Idx(Tts(Idproc), Idtipus);
 
-            gci_Referencia_Var(Fesq, Idres, Idbase, Idtipus);
-            gci_Expressio(Fdret, IdresE, IddespE);
-
-            It_Idx := primer_idx(Tts(idproc), Idtipus); ------------
-
-            if IddespE = var_nul then
-               Iddesp:= idresE;
-               Ivar := Consulta(Tv, Iddesp);
-               Put_Line("Iddesp := Idrese-->desp:"&Ivar.Desp'Img&
-                       " const: "&Ivar.Valconst'Img);
+            if Iddespe = Var_Nul then
+               Iddesp:= Idrese;
             else
-
-               Novavar(Tv, idproc, T1);
-
-               C1:=(
-                    Tc => Var,
-                    Idv => T1
-                   );
-               C2:=(
-                    Tc => Var,
-                    Idv => IdresE
-                   );
-               C3:=(
-                    Tc => Var,
-                    Idv => IddespE
-                   );
-
+               Novavar(Tv, Idproc, T1);
+               C1:=(Var, T1);
+               C2:=(Var, Idrese);
+               C3:=(Var, Iddespe);
                Genera(Suma, C1, C2, C3);
                Iddesp:=T1;
             end if;
-            Put_Line("----------------- END R(E -------------");
 
          when others =>
-            Put_Line("ERROR (DEBUG)");
+            Put_Line("Error (Debug)");
       end case;
-   end gci_Ref_Pri;
+   end Gci_Ref_Pri;
 
 
-
-   procedure gci_Ref_Rec
+   procedure Gci_Ref_Rec
      (A : in Pnode;
-      Idres, Iddesp: out num_var;
+      Idres, Iddesp: out Num_Var;
       Idtipus : out Id_Nom) is
 
       Fesq : Pnode renames A.Fe1;
@@ -1507,332 +1061,201 @@ package body Semantica.Gci is
       Dtcamp : Descrip;
       Idcamp : Id_Nom renames A.Fd1.Id12;
 
-      numconstant : num_var := var_nul;
+      Numconstant : Num_Var := Var_Nul;
 
-      T1 :num_Var := Var_Nul;
+      T1 :Num_Var := Var_Nul;
       C1,
       C2,
       C3 : Camp;
       Dtipus_Camp : Descrip;
-      Idproc : num_proc;
+      Idproc : Num_Proc;
 
    begin
-
       Gci_Referencia_Var(Fesq, Idres, Iddesp, Idtipus);
-      cim(pproc, idproc);
-      Dcmp := Conscamp(Tts(idproc), Idtipus, Idcamp);
+      Cim(Pproc, Idproc);
+      Dcmp := Conscamp(Tts(Idproc), Idtipus, Idcamp);
       Idtipus:= Dcmp.Tcamp;
       Dtipus_Camp := Cons(Ts, Idtipus);
-
-      --MIERDA
-      case Dtipus_Camp.Td is
-         when dnula => Put("dnula, ");
-         when dtipus => Put("dtipus, ");
-         when dvar => Put("dvar, ");
-         when dproc => Put("dproc, ");
-         when dconst => Put("dconst, ");
-         when dargc => Put("dargc, ");
-         when dcamp => Put("dcamp, ");
-      end case;
-      New_Line;
-
-
-
-      Novaconst(Tv, valor(Dcmp.Dsp*4),
+      Novaconst(Tv, Valor(Dcmp.Dsp*4),
                 Tsent, Idproc, Numconstant);
-      Put_Line("NUMCONSTANT dcmp.dsp = "&Valor(Dcmp.Dsp)'Img);
-      Put_Line("NUMCONSTANT * 4 = "&Valor(Dcmp.Dsp*4)'Img);
-      Put_Line("NUMCONSTANT + 4 = "&Valor(Dcmp.Dsp+4)'Img);
-
-      if Iddesp = var_nul then
-         Iddesp:=numconstant;
+      if Iddesp = Var_Nul then
+         Iddesp:=Numconstant;
       else
-         -- Amb desplaçament
          Novavar(Tv, Idproc, T1);
-
-         C1:=(Tc => Var,
-              Idv => T1
-             );
-         C2:=(
-              Tc => Var,
-              Idv => Iddesp
-             );
-         C3:=(
-              Tc => Const,
-              Idc => numconstant
-             );
+         C1:=(Var, T1);
+         C2:=(Var, Iddesp);
+         C3:=(Const, Numconstant);
          Genera (Suma, C1, C2, C3);
-
          Iddesp:= T1;
-
       end if;
+   end Gci_Ref_Rec;
 
-   end gci_Ref_Rec;
 
-
-   procedure gci_Sconds
+   procedure Gci_Sconds
      (A : in Pnode) is
 
       Cond : Pnode renames A.Fe1;
-      Bloc : Pnode renames A.fd1;
+      Bloc : Pnode renames A.Fd1;
 
-      Idres, Iddesp : num_var;
+      Idres, Iddesp : Num_Var;
 
-      C1, C2, C3 : camp;
-      efals: num_etiq;
+      C1, C2, C3 : Camp;
+      Efals: Num_Etiq;
 
-      idproc : num_proc;
-      T1 : num_Var := Var_Nul;
+      Idproc : Num_Proc;
+      T1 : Num_Var := Var_Nul;
 
    begin
-
-      efals := nova_etiq;
-      gci_Expressio(Cond, Idres, Iddesp);
-
+      Efals := Nova_Etiq;
+      Gci_Expressio(Cond, Idres, Iddesp);
       if Iddesp = Var_Nul then
-         C2:=(
-              Tc => Var,
-              Idv => Idres
-             );
+         C2 := (Var, Idres);
       else
-         cim(pproc, idproc);
-         Novavar(Tv, idproc, T1);
-         C1:=(
-              Tc => Var,
-              Idv => T1
-             );
-         C2:=(
-              Tc => Var,
-              Idv => Idres
-             );
-         C3:=(
-              Tc => Var,
-              Idv => Iddesp
-             );
+         Cim(Pproc, Idproc);
+         Novavar(Tv, Idproc, T1);
+         C1 := (Var, T1);
+         C2 := (Var, Idres);
+         C3 := (Var, Iddesp);
          Genera(Consindex, C1, C2, C3);
-         C2:=(
-              Tc => Var,
-              Idv => T1
-             );
+         C2 := (Var, T1);
       end if;
 
-      -- if C1 = C2 then Efals
-      C3:=(
-           Tc => Etiq,
-           Ide => Efals --------------------------
-          );
-      C1:=(
-           Tc => Const,
-           Idc => Zero
-          );
+      C3 := (Etiq, Efals);
+      C1 := (Const, Zero);
       Genera(Igual, C2, C1, C3);
-
-      gci_Bloc(Bloc);
-
-
-    --  C1:=(
-    --       Tc => Etiq,
-    --       Ide => efals
-    --      );
+      Gci_Bloc(Bloc);
       Genera(Etiqueta, C3);
+   end Gci_Sconds;
 
-   end gci_Sconds;
 
-
-   procedure gci_Scondc
+   procedure Gci_Scondc
      (A : in Pnode) is
 
       Cond : Pnode renames A.Fe2;
-      Bloc : Pnode renames A.fc2;
-      Blocelse : Pnode renames A.fd2;
+      Bloc : Pnode renames A.Fc2;
+      Blocelse : Pnode renames A.Fd2;
 
-      Idres, Iddesp : num_var;
+      Idres, Iddesp : Num_Var;
 
-      C1, C2, C3 : camp;
-      efals, efinal: num_etiq;
+      C1, C2, C3 : Camp;
+      Efals, Efinal: Num_Etiq;
 
-      idproc : num_proc;
-      T1 : num_Var := Var_Nul;
+      Idproc : Num_Proc;
+      T1 : Num_Var := Var_Nul;
 
    begin
-
-      efals := nova_etiq;
-      efinal := nova_etiq;
-
-      Gci_Expressio(Cond, Idres, Iddesp); ----
+      Efals := Nova_Etiq;
+      Efinal := Nova_Etiq;
+      Gci_Expressio(Cond, Idres, Iddesp);
 
       if Iddesp = Var_Nul then
-         C2:=(
-              Tc => Var,
-              Idv => Idres
-             );
+         C2 := (Var, Idres);
       else
-         cim(pproc, idproc);
-         Novavar(Tv, idproc, T1);
-         C1:=(
-              Tc => Var,
-              Idv => T1
-             );
-         C2:=(
-              Tc => Var,
-              Idv => Idres
-             );
-         C3:=(
-              Tc => Var,
-              Idv => Iddesp
-             );
+         Cim(Pproc, Idproc);
+         Novavar(Tv, Idproc, T1);
+         C1 := (Var, T1);
+         C2 := (Var, Idres);
+         C3 := (Var, Iddesp);
          Genera(Consindex, C1, C2, C3);
-         C2:=(
-              Tc => Var,
-              Idv => T1
-             );
+         C2 := (Var, T1);
       end if;
 
-      -- if C1 = C2 then Efals
-      C3:=(
-           Tc => Etiq,
-           Ide => Efals
-          );
-      C1:=(
-           Tc => Const,
-           Idc => Zero
-          );
+      C3 := (Etiq, Efals);
+      C1 := (Const, Zero);
       Genera(Igual, C2, C1, C3);
 
-      Gci_Bloc(Bloc); ------
+      Gci_Bloc(Bloc);
+      C1 := (Etiq, Efinal);
+      Genera(Branc_inc, C1);
 
-      C1:=(
-           Tc => Etiq,
-           Ide => efinal
-          );
-      Genera(Branc_Inc, C1);
-
-      C1.Ide:=efals;
+      C1.Ide:=Efals;
       Genera(Etiqueta, C1);
 
-      Gci_Bloc(Blocelse); ----
-
-      C1:=(
-           Tc => Etiq,
-           Ide => efinal
-          );
+      Gci_Bloc(Blocelse);
+      C1 := (Etiq, Efinal);
       Genera(Etiqueta, C1);
 
-   end gci_Scondc;
+   end Gci_Scondc;
 
 
-   procedure gci_Srep
+   procedure Gci_Srep
      (A : in Pnode) is
 
       Exp : Pnode renames A.Fe1;
-      Bloc : Pnode renames A.fd1;
+      Bloc : Pnode renames A.Fd1;
 
-      Idres, Iddesp : num_var;
+      Idres, Iddesp : Num_Var;
 
-      C1, C2, C3 : camp;
-      einicial, efinal: num_etiq;
+      C1, C2, C3 : Camp;
+      Einicial, Efinal: Num_Etiq;
 
-      idproc : num_proc;
-      T1 : num_Var := Var_Nul;
+      Idproc : Num_Proc;
+      T1 : Num_Var := Var_Nul;
 
    begin
-      einicial := nova_etiq;
-      efinal := nova_etiq;
-
-
-      C1:=(
-           Tc => Etiq,
-           Ide => einicial
-          );
+      Einicial := Nova_Etiq;
+      Efinal := Nova_Etiq;
+      C1 := (Etiq, Einicial);
       Genera(Etiqueta, C1);
 
-      gci_Expressio(Exp, Idres, Iddesp);
-
-      C1:=(
-           Tc => Etiq,
-           Ide => efinal
-          );
+      Gci_Expressio(Exp, Idres, Iddesp);
+      C1 := (Etiq, Efinal);
 
       if Iddesp = Var_Nul then
-         C2:=(
-              Tc => Var,
-              Idv => Idres
-             );
+         C2 := (Var, Idres);
       else
-         cim(pproc, idproc);
-         Novavar(Tv, idproc, T1);
-         C1:=(
-              Tc => Var,
-              Idv => T1
-             );
-         C2:=(
-              Tc => Var,
-              Idv => idres
-             );
-         C3:=(
-              Tc => Var,
-              Idv => iddesp
-             );
-         Genera(ConsIndex, C1, C2, C3);
-         C2:=(
-              Tc => Var,
-              Idv => T1
-             );
+         Cim(Pproc, Idproc);
+         Novavar(Tv, Idproc, T1);
+         C1 := (Var, T1);
+         C2 := (Var, Idres);
+         C3 := (Var, Iddesp);
+         Genera(Consindex, C1, C2, C3);
+         C2 := (Var, T1);
       end if;
 
-      C3:=(
-           Tc => Const,
-           Idc => Zero
-          );
+      C3 := (Const, Zero);
       Genera(Igual, C2, C3, C1);
 
-      gci_Bloc(Bloc);
-
-      C1 := (
-             Tc => Etiq,
-             Ide => einicial
-            );
-      Genera(Branc_Inc, C1);
-      C1.Ide := efinal;
+      Gci_Bloc(Bloc);
+      C1 := (Etiq, Einicial);
+      Genera(Branc_inc, C1);
+      C1.Ide := Efinal;
       Genera(Etiqueta, C1);
 
-   end gci_Srep;
+   end Gci_Srep;
 
 
-   -- Calcula desplaçaments
+   -- Calcula Desplaçaments
    procedure Calcula_Despls is
       Idpr     : Num_Proc;
       Ocup_Var : Despl;
-   begin
 
+   begin
       for P in Num_Proc loop
-         if Tp.Tp(P).Tp = Intern then
+         if Tp.Tp(P).Tp = intern then
             Tp.Tp(P).Ocup_Var := 0;
          end if;
-
       end loop;
 
       for V in Num_Var range 1..Tv.Nv loop
-         if Tv.Tv(V).Param then --param
+         if Tv.Tv(V).Param then
             Idpr := Tv.Tv(V).Np;
-            if Tp.Tp(Idpr).Tp = Intern then
-               Tv.Tv(V).Desp := Tp.Tp(Idpr).Ocup_Param + 12;--abans 12
+            if Tp.Tp(Idpr).Tp = intern then
+               Tv.Tv(V).Desp := Tp.Tp(Idpr).Ocup_Param + 12;
                Tp.Tp(Idpr).Ocup_Param := Despl(Tp.Tp(Idpr).Ocup_Param) + 4;
             end if;
          else
-            --if Tv.Tv(V).Desp = 0 then
             Idpr := Tv.Tv(V).Np;
-            if Tp.Tp(Idpr).Tp = Intern then
+            if Tp.Tp(Idpr).Tp = intern then
                Ocup_Var := Tv.Tv(V).Ocup;
                Tp.Tp(Idpr).Ocup_Var := Tp.Tp(Idpr).Ocup_Var + Ocup_Var;
                Tv.Tv(V).Desp := Despl(Tp.Tp(Idpr).Ocup_Var* (-1));
             end if;
-            --end if;
          end if;
       end loop;
 
    end Calcula_Despls;
 
 
-end semantica.gci;
+end Semantica.Gci;
 

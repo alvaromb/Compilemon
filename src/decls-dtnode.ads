@@ -1,3 +1,6 @@
+-- DECLS-DTNODE.ads
+-- Declaracions del node
+
 with Decls.Dgenerals,
   Decls.D_Taula_De_Noms,
   Decls.Dtdesc;
@@ -16,20 +19,20 @@ package Decls.Dtnode is
       Entrasurt);
 
    type Operacio is
-     (Suma, 
-      Resta, 
-      Mult, 
-      Div, 
-      Menor, 
-      Menorig, 
-      Major, 
-      Majorig, 
-      Igual, 
-      Distint, 
-      Modul, 
-      Unio, 
-      Interseccio, 
-      Negacio); 
+     (Suma,
+      Resta,
+      Mult,
+      Div,
+      Menor,
+      Menorig,
+      Major,
+      Majorig,
+      Igual,
+      Distint,
+      Modul,
+      Unio,
+      Interseccio,
+      Negacio);
 
 
    type Node;
@@ -37,31 +40,31 @@ package Decls.Dtnode is
    type Pnode is access Node;
 
    type Tipusnode is
-     (Programa, 
-      Repeticio, 
-      CondicionalS, 
-      CondicionalC, 
-      Expressio, 
+     (Programa,
+      Repeticio,
+      CondicionalS,
+      CondicionalC,
+      Expressio,
       ExpressioUnaria,
       Pencap,
       Procediment,
-      Dvariable, 
-      Dconstant, 
-      Dcoleccio, 
-      Dregistre, 
-      Dencapregistre, 
-      Dsubrang, 
+      Dvariable,
+      Dconstant,
+      Dcoleccio,
+      Dregistre,
+      Dencapregistre,
+      Dsubrang,
       Identificador,
-      Const, 
-      Declaracions, 
+      Const,
+      Declaracions,
       Bloc,
       Assignacio,
-      Referencia, 
+      Referencia,
       Pri,
       Param,
-      Pcoleccio, 
-      Pdimcoleccio, 
-      Declmultvar, 
+      Pcoleccio,
+      Pdimcoleccio,
+      Declmultvar,
       Tnul,
       Mode,
       Encappri,
@@ -79,7 +82,7 @@ package Decls.Dtnode is
            | declaracions | bloc | assignacio | pri
            | dcoleccio | Pdimcoleccio | Referencia
            | pcoleccio | dvariable
-           | Declmultvar | encappri | Pencap => fe1, fd1: pnode;
+           | Declmultvar | encappri | Pencap =>  Fe1, Fd1 : Pnode;
 
          when CondicionalC | dconstant | dregistre
            | Dencapregistre | Param => fe2, fc2, fd2: pnode;

@@ -1,14 +1,5 @@
--- ------------------------------------------------
---  Paquet de Declaracions
--- ------------------------------------------------
---  Versio  :   0.1
---  Autors  :   Jose Ruiz Bravo
---              Biel Moya Alcover
---              Alvaro Medina Ballester
--- ------------------------------------------------
---  Paquet de declaracions pare.
---
--- ------------------------------------------------
+-- DECLS.ads
+-- Paquet de declaracions
 
 package decls is
 

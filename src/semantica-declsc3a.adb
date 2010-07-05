@@ -1,26 +1,26 @@
-package body semantica.declsc3a is
+package body Semantica.Declsc3a is
 
-   --Taula Procediments
+   -- Taula Procediments
    procedure Nouproc
      (Tp  : in out T_Procs;
-      Idp :    out num_proc) is
+      Idp : out Num_Proc) is
    begin
       Posa(Tp, Info_Proc_Nul, Idp);
    end Nouproc;
 
 
    function Consulta
-     (Tp  : in  T_Procs;
-      Idp : in  num_proc) return Info_Proc is
+     (Tp  : in T_Procs;
+      Idp : in Num_Proc) return Info_Proc is
    begin
       return Tp.Tp(Idp);
    end Consulta;
 
 
-   --Taula Variables
+   -- Taula Variables
    function Consulta
      (Tv  : in T_Vars;
-      Idv : in num_var) return Info_Var is
+      Idv : in Num_Var) return Info_Var is
    begin
       return Tv.Tv(Idv);
    end Consulta;
@@ -28,17 +28,17 @@ package body semantica.declsc3a is
 
    procedure Modif_Descripcio
      (Tv  : in out T_Vars;
-      Idv : in num_var;
+      Idv : in Num_Var;
       Iv  : in Info_Var) is
    begin
-      Tv.Tv(Idv):=Iv;
+      Tv.Tv(Idv) := Iv;
    end Modif_Descripcio;
 
 
    procedure Novavar
      (Tv   : in out T_Vars;
-      Idpr : in num_proc;
-      Idv  : out num_var) is
+      Idpr : in Num_Proc;
+      Idv  : out Num_Var) is
 
       Ip        : Info_Proc := Info_Proc_Nul;
       Iv        : Info_Var  := Info_Var_Nul;
@@ -59,7 +59,7 @@ package body semantica.declsc3a is
            Const    => False,
            Valconst => 0);
 
-      Ip.Ocup_Var:=Ip.Ocup_Var+Iv.Ocup;
+      Ip.Ocup_Var := Ip.Ocup_Var + Iv.Ocup;
       Posa(Tv, Iv, Idv);
       Modif_Descripcio(Tp, Idpr, Ip);
 
@@ -68,23 +68,22 @@ package body semantica.declsc3a is
 
    procedure Novaconst
      (Tv   : in out T_Vars;
-      Vc   : in     Valor;
-      Tsub : in     tipussubjacent;
-      Idpr : in     num_proc;
-      Idc :    out num_var) is
+      Vc   : in Valor;
+      Tsub : in Tipussubjacent;
+      Idpr : in Num_Proc;
+      Idc : out Num_Var) is
 
       Idn      : Id_Nom;
-      --Ip       : Info_Proc;
       E        : Boolean;
       Iv       : Info_Var;
       D        : Descrip;
       Ocup     : Despl;
-      Nconst   : num_var := Tv.Nv + 1;
+      Nconst   : Num_Var := Tv.Nv + 1;
       Nomconst : String  := "_cnt" & Nconst'img;
 
    begin
 
-      Nomconst(Nomconst'First + 4):='_';
+      Nomconst(Nomconst'First + 4) := '_';
 
       if Tsub=Tsarr then
          Ocup:=16*Integer'Size;
@@ -115,7 +114,7 @@ package body semantica.declsc3a is
 
    end Novaconst;
 
-  function Nova_Etiq return Num_Etiq is
+   function Nova_Etiq return Num_Etiq is
    begin
       Ne := Ne + 1;
       return Ne;
@@ -128,7 +127,7 @@ package body semantica.declsc3a is
    begin
       return "_" & Trim(Nomproc, Both);
    end Etiqueta;
-  
+
 
    function Etiqueta
      (N : in Integer) return String is
@@ -151,14 +150,16 @@ package body semantica.declsc3a is
    end Etiqueta;
 
    --Fitxers
-   procedure Crea_Fitxer(Nom_Fitxer: in String) is
+   procedure Crea_Fitxer
+     (Nom_Fitxer : in String) is
    begin
       Create(F3as, Out_File, Nom_Fitxer&".c3as");
       Create(F3at, Out_File, Nom_Fitxer&".c3at");
    end Crea_Fitxer;
 
 
-   procedure Obrir_Fitxer(Nom_Fitxer: in String) is
+   procedure Obrir_Fitxer
+     (Nom_Fitxer : in String) is
    begin
       Open(F3as, In_File, Nom_Fitxer&".c3as");
    end Obrir_Fitxer;
@@ -181,13 +182,13 @@ package body semantica.declsc3a is
      (Instruccio : in c3a) is
    begin
 
-      --escriptura a arxiu binari
+      -- Escriptura a arxiu binari
       Write(F3as, Instruccio);
-      --escriptura a arxiu de text
+      -- Escriptura a arxiu de text
       Put(F3at, Instruccio.Instr'Img & Ascii.Ht);
 
       if Instruccio.Instr <= Branc_Inc then
-         --1 operand
+         -- 1 operand
          case Instruccio.Camp1.Tc is
             when Proc =>
                Put_Line(F3at, Instruccio.Camp1.Idp'Img);
@@ -224,7 +225,7 @@ package body semantica.declsc3a is
             when Const =>
                Put_Line(F3at, Instruccio.Camp2.Idc'Img);
             when Etiq =>
-               Put_Line(F3at, Instruccio.Camp1.Ide'Img);--
+               Put_Line(F3at, Instruccio.Camp1.Ide'Img);
             when others =>
                null;
          end case;
@@ -252,7 +253,7 @@ package body semantica.declsc3a is
             when Const =>
                Put(F3at, Instruccio.Camp2.Idc'Img & Ascii.Ht);
             when Etiq =>
-               Put(F3at, Instruccio.Camp1.Ide'Img & Ascii.Ht); --
+               Put(F3at, Instruccio.Camp1.Ide'Img & Ascii.Ht);
             when others =>
                null;
          end case;
@@ -265,7 +266,7 @@ package body semantica.declsc3a is
             when Const =>
                Put_Line(F3at, Instruccio.Camp3.Idc'Img);
             when Etiq =>
-               Put_Line(F3at, Instruccio.Camp3.Ide'Img); --
+               Put_Line(F3at, Instruccio.Camp3.Ide'Img);
             when others =>
                null;
          end case;
@@ -298,8 +299,8 @@ package body semantica.declsc3a is
          else
             Put_Line("     ocup param: " & Tp.Tp(I).Ocup_Param'Img);
             Put_Line("     Nom Proc: " & Cons_nom(Tn, Tp.Tp(I).Etiq_Extern));
-			Put_Line("--------------------------------------");
-		 end if;
+            Put_Line("--------------------------------------");
+         end if;
       end loop;
 
       Put_Line("-------------------------------------------------");
@@ -316,11 +317,12 @@ package body semantica.declsc3a is
          Put_Line("     valconst:" & Tv.Tv(I).Valconst'Img);
 
          if Tv.Tv(I).Tsub=TSARR and Tv.Tv(I).Const then
-            Put_Line("          " & Cons_str(Tn,  rang_tcar(Tv.Tv(I).Valconst)));
+            Put_Line("          " &
+                       Cons_str(Tn, rang_tcar(Tv.Tv(I).Valconst)));
          end if;
 
       end loop;
 
-   end imprimeix_Taules;
+   end Imprimeix_Taules;
 
-end semantica.declsc3a;
+end Semantica.Declsc3a;

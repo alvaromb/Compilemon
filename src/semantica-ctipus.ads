@@ -24,27 +24,27 @@ package Semantica.Ctipus is
    -- Rutines lexiques
    procedure mt_atom
      (l, c : in natural;
-         a : out atribut);
+      a : out atribut);
 
    procedure mt_identificador
      (l, c : in natural;
-         s : in string;
-         a : out atribut);
+      s : in string;
+      a : out atribut);
 
    procedure mt_string
      (l, c : in natural;
-         s : in string;
-         a : out atribut);
+      s : in string;
+      a : out atribut);
 
    procedure mt_caracter
      (l, c : in natural;
-       car : in string;
-         a : out atribut);
+      car : in string;
+      a : out atribut);
 
    procedure mt_numero
      (l, c : in natural;
-         s : in string;
-         a : out atribut);
+      s : in string;
+      a : out atribut);
 
    -- Comprovacio de tipus
    procedure Inicia_analisi(nomFitxer: in String);
@@ -67,7 +67,7 @@ private
 
    procedure Ct_Param
      (A : in Pnode;
-          I : in Id_Nom);
+      I : in Id_Nom);
 
    procedure Ct_Declaracions
      (A : in Pnode);
