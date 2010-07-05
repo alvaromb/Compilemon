@@ -57,5 +57,4 @@ package d_token is
                         const,
                         Error,
                         End_of_Input);
-
 end d_token;

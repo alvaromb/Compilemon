@@ -46,7 +46,6 @@ package Semantica.Ctipus is
          s : in string;
          a : out atribut);
 
-
    -- Comprovacio de tipus
    procedure Inicia_analisi(nomFitxer: in String);
 
@@ -55,8 +54,6 @@ package Semantica.Ctipus is
 
 private
 
-   Ts : Tsimbols;
-  
    procedure Ct_Decprocediment
      (A : in Pnode);
 

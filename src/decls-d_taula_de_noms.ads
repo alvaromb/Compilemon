@@ -23,7 +23,7 @@ package decls.d_taula_de_noms is
 
     --pragma pure;
 
-    -- Excepcions
+    --Excepcions
     E_Tids_Plena : exception;
     E_Tcar_Plena : exception;
 
@@ -97,6 +97,5 @@ private
        nid : id_nom;
       ncar : rang_tcar;
    end record;
-
 
 end decls.d_taula_de_noms;

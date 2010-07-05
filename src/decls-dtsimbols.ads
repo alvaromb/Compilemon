@@ -27,8 +27,7 @@ package Decls.Dtsimbols is
 
     --pragma pure;
 
-    type Tsimbols is private;
---	type Ttsimbols is private;	
+    type Tsimbols is private;	
     type ttsimbols is array
 	  (num_proc) of tsimbols;	
 
@@ -155,18 +154,11 @@ private
    type taula_desc is array
      (1 .. id_nom'Last) of tipus_descripcio;
 
-    
-   --type cursor_idx is new rang_despl;
-   --type cursor_arg is new rang_despl;
-
    type tsimbols is record
       tdesc : taula_desc;
        texp : taula_expansio;
      tambit : taula_ambits;
        prof : nprof;
    end record;
-
---   type ttsimbols is array
---	(num_proc) of tsimbols;	
 
 end Decls.Dtsimbols;

@@ -63,7 +63,7 @@ package Semantica.gci is
      (Idref, Iddref, Idrexp, Iddexp: in num_var);
 
    --Procediments
-   procedure gci_Referencia_Proc --InComplet
+   procedure gci_Referencia_Proc 
      (A : in Pnode;
       Idproc : out num_proc);
 
@@ -71,7 +71,7 @@ package Semantica.gci is
      (A : in Pnode;
       Idproc : out num_proc);
 
-   procedure gci_Identificador -- correcte
+   procedure gci_Identificador
      (A : in Pnode;
       Idres, Iddesp: out num_var;
       Idtipus : out Id_Nom);
@@ -84,11 +84,11 @@ package Semantica.gci is
      (A : in Pnode;
       Idr, Idd: out num_var);
 
-   procedure gci_Expressioc --comprovar parametres
+   procedure gci_Expressioc 
      (A : in Pnode;
       Idres,Idresdesp: out num_var);
 
-   procedure gci_Exp_Relacional --manca acabar d'entendre el final
+   procedure gci_Exp_Relacional
      (IdResE, IdResD, IddespE, IddespD : in num_var;
       IdResultExp, IddespExp :   out num_var;
       Op : in Operacio);
@@ -121,13 +121,13 @@ package Semantica.gci is
       Idtipus : out Id_Nom);
 
    --Arrays
-   procedure gci_Ref_Pri --"Correcte"
+   procedure gci_Ref_Pri
      (A : in Pnode;
       Idres, Iddesp, Idbase : out Num_var;
       Idtipus : out Id_Nom;
       It_Idx : out Cursor_Idx);
 
-   procedure gci_Ref_Rec --correcte
+   procedure gci_Ref_Rec
      (A : in Pnode;
       Idres, Iddesp: out num_var;
       Idtipus : out Id_Nom);

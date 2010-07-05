@@ -42,7 +42,7 @@ package Decls.Dtnode is
       CondicionalS, 
       CondicionalC, 
       Expressio, 
-      ExpressioUnaria, -- Not E, -E
+      ExpressioUnaria,
       Pencap,
       Procediment,
       Dvariable, 

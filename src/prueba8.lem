@@ -1,5 +1,5 @@
 procedure prueba8 is
-	type rang is new integer range 0..10;
+	type rang is new integer range 1..10;
 	type vector is array (rang) of integer;
 	
 	a : vector;
@@ -11,13 +11,11 @@ procedure prueba8 is
 	procedure vparam(v: out vector) is
 		jdx : rang;
 		s: string;
-		c : character;
 	begin
-		jdx := 0;
+		jdx := 1;
 		new_line;
 		s := ", ";
-		
-		while c /= '.' loop
+		while jdx < 10 loop
 			
 			puti(v(jdx));
 			puts(s);
@@ -27,8 +25,8 @@ procedure prueba8 is
 	end vparam;
 
 begin
-	idx := 0;
-	i := 0;
+	idx := 1;
+	i := 1;
 	s:=", ";
     while i < 10 loop
 		a(idx) := i;
