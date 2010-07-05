@@ -253,7 +253,7 @@ package body Semantica.Ctipus is
       D := (Dproc, Idpr);
       Posa(Ts, Idn, D, E);
 
-	  --arg_puts
+          --arg_puts
       Posa_Id(Tn, Ida, "_arg_puts");
       Iv := (Ida, Idpr,4, Ipr.Ocup_Param, Tsstr,
              True, False, 0);--16 * Integer'Size
@@ -280,7 +280,7 @@ package body Semantica.Ctipus is
       Posa(Tv, Iv, Idv);
                   nv:= nv +1;
       D := (Dargc, Idv, Idstring);
-		--D := (Dvar, Idstring, Idv);
+                --D := (Dvar, Idstring, Idv);
       Posa(Ts, Ida, D, E);
       Posa_Arg(Ts, Idn, Ida, D, E);
       Ipr.Ocup_Param := Ipr.Ocup_Param + Iv.Ocup;
@@ -664,7 +664,10 @@ package body Semantica.Ctipus is
                       Ncomponents);
          Darray := Cons(Ts, Idarray);
          Darray.Dt.Tcamp := Idtipus_Array;
+         Put_Line("darray.dt.ocup abans = "&Darray.Dt.Ocup'Img);
          Darray.Dt.Ocup := Ncomponents * Dtarray.Dt.Ocup;
+         Put_Line("darray.dt.ocup = "&Darray.Dt.Ocup'Img);
+         Put_Line("ncomponents = "&Ncomponents'Img);
          Actualitza(Ts, Idarray, Darray);
       end if;
    end Ct_Deccol;
@@ -698,7 +701,7 @@ package body Semantica.Ctipus is
             Di := Cons(Ts, Idrang);
             if Di.td = Dtipus then
                Ncomponents := Ncomponents *
-                 Despl(Di.Dt.Lsup -( Di.Dt.Linf + 1));
+                 Despl(Di.Dt.Lsup - Di.Dt.Linf + 1);
             else
                Error(Tipusidxerroniarray, A.Fd1.L1,
                      A.Fd1.C1, Cons_Nom(Tn, Idrang));
@@ -1653,14 +1656,14 @@ package body Semantica.Ctipus is
                   Cons_Arg(Ts, It_Arg, Id_Cursor, Dparam);
 
                   if Idref = Id_Nul then
-					 if(Dtipoarg.td /= dnula) then
-                    	 Dtipoarg := Cons(ts, Dparam.targ);
-                     	if Dtipoarg.dt.tt /= Tsref then
-                        	Error(Tparam_No_Coincident,
-                              	L, C, "");
-                        	Esem := True;
-                     	end if;
-					 end if;
+                     if(Dtipoarg.td /= dnula) then
+                        Dtipoarg := Cons(ts, Dparam.targ);
+                        if Dtipoarg.dt.tt /= Tsref then
+                           Error(Tparam_No_Coincident,
+                                 L, C, "");
+                           Esem := True;
+                        end if;
+                     end if;
                   elsif Dparam.td = Dargc then
                      if Idref /= Dparam.targ then
                         Error(Tparam_No_Coincident, L, C,
@@ -1677,12 +1680,12 @@ package body Semantica.Ctipus is
                      end if;
                   end if;
                end if;
-			It_Arg := succ_arg(ts, It_Arg);
+               It_Arg := succ_arg(ts, It_Arg);
             else
                Error(Tproc_No_Param, L, C, Tsub'Img);
                Esem := True;
             end if;
-                 
+
               T := Tsub;
          when others =>
             --Put_Line("ERROR CT-ref_pri: tipus no "&
