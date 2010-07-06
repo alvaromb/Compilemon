@@ -153,14 +153,12 @@ package body Decls.D_Arbre is
       P := (Nodearbre, 0, 0, Paux);
     end Creanode;
 
-
     procedure Remunta
       (P : out Atribut;
        A : in Atribut) is
     begin
        P := A;
     end Remunta;
-
 
     procedure Cons_Tnode
       (P : in Pnode;

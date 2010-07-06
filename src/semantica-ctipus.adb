@@ -40,7 +40,8 @@ package body Semantica.Ctipus is
       Car : in String;
       A : out Atribut) is
    begin
-      A := (A_Lit_C, L, C, Valor(Character'Pos(Car(Car'First+1))));
+      A := (A_Lit_C, L, C,
+            Valor(Character'Pos(Car(Car'First+1))));
    end Mt_Caracter;
 
 
@@ -163,9 +164,7 @@ package body Semantica.Ctipus is
       Idn, Idstring, Ida, Idchar : Id_Nom;
       E : Boolean;
       Ipr : Info_Proc;
-      --      Ide : Num_Etiq;
       Idpr : Num_Proc;
-      --      Ie : Info_Etiq;
       Iv : Info_Var;
       Idv : Num_Var;
    begin
@@ -602,7 +601,8 @@ package body Semantica.Ctipus is
             Esem := True;
          end if;
 
-         if (Tsubj = Tsent or Tsubj = Tsbool or Tsubj = Tscar) then
+         if (Tsubj = Tsent or Tsubj = Tsbool or
+               Tsubj = Tscar) then
             if (Val.Val < Tdecl.Dt.Linf) or
               (Val.Val > Tdecl.Dt.Lsup) then
                Error(Rang_Sobrepassat, A.Fe2.L1, A.Fe2.C1,
@@ -1252,12 +1252,10 @@ package body Semantica.Ctipus is
             Esem := True;
             Idtipus := Id;
             T := tsnul;
-
       end case;
+
       L := Lin;
       C := Col;
-
-
 
    end Ct_Identificador;
 

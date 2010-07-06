@@ -53,10 +53,8 @@ package body Semantica.Missatges is
                         " El tipus "&id&" no "&
                         "existeix o no es correcte");
          when tipusSubIncorrecte =>
-            --Aqui donam prioritat al tipus que
-            --declaram per sobre el tipus
-            -- assignat si son diferents l'erroni
-            --es el que assignam
+            --Aqui donam prioritat al tipus que declaram per
+            --sobre del tipus. Si son diferents assignam l'erroni
             Impressio("l: "&l'img&" c: "&c'img&
                         " El tipus "&id&
                         " no es correspon amb el tipus"&

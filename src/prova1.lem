@@ -3,12 +3,11 @@
 
 procedure prova1 is
 
-	type tipussubjacent is record
-		
-		--linf : integer;
+	type tipussubjacent is record		
+		linf : integer;
 		lsup : integer;
-		ts : character;
-		o : string;
+		tsc : character;
+		tss : string;
 	end record;
 
 	type rang is new integer range 0..3;
@@ -19,34 +18,35 @@ procedure prova1 is
 	i : rang;
 
 begin
-	d(0).ts := 'n';
-	--d(0).linf := 0;
+	d(0).tsc := 'n';
+	d(0).tss := "Sencer";
+	d(0).linf := 0;
 	d(0).lsup := 0;
-	d(0).o := "merda";
 	
-	d(1).ts := 'b';
-	--d(1).linf := -1;
+	d(1).tsc := 'b';
+	d(1).tss := "Boolea";
+	d(1).linf := -1;
 	d(1).lsup := 0;
-	d(1).o := "caca";
 	
-	d(2).ts := 'c';
-	--d(2).linf := 1;
+	d(2).tsc := 'c';
+	d(2).tss := "Caracter";
+	d(2).linf := 1;
 	d(2).lsup := 4;
-	d(2).o := "cacota";
-
-	d(3).ts := 's';
-	--d(3).linf := 4;
+	
+	d(3).tsc := 's';
+	d(3).tss := "String";
+	d(3).linf := 4;
 	d(3).lsup := 256;
-	d(3).o := "pichacO";
 
 	i := 0;
 	while (i <= 3) loop
-		putc(d(i).ts);
+		putc(d(i).tsc);
 		new_line;
-		--puti(d(i).linf);
-		--new_line;
+		puts(d(i).tss);
+		new_line;
+		puti(d(i).linf);
+		new_line;
 		puti(d(i).lsup);
-		puts(d(i).o);
 		new_line;
 		new_line;
 		i := i + 1;

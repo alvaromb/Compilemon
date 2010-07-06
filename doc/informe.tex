@@ -1,11 +1,8 @@
 \input{plantilla}
-
-%\title{Informe Compiladors}
-
-
 \begin{document}
 \input{portada}
-%\maketitle
+\tableofcontents
+\newpage
 
 \begin{abstract}
 Compilador \emph{compilemon} creat amb el llenguatge Ada. Està
@@ -14,6 +11,25 @@ com \emph{lemonada}.
 \end{abstract}
 
 \thispagestyle{empty}
+
+\section{Introducció}
+Al present document trobam el codi font del compilador \emph{Compilemon},
+desenvolupat per l'assignatura Processadors del Llenguatge, impartida per el
+Doctor Albert Llemosí Cases. Per desenvolupar la pràctica hem fet servir el
+llenguatge Ada 2005, juntament amb les eines següents:
+
+\begin{description}
+\item [Edició de text] Com a editor de text hem fer servir GNU Emacs i Gedit com
+a editors principals, tant per el codi de la pràctica com per el de l'informe.
+\item [Control de versions] Per duur a terme el desenvolupament de forma
+conjunta, hem emprat el sistema de control de versions Subversion. Podem trobar
+el repositori a la direcció \url{http://svn.comiendolimones.com/compilemon}.
+\item [Documentació] Per elaborar la documentació hem fet servir \LaTeX~com a
+editor de text.
+\item [Sistema Operatiu] Tota la pràctica s'ha desenvolupat sota entorns
+UNIX. Primerament sobre una màquina Darwin BSD i més endavant sota GNU/Linux.
+\end{description}
+\newpage
 
 \input{lexic}
 \newpage
@@ -38,6 +54,7 @@ com \emph{lemonada}.
 \input{jocsdeproves}
 \newpage
 
-\tableofcontents
+\appendix
+\input{apendix}
 
 \end{document}

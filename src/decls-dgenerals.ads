@@ -3,8 +3,6 @@
 
 package Decls.Dgenerals is
 
-    --pragma pure;
-
     Max_Id : constant Integer := 1000;
     Long_Num_Ident : constant Integer := 40;
 
@@ -22,7 +20,6 @@ package Decls.Dgenerals is
     type Num_Etiq is new Integer
       range 0 .. Max_Etiquetes;
     Etiq_Nul : Num_Etiq := 0;
-
     type Tipus_Etiq is
       (Etiq_Num,
        Etiq_Proc);

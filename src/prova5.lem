@@ -1,24 +1,20 @@
+-- PROVA5.lem
+-- Multiplicacio e inversio de matrius 5x5
 
 procedure opsMatrius is
 
 	type rang is new integer range 1..5;
-	
 	type matriu is array (rang, rang) of integer;
 	m1, m2, mr : matriu;
-
+	
 	i, j, k : rang;
-
 	x : integer;
 
 begin
-
 	x:=1;
-
-
 	--Omplim les matrius
 	i:=1;
 	while i <= 5 loop
-	
 		j:=1;
 		while j <= 5 loop
 			m1(i, j) := x;
@@ -31,25 +27,20 @@ begin
 		i:=i+1;		
 	end loop;
 
-
 	--Multiplicacio matrius
 	i:=1;
 	while i <= 5 loop
-
-		j:=1;
-		while j <= 5 loop
-
-			k:=1;
-			while k <= 5 loop
-				mr(i, j) := mr(i, j) + (m1(i, k) * m2(k, j));
-				k:=k+1;
-			end loop;
-			
-			j:=j+1;
-		end loop;
-		i:=i+1;
+	   j:=1;
+	   while j <= 5 loop
+	      k:=1;
+	      while k <= 5 loop
+	         mr(i, j) := mr(i, j) + (m1(i, k) * m2(k, j));
+		 k:=k+1;
+	      end loop;
+	      j:=j+1;
+	   end loop;
+	   i:=i+1;
 	end loop;
-
 
 	--Inversio de matrius
 	i:=2;

@@ -6,7 +6,7 @@ use Semantica.Declsc3a;
 
 package Semantica.gci is
 
-   Camp_Nul : constant Camp := (Tc => Const, Idc => Var_Nul);
+   Camp_Nul : constant Camp := (Const, Var_Nul);
 
    type T_Param is record
       Base, Despl : num_Var;

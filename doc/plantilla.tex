@@ -1,6 +1,6 @@
 % Distintas opciones de impresion:
 % - Para la entrega final:
-\documentclass[a4paper, onecolumn, 12pt, final]{article}
+\documentclass[a4paper, onecolumn, 12pt, final, twoside]{article}
 
 % - Por si hay que ir imprimiendo versiones:
 %\documentclass[a4paper, onecolumn, 10pt, final]{article}
@@ -22,6 +22,7 @@
 \usepackage{sverb}
 \usepackage{ctable}
 \usepackage{verbatim}
+\usepackage{indentfirst}
 \usepackage[kerning, spacing]{microtype}
 \microtypecontext{spacing=nonfrench}
 \usepackage{url}
@@ -50,10 +51,11 @@
   tabsize=8,
   breakatwhitespace=false,
   showstringspaces=false,
-  keywordstyle=\ttfamily\scshape\color{blue},
+  keywordstyle=\ttfamily\scshape\color{blue}\underline,
   commentstyle=\color{gray45},
   stringstyle=\color{red},
 }
+
 
 % - Minimizar fragmentado de listados
 %\lstnewenvironment{listing}[1][]
